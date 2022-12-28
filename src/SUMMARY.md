@@ -1,3 +1,3 @@
 # Summary
 
-[NTHU-CP-BOOK](./index.md)
+[Foreword](foreword.md)

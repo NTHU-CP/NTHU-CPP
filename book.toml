@@ -1,6 +1,4 @@
 [book]
-authors = ["Harry Chiang"]
-language = "en"
-multilingual = false
+language = "zh-TW"
 src = "src"
-title = "NTHU CP BOOK"
+title = "NTHU CP Book"
