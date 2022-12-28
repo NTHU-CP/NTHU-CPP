@@ -37,3 +37,9 @@ push 上去之後應該就能在 NTHU CP Book 的 repository 或者是 fork 出�
 你可以在這邊瀏覽一下自己的 commit 或者是寫一些話給要 review 的人。都沒問題後就可以按下 Create pull request 並等人來 review 囉！
 
 ![](image/create_pr.png)
+
+建議需要熟悉 Git 的操作，但也不需要擔心會把整個 repository 搞砸，因為你是在 fork 出來的那份上編輯，也需要通過 review 才能被 merge 進去。
+
+以下附上一些可能有用的參考資料：
+- [連猴子都能懂的Git入門指南](https://backlog.com/git-tutorial/tw/)
+- [與其它開發者的互動 - 使用 Pull Request（PR）- 為你自己學Git](https://gitbook.tw/chapters/github/pull-request)
