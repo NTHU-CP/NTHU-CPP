@@ -19,7 +19,7 @@
 
 ---
 
-[Useful Resource]()
+[Useful Resources](others/useful_resources.md)
 [CSES Problem Tag]()
 [Happy Winter Training Camp](others/hwtc.md)
 
