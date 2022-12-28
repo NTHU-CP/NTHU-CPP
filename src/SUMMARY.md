@@ -1,7 +1,7 @@
 # Summary
 
 [Foreword](others/foreword.md)
-[Contribute to NTHU CP Book]()
+[Contribute to NTHU CP Book](others/contribution.md)
 
 # CP Book
 
