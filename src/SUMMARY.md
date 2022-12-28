@@ -6,8 +6,9 @@
 # CP Book
 
 - [Fundemantal]()
-- [Greedy]()
-- [Dynamic Programming]()
+- [Greedy](cp_book/greedy.md)
+- [Dynamic Programming](cp_book/dp.md)
+  - [Basic DP](cp_book/dp_basic.md)
 - [Flow]()
 - [Mathematics]()
 - [Miscellaneous]()
