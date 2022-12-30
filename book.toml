@@ -2,3 +2,10 @@
 language = "zh-TW"
 src = "src"
 title = "NTHU CP Book"
+
+[build]
+build-dir = "book"
+create-missing = false
+
+[output.html.fold]
+enable = true
