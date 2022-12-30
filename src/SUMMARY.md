@@ -1,14 +1,14 @@
 # Summary
 
 [Foreword](others/foreword.md)
-[Contribute to NTHU CP Book](others/contribution.md)
+[Contribute to NTHU CPP](others/contribution.md)
 
-# CP Book
+# Algorithmic Topic
 
 - [Fundemantal]()
-- [Greedy](cp_book/greedy.md)
-- [Dynamic Programming](cp_book/dp.md)
-  - [Basic DP](cp_book/dp_basic.md)
+- [Greedy]()
+- [Dynamic Programming]()
+  - [Basic DP]()
 - [Flow]()
 - [Mathematics]()
 - [Miscellaneous]()

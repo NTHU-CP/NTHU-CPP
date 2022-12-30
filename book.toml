@@ -1,7 +1,7 @@
 [book]
 language = "zh-TW"
 src = "src"
-title = "NTHU CP Book"
+title = "NTHU CPP"
 
 [build]
 build-dir = "book"

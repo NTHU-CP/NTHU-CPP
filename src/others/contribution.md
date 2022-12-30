@@ -1,10 +1,10 @@
-# Contribute to NTHU CP Book
+# Contribute to NTHU CPP
 
 > 非常歡迎大家一同協作此專案！想新增或修改什麼就直接開 Issue 或者是 Pull Request 吧！
 
-NTHU CP Book 是由 mdBook 製作而成，搭配 Github Action，將網站的最新版本部署到 Github Pages。
+NTHU CPP 是由 mdBook 製作而成，搭配 Github Action，將網站的最新版本部署到 Github Pages。
 
-以下提供一個簡單的步驟給想要編輯此專案，但又不熟悉 Git 以及 GitHub workflow 的人。請先 fork [NTHU-CP-Book](https://github.com/NTHU-CP/NTHU-CP-Book) 這個 repository。
+以下提供一個簡單的步驟給想要編輯此專案，但又不熟悉 Git 以及 GitHub workflow 的人。請先 fork [NTHU-CPP](https://github.com/NTHU-CP/NTHU-CPP) 這個 repository。
 
 ![](image/fork.png)
 
@@ -13,7 +13,7 @@ NTHU CP Book 是由 mdBook 製作而成，搭配 Github Action，將網站的最
 ![](image/clone.png)
 
 ```
-git clone https://github.com/your_username/NTHU-CP-Book.git
+git clone https://github.com/your_username/NTHU-CPP.git
 git checkout -b your_branch_name
 ```
 
@@ -31,7 +31,7 @@ git commit -m "Commit message"
 git push origin your_branch_name
 ```
 
-push 上去之後應該就能在 NTHU CP Book 的 repository 或者是 fork 出來的 repository 上看到可以 Compare & pull request。大膽地按下去。
+push 上去之後應該就能在 NTHU CPP 的 repository 或者是 fork 出來的 repository 上看到可以 Compare & pull request。大膽地按下去。
 ![](image/pr.png)
 
 你可以在這邊瀏覽一下自己的 commit 或者是寫一些話給要 review 的人。都沒問題後就可以按下 Create pull request 並等人來 review 囉！

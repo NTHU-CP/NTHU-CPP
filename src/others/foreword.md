@@ -1,4 +1,3 @@
-# NTHU Competitive Programming Book
+# NTHU Competitive Programming Page
 
-## Objective
-
+前人種樹，後人持久化。
