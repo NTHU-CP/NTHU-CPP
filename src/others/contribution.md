@@ -4,6 +4,13 @@
 
 NTHU CPP 是由 mdBook 製作而成，搭配 Github Action，將網站的最新版本部署到 Github Pages。
 
+## Before your contribution
+- Commit message 請使用英文一句話描述此次的修改，盡量不要超過 50 字，首字母大寫。
+- filename 使用底線分詞
+- 因為 mdBook 的設計，請使用`\\(`  `\\)` 來分隔 MathJax 語法。
+ 
+## Step to contribute
+
 以下提供一個簡單的步驟給想要編輯此專案，但又不熟悉 Git 以及 GitHub workflow 的人。請先 fork [NTHU-CPP](https://github.com/NTHU-CP/NTHU-CPP) 這個 repository。
 
 ![](image/fork.png)
@@ -23,7 +30,7 @@ git checkout -b your_branch_name
 mdbook serve --open
 ```
 
-改動完成後，就 commit 並 push 到存 fork 出來存放在 GitHub 上的 repository。請不要將 mdBook render 出來的內容或者是一些非改動相關的檔案加進來。Commit message 請使用英文一句話描述此次的修改，盡量不要超過 50 字，首字母大寫。
+改動完成後，就 commit 並 push 到存 fork 出來存放在 GitHub 上的 repository。請不要將 mdBook render 出來的內容或者是一些非改動相關的檔案加進來。
 
 ```
 git add file_you_changed
