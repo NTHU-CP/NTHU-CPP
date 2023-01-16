@@ -11,6 +11,7 @@
   - [Basic DP]()
 - [Flow]()
 - [Mathematics]()
+	- [Arithmetic Function](math/arithmetic_function.md)
 - [Miscellaneous]()
 
 # Related Topic
