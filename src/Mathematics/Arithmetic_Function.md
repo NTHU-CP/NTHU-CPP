@@ -2,7 +2,7 @@
 
 ## 線性篩
 
-```cpp=
+```cpp
 for (int i = 2; i <= n; ++ i) {
     if (isPrime[i]) 
         primes.push_back(i);
@@ -22,7 +22,7 @@ for (int i = 2; i <= n; ++ i) {
 定理：\\(i\\) 所在的塊（值為 \\(\lfloor n/i\rfloor\\) 的塊）的右端點為 \\(\lfloor n/\lfloor n/i\rfloor\rfloor\\)。
 
 因此，若已知 \\(S(n) = \sum_{i=1}^n f(i)\\)，則 \\(\sum_{i=1}^n f(i)\lfloor n/i\rfloor\\) 可以如下得到：
-```cpp=
+```cpp
 for (int i = 1, r = 0; i <= n; i = r + 1) {
     r = n / (n / i);
     ans += 1LL * (S[r] - S[i - 1]) * (n / i);
