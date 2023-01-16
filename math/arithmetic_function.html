@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Useful Resources - NTHU CPP</title>
+        <title>Arithmetic Function - NTHU CPP</title>
 
 
         <!-- Custom HTML head -->
@@ -82,7 +82,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item affix "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item affix "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="chapter-item affix "><li class="part-title">Algorithmic Topic</li><li class="chapter-item "><div><strong aria-hidden="true">1.</strong> Fundemantal</div></li><li class="chapter-item "><div><strong aria-hidden="true">2.</strong> Greedy</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.</strong> Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div><strong aria-hidden="true">3.1.</strong> Basic DP</div></li></ol></li><li class="chapter-item "><div><strong aria-hidden="true">4.</strong> Flow</div></li><li class="chapter-item "><div><strong aria-hidden="true">5.</strong> Mathematics</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/arithmetic_function.html"><strong aria-hidden="true">5.1.</strong> Arithmetic Function</a></li></ol></li><li class="chapter-item "><div><strong aria-hidden="true">6.</strong> Miscellaneous</div></li><li class="chapter-item affix "><li class="part-title">Related Topic</li><li class="chapter-item "><div><strong aria-hidden="true">7.</strong> C++ Programming Tips</div></li><li class="chapter-item "><div><strong aria-hidden="true">8.</strong> Make a Codebook</div></li><li class="spacer"></li><li class="chapter-item affix "><a href="../others/useful_resources.html" class="active">Useful Resources</a></li><li class="chapter-item affix "><div>CSES Problem Tag</div></li><li class="chapter-item affix "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
+                <ol class="chapter"><li class="chapter-item affix "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item affix "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="chapter-item affix "><li class="part-title">Algorithmic Topic</li><li class="chapter-item "><div><strong aria-hidden="true">1.</strong> Fundemantal</div></li><li class="chapter-item "><div><strong aria-hidden="true">2.</strong> Greedy</div></li><li class="chapter-item "><div><strong aria-hidden="true">3.</strong> Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div><strong aria-hidden="true">3.1.</strong> Basic DP</div></li></ol></li><li class="chapter-item "><div><strong aria-hidden="true">4.</strong> Flow</div></li><li class="chapter-item expanded "><div><strong aria-hidden="true">5.</strong> Mathematics</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../math/arithmetic_function.html" class="active"><strong aria-hidden="true">5.1.</strong> Arithmetic Function</a></li></ol></li><li class="chapter-item "><div><strong aria-hidden="true">6.</strong> Miscellaneous</div></li><li class="chapter-item affix "><li class="part-title">Related Topic</li><li class="chapter-item "><div><strong aria-hidden="true">7.</strong> C++ Programming Tips</div></li><li class="chapter-item "><div><strong aria-hidden="true">8.</strong> Make a Codebook</div></li><li class="spacer"></li><li class="chapter-item affix "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item affix "><div>CSES Problem Tag</div></li><li class="chapter-item affix "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -143,34 +143,107 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="useful-resources"><a class="header" href="#useful-resources">Useful Resources</a></h1>
-<h2 id="learning-resources"><a class="header" href="#learning-resources">Learning Resources</a></h2>
+                        <h1 id="數論函數"><a class="header" href="#數論函數">數論函數</a></h1>
+<h2 id="線性篩"><a class="header" href="#線性篩">線性篩</a></h2>
+<pre><code class="language-cpp">for (int i = 2; i &lt;= n; ++ i) {
+    if (isPrime[i]) 
+        primes.push_back(i);
+    for (auto p : primes) {
+        isPrime[i * p] = false;
+        if (i % p == 0) break;
+    }
+}
+</code></pre>
+<p>注意到，在線性篩中，每個數字只會被其「最小的質因數」篩到一次。</p>
+<h2 id="數論分塊整除分塊"><a class="header" href="#數論分塊整除分塊">數論分塊（整除分塊）</a></h2>
+<p>給定 \( N \) ，則對於 \(i=1、2\cdots、N$，$\lfloor N/i\rfloor\) 只會有 \(\sqrt{N}\) 種取值。</p>
+<p>定理：\(i\) 所在的塊（值為 \(\lfloor n/i\rfloor\) 的塊）的右端點為 \(\lfloor n/\lfloor n/i\rfloor\rfloor\)。</p>
+<p>因此，若已知 \(S(n) = \sum_{i=1}^n f(i)\)，則 \(\sum_{i=1}^n f(i)\lfloor n/i\rfloor\) 可以如下得到：</p>
+<pre><code class="language-cpp">for (int i = 1, r = 0; i &lt;= n; i = r + 1) {
+    r = n / (n / i);
+    ans += 1LL * (S[r] - S[i - 1]) * (n / i);
+}
+</code></pre>
+<p>時間複雜度從 \(O(n)\) 降為 \(O(\sqrt{n})\)。</p>
+<p>定理：對於任意正整數 \(n、a、b\)，都有 \(\lfloor\lfloor n/a\rfloor b\rfloor=\lfloor n/(ab)\rfloor\)。</p>
+<h2 id="數論函數-1"><a class="header" href="#數論函數-1">數論函數</a></h2>
+<p>定義：\(f:\mathbb{Z}\rightarrow\mathbb{C}\)，則稱 \(f\) 是數論函數。</p>
+<p>定義：若對於任意互質的 \(n\)、\(m\) 都有 \(f(nm)=f(n)f(m)\)，則稱 \(f\) 是積性的。</p>
+<p>推論：積性函數的取值取決於在質數的冪次上的取值。</p>
+<p>定義：Dirichlet 捲積 \(f\ast g(n)=\sum_{d\mid n}f(d)g(\dfrac n d)\)。</p>
+<p>性質：Dirichlet 捲積滿足交換律、結合律、對於一般加法的分配律。</p>
+<p>定義：艾佛森括號 \([P]=\cases{1&amp;: If (P) is true \\ 0&amp;: Otherwise}\)；特別的，\([P=1]\) 可以記作 \(\iota(P)\)。</p>
+<p>定義：莫比烏斯函數 \(\mu(n)=\cases{1&amp;: \(n = 1\) \\ (-1)^k&amp;: \(n = p_1p_2\cdots p_k\) \\ 0&amp;: Otherwise}\)。</p>
+<hr />
+<p>只要是積性函數就能夠使用線性篩。</p>
+<p>一般來說，會分成三種情況來分析，其中 \(p\) 是任意（在線性篩中通常是最小）的質因數：</p>
+<p>\(n=\cases{1 \\ pk &amp; \(p \mid k\) \\ pk &amp; \(p\nmid k\)} \)</p>
+<h2 id="引理"><a class="header" href="#引理">引理</a></h2>
+<ol>
+<li>\( \sum_{d\mid n}\mu(d)=[n=1] \)</li>
+<li>\( f(n)=\sum_{d\mid n}g(d)\Longleftrightarrow g(n)=\sum_{d\mid n}\mu(\frac n d)f(d) \)</li>
+<li>\( f(n)=\sum_{n\mid d}g(d)\Longleftrightarrow g(n)=\sum_{n\mid d}\mu(\frac d n)f(d) \)</li>
+<li>\( \sum_{d\mid n}\varphi(d)=n \)，\( \varphi(n)=\sum_{d\mid n}\mu(\frac n d)\times d \)</li>
+</ol>
+<h2 id="例題"><a class="header" href="#例題">例題</a></h2>
+<ol>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M [\gcd(i,j)=1] \)</li>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M [\gcd(i,j)\ \mbox{is prime}] \)</li>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M \gcd(i,j) \)</li>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M ij\times \gcd(i,j) \)</li>
+</ol>
+<h2 id="套路"><a class="header" href="#套路">套路</a></h2>
+<p>可以發現，使用到的技巧不外乎是：</p>
 <ul>
-<li><a href="https://cp-algorithms.com">Algorithms for Competitive Programming</a></li>
-<li><a href="https://oi-wiki.org">OI Wiki</a></li>
-<li><a href="https://cses.fi/book/book.pdf">Competitive Programmer’s Handbook</a></li>
+<li>看到 \(\gcd\) 就枚舉他</li>
+<li>看到艾佛森括號就把他換掉</li>
+<li>原本枚舉因數的，就改成枚舉倍數</li>
+<li>原本枚舉倍數的，就改成枚舉因數</li>
+<li>把枚舉的倍數提出原本的數</li>
+<li>看到長得像 Lemma 的就套套看</li>
+<li>看到兩個 \(\Sigma\) 的變數乘在一起，就改成枚舉兩者乘積和其因數</li>
 </ul>
-<h2 id="interesting-articles"><a class="header" href="#interesting-articles">Interesting Articles</a></h2>
+<h2 id="習題"><a class="header" href="#習題">習題</a></h2>
+<ol>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M [\gcd(i,j)\ \mbox{is a perfect number}] \)</li>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M lcm(i,j) \)</li>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M \sigma_0(ij) \)</li>
+<li>\( \prod_{i=1}^N\prod_{i=1}^M F_{\gcd(i,j)} \)</li>
+</ol>
+<p>其中 \( \sigma_0 \) 是因數數量；\( F \) 是費氏數列。</p>
+<p>每一題都有 \( Q \) 筆詢問，\( N、M、Q\le 1e5 \)</p>
+<h2 id="杜教篩"><a class="header" href="#杜教篩">杜教篩</a></h2>
+<p>題目：給定函數 \( f \)，要求 \( \sum_{i=1}^n f(n) \)。</p>
+<p>定理：杜教篩 \( \displaystyle g(1)S(n)=\sum_{i=1}^n (g\ast f)(i) - \sum_{i=2}^n g(i)S(\lfloor\frac n i\rfloor) \)。</p>
+<p>定義：\( R(n)={\frac n i\mid i=1,2,\cdots, n} \)。</p>
+<p>定理：若 \( m\in R(n) \)，則 \( R(m)\subseteq R(n) \)。</p>
+<p>若 \( g\ast f \) 還有 \( g \) 的前綴和都很好算，則可以使用杜教篩加速，複雜度能到 \( O(n^{2/3}) \)。</p>
+<h2 id="例題-1"><a class="header" href="#例題-1">例題</a></h2>
+<ol>
+<li>\( \sum_{i=1}^n \mu(i) \)</li>
+<li>\( \sum_{i=1}^n \varphi(i) \)</li>
+<li>\( \sum_{i=1}^n \sum_{j=1}^n ij\times \gcd(i,j) \)</li>
+</ol>
+<p>其中 \( n\le 10^{10} \)。</p>
+<h2 id="其他"><a class="header" href="#其他">其他</a></h2>
 <ul>
-<li><a href="https://tmt514.github.io/algorithm-analysis">演算法的分析與證明</a></li>
-<li><a href="https://codeforces.com/blog/entry/57282">All the good tutorials found for Competitive Programming</a></li>
-<li><a href="https://www.csie.ntu.edu.tw/~kmchao/papers/2005_IPL_LCIS.pdf">A fast algorithm for computing a longest common increasing subsequence</a></li>
+<li>給定一棵邊帶權樹，一個路徑的價值是路徑上所有權重的 \( \gcd \)，求所有相異路徑的價值總和
+<ul>
+<li>（點數、權重 \( \le 10^5 \) ）</li>
 </ul>
-<h2 id="miscellaneous"><a class="header" href="#miscellaneous">Miscellaneous</a></h2>
-<ul>
-<li><a href="https://cphof.org">Competitive Programming Hall Of Fame</a></li>
-<li><a href="https://atcoder-tags.herokuapp.com">AtCoder Tags</a></li>
+</li>
+<li>給定 \( a_1,\cdots,a_n\) （\( n\le 10^5 \) ），求 \( \sum_{i=1}^n \sum_{i=1}^n \gcd(a_i,a_j)\times\gcd(i,j) \)</li>
 </ul>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../math/arithmetic_function.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../others/contribution.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../others/hwtc.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../others/useful_resources.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -180,11 +253,11 @@
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../math/arithmetic_function.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../others/contribution.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../others/hwtc.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../others/useful_resources.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
