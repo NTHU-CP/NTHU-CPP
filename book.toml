@@ -7,8 +7,13 @@ title = "NTHU CPP"
 build-dir = "book"
 create-missing = false
 
-[output.html.fold]
-enable = true
-
 [output.html]
 mathjax-support = true
+git-repository-url = "https://github.com/NTHU-CP/NTHU-CPP"
+no-section-label = true
+
+[output.html.print]
+enable = false
+
+[output.html.fold]
+enable = true
