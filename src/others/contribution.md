@@ -5,10 +5,20 @@
 NTHU CPP 是由 mdBook 製作而成，搭配 Github Action，將網站的最新版本部署到 Github Pages。
 
 ## Before your contribution
+- 如果是針對現有文章做修改或補充，請直接發 PR。若改動不小，可以先開個 issue 與作者或管理員討論。
+- 若有想新增的章節，請先去 issue 確認是否有人正在撰寫。若沒有，可開一個 issue 並在其中簡述想新增的內容與一些資源，管理員認為沒問題的話會將該 issue assgin 給你，即可開始撰寫並發 PR。
+- 也可以去看有 help wanted 標籤的 issue，有興趣的即可留言並著手開始。
 - Commit message 請使用英文一句話描述此次的修改，盡量不要超過 50 字，首字母大寫。
-- filename 使用底線分詞
+- filename 使用底線分詞。
 - 因為 mdBook 的設計，請使用`\\(`  `\\)` 來分隔 MathJax 語法。
- 
+- Reviewer 的本意是希望能有高品質的內容而非為了充字數而盡快將內容上架。請踴躍的與 reviewer 討論怎麼樣才能有清楚的說明或者是需要補充哪些內容。
+- 根據經驗，搭配圖例往往能更清楚的說明事情，請不要使用手繪加拍照。可以使用 powerpoint 或其他應用程式輔助製作圖片。
+- 專有名詞盡量使用英文。
+- 請將參考資料附在文章最後。
+- 若對 Markdown 或是 mdBook 不熟悉的人可以先參考 [mdBook Document](https://rust-lang.github.io/mdBook/format/markdown.html)。
+- [防爆雷語法教學](https://gist.github.com/jbsulli/03df3cdce94ee97937ebda0ffef28287)。
+- 圖片請放在與 md 檔同位置的 image 資料夾底下。
+
 ## Step to contribute
 
 以下提供一個簡單的步驟給想要編輯此專案，但又不熟悉 Git 以及 GitHub workflow 的人。請先 fork [NTHU-CPP](https://github.com/NTHU-CP/NTHU-CPP) 這個 repository。
