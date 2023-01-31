@@ -162,11 +162,12 @@
 <li>若對 Markdown 或是 mdBook 不熟悉的人可以先參考 <a href="https://rust-lang.github.io/mdBook/format/markdown.html">mdBook Document</a>。</li>
 <li><a href="https://gist.github.com/jbsulli/03df3cdce94ee97937ebda0ffef28287">防爆雷語法教學</a>。</li>
 <li>圖片請放在與 md 檔同位置的 image 資料夾底下。</li>
+<li>範例題目建議使用目前常用 OJ，例如：CSES, Codeforce, Atcoder 等等。</li>
 </ul>
 <h2 id="step-to-contribute"><a class="header" href="#step-to-contribute">Step to contribute</a></h2>
 <p>以下提供一個簡單的步驟給想要編輯此專案，但又不熟悉 Git 以及 GitHub workflow 的人。請先 fork <a href="https://github.com/NTHU-CP/NTHU-CPP">NTHU-CPP</a> 這個 repository。</p>
 <p><img src="image/fork.png" alt="" /></p>
-<p>接著 clone 一份下來到你的本地環境，checkout 到一個新的 branch，名稱可以自訂，通常是與你要做的修改有關。</p>
+<p>接著 clone 一份剛剛 fork 的 repository 下來到你的本地環境，checkout 到一個新的 branch，名稱可以自訂，通常是與你要做的修改有關。</p>
 <p><img src="image/clone.png" alt="" /></p>
 <pre><code>git clone https://github.com/your_username/NTHU-CPP.git
 git checkout -b your_branch_name
@@ -174,7 +175,7 @@ git checkout -b your_branch_name
 <p>接著即可開始修改他囉！檔案架構與格式可以參考 <a href="https://rust-lang.github.io/mdBook/">mdBook Documentation</a>。修改途中/完成時，也記得要把他 render 出來確認自己的改動格式沒問題（需要安裝 mdBook）。</p>
 <pre><code>mdbook serve --open
 </code></pre>
-<p>改動完成後，就 commit 並 push 到存 fork 出來存放在 GitHub 上的 repository。請不要將 mdBook render 出來的內容或者是一些非改動相關的檔案加進來。</p>
+<p>改動完成後，就 commit 並 push 到存 fork 出來的 repository。請不要將 mdBook render 出來的內容或者是一些非改動相關的檔案加進來。</p>
 <pre><code>git add file_you_changed
 git commit -m &quot;Commit message&quot;
 git push origin your_branch_name
