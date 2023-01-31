@@ -6,7 +6,8 @@
 ---
 
 - [Fundemantal]()
-- [Greedy]()
+- [Greedy](greedy/intro.md)
+  - [Basic Greedy](greedy/basic.md)
 - [Dynamic Programming]()
   - [Basic DP]()
 - [Flow]()
