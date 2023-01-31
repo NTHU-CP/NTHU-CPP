@@ -18,6 +18,7 @@ NTHU CPP 是由 mdBook 製作而成，搭配 Github Action，將網站的最新�
 - 若對 Markdown 或是 mdBook 不熟悉的人可以先參考 [mdBook Document](https://rust-lang.github.io/mdBook/format/markdown.html)。
 - [防爆雷語法教學](https://gist.github.com/jbsulli/03df3cdce94ee97937ebda0ffef28287)。
 - 圖片請放在與 md 檔同位置的 image 資料夾底下。
+- 範例題目建議使用目前常用 OJ，例如：CSES, Codeforce, Atcoder 等等。
 
 ## Step to contribute
 
@@ -25,7 +26,7 @@ NTHU CPP 是由 mdBook 製作而成，搭配 Github Action，將網站的最新�
 
 ![](image/fork.png)
 
-接著 clone 一份下來到你的本地環境，checkout 到一個新的 branch，名稱可以自訂，通常是與你要做的修改有關。
+接著 clone 一份剛剛 fork 的 repository 下來到你的本地環境，checkout 到一個新的 branch，名稱可以自訂，通常是與你要做的修改有關。
 
 ![](image/clone.png)
 
@@ -40,7 +41,7 @@ git checkout -b your_branch_name
 mdbook serve --open
 ```
 
-改動完成後，就 commit 並 push 到存 fork 出來存放在 GitHub 上的 repository。請不要將 mdBook render 出來的內容或者是一些非改動相關的檔案加進來。
+改動完成後，就 commit 並 push 到存 fork 出來的 repository。請不要將 mdBook render 出來的內容或者是一些非改動相關的檔案加進來。
 
 ```
 git add file_you_changed
