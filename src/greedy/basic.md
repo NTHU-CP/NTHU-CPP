@@ -125,6 +125,6 @@ Hint: 證明若不按照每單位重量的價值來挑，將挑選順序逆序�
 - 可能會有問題有 Greedy-choice property 但是沒有 Optimal substructure，但這不代表就不能使用 Greedy Algorithm 求出，通常可能是因為難以定義子問題。
 - 當比賽遇到題目好像可以用 Greedy 的想法且想不到反例時，可以考慮直接寫寫看，讓結果來驗證正確性，畢竟 AC 時間也是一個會影響比賽結果的因素。但在沒有證明或稍微想過正確性前需要承擔猜錯的風險。如果是練習時，建議要想過並理解為什麼該問題 Greedy 是正確的。
 
-## Reference
+## References
 - [[2022 HWTC] Day3 - Greedy & Dynamic programming](https://drive.google.com/file/d/1cks-b5ELqYp2el-V8-WfJxZbb2An8AQ-/view?usp=sharing)
 - BF Algo 講義
