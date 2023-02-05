@@ -18,7 +18,7 @@
 ---
 
 - [C++ Programming Tips]()
-- [Make a Codebook]()
+- [Make a Codebook](others/codebook.md)
 - [Useful Resources](others/useful_resources.md)
 - [CSES Problem Tag]()
 - [Happy Winter Training Camp](others/hwtc.md)
