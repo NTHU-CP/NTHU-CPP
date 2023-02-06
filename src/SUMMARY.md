@@ -11,7 +11,7 @@
 - [Dynamic Programming]()
   - [Basic DP]()
 - [Flow]()
-- [Mathematics]()
+- [Mathematics](math/intro.md)
 	- [Arithmetic Function](math/arithmetic_function.md)
 - [Miscellaneous]()
 
