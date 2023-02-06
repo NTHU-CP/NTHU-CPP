@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Contribute to NTHU CPP - NTHU CPP</title>
+        <title>Mathematics - NTHU CPP</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item expanded "><a href="../others/contribution.html" class="active">Contribute to NTHU CPP</a></li><li class="spacer"></li><li class="chapter-item "><div>Fundemantal</div></li><li class="chapter-item "><a href="../greedy/intro.html">Greedy</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../greedy/basic.html">Basic Greedy</a></li></ol></li><li class="chapter-item "><div>Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div>Basic DP</div></li></ol></li><li class="chapter-item "><div>Flow</div></li><li class="chapter-item "><a href="../math/intro.html">Mathematics</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/arithmetic_function.html">Arithmetic Function</a></li></ol></li><li class="chapter-item "><div>Miscellaneous</div></li><li class="spacer"></li><li class="chapter-item "><div>C++ Programming Tips</div></li><li class="chapter-item "><a href="../others/codebook.html">Make a Codebook</a></li><li class="chapter-item "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item "><div>CSES Problem Tag</div></li><li class="chapter-item "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
+                <ol class="chapter"><li class="chapter-item "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="spacer"></li><li class="chapter-item "><div>Fundemantal</div></li><li class="chapter-item "><a href="../greedy/intro.html">Greedy</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../greedy/basic.html">Basic Greedy</a></li></ol></li><li class="chapter-item "><div>Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div>Basic DP</div></li></ol></li><li class="chapter-item "><div>Flow</div></li><li class="chapter-item expanded "><a href="../math/intro.html" class="active">Mathematics</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/arithmetic_function.html">Arithmetic Function</a></li></ol></li><li class="chapter-item "><div>Miscellaneous</div></li><li class="spacer"></li><li class="chapter-item "><div>C++ Programming Tips</div></li><li class="chapter-item "><a href="../others/codebook.html">Make a Codebook</a></li><li class="chapter-item "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item "><div>CSES Problem Tag</div></li><li class="chapter-item "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,64 +142,115 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="contribute-to-nthu-cpp"><a class="header" href="#contribute-to-nthu-cpp">Contribute to NTHU CPP</a></h1>
-<blockquote>
-<p>非常歡迎大家一同協作此專案！想新增或修改什麼就直接開 Issue 或者是 Pull Request 吧！</p>
-</blockquote>
-<p>NTHU CPP 是由 mdBook 製作而成，搭配 Github Action，將網站的最新版本部署到 Github Pages。</p>
-<h2 id="before-your-contribution"><a class="header" href="#before-your-contribution">Before your contribution</a></h2>
+                        <h1 id="mathematics"><a class="header" href="#mathematics">Mathematics</a></h1>
+<h2 id="前言"><a class="header" href="#前言">前言</a></h2>
+<p>「寫程式是否需要數學能力好？」和「寫程式是否需要英文能力好？」一樣，是經常爭論不休的問題。</p>
+<p>以一般論來說並不一定，畢竟寫程式的目的有很多種，包含但不僅限於寫靜態網站、維護資料庫、預測股價......等等。</p>
+<p>然而，以競技程式設計來說，答案卻是顯而易見的，需要數學。</p>
+<br>
+<p>不幸的是，數學對許多人來說是個難解的罩門，包含了筆者本人，就是因為自認為數學能力比不上他人，因此才轉戰競程。</p>
+<p>如此一來，難道就成了死胡同，面對難攻不破的高牆最終只能鎩羽而歸嗎？
+也並非如此。</p>
+<p>競程與數學競賽中所用的數學，最大的差別就在於，競程中的數學無須證明......這樣說又太過頭。</p>
+<p>更為清晰的說法應該是，競程中用到的數學，相較於數學競賽中的數學，較為不抽象。</p>
+<p>數學競賽強調如何證明解的存在、如何找到解。</p>
+<p>而競程則偏重如何以有效率的方式來解決問題。</p>
+<p>因此數學競賽中用到的技巧對許多人來說很抽象，盯著題目良久卻依然不知如何下手。</p>
+<p>但是競程中通常是有個具體的情境，而我們的課題是要如何使用數學工具加速尋找解。</p>
+<p>結果就是，追尋真理的數學競賽中的數學會傾向抽象，為具體情境服務的競程中的數學會相對容易想像。</p>
+<br>
+<p>但要注意的是，這只是以二分下所作的結論，實際上兩者的交集仍是很大。</p>
+<p>舉例來說，用來判斷二分圖的著色法在數學競賽、競程中都有著用武之地。</p>
+<p>對競程的有志之士們還請不要畏懼數學。
+只有面對之後，才能夠決定要戰鬥、還是要逃避。</p>
+<h2 id="分類"><a class="header" href="#分類">分類</a></h2>
+<p>一般來說，數學領域分為四個 - ACGN。</p>
 <ul>
-<li>如果是針對現有文章做修改或補充，請直接發 PR。若改動不小，可以先開個 issue 與作者或管理員討論。</li>
-<li>若有想新增的章節，請先去 issue 確認是否有人正在撰寫。若沒有，可開一個 issue 並在其中簡述想新增的內容與一些資源，管理員認為沒問題的話會將該 issue assgin 給你，即可開始撰寫並發 PR。</li>
-<li>也可以去看有 help wanted 標籤的 issue，有興趣的即可留言並著手開始。</li>
-<li>Commit message 請使用英文一句話描述此次的修改，盡量不要超過 50 字，首字母大寫。</li>
-<li>filename 使用底線分詞。</li>
-<li>因為 mdBook 的設計，請使用<code>\\(</code>  <code>\\)</code> 來分隔 MathJax 語法。</li>
-<li>Reviewer 的本意是希望能有高品質的內容而非為了充字數而盡快將內容上架。請踴躍的與 reviewer 討論怎麼樣才能有清楚的說明或者是需要補充哪些內容。</li>
-<li>根據經驗，搭配圖例往往能更清楚的說明事情，請不要使用手繪加拍照。可以使用 powerpoint 或其他應用程式輔助製作圖片。</li>
-<li>專有名詞盡量使用英文。</li>
-<li>請將參考資料附在文章最後。</li>
-<li>若對 Markdown 或是 mdBook 不熟悉的人可以先參考 <a href="https://rust-lang.github.io/mdBook/format/markdown.html">mdBook Document</a>。</li>
-<li><a href="https://gist.github.com/jbsulli/03df3cdce94ee97937ebda0ffef28287">防爆雷語法教學</a>。</li>
-<li>圖片請放在與 md 檔同位置的 image 資料夾底下。</li>
-<li>範例題目建議使用目前常用 OJ，例如：CSES, Codeforce, Atcoder 等等。</li>
+<li>Algebra 代數</li>
+<li>Combinatorics 組合</li>
+<li>Geometry 幾何</li>
+<li>Number 數論</li>
 </ul>
-<h2 id="step-to-contribute"><a class="header" href="#step-to-contribute">Step to contribute</a></h2>
-<p>以下提供一個簡單的步驟給想要編輯此專案，但又不熟悉 Git 以及 GitHub workflow 的人。請先 fork <a href="https://github.com/NTHU-CP/NTHU-CPP">NTHU-CPP</a> 這個 repository。</p>
-<p><img src="image/fork.png" alt="" /></p>
-<p>接著 clone 一份剛剛 fork 的 repository 下來到你的本地環境，checkout 到一個新的 branch，名稱可以自訂，通常是與你要做的修改有關。</p>
-<p><img src="image/clone.png" alt="" /></p>
-<pre><code>git clone https://github.com/your_username/NTHU-CPP.git
-git checkout -b your_branch_name
-</code></pre>
-<p>接著即可開始修改他囉！檔案架構與格式可以參考 <a href="https://rust-lang.github.io/mdBook/">mdBook Documentation</a>。修改途中/完成時，也記得要把他 render 出來確認自己的改動格式沒問題（需要安裝 mdBook）。</p>
-<pre><code>mdbook serve --open
-</code></pre>
-<p>改動完成後，就 commit 並 push 到存 fork 出來的 repository。請不要將 mdBook render 出來的內容或者是一些非改動相關的檔案加進來。</p>
-<pre><code>git add file_you_changed
-git commit -m &quot;Commit message&quot;
-git push origin your_branch_name
-</code></pre>
-<p>push 上去之後應該就能在 NTHU CPP 的 repository 或者是 fork 出來的 repository 上看到可以 Compare &amp; pull request。大膽地按下去。
-<img src="image/pr.png" alt="" /></p>
-<p>你可以在這邊瀏覽一下自己的 commit 或者是寫一些話給要 review 的人。都沒問題後就可以按下 Create pull request 並等人來 review 囉！</p>
-<p><img src="image/create_pr.png" alt="" /></p>
-<p>建議需要熟悉 Git 的操作，但也不需要擔心會把整個 repository 搞砸，因為你是在 fork 出來的那份上編輯，也需要通過 review 才能被 merge 進去。</p>
-<p>以下附上一些可能有用的參考資料：</p>
+<h3 id="代數"><a class="header" href="#代數">代數</a></h3>
+<p>代數的基礎是線性代數，包含了多項式、向量、矩陣......等內容。</p>
+<p>著名的 FFT 也是以線性代數作為基礎而發展出的算法。</p>
+<p>相對的，有線性代數，也有非線性代數，像是群、環、體等等。</p>
+<p>不過非線性代數屬於進階的內容，除了群論以外，在競程中幾乎不會出現。</p>
+<h3 id="組合"><a class="header" href="#組合">組合</a></h3>
+<p>組合是探討物體間的結構與性質的學問。</p>
+<p>包含高中課程中所教到的排列、計數......等等。</p>
+<p>在競程中，這類問題通常較為瑣碎，需要謹慎處理。</p>
+<p>更進階的內容中會牽扯到群論。</p>
+<h3 id="幾何"><a class="header" href="#幾何">幾何</a></h3>
+<p>在競程中通常不會將其歸類在數學中，而是歸類在計算幾何之中。</p>
+<h3 id="數論"><a class="header" href="#數論">數論</a></h3>
+<p>數論包含了對質數、公因數......等等數字的性質的研究。</p>
+<p>作為赫赫有名的就是歐幾里得的輾轉相除法，就是數論中重要的演算法。</p>
+<p>對選手來說，這類問題通常較為燒腦，也顯得較為玄學。</p>
+<br>
+<p>當然，分類是死的，而問題是活的。</p>
+<p>一道問題可能還需要搭配不同競程解題技巧才能解決。</p>
+<p>舉例來說，計數問題可能需要 DP、數論問題需要分塊......等等。</p>
+<p>因此上述分類就做個參考即可。</p>
+<h2 id="學習"><a class="header" href="#學習">學習</a></h2>
+<p>或許有些人會認為競程中的數學和數學競賽一樣全都是玄學，因而避而不碰。</p>
+<p>但如前述所言一樣，並非如此。</p>
+<p>作為競程中數學問題的兩大分支的線性代數、組合，裡面用到的知識多來自於高中數學。</p>
+<p>像是多項式、矩陣、C 幾取幾......等等。</p>
+<p>因此做為基礎，<strong>只要學好高中數學，再輔以一些競程的知識，其實就能夠有效解決諸多競程中的數學問題了</strong>。</p>
+<p><del>但若說到進階，還是做好每碰一個主題，就有一次學習陣痛期的準備比較好。</del></p>
+<h2 id="總結"><a class="header" href="#總結">總結</a></h2>
+<p>數學是重要的。</p>
+<p>從分析複雜度、理解其他算法這種基礎的層級。</p>
+<p>到 FFT、杜教篩等進階內容中，數學無處不在。</p>
+<p>縱然忽視數學依然能成為實力不俗的選手，但也僅此而已，難以繼續突破。</p>
+<p>隨著學問加深、問題變得艱鉅，就會越發考驗選手的數學直覺。</p>
+<p>又或者，到最後會發現一切競程領域，不管貪心、DP、資料結構......等等都是殊途同歸，條條大路通數學、大家都只是數學變換形式的存在。</p>
+<br>
+<p>當然，對於初學者而言，選擇簡單、容易理解的章節下手，不失為一個良策。</p>
+<p>但最終，要推倒高牆，就只能主動碰觸高牆。</p>
+<h2 id="基礎主題"><a class="header" href="#基礎主題">基礎主題</a></h2>
+<p>這裡列出一些競程中會用到、且相對基礎的數學主題。</p>
 <ul>
-<li><a href="https://backlog.com/git-tutorial/tw/">連猴子都能懂的Git入門指南</a></li>
-<li><a href="https://gitbook.tw/chapters/github/pull-request">與其它開發者的互動 - 使用 Pull Request（PR）- 為你自己學Git</a></li>
+<li>數論
+<ul>
+<li>質數和因數</li>
+<li>篩法</li>
+<li>模運算</li>
 </ul>
+</li>
+<li>組合
+<ul>
+<li>二項式定理</li>
+<li>卡特蘭數</li>
+<li>排容原理</li>
+</ul>
+</li>
+<li>矩陣
+<ul>
+<li>線性遞迴</li>
+<li>高斯消去法</li>
+</ul>
+</li>
+<li>其他
+<ul>
+<li>機率 - 期望值</li>
+<li>賽局 - NIM 遊戲</li>
+</ul>
+</li>
+</ul>
+<h2 id="資源"><a class="header" href="#資源">資源</a></h2>
+<p>待補</p>
 
                     </main>
 
                     <nav class="nav-wrapper" aria-label="Page navigation">
                         <!-- Mobile navigation buttons -->
-                            <a rel="prev" href="../others/foreword.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                            <a rel="prev" href="../greedy/basic.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../greedy/intro.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../math/arithmetic_function.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -209,11 +260,11 @@ git push origin your_branch_name
             </div>
 
             <nav class="nav-wide-wrapper" aria-label="Page navigation">
-                    <a rel="prev" href="../others/foreword.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                    <a rel="prev" href="../greedy/basic.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../greedy/intro.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../math/arithmetic_function.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
