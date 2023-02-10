@@ -7,6 +7,7 @@ for (int i = 2; i <= n; ++ i) {
     if (isPrime[i]) 
         primes.push_back(i);
     for (auto p : primes) {
+        if (i * p > n) break;
         isPrime[i * p] = false;
         if (i % p == 0) break;
     }
@@ -92,26 +93,6 @@ for (int i = 1, r = 0; i <= n; i = r + 1) {
 其中 \\( \sigma_0 \\) 是因數數量；\\( F \\) 是費氏數列。
 
 每一題都有 \\( Q \\) 筆詢問，\\( N、M、Q\le 1e5 \\)
-
-## 杜教篩
-
-題目：給定函數 \\( f \\)，要求 \\( \sum_{i=1}^n f(n) \\)。
-
-定理：杜教篩 \\( \displaystyle g(1)S(n)=\sum_{i=1}^n (g\ast f)(i) - \sum_{i=2}^n g(i)S(\lfloor\frac n i\rfloor) \\)。
-
-定義：\\( R(n)=\{\frac n i\mid i=1,2,\cdots, n\} \\)。
-
-定理：若 \\( m\in R(n) \\)，則 \\( R(m)\subseteq R(n) \\)。
-
-若 \\( g\ast f \\) 還有 \\( g \\) 的前綴和都很好算，則可以使用杜教篩加速，複雜度能到 \\( O(n^{2/3}) \\)。
-
-## 例題
-
-1. \\( \sum_{i=1}^n \mu(i) \\)
-2. \\( \sum_{i=1}^n \varphi(i) \\)
-3. \\( \sum_{i=1}^n \sum_{j=1}^n ij\times \gcd(i,j) \\)
-
-其中 \\( n\le 10^{10} \\)。
 
 ## 其他
 
