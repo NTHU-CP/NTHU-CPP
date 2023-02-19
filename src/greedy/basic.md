@@ -118,5 +118,7 @@ Hint: 證明若不按照每單位重量的價值來挑，將挑選順序逆序�
 - 當比賽遇到題目好像可以用 Greedy 的想法且想不到反例時，可以考慮直接寫寫看，讓結果來驗證正確性，畢竟 AC 時間也是一個會影響比賽結果的因素。但在沒有證明或稍微想過正確性前需要承擔猜錯的風險。如果是練習時，建議要想過並理解為什麼該問題 Greedy 是正確的。
 
 ## References
+- [Episode 14 - Exchange Arguments By Algorithms Live!](https://www.youtube.com/watch?v=Oq1seKJvfQU)
+    - 教你如何證明 Greedy 策略，推薦觀看。
 - [[2022 HWTC] Day3 - Greedy & Dynamic programming](https://drive.google.com/file/d/1cks-b5ELqYp2el-V8-WfJxZbb2An8AQ-/view?usp=sharing)
 - BF Algo 講義
