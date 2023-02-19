@@ -152,12 +152,11 @@
 </ul>
 <p>Greedy choice 即為我們 Greedy Algorithm 的策略。若滿足上面兩個性質，我們可以持續選擇我們的 Greedy choice，然後將問題轉換成相同問題只是 problem size 變小，直到找到最佳解為止。</p>
 <p>這樣講可能很抽象，以下舉幾個題目來方便讀者理解。建議讀者將 Example 中的所有題目都看完並自己想過。</p>
-<h2 id="example"><a class="header" href="#example">Example</a></h2>
+<h2 id="examples"><a class="header" href="#examples">Examples</a></h2>
 <blockquote>
 <p><a href="https://cses.fi/problemset/task/1630">CSES - Tasks and Deadlines</a></p>
 <p>要執行 \( n \) 個任務。每個任務都有花費時間 \( d \) 與死線 \( t \)。從時間點 \( 0 \) 開始，你一次只能執行一個任務，執行完一個任務後能獲得的獎勵是 \( d - f \)，\( d \) 是死線，\( f \) 是完成時間。請問在可以任意決定任務執行順序的情況下，獎勵最大是多少。</p>
 </blockquote>
-<details><summary>Solution</summary>
 <p>令 \( d_i \) 為第 \(i \) 個執行的任務的死線，\( f_i \) 為第 \( i \) 個執行的任務的完成時間，我們要最大化 \( \sum{d_i - f_i} \)。</p>
 <p>可以發現 \( \sum{d_i} \) 其實是固定的我們無法改變它，可以將其先忽略。問題變成要找到一個執行順序最小化 \( \sum{f_i} \)。解答是按照花費時間由小到大執行即可，以下來證明為什麼這個演算法是正確的。</p>
 <h4 id="greedy-choice-property"><a class="header" href="#greedy-choice-property">Greedy-choice property</a></h4>
@@ -173,12 +172,10 @@
 <p>原問題是要計算 \( \sum{f_i} \) 的最小值。我們首先 greedy choice 了一個花費時間最小的任務來執行之後，假設其時間花費為 \( d \)，原問題將變成計算 \( d × n + \)剩餘 \( n - 1 \) 個任務的 \( \sum{f_i} \)。可以輕易用反證法證明一定是取剩餘 \( n - 1 \) 個任務的最佳解。故得證此問題有 Optimal Substructure。</p>
 <p>由上述兩個性質，我們可以選擇我們的 Greedy choice，也就是選擇當前花費時間最小的任務來執行，因為我們已經證明了至少有一組最佳解會先選他，然後將問題轉換成相同問題但是 problem size 減一，又因為有 Optimal Substurcture，可以重複使用我們的 greedy choice。最終即可找到最佳解。</p>
 <p>當然證明 Greedy 演算法的正確性不一定要照著上述的邏輯，例如也可以直接證明按照花費時間由小到大執行能獲得最小值，然後證明將執行順序中花費時間逆序的配對交換會讓答案變好，因此只要序列有逆序的配對就將其交換直到沒有，就會獲得按照花費時間由小到大的順序。</p>
-</details>
 <blockquote>
 <p><a href="https://cses.fi/problemset/task/1073">CSES - Tower</a></p>
 <p>你將按照一個順序獲得 \( n \) 個方塊。第 \( i \) 個方塊有大小 \( k_i \)。你將使用這些方塊來建造方塊塔，當有兩個方塊疊在一起時，上面的方塊要比下面的方塊還小。初始沒有任何一座方塊塔，對於依序獲得的每一個方塊，你可以選擇堆在某個方塊塔的頂端之上，或者是當作一個新的塔的底，請問在處理完 \( n \) 個方塊後，能構成得塔的數量最少是多少。</p>
 </blockquote>
-<details><summary>Solution</summary>
 <p>作法為對於依序獲得的每一個方塊，將其放置在可以放的塔中頂端數字最小的之上，若不存在可以放的塔，就將其當做新的塔的底。例如下圖：目前有三座塔，要處理大小為 2 的方塊，他可以放在 5 和 3 之上，因為 3 比較小，所以將其放在 3 之上。</p>
 <img src="image/tower_example.png" width="500" style="display:block; margin: 0 auto;"/>
 <p>我們可以想像永遠都有一個無限大的方塊在最底下，這樣就可以省略不存在可以放的塔的狀況。我們的 greedy choice 為「對於依序獲得的每一個方塊，將其放置在可以放的塔中頂端數字最小的之上」，以下將證明其正確性。</p>
@@ -186,7 +183,7 @@
 <p>如下圖左邊，藍色部分為最佳解中 \( y \) 以及它之上的方塊，綠色部分為 \( x_1 \) 之上的方塊。可見 \( y \) 放在 \( x_2 \) 之上而非我們 greedy choice 會選擇的 \( x_1 \)。因為 \( y &lt; x_1 \)，\( y \) 可以被放到 \( x_1 \) 之上，而之後所有 \( y \) 以上的方塊在處理時也能夠被放在 \( y \) 以上。同理，因為 \( x_1 &lt; x_2 \)，所有在 \( x_1 \) 之上的方塊一定也能被放在 \( x_2 \) 之上。因此，我們可以將 \( y \) 放到 \( x_1 \) 之上而非 \( x_2 \)，等同於將最佳解中的藍色與綠色部分交換，成為以下右邊所。這仍然會是合法且能構造出來的解，答案數量也不會比原本的最佳解還糟，故得證。</p>
 <img src="image/tower_proof_1.png" width="500" style="display:block; margin: 0 auto;"/>
 <p>對於沒有遵守 greedy choice 的最佳解，我們都可以將其轉換成有遵守 greedy choice 的最佳解，故必存在一組最佳解會遵守我們的 greedy choice。因此這個做法能計算出答案。</p>
-</details>
+<h2 id="excercises"><a class="header" href="#excercises">Excercises</a></h2>
 <blockquote>
 <p><a href="https://cses.fi/problemset/task/1629">CSES - Movie Festival</a></p>
 <p>給定 \( N \) 部電影以及每一部電影的開始與結束時間，請問在不重疊的情況下，最多能看幾部電影。</p>
