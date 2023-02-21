@@ -295,7 +295,7 @@ ll Find_S(ll n) {
 
 int main() {
     cin >> n;
-	while ((__int128)lim * lim * lim <= (__int128)n * n) ++ lim;
+    while ((__int128)lim * lim * lim <= (__int128)n * n) ++ lim;
 	LinearSieve();
     cout << Find_S(n) << "\n";
 }
