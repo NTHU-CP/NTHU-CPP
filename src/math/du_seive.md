@@ -250,54 +250,59 @@ def Find_S(n):
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
+using ll = long long;
 
 ll n;
-ll lim; // n^(2/3)
+ll lim;                  // n^(2/3)
 unordered_map<ll, ll> s; // prefix sum of mu
-vector<ll> psm; // prefix sum of mu
+vector<ll> psm;          // prefix sum of mu
 
 void LinearSieve() {
-    vector<int> primes;
-    vector<int> pf(lim); // prime factor
-    for (int i = 2; i < lim; ++ i) {
-        if (pf[i] == 0) {
-            primes.push_back(i);
-            pf[i] = i;
-        }
-        for (auto p : primes) {
-        	if (i * p >= lim) break;
-            pf[i * p] = p;
-            if (i % p == 0) break;
-        }
+  vector<int> primes;
+  vector<int> pf(lim); // prime factor
+  for (int i = 2; i < lim; ++i) {
+    if (pf[i] == 0) {
+      primes.push_back(i);
+      pf[i] = i;
     }
+    for (auto p : primes) {
+      if (i * p >= lim)
+        break;
+      pf[i * p] = p;
+      if (i % p == 0)
+        break;
+    }
+  }
 
-	vector<int> mu(lim);
-	psm.resize(lim);
-    mu[1] = psm[1] = 1;
-    for (int i = 2; i < lim; ++ i) {
-        if (i % (pf[i] * pf[i]) != 0)
-            mu[i] = -mu[i / pf[i]];
-        psm[i] = psm[i - 1] + mu[i];
-    }
+  vector<int> mu(lim);
+  psm.resize(lim);
+  mu[1] = psm[1] = 1;
+  for (int i = 2; i < lim; ++i) {
+    if (i % (pf[i] * pf[i]) != 0)
+      mu[i] = -mu[i / pf[i]];
+    psm[i] = psm[i - 1] + mu[i];
+  }
 }
 
 ll Find_S(ll n) {
-    if (n < lim) return psm[n];
-    if (s.find(n) != s.end()) return s[n];
-    s[n] = 1;
-    for (ll i = 2, r = 0; i <= n; i = r + 1) {
-        r = n / (n / i);
-        s[n] -= (r - i + 1) * Find_S(n / i);
-    }
+  if (n < lim)
+    return psm[n];
+  if (s.find(n) != s.end())
     return s[n];
+  s[n] = 1;
+  for (ll i = 2, r = 0; i <= n; i = r + 1) {
+    r = n / (n / i);
+    s[n] -= (r - i + 1) * Find_S(n / i);
+  }
+  return s[n];
 }
 
 int main() {
-    cin >> n;
-    while ((__int128)lim * lim * lim <= (__int128)n * n) ++ lim;
-	LinearSieve();
-    cout << Find_S(n) << "\n";
+  cin >> n;
+  while ((__int128)lim * lim * lim <= (__int128)n * n)
+    ++lim;
+  LinearSieve();
+  cout << Find_S(n) << "\n";
 }
 ```
 
@@ -307,61 +312,69 @@ int main() {
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
+using ll = long long;
 
 int lim;
 unordered_map<ll, ll> s; // prefix sum of mu
-vector<ll> psm; // prefix sum of mu
+vector<ll> psm;          // prefix sum of mu
 
 void LinearSieve() {
-    vector<int> primes;
-    vector<int> pf(lim); // prime factor
-    for (int i = 2; i < lim; ++ i) {
-        if (pf[i] == 0) {
-            primes.push_back(i);
-            pf[i] = i;
-        }
-        for (auto p : primes) {
-        	if (i * p >= lim) break;
-            pf[i * p] = p;
-            if (i % p == 0) break;
-        }
+  vector<int> primes;
+  vector<int> pf(lim); // prime factor
+  for (int i = 2; i < lim; ++i) {
+    if (pf[i] == 0) {
+      primes.push_back(i);
+      pf[i] = i;
     }
+    for (auto p : primes) {
+      if (i * p >= lim)
+        break;
+      pf[i * p] = p;
+      if (i % p == 0)
+        break;
+    }
+  }
 
-	vector<int> mu(lim);
-	psm.resize(lim);
-    mu[1] = psm[1] = 1;
-    for (int i = 2; i < lim; ++ i) {
-        if (i % (pf[i] * pf[i]) != 0)
-            mu[i] = -mu[i / pf[i]];
-        psm[i] = psm[i - 1] + mu[i];
-    }
+  vector<int> mu(lim);
+  psm.resize(lim);
+  mu[1] = psm[1] = 1;
+  for (int i = 2; i < lim; ++i) {
+    if (i % (pf[i] * pf[i]) != 0)
+      mu[i] = -mu[i / pf[i]];
+    psm[i] = psm[i - 1] + mu[i];
+  }
 }
 
 int main() {
-	ll n;
-    cin >> n;
-	while ((__int128)lim * lim * lim <= (__int128)n * n) ++ lim;
-	LinearSieve();
-	
-	vector<ll> v;
-	for (ll i = 1, r = 0; i <= n; i = r + 1) {
-		r = n / (n / i);
-		v.push_back(i);
-	}
-	reverse(v.begin(), v.end());
-	for (auto i : v) {
-		if (n / i < lim) continue;
-		ll m = n / i;
-		s[m] = 1;
-		for (ll j = 2, r = 0; j <= m; j = r + 1) {
-			r = m / (m / j);
-			if (m / j < lim) s[m] -= (r - j + 1) * psm[m / j];
-			else s[m] -= (r - j + 1) * s[m / j];
-		}
-	}
-	if (n == 1) cout << psm[1] << "\n";
-    else cout << s[n] << "\n";
+  ll n;
+  cin >> n;
+  while ((__int128)lim * lim * lim <= (__int128)n * n)
+    ++lim;
+  LinearSieve();
+
+  vector<ll> v;
+  for (ll i = 1, r = 0; i <= n; i = r + 1) {
+    r = n / (n / i);
+    v.push_back(i);
+  }
+  reverse(v.begin(), v.end());
+  for (auto i : v) {
+    if (n / i < lim)
+      continue;
+    ll m = n / i;
+    s[m] = 1;
+    for (ll j = 2, r = 0; j <= m; j = r + 1) {
+      r = m / (m / j);
+      if (m / j < lim)
+        s[m] -= (r - j + 1) * psm[m / j];
+      else
+        s[m] -= (r - j + 1) * s[m / j];
+    }
+  }
+  if (n == 1)
+    cout << psm[1] << "\n";
+  else
+    cout << s[n] << "\n";
 }
 ```
 
@@ -394,62 +407,68 @@ int main() {
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
+using ll = long long;
 
 ll n;
-int lim; // n^(2/3)
+int lim;              // n^(2/3)
 vector<__int128> psp; // prefix sum of phi
 
 void LinearSieve() {
-    vector<int> primes;
-    vector<int> pf(lim); // prime factor
-    for (int i = 2; i < lim; ++ i) {
-        if (pf[i] == 0) {
-            primes.push_back(i);
-            pf[i] = i;
-        }
-        for (auto p : primes) {
-        	if (i * p >= lim) break;
-            pf[i * p] = p;
-            if (i % p == 0) break;
-        }
+  vector<int> primes;
+  vector<int> pf(lim); // prime factor
+  for (int i = 2; i < lim; ++i) {
+    if (pf[i] == 0) {
+      primes.push_back(i);
+      pf[i] = i;
     }
+    for (auto p : primes) {
+      if (i * p >= lim)
+        break;
+      pf[i * p] = p;
+      if (i % p == 0)
+        break;
+    }
+  }
 
-	vector<int> phi(lim);
-	psp.resize(lim);
-	phi[1] = psp[1] = 1;
-    for (int i = 2; i < lim; ++ i) {
-    	int now = 1, res = i;
-    	while (res % pf[i] == 0) {
-    		res /= pf[i];
-    		now *= pf[i];
-    	}
-    	phi[i] = phi[res] * now / pf[i] * (pf[i] - 1);
-    	psp[i] = psp[i - 1] + phi[i];
+  vector<int> phi(lim);
+  psp.resize(lim);
+  phi[1] = psp[1] = 1;
+  for (int i = 2; i < lim; ++i) {
+    int now = 1, res = i;
+    while (res % pf[i] == 0) {
+      res /= pf[i];
+      now *= pf[i];
     }
+    phi[i] = phi[res] * now / pf[i] * (pf[i] - 1);
+    psp[i] = psp[i - 1] + phi[i];
+  }
 }
 
 unordered_map<ll, __int128> s;
 __int128 Find_S(ll n) {
-	if (n < lim) return psp[n];
-    if (s.find(n) != s.end()) return s[n];
-    s[n] = (__int128)n * (n + 1) / 2;
-    for (ll i = 2, r = 0; i <= n; i = r + 1) {
-        r = n / (n / i);
-        s[n] -= (r - i + 1) * Find_S(n / i);
-    }
+  if (n < lim)
+    return psp[n];
+  if (s.find(n) != s.end())
     return s[n];
+  s[n] = (__int128)n * (n + 1) / 2;
+  for (ll i = 2, r = 0; i <= n; i = r + 1) {
+    r = n / (n / i);
+    s[n] -= (r - i + 1) * Find_S(n / i);
+  }
+  return s[n];
 }
 
 int main() {
-    cin >> n;
-    while ((__int128)lim * lim * lim <= (__int128)n * n) ++ lim;
-	LinearSieve();
-    __int128 x = Find_S(n);
-    string ans = "";
-    while (x) ans.push_back(x % 10 + '0'), x /= 10;
-    reverse(ans.begin(), ans.end());
-    cout << ans << "\n";
+  cin >> n;
+  while ((__int128)lim * lim * lim <= (__int128)n * n)
+    ++lim;
+  LinearSieve();
+  __int128 x = Find_S(n);
+  string ans = "";
+  while (x)
+    ans.push_back(x % 10 + '0'), x /= 10;
+  reverse(ans.begin(), ans.end());
+  cout << ans << "\n";
 }
 ```
 
@@ -459,74 +478,83 @@ int main() {
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
+using ll = long long;
 
 ll n;
-int lim; // n^(2/3)
+int lim;                       // n^(2/3)
 unordered_map<ll, __int128> s; // prefix sum of phi
-vector<__int128> psp; // prefix sum of phi
+vector<__int128> psp;          // prefix sum of phi
 
 void LinearSieve() {
-    vector<int> primes;
-    vector<int> pf(lim); // prime factor
-    for (int i = 2; i < lim; ++ i) {
-        if (pf[i] == 0) {
-            primes.push_back(i);
-            pf[i] = i;
-        }
-        for (auto p : primes) {
-        	if (i * p >= lim) break;
-            pf[i * p] = p;
-            if (i % p == 0) break;
-        }
+  vector<int> primes;
+  vector<int> pf(lim); // prime factor
+  for (int i = 2; i < lim; ++i) {
+    if (pf[i] == 0) {
+      primes.push_back(i);
+      pf[i] = i;
     }
+    for (auto p : primes) {
+      if (i * p >= lim)
+        break;
+      pf[i * p] = p;
+      if (i % p == 0)
+        break;
+    }
+  }
 
-	vector<int> phi(lim);
-	psp.resize(lim);
-	phi[1] = psp[1] = 1;
-    for (int i = 2; i < lim; ++ i) {
-    	int now = 1, res = i;
-    	while (res % pf[i] == 0) {
-    		res /= pf[i];
-    		now *= pf[i];
-    	}
-    	phi[i] = phi[res] * now / pf[i] * (pf[i] - 1);
-    	psp[i] = psp[i - 1] + phi[i];
+  vector<int> phi(lim);
+  psp.resize(lim);
+  phi[1] = psp[1] = 1;
+  for (int i = 2; i < lim; ++i) {
+    int now = 1, res = i;
+    while (res % pf[i] == 0) {
+      res /= pf[i];
+      now *= pf[i];
     }
+    phi[i] = phi[res] * now / pf[i] * (pf[i] - 1);
+    psp[i] = psp[i - 1] + phi[i];
+  }
 }
 
 int main() {
-	ll n;
-    cin >> n;
-	while ((__int128)lim * lim * lim <= (__int128)n * n) ++ lim;
-	LinearSieve();
-	
-	vector<ll> v;
-	for (ll i = 1, r = 0; i <= n; i = r + 1) {
-		r = n / (n / i);
-		v.push_back(i);
-	}
-	reverse(v.begin(), v.end());
-	
-	for (auto i : v) {
-		if (n / i < lim) continue;
-		ll m = n / i;
-		s[m] = (__int128)m * (m + 1) / 2;
-		for (ll j = 2, r = 0; j <= m; j = r + 1) {
-			r = m / (m / j);
-			if (m / j < lim) s[m] -= (r - j + 1) * psp[m / j];
-			else s[m] -= (r - j + 1) * s[m / j];
-		}
-	}
-	
-	__int128 x;
-	if (n == 1) x = psp[1];
-    else x = s[n];
-    
-    string ans = "";
-    while (x) ans.push_back(x % 10 + '0'), x /= 10;
-    reverse(ans.begin(), ans.end());
-    cout << ans << "\n";
+  ll n;
+  cin >> n;
+  while ((__int128)lim * lim * lim <= (__int128)n * n)
+    ++lim;
+  LinearSieve();
+
+  vector<ll> v;
+  for (ll i = 1, r = 0; i <= n; i = r + 1) {
+    r = n / (n / i);
+    v.push_back(i);
+  }
+  reverse(v.begin(), v.end());
+
+  for (auto i : v) {
+    if (n / i < lim)
+      continue;
+    ll m = n / i;
+    s[m] = (__int128)m * (m + 1) / 2;
+    for (ll j = 2, r = 0; j <= m; j = r + 1) {
+      r = m / (m / j);
+      if (m / j < lim)
+        s[m] -= (r - j + 1) * psp[m / j];
+      else
+        s[m] -= (r - j + 1) * s[m / j];
+    }
+  }
+
+  __int128 x;
+  if (n == 1)
+    x = psp[1];
+  else
+    x = s[n];
+
+  string ans = "";
+  while (x)
+    ans.push_back(x % 10 + '0'), x /= 10;
+  reverse(ans.begin(), ans.end());
+  cout << ans << "\n";
 }
 ```
 
@@ -562,8 +590,8 @@ int main() {
 
 ```cpp
 for (int i = 1, r = 0; i <= n; i = r + 1) {
-    r = n / (n / i);
-    ans += 1LL * (S[r] - S[i - 1]) * (n / i);
+  r = n / (n / i);
+  ans += 1LL * (S[r] - S[i - 1]) * (n / i);
 }
 ```
 
