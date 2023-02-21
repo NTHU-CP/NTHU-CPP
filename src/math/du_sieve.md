@@ -558,7 +558,109 @@ int main() {
 }
 ```
 
-（以上程式碼皆未在任何 OJ 上測試過，因此可能有著潛在 BUG，而且也沒有壓好常數。）
+<br>
+
+---
+
+<br>
+
+[洛谷 P213](https://www.luogu.com.cn/problem/P4213)即是上面兩道練習的模板題。
+
+在此附上 AC code。
+
+在這道題目中要注意，\\( n + 1 \\) 可能會導致 overflow。
+
+附註：我只有測試過以下的 code，上面的 code 並沒有丟到 OJ 上測試過。
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+
+using ll = long long;
+
+int lim = (1 << 21);
+int primeFactor[(1 << 21)];
+vector<int> primes;
+int mu[(1 << 21)];
+ll phi[(1 << 21)];
+unordered_map<int, int> mu_s;
+unordered_map<int, ll> phi_s;
+
+signed main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+
+  for (int i = 2; i < lim; ++i) {
+    if (!primeFactor[i]) {
+      primes.push_back(i);
+      primeFactor[i] = i;
+    }
+    for (auto p : primes) {
+      if (i * p >= lim)
+        break;
+      primeFactor[i * p] = p;
+      if (i % p == 0)
+        break;
+    }
+  }
+
+  mu[1] = 1;
+  phi[1] = 1;
+  for (int i = 2; i < lim; ++i) {
+    if (i % (1LL * primeFactor[i] * primeFactor[i]) == 0) {
+      mu[i] = 0;
+      phi[i] = phi[i / primeFactor[i]] * primeFactor[i];
+    } else {
+      mu[i] = -mu[i / primeFactor[i]];
+      phi[i] = phi[i / primeFactor[i]] * (primeFactor[i] - 1);
+    }
+  }
+  for (int i = 2; i < lim; ++i) {
+    mu[i] += mu[i - 1];
+    phi[i] += phi[i - 1];
+  }
+
+  int T;
+  cin >> T;
+  while (T--) {
+    int n;
+    cin >> n;
+
+    if (n < lim) {
+      cout << phi[n] << " " << mu[n] << "\n";
+      continue;
+    }
+
+    vector<int> R;
+    for (ll i = 1, r = 0; lim <= n / i; i = r + 1) {
+      r = n / (n / i);
+      R.push_back(i);
+    }
+    reverse(R.begin(), R.end());
+
+    for (auto i : R) {
+      ll m = n / i;
+      if (mu_s.find(m) != mu_s.end())
+        continue;
+
+      mu_s[m] = 1;
+      phi_s[m] = m * (m + 1) / 2LL;
+      for (ll j = 2, r = 0; j <= m; j = r + 1) {
+        r = m / (m / j);
+        if (m / j < lim) {
+          mu_s[m] -= (r - j + 1) * mu[m / j];
+          phi_s[m] -= (r - j + 1) * phi[m / j];
+        } else {
+          mu_s[m] -= (r - j + 1) * mu_s[m / j];
+          phi_s[m] -= (r - j + 1) * phi_s[m / j];
+        }
+      }
+    }
+
+    cout << phi_s[n] << " " << mu_s[n] << "\n";
+  }
+}
+```
 
 <br>
 
