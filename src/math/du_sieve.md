@@ -607,10 +607,8 @@ for (int i = 1, r = 0; i <= n; i = r + 1) {
 
 Bottleneck 在於求 \\( \mu \\) 的前綴和，時間複雜度依然是 \\( \mathcal{O}(n^\frac{2}{3}) \\)。
 
-（實作略）
-
 ## 練習題
 
 >  求\\( \displaystyle S(n)=\sum_{i=1}^n \sum_{j=1}^n ij\times \gcd(i,j) \\) 的值。（\\( n\le 10^{10} \\)）
 
-~~這題一下子就變得好難QQ~~
+（hint：先以數論函數章節所教的技巧進行化簡，變成前綴和的樣子後再最杜教篩。）
