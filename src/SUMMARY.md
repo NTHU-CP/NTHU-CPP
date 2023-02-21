@@ -13,7 +13,7 @@
 - [Flow]()
 - [Mathematics](math/intro.md)
 	- [Arithmetic Function](math/arithmetic_function.md)
-  - [杜教篩](math/du_seive.md)
+  - [杜教篩](math/du_sieve.md)
 - [Miscellaneous]()
 
 ---
