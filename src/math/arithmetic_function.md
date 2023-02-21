@@ -7,6 +7,7 @@ for (int i = 2; i <= n; ++ i) {
     if (isPrime[i]) 
         primes.push_back(i);
     for (auto p : primes) {
+        if (i * p > n) break;
         isPrime[i * p] = false;
         if (i % p == 0) break;
     }
