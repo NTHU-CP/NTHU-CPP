@@ -3,13 +3,16 @@
 ## 線性篩
 
 ```cpp
-for (int i = 2; i <= n; ++ i) {
-    if (isPrime[i]) 
-        primes.push_back(i);
-    for (auto p : primes) {
-        isPrime[i * p] = false;
-        if (i % p == 0) break;
-    }
+for (int i = 2; i <= n; ++i) {
+  if (isPrime[i])
+    primes.push_back(i);
+  for (auto p : primes) {
+    if (i * p > n)
+      break;
+    isPrime[i * p] = false;
+    if (i % p == 0)
+      break;
+  }
 }
 ```
 
@@ -24,8 +27,8 @@ for (int i = 2; i <= n; ++ i) {
 因此，若已知 \\(S(n) = \sum_{i=1}^n f(i)\\)，則 \\(\sum_{i=1}^n f(i)\lfloor n/i\rfloor\\) 可以如下得到：
 ```cpp
 for (int i = 1, r = 0; i <= n; i = r + 1) {
-    r = n / (n / i);
-    ans += 1LL * (S[r] - S[i - 1]) * (n / i);
+  r = n / (n / i);
+  ans += 1LL * (S[r] - S[i - 1]) * (n / i);
 }
 ```
 
