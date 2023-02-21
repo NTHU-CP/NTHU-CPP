@@ -564,13 +564,60 @@ int main() {
 
 <br>
 
+另解，注意到：
+
+\\[ \sum_{i=1}^n \phi(i) = \sum_{i=1}^n\sum_{j=1}^i [\gcd(i, j)=1]= \frac{1}{2}\times(\sum_{i=1}^n\sum_{j=1}^n [\gcd(i, j)=1]+1) \\]
+
+第一個等式是根據 \\( \varphi \\) 的定義得到。
+
+第二個等式是因為 \\( (a, b) \\)、\\( (b, a) \\) 這樣的 pair 會被重複算到兩次，加一是因為 \\( i=1 \\)、\\( j=1 \\) 的情況。
+
+而對於右式：
+
+\begin{align}
+\sum_{i=1}^n\sum_{j=1}^n [\gcd(i, j)=1] &= \sum_{i=1}^n\sum_{j=1}^n\sum_{d\mid \gcd(i, j)} \mu(d) & \text{套用在數論函數章節講過的引理} \\\\
+&= \sum_{i=1}^n\sum_{j=1}^n\sum_{d\mid i \\\\ d\mid j} \mu(d) & \text{將 } \gcd \text{ 按照定義拆開} \\\\
+&= \sum_{d=1}^n\sum_{i=1}^{\lfloor\frac n d\rfloor}\sum_{j=1}^{\lfloor\frac n d\rfloor} \mu(d) & \text{套路，交換 sigma 的順序} \\\\
+&= \sum_{d=1}^n \mu(d) \sum_{i=1}^{\lfloor\frac n d\rfloor}\sum_{j=1}^{\lfloor\frac n d\rfloor} 1 & \mu(d) \text{ 和 } i \text{、} j \text{ 無關，移到前面}\\\\
+&= \sum_{d=1}^n \mu(d) \left\lfloor\frac n d\right\rfloor^2 & \text{將後面兩個 sigma 整理好}
+\end{align}
+
+這是典型數論分塊的形式，為此我們需要求 \\( \mu \\) 的前綴和。
+
+回想數論分塊：
+
+```cpp
+for (int i = 1, r = 0; i <= n; i = r + 1) {
+  r = n / (n / i);
+  ans += 1LL * (S[r] - S[i - 1]) * (n / i);
+}
+```
+
+可以知道，要求的前綴和，會是每一塊的右界（\\( i - 1 \\) 是上一塊的右界），也就是 \\( \sum_{i=1}^r \mu(i) \\)。
+
+注意到，\\( r = \left\lfloor\frac{n}{\left\lfloor n / i \right\rfloor}\right\rfloor \\)，將 \\( \lfloor n / i \rfloor \\) 看成另一個整數 \\( k \\)。
+
+這樣一來，\\( r = \left\lfloor\frac n k \right\rfloor \\)，因此 \\( r\in R(n) \\)。
+
+也就是說，要求的 \\( \sum_{i=1}^r \mu(i) \\)，恰好和杜教篩中會求到的相同。
+
+因此可以結合例題一還有數論分塊，來求出 \\( \varphi \\) 的前綴和。
+
+Bottleneck 在於求 \\( \mu \\) 的前綴和，時間複雜度依然是 \\( \mathcal{O}(n^\frac{2}{3}) \\)。
+
+<br>
+
+---
+
+<br>
+
 [洛谷 P213](https://www.luogu.com.cn/problem/P4213)即是上面兩道練習的模板題。
 
 在此附上 AC code。
 
 在這道題目中要注意，\\( n + 1 \\) 可能會導致 overflow。
 
-附註：我只有測試過以下的 code，上面的 code 並沒有丟到 OJ 上測試過。
+附註：  我只有測試過以下的 code，上面的 code 並沒有丟到 OJ 上測試過。
 
 ```cpp
 #include <bits/stdc++.h>
@@ -662,55 +709,9 @@ signed main() {
 }
 ```
 
-<br>
-
----
-
-<br>
-
-另解，注意到：
-
-\\[ \sum_{i=1}^n \phi(i) = \sum_{i=1}^n\sum_{j=1}^i [\gcd(i, j)=1]= \frac{1}{2}\times(\sum_{i=1}^n\sum_{j=1}^n [\gcd(i, j)=1]+1) \\]
-
-第一個等式是根據 \\( \varphi \\) 的定義得到。
-
-第二個等式是因為 \\( (a, b) \\)、\\( (b, a) \\) 這樣的 pair 會被重複算到兩次，加一是因為 \\( i=1 \\)、\\( j=1 \\) 的情況。
-
-而對於右式：
-
-\begin{align}
-\sum_{i=1}^n\sum_{j=1}^n [\gcd(i, j)=1] &= \sum_{i=1}^n\sum_{j=1}^n\sum_{d\mid \gcd(i, j)} \mu(d) & \text{套用在數論函數章節講過的引理} \\\\
-&= \sum_{i=1}^n\sum_{j=1}^n\sum_{d\mid i \\\\ d\mid j} \mu(d) & \text{將 } \gcd \text{ 按照定義拆開} \\\\
-&= \sum_{d=1}^n\sum_{i=1}^{\lfloor\frac n d\rfloor}\sum_{j=1}^{\lfloor\frac n d\rfloor} \mu(d) & \text{套路，交換 sigma 的順序} \\\\
-&= \sum_{d=1}^n \mu(d) \sum_{i=1}^{\lfloor\frac n d\rfloor}\sum_{j=1}^{\lfloor\frac n d\rfloor} 1 & \mu(d) \text{ 和 } i \text{、} j \text{ 無關，移到前面}\\\\
-&= \sum_{d=1}^n \mu(d) \left\lfloor\frac n d\right\rfloor^2 & \text{將後面兩個 sigma 整理好}
-\end{align}
-
-這是典型數論分塊的形式，為此我們需要求 \\( \mu \\) 的前綴和。
-
-回想數論分塊：
-
-```cpp
-for (int i = 1, r = 0; i <= n; i = r + 1) {
-  r = n / (n / i);
-  ans += 1LL * (S[r] - S[i - 1]) * (n / i);
-}
-```
-
-可以知道，要求的前綴和，會是每一塊的右界（\\( i - 1 \\) 是上一塊的右界），也就是 \\( \sum_{i=1}^r \mu(i) \\)。
-
-注意到，\\( r = \left\lfloor\frac{n}{\left\lfloor n / i \right\rfloor}\right\rfloor \\)，將 \\( \lfloor n / i \rfloor \\) 看成另一個整數 \\( k \\)。
-
-這樣一來，\\( r = \left\lfloor\frac n k \right\rfloor \\)，因此 \\( r\in R(n) \\)。
-
-也就是說，要求的 \\( \sum_{i=1}^r \mu(i) \\)，恰好和杜教篩中會求到的相同。
-
-因此可以結合例題一還有數論分塊，來求出 \\( \varphi \\) 的前綴和。
-
-Bottleneck 在於求 \\( \mu \\) 的前綴和，時間複雜度依然是 \\( \mathcal{O}(n^\frac{2}{3}) \\)。
 
 ## 練習題
 
 >  求\\( \displaystyle S(n)=\sum_{i=1}^n \sum_{j=1}^n ij\times \gcd(i,j) \\) 的值。（\\( n\le 10^{10} \\)）
 
-（hint：先以數論函數章節所教的技巧進行化簡，變成前綴和的樣子後再最杜教篩。）
+（hint：先以數論函數章節所教的技巧進行化簡，變成前綴和的樣子後再做杜教篩。）
