@@ -18,24 +18,6 @@ for (int i = 2; i <= n; ++i) {
 
 注意到，在線性篩中，每個數字只會被其「最小的質因數」篩到一次。
 
-## 數論分塊（整除分塊）
-
-給定 \\( N \\) ，則對於 \\(i=1、2\cdots、N$，$\lfloor N/i\rfloor\\) 只會有 \\(\sqrt{N}\\) 種取值。
-
-定理：\\(i\\) 所在的塊（值為 \\(\lfloor n/i\rfloor\\) 的塊）的右端點為 \\(\lfloor n/\lfloor n/i\rfloor\rfloor\\)。
-
-因此，若已知 \\(S(n) = \sum_{i=1}^n f(i)\\)，則 \\(\sum_{i=1}^n f(i)\lfloor n/i\rfloor\\) 可以如下得到：
-```cpp
-for (int i = 1, r = 0; i <= n; i = r + 1) {
-    r = n / (n / i);
-    ans += 1LL * (S[r] - S[i - 1]) * (n / i);
-}
-```
-
-時間複雜度從 \\(O(n)\\) 降為 \\(O(\sqrt{n})\\)。
-
-定理：對於任意正整數 \\(n、a、b\\)，都有 \\(\lfloor\lfloor n/a\rfloor b\rfloor=\lfloor n/(ab)\rfloor\\)。
-
 ## 數論函數
 
 定義：\\(f:\mathbb{Z}\rightarrow\mathbb{C}\\)，則稱 \\(f\\) 是數論函數。
