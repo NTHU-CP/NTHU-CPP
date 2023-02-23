@@ -12,7 +12,8 @@
   - [Basic DP]()
 - [Flow]()
 - [Mathematics](math/intro.md)
-	- [Arithmetic Function](math/arithmetic_function.md)
+  - [Arithmetic Function](math/arithmetic_function.md)
+  - [Linear Sieve](math/linear_sieve.md)
 - [Miscellaneous]()
 
 ---
