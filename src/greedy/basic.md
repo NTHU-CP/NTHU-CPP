@@ -13,14 +13,11 @@ Greedy choice 即為我們 Greedy Algorithm 的策略。若滿足上面兩個性
 這樣講可能很抽象，以下舉幾個題目來方便讀者理解。建議讀者將 Example 中的所有題目都看完並自己想過。
 
 
-## Example
+## Examples
 
 > [CSES - Tasks and Deadlines](https://cses.fi/problemset/task/1630)
 > 
 > 要執行 \\( n \\) 個任務。每個任務都有花費時間 \\( d \\) 與死線 \\( t \\)。從時間點 \\( 0 \\) 開始，你一次只能執行一個任務，執行完一個任務後能獲得的獎勵是 \\( d - f \\)，\\( d \\) 是死線，\\( f \\) 是完成時間。請問在可以任意決定任務執行順序的情況下，獎勵最大是多少。
-
-
-<details><summary>Solution</summary>
 
 令 \\( d_i \\) 為第 \\(i \\) 個執行的任務的死線，\\( f_i \\) 為第 \\( i \\) 個執行的任務的完成時間，我們要最大化 \\( \sum{d_i - f_i} \\)。
 
@@ -32,7 +29,7 @@ Greedy choice 即為我們 Greedy Algorithm 的策略。若滿足上面兩個性
 
 考慮一個最佳解但第一個執行的不是花費時間最小的任務，我們可以將花費時間最小的任務和第一個交換執行順序，這樣所有在他們之間的任務的結束時間以及執行完第一個任務的時間都會減少，導致獲得一個更好的解與最佳解這個前提矛盾，故得證。
 
-例如假設四個任務的時間花費為 3, 4, 5, 6：
+例如，假設四個任務的時間花費為 3, 4, 5, 6：
 - 若執行順序為 5 -> 4 -> 3 -> 6，則結束時間分別是 5, 9, 12, 18
 - 將最小的和第一個交換，執行順序變成 3 -> 4 -> 5 -> 6，則結束時間分別是 3, 7, 12, 18，這樣 \\( \sum{f_i} \\) 更小。
 
@@ -45,14 +42,10 @@ Greedy choice 即為我們 Greedy Algorithm 的策略。若滿足上面兩個性
 
 當然證明 Greedy 演算法的正確性不一定要照著上述的邏輯，例如也可以直接證明按照花費時間由小到大執行能獲得最小值，然後證明將執行順序中花費時間逆序的配對交換會讓答案變好，因此只要序列有逆序的配對就將其交換直到沒有，就會獲得按照花費時間由小到大的順序。
 
-</details>
-
 
 > [CSES - Tower](https://cses.fi/problemset/task/1073)
 > 
 > 你將按照一個順序獲得 \\( n \\) 個方塊。第 \\( i \\) 個方塊有大小 \\( k_i \\)。你將使用這些方塊來建造方塊塔，當有兩個方塊疊在一起時，上面的方塊要比下面的方塊還小。初始沒有任何一座方塊塔，對於依序獲得的每一個方塊，你可以選擇堆在某個方塊塔的頂端之上，或者是當作一個新的塔的底，請問在處理完 \\( n \\) 個方塊後，能構成得塔的數量最少是多少。
-
-<details><summary>Solution</summary>
 
 作法為對於依序獲得的每一個方塊，將其放置在可以放的塔中頂端數字最小的之上，若不存在可以放的塔，就將其當做新的塔的底。例如下圖：目前有三座塔，要處理大小為 2 的方塊，他可以放在 5 和 3 之上，因為 3 比較小，所以將其放在 3 之上。
 
@@ -68,8 +61,7 @@ Greedy choice 即為我們 Greedy Algorithm 的策略。若滿足上面兩個性
 
 對於沒有遵守 greedy choice 的最佳解，我們都可以將其轉換成有遵守 greedy choice 的最佳解，故必存在一組最佳解會遵守我們的 greedy choice。因此這個做法能計算出答案。
 
-</details>
-
+## Excercises
 
 > [CSES - Movie Festival](https://cses.fi/problemset/task/1629)
 > 
@@ -126,5 +118,7 @@ Hint: 證明若不按照每單位重量的價值來挑，將挑選順序逆序�
 - 當比賽遇到題目好像可以用 Greedy 的想法且想不到反例時，可以考慮直接寫寫看，讓結果來驗證正確性，畢竟 AC 時間也是一個會影響比賽結果的因素。但在沒有證明或稍微想過正確性前需要承擔猜錯的風險。如果是練習時，建議要想過並理解為什麼該問題 Greedy 是正確的。
 
 ## References
+- [Episode 14 - Exchange Arguments By Algorithms Live!](https://www.youtube.com/watch?v=Oq1seKJvfQU)
+    - 教你如何證明 Greedy 策略，推薦觀看。
 - [[2022 HWTC] Day3 - Greedy & Dynamic programming](https://drive.google.com/file/d/1cks-b5ELqYp2el-V8-WfJxZbb2An8AQ-/view?usp=sharing)
 - BF Algo 講義
