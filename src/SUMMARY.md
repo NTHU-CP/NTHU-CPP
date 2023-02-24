@@ -13,7 +13,7 @@
 - [Flow]()
 - [Mathematics](math/intro.md)
   - [Arithmetic Function](math/arithmetic_function.md)
-  - [Arithmetic Decomposition](math/arithmetic_decomposition.md)
+  - [數論分塊](math/數論分塊.md)
   - [杜教篩](math/du_sieve.md)
 - [Miscellaneous]()
 
