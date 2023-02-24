@@ -25,11 +25,19 @@
 
 其因數和為 \\( \displaystyle\sigma(n)=\prod_{i=1}^m(1+p_i+\cdots +p_i^{\alpha_i}) \\)，由於每個質數獨立貢獻，因此是積性的。
 
+<p align="right">\( \blacksquare \)</p>
+
 以上是一個由公式中可以看出其積性的例子。
 
-> 若 \\( \gcd(n, m)=1 \\)，則 \\( \varphi(nm)=\varphi(n)\times\varphi(m) \\)。
+> 推論：積性函數的取值取決於在質數的冪次上的取值。
 
-當然，如果我們知道歐拉函數的公式，那我們可以輕易以上述例子的方式來說明其為積性，但我們先忘掉公式。
+寫成式子來說：\\( f(n)=f(p_1^{\alpha-1})f(p_2^{\alpha_2}\cdots p_m^{\alpha_m}) \\)。
+
+> 歐拉函數是積性的，也就是說若 \\( \gcd(n, m)=1 \\)，則 \\( \varphi(nm)=\varphi(n)\times\varphi(m) \\)。
+
+當然，如果知道歐拉函數的公式，就可以輕易說明其為積性，但我們先忘掉公式。
+
+證明：
 
 將 \\( 1\sim nm \\) 擺成 \\( n\times m \\) 的樣子。
 
@@ -60,17 +68,44 @@ m + 1 & m + 2 & \cdots & 2m \\\\
 
 根據定義，這也就是 \\( \varphi(nm) \\)。
 
+<p align="right">\( \blacksquare \)</p>
 
+> 推論：歐拉函數 \\( \displaystyle\varphi(n)=n\times\prod_{i=1}^m \frac{p_i - 1}{p_i} \\)，其中 \\( p_i \\) 是 \\( n \\) 的質因數。
 
-推論：積性函數的取值取決於在質數的冪次上的取值。
+證明：
 
-## Dirichlet 捲積
+我們已經知道歐拉函數是積性的，因此只需要討論其在質數的冪次上的取值即可。
 
-定義：Dirichlet 捲積 \\(f\ast g(n)=\sum_{d\mid n}f(d)g(\dfrac n d)\\)。
+對於 \\( p^\alpha \\)，其因數只有 \\( p \\)，因此在其之下與其不互質的數字有 \\( p^{\alpha -1} \\) 個。
 
-性質：Dirichlet 捲積滿足交換律、結合律、對於一般加法的分配律。
+因此 \\( \varphi(p^\alpha)=p^\alpha -p^{\alpha - 1} \\)。
 
-定義：艾佛森括號 \\([P]=\cases{1&: If \(P\) is true \\\\ 0&: Otherwise}\\)；特別的，\\([P=1]\\) 可以記作 \\(\iota(P)\\)。
+所以對於 \\( n=p_1^{\alpha_1}p_2^{\alpha_1}\cdots p_m^{\alpha_m} \\)，\\( \displaystyle\varphi(n)=\prod_{i=1}^m p_i^{\alpha_i} - p_i^{\alpha_i - 1}\\)。
 
-定義：莫比烏斯函數 \\(\mu(n)=\cases{1&: \\(n = 1\\) \\\\ (-1)^k&: \\(n = p_1p_2\cdots p_k\\) \\\\ 0&: Otherwise}\\)。
+整理後即可得 \\( \displaystyle\varphi(n) = n\times\prod_{i=1}^m \frac{p_i - 1}{p_i} \\)。
 
+<p align="right">\( \blacksquare \)</p>
+
+由此可知，若已知一個函數是積性的，那麼我們就可以藉由討論其在質數冪次上的取值來得到其公式。
+
+## 許多數論函數的例子
+
+> * 艾佛森括號 \\([P]=\cases{1&: If \(P\) is true \\\\ 0&: Otherwise}\\)
+>
+> * \\( \epsilon(n)=[n=1] \\)
+>
+> * \\( id(n)=n \\)
+>
+> * \\( 1(n)=1 \\)
+>
+> * 因數數量：\\( d(n)=\sum_{d\mid n} 1 \\)
+>
+> * 因數總和：\\( \sigma(n)=\sum_{d\mid n} d \\)
+>
+> * 歐拉函數：\\( \displaystyle\varphi(n) = n\times\prod_{i=1}^m \frac{p_i - 1}{p_i} \\)
+>
+> * 莫比烏斯函數： \\(\mu(n)=\cases{1&: \\(n = 1\\) \\\\ (-1)^k&: \\(n = p_1p_2\cdots p_k\\) \\\\ 0&: Otherwise}\\)。
+
+## 附註
+
+在這一章節中我們暫且點到為止，比較艱澀的內容會放在再探數論函數的章節中。
