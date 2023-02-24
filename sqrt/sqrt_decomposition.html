@@ -1,0 +1,770 @@
+<!DOCTYPE HTML>
+<html lang="zh-TW" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Square Root Decomposition - NTHU CPP</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="spacer"></li><li class="chapter-item "><div>Fundemantal</div></li><li class="chapter-item "><a href="../greedy/intro.html">Greedy</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../greedy/basic.html">Basic Greedy</a></li></ol></li><li class="chapter-item "><div>Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div>Basic DP</div></li></ol></li><li class="chapter-item "><div>Flow</div></li><li class="chapter-item expanded "><a href="../sqrt/intro.html">Sqrt Technique</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../sqrt/sqrt_decomposition.html" class="active">Square Root Decomposition</a></li><li class="chapter-item "><div>Sqrt-Related Observation</div></li><li class="chapter-item "><div>Mo's Algorithm</div></li></ol></li><li class="chapter-item "><a href="../math/intro.html">Mathematics</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/arithmetic_function.html">Arithmetic Function</a></li></ol></li><li class="chapter-item "><div>Miscellaneous</div></li><li class="spacer"></li><li class="chapter-item "><div>C++ Programming Tips</div></li><li class="chapter-item "><a href="../others/codebook.html">Make a Codebook</a></li><li class="chapter-item "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item "><div>CSES Problem Tag</div></li><li class="chapter-item "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">NTHU CPP</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/NTHU-CP/NTHU-CPP" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="square-root-decomposition"><a class="header" href="#square-root-decomposition">Square Root Decomposition</a></h1>
+<h2 id="introduction"><a class="header" href="#introduction">Introduction</a></h2>
+<p>此技巧中文常稱之為分塊，概念並不困難，就像是比較優美的暴力。</p>
+<p>考慮以下問題：</p>
+<blockquote>
+<p><a href="https://cses.fi/problemset/task/1648">CSES - Dynamic Range Sum Queries</a></p>
+<p>給定一個長度為 \( N \) 的序列 \( a \)，並對其進行 \( Q \) 筆操作。操作有兩種：</p>
+<ol>
+<li>給定 \( k, u \)，將 \( a_k \) 修改成 \( u \)。</li>
+<li>給定 \( l, r \)，請輸出 \( a_l + a_{l + 1} + ... + a_r \)，也就是 \( l \) 到 \( r \) 的區間和。</li>
+</ol>
+<ul>
+<li>\( N, Q \leq 2 \times 10^5 \)</li>
+</ul>
+</blockquote>
+<p>此問題可以使用一些資料結構例如線段樹來得到 \( O(N + Q\log N) \) 的解法。但這裡要介紹的是如何使用分塊來解這題。</p>
+<h3 id="序列分塊"><a class="header" href="#序列分塊">序列分塊</a></h3>
+<p>對於一個長度為 \( N \) 的陣列，我們先將其每 \( K \) 個元素分在同一塊，同時維護每一塊的總和是多少。如下圖，設 \( K = 4 \)：</p>
+<img src="image/sqrt_decomposition/array.png" width="700" style="display:block; margin: 0 auto;"/>
+<p>我們先考慮第二種詢問區間和的操作。若 \( l, r \) 在同一塊內，如下圖，我們就直接用最暴力的方式遍歷過 \( l \) 到 \( r \) 之間的元素。最壞的情況下不可能走超過 \( K \) 個元素，否則他們就不應該在同一塊，因此此部分的時間複雜度為 \( O(K) \)。</p>
+<img src="image/sqrt_decomposition/l_r_same.png" width="700" style="display:block; margin: 0 auto;"/>
+<p>若 \( l, r \) 不在同一塊內的話，如下圖，對於 \(l, r \) 所在的塊，我們一樣使用暴力的方式取得數值總和，也就是綠色部分。此步同上，時間複雜度為 \( O(K) \)。</p>
+<p>對於 \( l, r \) 中間橫跨過的塊，也就是藍色的部分，因為我們有預先計算每一塊的總和分別是多少，因此我們可以遍歷過去中間的每一「塊」，注意到不是遍歷過中間的每一個元素，來取得最終的區間總和。最壞的情況下，中間至多有 \( \frac{N}{K} \) 塊，所以此步驟為 \( O(\frac{N}{K}) \)。</p>
+<img src="image/sqrt_decomposition/l_r_not_same.png" width="700" style="display:block; margin: 0 auto;"/>
+<p>接著回來看一下第一種操作，也就是單點修改，可以發現我們只需要去修改 \( a_k \) 的值，以及 \( a_k \) 所在的塊的總和即可，此步可以在 \( O(1) \) 辦到。</p>
+<p>總結一下此做法，首先預處理原本的陣列維護每一塊的總和是多少，可以在 \( O(n) \) 內辦到。對於每一筆操作，時間複雜度為 \( O(1) + O(K) + O(\frac{N}{K}) \)。於是此做法的總時間複雜度為 \( O(N + Q(K + \frac{N}{K})) \)。</p>
+<p>我們最後要討論的問題是，每幾個元素要被分在同一塊？也就是 \( K \) 的值該選什麼能讓我們的時間複雜度最好。我們要最小化 \( K + \frac{N}{K} \)，一個簡單但不嚴謹的推論是左邊那一項就越大，右邊那一項就越小，反之亦同，因此左右相等時會有最佳的時間複雜度，因此 \( K \) 我們取 \( \sqrt{N} \) 會讓時間複雜度最好。這個結果其實也可以從國中教的算幾不等式求出。</p>
+<p>因此此做法的時間複雜度為：\( O(N + Q\sqrt{N}) \)。</p>
+<details><summary> Solution Code </summary>
+<ul>
+<li>以下將 \( K \) 的值直接設定成固定值，大約是題目中的 \( N \) 的最大值開根號。</li>
+<li><code>block_size</code> 代表一塊有幾個元素。</li>
+<li><code>block_num</code> 帶表總共分成幾塊。</li>
+<li><code>block_sum[i]</code> 就是第 \( i \) 塊的總和。</li>
+<li><code>block_map[i]</code> 代表 \( a_i \) 屬於哪一塊。</li>
+<li>另一種實作查詢答案的想法是查 <code>[1, r]</code> 的區間和減掉 <code>[1, l - 1]</code>。</li>
+</ul>
+<pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+  cin.tie(0);
+  ios_base::sync_with_stdio(0);
+
+  int n, q;
+  cin &gt;&gt; n &gt;&gt; q;
+
+  const int block_size = 450;
+  const int block_num = 450;
+  vector&lt;int&gt; a(n + 1), block_map(n + 1);
+  vector&lt;long long&gt; block_sum(block_num);
+
+  for (int i = 1; i &lt;= n; i++) {
+    cin &gt;&gt; a[i];
+    block_map[i] = i / block_size;
+    block_sum[block_map[i]] += a[i];
+  }
+
+  while (q--) {
+    int t;
+    cin &gt;&gt; t;
+    if (t == 1) {
+      int k, u;
+      cin &gt;&gt; k &gt;&gt; u;
+      block_sum[block_map[k]] += u - a[k];
+      a[k] = u;
+    } else {
+      int l, r;
+      cin &gt;&gt; l &gt;&gt; r;
+      int L = block_map[l], R = block_map[r];
+      long long ans = 0;
+      if (L == R) {
+        for (int i = l; i &lt;= r; i++) {
+          ans += a[i];
+        }
+      } else {
+        for (int i = L + 1; i &lt;= R - 1; i++) {
+          ans += block_sum[i];
+        }
+        int it = l;
+        while (block_map[it] == block_map[l]) {
+          ans += a[it];
+          it++;
+        }
+        it = r;
+        while (block_map[it] == block_map[r]) {
+          ans += a[it];
+          it--;
+        }
+      }
+      cout &lt;&lt; ans &lt;&lt; '\n';
+    }
+  }
+
+  return 0;
+}
+</code></pre>
+</details>
+<h3 id="操作分塊"><a class="header" href="#操作分塊">操作分塊</a></h3>
+<p>除了上述對序列分塊以外，以下將換個角度切入一模一樣的問題。</p>
+<p>假如第二種操作，也就是給定 \( l, r \) 詢問區間和，我們可以透過預先計算前綴和來達到 \( O(1) \) 輸出區間和。但是對於單點修改的操作，我們如果直接去修改紀錄前綴和的陣列，最糟的情況下是修改第一個元素，就會需要花 \( O(n) \) 去更新整個前綴和的陣列，這聽起來很糟。</p>
+<p>換個想法，我們也可以不修改前綴和陣列，對於每次單點修改的操作，記錄下是哪個位置被更改，以及更改後的差值。這樣每次詢問區間和的操作時，先取得原始陣列的區間和答案，接著跑過之前所有單點修改的操作，判斷一下這次修改的位置有沒有被包含在詢問區間和的 \( l, r \) 之間，有的話就更新一下答案。這樣我們能獲得一個 \( O(1) \) 單點修改，\( O(m) \) 查詢區間和的演算法，\( m \) 為在這之前有幾筆單點修改的操作。因為 \( m \) 可能很大，因此這個做法依然不夠快。</p>
+<p>上述做法的瓶頸在於，建完前綴和後的單點修改次數可能會很多，那我們其實可以設定一個臨界值，當累積的單點修改次數超過臨界值就重建前綴和。概念上就像是對操作分塊。</p>
+<p>假設臨界值是 \( K \)，這樣每一次區間詢問的時間複雜度為 \( O(K) \)，因為至多累積 \( K \) 個單點修改的操作。而最糟情況下重建前綴和的次數為 \( \frac{Q}{K} \) 次，所以此做法的時間複雜度為 \( O(N + QK + N\frac{Q}{K}) \)。若 \( K \) 為 \( \sqrt{N} \) 則此做法時間複雜度為 \( O(N + Q\sqrt{N}) \)。若 \( K \) 為 \( \sqrt{Q} \)，則此做法時間複雜度為 \( O((Q + N)\sqrt{Q}) \)。</p>
+<details><summary> Solution Code </summary>
+<ul>
+<li>一樣先把 <code>block_size</code> 設定成一個固定值</li>
+<li><code>buf</code> 存的是累積的單點修改操作</li>
+</ul>
+<pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+  cin.tie(0);
+  ios_base::sync_with_stdio(0);
+
+  int n, q;
+  cin &gt;&gt; n &gt;&gt; q;
+
+  vector&lt;int&gt; a(n + 1);
+  vector&lt;long long&gt; pre(n + 1);
+
+  for (int i = 1; i &lt;= n; i++) {
+    cin &gt;&gt; a[i];
+    pre[i] = pre[i - 1] + a[i];
+  }
+
+  const int block_size = 400;
+  vector&lt;pair&lt;int, int&gt;&gt; buf;
+  while (q--) {
+    int t;
+    cin &gt;&gt; t;
+    if (t == 1) {
+      int k, u;
+      cin &gt;&gt; k &gt;&gt; u;
+      buf.emplace_back(k, u - a[k]);
+      a[k] = u;
+    } else {
+      int l, r;
+      cin &gt;&gt; l &gt;&gt; r;
+      long long ans = pre[r] - pre[l - 1];
+      for (auto [id, val] : buf) {
+        if (l &lt;= id &amp;&amp; id &lt;= r) {
+          ans += val;
+        }
+      }
+      cout &lt;&lt; ans &lt;&lt; '\n';
+    }
+    if (buf.size() &gt;= block_size) {
+      buf.clear();
+      for (int i = 1; i &lt;= n; i++) {
+        pre[i] = pre[i - 1] + a[i];
+      }
+    }
+  }
+
+  return 0;
+}
+</code></pre>
+</details>
+<p>我們接著再看一題。</p>
+<blockquote>
+<p><a href="https://codeforces.com/contest/455/problem/D">CF 445D - Serega and Fun</a><br />
+給一個長度為 \( N  \) 的陣列 \( A \)，\( Q \) 筆操作，強制在線，有兩種操作：</p>
+<ol>
+<li>給定 \( l, r \)，將 \( l \) 到 \( r \) 的元素向右循環移位，也就是說 \( a_l, a_{l + 1}, ..., a_{r - 1}, a_{r} \) 會變成 \( a_{r}, a_{l}, a_{l - 1}, ..., a_{r - 1} \)。</li>
+<li>給定 \( l, r, k \)，輸出 \( l \) 到 \( r \) 之間有幾個元素數值等於 \( k \)。</li>
+</ol>
+<ul>
+<li>\( N, Q \leq 10^5 \)</li>
+<li>\( 1 \leq A_i \leq N \)</li>
+</ul>
+</blockquote>
+<p>首先，第一個操作，我們可以看成是將第 \( r \) 個元素刪掉，並在 \( l \) 之前插入數值。</p>
+<p>先直接將 \( A \) 分塊，每 \( \sqrt{N} \) 個元素分成一塊<sup class="footnote-reference"><a href="#note-1">1</a></sup>。每一塊都維護一個長度為 \( N \) 的陣列 \( cnt \)，\( cnt[i] \) 代表這一塊中數值 \( i \) 的元素有幾個。此處就要花 \( O(N\sqrt{N}) \) 的空間。同時每一塊都需要紀錄塊中的元素的順序。</p>
+<p>對於第一種操作，將第 \( r \) 個元素刪掉。只要找出第 \( r \) 個元素在哪一塊內，我們直接將其在該塊紀錄順序的陣列上暴力刪除即可，此處的暴力指的是直接將他後面的元素都往前移動一位，然後更新 \( cnt \)。對於在 \( l \) 之前插入數值也是用一樣的想法。找到 \( l \) 在哪一塊，將其暴力插在 \( l \) 之前。我們這樣暴力插入刪除，會一直影響每一塊的元素數量，導致不是每一塊都是恰好 \( \sqrt{N} \) 個元素，因此為了找出第 \( i \) 個元素在哪，我們需要從第一塊開始遍歷，透過每一塊目前擁有的元素數量來累加，找出第 \( i \) 個元素在哪一塊。</p>
+<p>對於第二種操作，一樣先找出第 \( l \) 個元素與第 \( r \) 個元素在哪一塊，他們所在的塊就直接暴力計算答案，接著遍歷過去他們之間的「塊」，直接加總每一塊的 \( cnt[k] \)，概念上與前面那題的查詢相似。</p>
+<p>這個做法確實能計算出正確答案，但是時間複雜度如何呢？塊的數量是固定的 \( \sqrt{N} \)塊，所以找出第 \( i \) 個元素在哪以及查詢時遍歷中間所有的塊可以在 \( O(\sqrt{N}) \)下做到。</p>
+<p>因為一開始是按照每 \( \sqrt{N} \) 個元素分成一塊，所以前幾次操作時每一塊的大小都差不多在 \( \sqrt{N} \) 左右。因此每一塊內暴力插入刪除以及暴力計算塊內的答案都能在 \( O(\sqrt{N}) \) 下辦到。但是隨著操作次數越來越多，可能有一塊一直被插入元素，導致塊內的元素變太多，最慘情況下時間複雜度會退化到 \( O(N) \)。我們可以在這邊也應用把操作分塊的想法，每 \( \sqrt{N} \) 次操作後，就重新按照順序，把每 \( \sqrt{N} \) 個元素分在同一塊。重建的時間複雜度是 \( O(n) \)，至多重建 \( \frac{Q}{\sqrt{N}} \) 次。這樣子就能保證進行操作時，每一塊至多只會有 \( 2\sqrt{N} \) 個元素。</p>
+<p>最後來總結一下時間複雜度，一開始 \( O(N) \) 分塊，第一種第二種操作都能在 \( O(\sqrt{N}) \) 內做到，每 \( \sqrt{N} \) 次操作就重新分塊的時間複雜度是 \( O(N\sqrt{N}) \)。因此總時間複雜度為，\( O((Q + N)\sqrt{N}) \)。</p>
+<details><summary> Solution Code </summary>
+<ul>
+<li>使用 lambda function 純粹是筆者習慣，同學參考就好。</li>
+<li>vector 的 erase 和 insert 的時間複雜度是 \( O(size) \)。</li>
+<li>以下的程式碼為每 <code>block_size</code> 次操作就會重新建分塊的序列，追求速度的話可以修改成每 \( \sqrt{N} \) 次操作一後再重建分塊的序列，這樣子時間複雜度不變，只是執行時間應該會快一點。</li>
+<li>注意到，重建分塊序列時，不能直接暴力 \( O(N\sqrt{N}) \) 將 <code>cnt</code> 陣列歸 0，或是重開一個大小為 \( O(N\sqrt{N}) \) 的陣列，這樣會讓總時間複雜度變成 \( O(N^2) \)，這是一個初學者常犯的小錯誤。</li>
+</ul>
+<pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+
+int main() {
+  cin.tie(0);
+  ios_base::sync_with_stdio(0);
+
+  int block_size = 320;
+  int block_num = 320;
+
+  int n; cin &gt;&gt; n;
+  vector&lt;int&gt; a(n + 1);
+  vector&lt;vector&lt;int&gt;&gt; block(block_num);
+  vector&lt;vector&lt;int&gt;&gt; cnt(block_num, vector&lt;int&gt;(n + 1));
+
+  for (int i = 1; i &lt;= n; i++) {
+    cin &gt;&gt; a[i];
+    int block_id = i / block_size;
+    block[block_id].push_back(a[i]);
+    cnt[block_id][a[i]]++;
+  }
+
+  int q; cin &gt;&gt; q;
+
+  int last_ans = 0;
+
+  auto decode = [&amp;](int&amp; x) {
+    x = (x + last_ans - 1) % n + 1;
+  };
+  auto find_block_id = [&amp;](int id) -&gt; pair&lt;int, int&gt; {
+    int res = 0;
+    for (int i = 0; i &lt; block_num; i++) {
+      if (res + (int) block[i].size() &gt;= id) {
+        return {i, res};
+      }
+      res += block[i].size();
+    }
+  };
+
+  auto remove = [&amp;](vector&lt;int&gt;&amp; v, vector&lt;int&gt;&amp; c, int id) {
+    auto it = v.begin() + id;
+    int ret = *it;
+    c[ret]--;
+    v.erase(it);
+    return ret;
+  };
+
+  auto insert = [&amp;](vector&lt;int&gt;&amp; v, vector&lt;int&gt;&amp; c, int id, int val) {
+    auto it = v.begin() + id;
+    c[val]++;
+    v.insert(it, val);
+  };
+
+  auto rebuild = [&amp;]() {
+    vector&lt;vector&lt;int&gt;&gt; new_block(block_num);
+    int id = 0;
+    for (int i = 0; i &lt; block_num; i++) {
+      for (auto it : block[i]) {
+        int block_id = id / block_size;
+        new_block[block_id].push_back(it);
+        cnt[i][it]--;
+        cnt[block_id][it]++;
+        id++;
+      }
+    }
+    block = new_block;
+  };
+
+  for (int p = 1; p &lt;= q; p++) {
+    if (p % block_size == 0) rebuild();
+    int t, l, r; cin &gt;&gt; t &gt;&gt; l &gt;&gt; r;
+    decode(l), decode(r);
+    if (l &gt; r) swap(l, r);
+    auto [l_bid, l_pre] = find_block_id(l);
+    auto [r_bid, r_pre] = find_block_id(r);
+    int l_id = l - l_pre - 1, r_id = r - r_pre - 1;
+    if (t == 1) {
+      if (l == r) continue;
+      auto val = remove(block[r_bid], cnt[r_bid], r_id);
+      insert(block[l_bid], cnt[l_bid], l_id, val);
+    } else {
+      int k; cin &gt;&gt; k;
+      decode(k);
+      int ans = 0;
+      if (l_bid == r_bid) {
+        for (int i = l_id; i &lt;= r_id; i++) ans += (block[l_bid][i] == k);
+      } else {
+        for (int i = l_bid + 1; i &lt;= r_bid - 1; i++) ans += cnt[i][k];
+        for (int i = l_id; i &lt; (int) block[l_bid].size(); i++) ans += (block[l_bid][i] == k);
+        for (int i = 0; i &lt;= r_id; i++) ans += (block[r_bid][i] == k);
+      }
+      cout &lt;&lt; ans &lt;&lt; '\n';
+      last_ans = ans;
+    }
+  }
+
+  return 0;
+}
+</code></pre>
+</details>
+<p>上述講的作法是官方的解答，同時運用了對序列分塊與操作分塊的精神。那有沒有其他的方法呢？</p>
+<p>會需要對操作分塊的原因是在暴力插入與刪除元素時，每一塊的大小會被改變。也因為每一塊大小會被改變，導致我們會需要如上程式碼的 <code>find_block_id</code> 函數來找第 <code>i</code> 個元素在哪一塊。</p>
+<p>要維持每一塊的大小是 \( O\sqrt{N} \)，我們可以在每次操作一結束後，主動調整來維持。假設我們將橘色的元素從第四塊移動到第一塊上，如下圖。</p>
+<img src="image/sqrt_decomposition/move_element.png" width="700" style="display:block; margin: 0 auto;"/>
+<p>此時第一塊的元素會多一個而第四塊的元素會少一個。我們只要從第一塊開始將最右邊多的那一塊丟給下一塊，下一塊將他最右邊多的那一塊給下一塊，直到少一個的塊被補足為止。</p>
+<img src="image/sqrt_decomposition/move_element_2.png" width="700" style="display:block; margin: 0 auto;"/>
+<p>也就是說，第一種操作暴力插入刪除元素後，從 \( l \) 所在的塊開始，持續將最後面的元素推到下一塊的開頭，直到 \( r \) 所在的塊為止。因為至多 \( O(\sqrt{N}) \) 塊，搭配使用能 \( O(1) \) 在最前面與最後面插入/刪除的 deque，則這步的時間複雜度為 \( O(\sqrt{N}) \)。這樣能保證第一種操作之後還是每 \( O(\sqrt{N}) \) 個元素在同一塊。總時間複雜度不變。</p>
+<p>這樣做的好處是每一次操作結束後第 <code>i</code> 個元素仍然會在第 <code>i / block_size</code> 塊上。就不用再額外找第 <code>i</code> 塊在哪。也不需要重建序列分塊。</p>
+<details><summary> Solution Code </summary>
+<ul>
+<li>使用 0-based index，這樣才能方便透過 <code>i % block_size</code> 取得第 <code>i</code> 個元素在第 <code>i / block_size</code> 的哪個位置。</li>
+</ul>
+<pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
+using namespace std;
+ 
+int main() {
+  cin.tie(0);
+  ios_base::sync_with_stdio(0);
+ 
+  int block_size = 320;
+  int block_num = 320;
+ 
+  int n; cin &gt;&gt; n;
+  vector&lt;int&gt; a(n + 1);
+  vector&lt;deque&lt;int&gt;&gt; block(block_num);
+  vector&lt;vector&lt;int&gt;&gt; cnt(block_num, vector&lt;int&gt;(n + 1));
+ 
+  for (int i = 0; i &lt; n; i++) {
+    cin &gt;&gt; a[i];
+    int block_id = i / block_size;
+    block[block_id].push_back(a[i]);
+    cnt[block_id][a[i]]++;
+  }
+ 
+  int q; cin &gt;&gt; q;
+ 
+  int last_ans = 0;
+ 
+  auto decode = [&amp;](int&amp; x) {
+    x = (x + last_ans - 1) % n + 1;
+  };
+ 
+  auto remove = [&amp;](deque&lt;int&gt;&amp; deq, vector&lt;int&gt;&amp; c, int id) {
+    auto it = deq.begin() + id;
+    int ret = *it;
+    c[ret]--;
+    deq.erase(it);
+    return ret;
+  };
+ 
+  auto insert = [&amp;](deque&lt;int&gt;&amp; deq, vector&lt;int&gt;&amp; c, int id, int val) {
+    auto it = deq.begin() + id;
+    c[val]++;
+    deq.insert(it, val);
+  };
+ 
+  auto balance = [&amp;](int l, int r) {
+    for (int i = l; i &lt; r; i++) {
+      int val = block[i].back();
+      cnt[i + 1][val]++;
+      block[i + 1].push_front(block[i].back());
+      cnt[i][val]--;
+      block[i].pop_back();
+    }
+  };
+ 
+  auto calc = [&amp;](int l, int r, int k) {
+    int ans = 0;
+    while (l &lt;= r) {
+      if (l % block_size == 0 &amp;&amp; l + block_size - 1 &lt;= r) {
+        ans += cnt[l / block_size][k];
+        l += block_size;
+      } else {
+        ans += (block[l / block_size][l % block_size] == k);
+        l++;
+      }
+    }
+    return ans;
+  };
+ 
+  while (q--) {
+    int t, l, r; cin &gt;&gt; t &gt;&gt; l &gt;&gt; r;
+    decode(l), decode(r);
+    if (l &gt; r) swap(l, r);
+    l--, r--;
+    int l_bid = l / block_size, l_id = l % block_size;
+    int r_bid = r / block_size, r_id = r % block_size;
+    if (t == 1) {
+      if (l == r) continue;
+      auto val = remove(block[r_bid], cnt[r_bid], r_id);
+      insert(block[l_bid], cnt[l_bid], l_id, val);
+      balance(l_bid, r_bid);
+    } else {
+      int k; cin &gt;&gt; k;
+      decode(k);
+      last_ans = calc(l, r, k);
+      cout &lt;&lt; last_ans &lt;&lt; '\n';
+    }
+  }
+ 
+  return 0;
+}
+</code></pre>
+</details>
+<p>筆者自己比較喜歡第一種解法的想法，但會選擇第二種解法來實作。</p>
+<h2 id="why-square-root-decomposition"><a class="header" href="#why-square-root-decomposition">Why Square Root Decomposition?</a></h2>
+<p>以第一個範例題目來說，分塊作法的時間複雜度有一個根號，比線段樹還差，明明存在時間複雜度更優的作法，那為什麼要用分塊呢？擷取某個中國人的文章<sup class="footnote-reference"><a href="#note-2">2</a></sup>:</p>
+<img src="image/sqrt_decomposition/why_sqrt.png" width="1000" style="display:block; margin: 0 auto;"/>
+<p>雖然說他的結論不是很正確，多數題目下帶 \( \log{N} \) 的演算法還是能跑的比分塊還快，除非分塊的操作真的很乾淨，或者是出題者沒卡。</p>
+<p>但是我們可以知道分塊其實跑得很快，因為沒有遞迴、程式碼乾淨、常數較小。第一個範例題目的 \( N \) 最大為 \( 2 \times 10^5 \)，分塊的做法能在 0.13s 通過所有測資，並不會比線段樹還差。而且有許多題目是分塊能做但線段樹不能做的。因此這個技巧還滿重要且實用的。</p>
+<h3 id="序列分塊的思路"><a class="header" href="#序列分塊的思路">序列分塊的思路</a></h3>
+<ol>
+<li>完整的一塊要維護什麼資訊？</li>
+<li>查詢時，左右不完整的塊要怎麼處理？</li>
+<li>如何在不用太快的方法下更新塊的資訊？因為分塊的複雜度已經帶一個根號了，所以只要更新的操作在 \( O(\sqrt{N}) \) 下，都不會讓時間複雜度變差。</li>
+</ol>
+<h3 id="操作分塊的思路"><a class="header" href="#操作分塊的思路">操作分塊的思路</a></h3>
+<ol>
+<li>怎麼快速做沒有修改的版本？</li>
+<li>如果將單一個修改應用到詢問上？</li>
+<li>如何快速的重建維護的資訊？</li>
+</ol>
+<h2 id="exercises"><a class="header" href="#exercises">Exercises</a></h2>
+<p>以下我們來看一些題目。</p>
+<blockquote>
+<p><a href="https://cses.fi/problemset/task/1649">CSES - Dynamic Range Minimum Queries</a></p>
+<p>給定一個長度為 \( N \) 的序列 \( a \)，並對其進行 \( Q \) 筆操作。操作有兩種：</p>
+<ol>
+<li>給定 \( k, u \)，將 \( a_k \) 修改成 \( u \)。</li>
+<li>給定 \( l, r \)，請輸出 \( a_l, a_{l + 1}, ..., a_r \) 的最小值。</li>
+</ol>
+<ul>
+<li>\( N, Q \leq 2 \times 10^5 \)</li>
+</ul>
+</blockquote>
+<details><summary> Solution </summary>
+<p>查詢區間最小值與查詢區間和的差異在於單點修改時不能 \( O(1) \) 達成。不過只要每次單點修改就重新計算該塊的最小值是多少就能做了。適合當作基礎分塊技巧的練習題。</p>
+</details>
+<blockquote>
+<p><a href="https://www.luogu.com.cn/problem/P2801">洛谷 P2801 - 教主的魔法</a></p>
+<p>給定一個長度為 \( N \) 的序列 \( a \)，並對其進行 \( Q \) 筆操作。操作有兩種：</p>
+<ol>
+<li>給定 \( l, r, w \)，將 \( a_l, a_{l + 1}, ..., a_r \) 都加上 \( w \)。</li>
+<li>給定 \( l, r, c \)，輸出 \( a_l, a_{l + 1}, ..., a_r \) 中，有多少數字大於等於 \( c \)。</li>
+</ol>
+<ul>
+<li>\( N \leq 10^6 \)</li>
+<li>\( Q \leq 3000 \)</li>
+</ul>
+</blockquote>
+<details><summary> Solution </summary>
+<p>對序列分塊，假設塊的大小是 \( K \)。每一塊維護塊內元素排序好的陣列。</p>
+<p>對於區間加值操作，被區間完全覆蓋的塊，直接打懶標紀錄整塊加上 \( w \)，至多 \( O(\frac{N}{K}) \) 塊，所以此步驟的時間複雜度為 \( O(\frac{N}{K}) \)。對於左右沒有被區間完整覆蓋而散落的元素，直接暴力在塊中排序好的陣列上找出被區間覆蓋的元素並直接加值。加完值後需要重新排序。因為被加值的元素與沒被加值的元素會形成兩個排序好的序列，可以線性合併他們兩個以獲得整個排序好的陣列。所以此步驟的時間複雜度是 \( O(K) \)。</p>
+<p>對於區間查詢有多少數字大於等於 \( c \)，被區間完全覆蓋的塊直接在塊內元素排序好的陣列上搭配懶標二分搜即可，此步驟的時間複雜度為 \( O(\frac{N}{K} \times \log K) \)。對於左右沒有被區間完整覆蓋而散落的元素，直接暴力在塊中查找，此步驟時間複雜度為 \( O(K) \)。</p>
+<p>總結一下：</p>
+<ul>
+<li>初始構造每一塊塊內還續好的陣列：\( O(N\log N) \)。</li>
+<li>區間加值：\( O(\frac{N}{K} + K) \)</li>
+<li>查詢：\( O( \frac{NlogK}{K}+K) \)</li>
+</ul>
+<p>則總時間複雜度：\( O( N\log N + Q ( \frac {NlogK}{K}+K) ) \)</p>
+<ul>
+<li>若取 \( K = \sqrt{N} \)，則總時間複雜度為 \( O( N\log N + Q\sqrt{N}\log N) ) \)。</li>
+<li>若取 \( K = \sqrt{N\log N} \)，則總時間複雜度為 \( O( N\log N + Q\sqrt{N\log N}) ) \)。</li>
+</ul>
+<p>這個題目的用意是想展示，並不是所有分塊都是取 \( O(\sqrt{N}) \) 為最優。</p>
+</details>
+<blockquote>
+<p><a href="https://codeforces.com/contest/13/problem/E">CF 13E - Holes</a></p>
+<p>給一個長度為 \( N \) 的序列 \( a \)，代表 \( N \) 個洞。若將球放到第 \( x \) 個洞，球會跑到第 \( i + a_x \) 個洞，接著從第 \( i + a_x \) 個洞跑到第 \( i + a_ x + a_{a_x} \) 個洞，持續直到編號超出 \( N \) 為止。本題要處理 \( M \) 筆操作。操作有兩種：</p>
+<ol>
+<li>給定 \( x, y \)，將 \( a_x \) 改成 \( y \)。</li>
+<li>給定 \( x \)，請輸出若將球放到第 \( x \) 個洞，球總共會通過幾個洞，以及離開這個序列前最後通過的洞的編號。</li>
+</ol>
+<ul>
+<li>\( 1 \leq N, M \leq 10^5 \) </li>
+</ul>
+</blockquote>
+<details><summary> Solution </summary>
+<p>將洞每連續 \( \sqrt{N} \) 個分成一塊。</p>
+<p>每個洞都維護這個洞往後跑時，第一個離開當前塊能到達的洞穴編號、這途中經過幾個洞穴以及離開當前塊之前最後經到達的洞邊號。建這個表需要 \( O(N\sqrt{N}) \)。</p>
+<ul>
+<li>對於查詢操作，直接從第 \( x \) 個洞開始模擬，每次直接跳到離開當前塊，第一個能到達的位置，並將答案加上這途中經過幾個洞穴。因為至多 \( \sqrt{N} \) 個塊，所以此步驟時間複雜度為 \( O\sqrt{N} \)。</li>
+<li>對於修改操作，修改了第 \( x \) 個洞維護的值之後，在 \( x \) 右邊或者是不在同一塊內的元素不會受影響。但有可能需要修改同一塊內在他左邊的元素維護的值。此步驟可以在 \( O(\sqrt{N}) \) 辦到。</li>
+</ul>
+<p>總時間複雜度為 \( O((N + M)\sqrt{N}) \)。</p>
+</details>
+<blockquote>
+<p><a href="https://codeforces.com/contest/342/problem/E">CF 342E - Xenia and Tree</a></p>
+<p>給一個 \( N \) 個點的樹，初始只有第一個點是紅色的。樹上兩點距離為從一點到另一點最少要經過幾條邊。本題要處理 \( M \) 個操作。操作有兩種：</p>
+<ol>
+<li>給定 \( v \)，將點 \( v \) 改成紅色的。</li>
+<li>給定 \( v \)，詢問 \( v \) 到最近的紅色點的距離是多少。</li>
+</ol>
+<ul>
+<li>\( N, M \leq 10^5 \)</li>
+</ul>
+</blockquote>
+<details><summary> Solution </summary>
+<p>本題可以使用 Centroid Decomposition 來解，不過既然這章節是分塊，要來討論一下怎麼用分塊來解這題。</p>
+<p>回想操作分塊的思路：</p>
+<ol>
+<li>怎麼快速做沒有修改的版本</li>
+</ol>
+<p>假設樹初始有一些點是紅色的，我們只要透過從所有紅色點開始 BFS，即可 \( O(N) \) 維護每個點到最近的紅色點的距離。</p>
+<ol start="2">
+<li>如果將單一個修改應用到詢問上</li>
+</ol>
+<p>對於額外被修改成紅色的點，我們直接計算他與詢問的點距離是多少。</p>
+<p>樹上給定兩點求距離是一個非常經典的問題，請讀者參考其他章節，或自行研究。總而言之，這裡你可以透過將查詢距離的問題轉換成 LCA 問題後再轉換成 RMQ 問題，然後搭配 Sparse Table 來達到 \( O(N\log N) \) 預處理、\( O(1) \) 查詢兩點距離的算法。</p>
+<p>事實上此處就算是使用倍增法來求 LCA ，也就是查詢時會是 \( O(\log N) \)，仍然能通過此題。</p>
+<ol start="3">
+<li>如何快速的重建維護的資訊</li>
+</ol>
+<p>重新從所有紅色的點開始 BFS 即可，此步驟 \( O(N + M) \)。</p>
+<p>綜上所述，透過操作分塊，我們可以得到一個 \( O((N + M)\sqrt{N}) \) 的做法。</p>
+</details>
+<blockquote>
+<p><a href="https://codeforces.com/contest/446/problem/C">CF 446C - DZY Loves Fibonacci Numbers</a></p>
+<p>定義 \( F_n \) 為費氏數列第 \( n \) 項。\( F_1 = 1; F_2 = 1; F_n = F_{n - 1} + F_{n - 2} \)。</p>
+<p>給一個長度為 \( N \) 的序列 \( a \)，以及 \( M \) 筆操作。操作有兩種：</p>
+<ol>
+<li>給定 \( l, r \)，對所有 \( i, (l \leq i \leq r) \)，將 \( a_i \) 加上 \( F_{i - l + 1} \)。</li>
+<li>給定 \( l, r \)，輸出 \( \sum_{i = l}^{r} a_i \bmod {10^9 + 9} \)。</li>
+</ol>
+<ul>
+<li>\( N, M \leq 3 \times 10^5 \)</li>
+</ul>
+</blockquote>
+<details><summary> Solution </summary>
+<p>本題的官方解答是利用一些筆者認為很無聊的觀察來得出一個 \( O(M\log N) \) 作法。</p>
+<p>事實上，你也可以使用操作分塊的想法來做這題。</p>
+<p>預處理費氏數列前 \( N \) 項的前綴和，就可以快速將一個區間加上費氏數列的操作貢獻給詢問區間和。</p>
+<p>查詢區間和就會想到前綴和，可以透過對要區間加費氏數列的左端點與右端點打上標記，從頭掃過去，快速重建前綴和。</p>
+<p>可以在 \( O((N + M)\sqrt{N}) \) 下解出這題，細節就給讀者自行練習。</p>
+</details>
+<blockquote>
+<p><a href="https://loj.ac/p/6284">LOJ 6284 - 数列分块入门 8</a></p>
+<p>給一個長度為 \( N \) 的序列，以及 \( N \) 個操作。每次操作給定 \( l, r, c \)，請輸出區間 \( l, r \) 有多少數字等於 \( c \) 並將所有區間 \(l, r\) 的元素都改成 \(c\)。</p>
+</blockquote>
+<details><summary> Solution </summary>
+<p>直接對序列分塊，每一塊維護一個懶人標記，代表這一整塊的元素是否都相同。操作時，對於包含到的塊，直接查看懶標，看整塊是否全等於某個數字，不是的話就進入塊中查看每個元素；是的話直接修改懶標即可。對於被包含到部分的塊，直接到塊中暴力查看與修改。</p>
+<p>以上的作法看似非常暴力，因爲直觀上，可能一次操作就會進入很多塊中一個元素一個元素去比較，單一操作的最慘時間複雜度是 \( O(N) \)。</p>
+<p>這個做法的時間複雜度與到底有幾塊並非整塊相等有關，因為非整塊相等會讓他有機會在未來的操作需要進入塊中查看每個元素。可以發現每一次操作過後，塊內的元素不全部相等的塊的數量最多加二。</p>
+<p>因此其實這個做法均攤來看其實是 \( O(N\sqrt{N}) \)。證明留給讀者練習。</p>
+</details>
+<blockquote>
+<p><a href="https://codeforces.com/gym/103443/problem/C">The 2021 ICPC Asia Taipei Regional Programming Contest pC - Community Service</a></p>
+<p>請有興趣的讀者自行去連結查看題目敘述，以免暴雷未來打算模擬這屆台北站當作團練的人。</p>
+</blockquote>
+<details><summary> Solution </summary>
+<p>這題在當年台北站算是有難度的題目，僅有 14 隊做出來。官解做法複雜度為 \( O(M\log N) \)，但是在賽中有隊伍直接使用分塊算法解出這題。</p>
+<p>首先因為 \( n \leq 10^6 \)，而 \( e \leq 2 \times 10^5 \)，所以可以先 relabel ，讓序列的大小變成 \( 2 \times 10^5 \)。</p>
+<p>接著對序列分塊，每一塊需要維護兩種 stack，完整覆蓋到的 stack，稱作 \(whole\)，以及部分覆蓋的 stack，稱做 \(part\)。每一個元素也要自己維護一個 stack。</p>
+<p>每當第一種操作時，就將新增的人 push 到區間完整覆蓋到的塊的 \( whole \) 與左右沒完整覆蓋到的元素自己的 stack 上。注意到，左右只包含到部分的塊，會需要 push 到該塊的 \( part \) 上。因為有一種可能是第二種操作的區間完整包含這一塊，如果只有 push 進個別的小元素的 stack 內，會沒辦法知道其實他可供選擇。</p>
+<p>第二種操作時，對於查詢區間完整覆蓋到的塊，他的 \( whole \) 與 \( part \) 的 top 會是答案候選人，對於左右區間沒完整覆蓋到的部分，各自元素自己的 stack 的 \( top \) 與他們所在的塊的 \( whole \) 的 \( top \) 會是答案候選人，將所有答案候選人挑最晚加進來的就是答案。</p>
+<p>我們同時也需要 lazy 的去 pop stack 的元素。如果每次操作二找到答案後直接將所有 stack 中有他的都刪掉，這樣複雜度非常差。我們可以要開個陣列紀錄每個元素是否已經被刪除了。當每次要求某個 stack 的 top 時，都從他的 top 開始持續 pop 直到碰到第一個還沒被刪除的元素。</p>
+<p>綜上所述，因此我們可以在 \( e\sqrt{e} \) 的複雜度下解出這題。</p>
+<p>這個做法的正確性就請讀者自行思考看看了。</p>
+</details>
+<h2 id="summary"><a class="header" href="#summary">Summary</a></h2>
+<ul>
+<li>就算題目有帶 \( \log{N} \) 而非 \( \sqrt{N} \) 的做法，仍然可以嘗試看看使用分塊來解。筆者親身經歷也耳聞許多在賽中用分塊來解出標程時間複雜度比分塊好的題目的例子。</li>
+<li>經驗上來看，\( N \leq 2 \times 10^5 \) 且操作很乾淨的話，分塊是有機會通過的，但若 \( N \leq 5 \times 10^5 \) 那大概預期解答就不會帶根號了。</li>
+<li>以出題者的視角來看的話，如果預期的解答不是分塊，記得想想看能不能使用分塊來做，並生能卡掉他的測資。</li>
+<li>塊的大小不一定每次都是根號，要實際分析每種操作的貢獻才能得出理論最佳值。</li>
+<li>理論最佳值的大小也不一定跑最快，實際執行時還需要考慮測資的分佈與每種操作的複雜程度，可能將塊的大小設定成多一點或少一點能獲得比較快的執行速度。</li>
+<li>分塊中的每一塊也可以用類似 lazy tag 的想法，在塊上打標記說有修改，等之後真的需要取得單位元素的值時再推下去。</li>
+<li>以上的範例程式碼都把塊的大小寫成一個固定的常數，如果是有多筆測資的題目或是要壓常數，最好還是根據輸入的 n 來決定塊的大小比較好。</li>
+</ul>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<p>底下的資源包含許多例題，同學可以去參考看看。</p>
+<ul>
+<li><a href="https://codeforces.com/blog/entry/96713">[Tutorial] Square Root Techniques</a></li>
+<li><a href="https://usaco.guide/plat/sqrt?lang=cpp">Square Root Decomposition - USACO Guide</a></li>
+<li><a href="https://cp-algorithms.com/data_structures/sqrt_decomposition.html">Sqrt Decomposition - Algorithms for Competitive Programming</a></li>
+<li><a href="https://codeforces.com/blog/entry/54133">SQRT decomposition for beginners</a></li>
+<li><a href="https://blog.csdn.net/BWzhuzehao/article/details/111057797">分块算法总结&amp;专题训练</a></li>
+<li><a href="http://hzwer.com/8053.html">「分块」数列分块入门1 – 9 by hzwer</a></li>
+<li><a href="https://codeforces.com/blog/entry/23005">SQRT decomposition</a></li>
+<li><a href="https://github.com/enkerewpo/OI-Public-Library/blob/master/IOI%E4%B8%AD%E5%9B%BD%E5%9B%BD%E5%AE%B6%E5%80%99%E9%80%89%E9%98%9F%E8%AE%BA%E6%96%87/%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F2017%E8%AE%BA%E6%96%87%E9%9B%86.pdf">&lt;&lt;非常规大小分块算法初探&gt;&gt; - 国家集训队2017论文集</a></li>
+</ul>
+<div class="footnote-definition" id="note-1"><sup class="footnote-definition-label">1</sup>
+<p>經驗上，多數題目的分塊大小都是 \( \sqrt{N} \) 為最佳，所以在想解法時很自然會直接將塊的大小設為根號，但對於一些特殊的算法可能需要取不同的分塊大小。</p>
+</div>
+<div class="footnote-definition" id="note-2"><sup class="footnote-definition-label">2</sup>
+<p><a href="https://blog.csdn.net/KIKO_caoyue/article/details/83413687">线段树模板?VS分块【POJ3264】</a></p>
+</div>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../sqrt/intro.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../math/intro.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../sqrt/intro.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../math/intro.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
