@@ -12,7 +12,8 @@
   - [Basic DP]()
 - [Flow]()
 - [Mathematics](math/intro.md)
-	- [Arithmetic Function](math/arithmetic_function.md)
+  - [Introduction to Arithmetic Function](math/introduction_to_arithmetic_function.md)
+  - [Revisit Arithmetic Function](math/revisit_arithmetic_function.md)
 - [Miscellaneous]()
 
 ---
