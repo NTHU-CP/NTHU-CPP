@@ -56,30 +56,30 @@
 
 而我們會有以下定理：
 
-> \\( i \\) 所在的塊（值為 \\( \lfloor n/i\rfloor \\) 的塊）的右端點為 \\( \lfloor n/\lfloor n/i\rfloor\rfloor \\)。
+> \\( i \\) 所在的塊（值為 \\( \left\lfloor\frac n i\right\rfloor \\) 的塊）的右端點為 \\( \left\lfloor\frac{n}{\left\lfloor\frac n i\right\rfloor}\right\rfloor \\)。
 
-舉例來說：\\( n=10 \\) 的情況下，\\( 7 \\) 所在的塊的右端點是 \\( \lfloor 10/\lfloor10/7\rfloor\rfloor=\lfloor10/1\rfloor=10 \\)。
+舉例來說：\\( n=10 \\) 的情況下，\\( 7 \\) 所在的塊的右端點是 \\( \left\lfloor\frac{10}{\left\lfloor\frac{10}{7}\right\rfloor}\right\rfloor=\left\lfloor\frac{10}{1}\right\rfloor=10 \\)。
 
 證明：
 
-給定 \\( i \\)，令 \\( \lfloor n/i\rfloor = k \\)。
+給定 \\( i \\)，令 \\( \left\lfloor\frac n i\right\rfloor = k \\)。
 
-現在我們要找一個最大的 \\( j \\) 使得 \\( \lfloor n/j\rfloor =k \\)。
+現在我們要找一個最大的 \\( j \\) 使得 \\( \left\lfloor\frac n j\right\rfloor =k \\)。
 
 \begin{align}
 \left\lfloor\frac n j\right\rfloor =k &\Leftrightarrow k\le \frac n j< k+1 \\\\
 &\Leftrightarrow \frac{n}{k+1}< j \le\frac{n}{k} 
 \end{align}
 
-注意到 \\( i \\) 是滿足 \\( \lfloor n/i\rfloor =k \\) 的，因此至少有個正整數 \\( j \\) 滿足 \\( \frac{n}{k+1}< j \le\frac{n}{k} \\)。
+注意到 \\( i \\) 是滿足 \\( \left\lfloor\frac n i\right\rfloor =k \\) 的，因此至少有個正整數 \\( j \\) 滿足 \\( \frac{n}{k+1}< j \le\frac{n}{k} \\)。
 
 取最後一式的右半部分可知 \\( j\le\frac{n}{k} \\)。
 
-又因為 \\( j \\) 是正整數，因此分數的部分可以加上下高斯，由此得到 \\( j\le\lfloor n/k\rfloor \\)。
+又因為 \\( j \\) 是正整數，因此分數的部分可以加上下高斯，由此得到 \\( j\le\left\lfloor\frac n k\right\rfloor \\)。
 
-\\( j \\) 要盡量大，因此取 \\( j=\lfloor n/k \rfloor \\)，再將 \\( k=\lfloor n/i\rfloor \\) 代入即可得
+\\( j \\) 要盡量大，因此取 \\( j=\left\lfloor\frac n k\right\rfloor \\)，再將 \\( k=\left\lfloor\frac n i\right\rfloor \\) 代入即可得
 
-\\[ \displaystyle j=\lfloor n/\lfloor n/i\rfloor\rfloor \\]
+\\[ \displaystyle j=\left\lfloor\frac{n}{\left\lfloor\frac n i\right\rfloor}\right\rfloor \\]
 
 <p align="right">\( \blacksquare \)</p>
 
@@ -125,13 +125,13 @@ for (int i = 1, r = 0; i <= n; i = r + 1) {
 
 令 \\( S_g(j)=\sum_{i=1}^j g(i) \\)。
 
-我們知道，對於數論分塊的左端點 \\( i \\)，其右端點是 \\( \lfloor n/\lfloor n/i\rfloor\rfloor \\)。
+我們知道，對於數論分塊的左端點 \\( i \\)，其右端點是 \\( \left\lfloor\frac{n}{\left\lfloor\frac n i\right\rfloor}\right\rfloor \\)。
 
 因此：
 
 \begin{align}
-\displaystyle\sum_{j=i}^{\lfloor n/\lfloor n/i\rfloor\rfloor} g(j)\times S_f\left(\left\lfloor\frac{n}{j}\right\rfloor\right)
-&= S_f\left(\left\lfloor\frac{n}{i}\right\rfloor\right)\times\sum_{j=1}^{\lfloor n/\lfloor n/i\rfloor\rfloor} g(j) \\\\
+\displaystyle\sum_{j=i}^{\left\lfloor\frac{n}{\left\lfloor\frac n i\right\rfloor}\right\rfloor} g(j)\times S_f\left(\left\lfloor\frac{n}{j}\right\rfloor\right)
+&= S_f\left(\left\lfloor\frac{n}{i}\right\rfloor\right)\times\sum_{j=1}^{\left\lfloor\frac{n}{\left\lfloor\frac n i\right\rfloor}\right\rfloor} g(j) \\\\
 &= S_f\times\left(S_g\left( \left\lfloor\frac{n}{\left\lfloor\frac{n}{i}\right\rfloor}\right\rfloor \right) - S_g(i - 1)\right)
 \end{align}
 
@@ -199,7 +199,7 @@ for (int i = 1, r = 0; i <= n; i = r + 1) {
 
 而對於當前的左端點 \\( i \\) 要找右端點的時候，我們先分別找到對於 \\( n \\) 和對於 \\( m \\) 的右端點。
 
-也就是 \\( \left\lfloor n/\left\lfloor n/i\right\rfloor\right\rfloor \\) 還有 \\( \left\lfloor m/\left\lfloor m/i\right\rfloor\right\rfloor \\)。
+也就是 \\( \left\lfloor\frac{n}{\left\lfloor\frac n i\right\rfloor}\right\rfloor \\) 還有 \\( \left\lfloor\frac{m}{\left\lfloor\frac m i\right\rfloor}\right\rfloor \\)。
 
 跳到其中比較近的那個即可。
 
