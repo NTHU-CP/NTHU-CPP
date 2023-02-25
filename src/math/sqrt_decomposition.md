@@ -100,7 +100,7 @@ for (int i = 1, r = 0; i <= n; i = r + 1) {
 
 由於不同數值只有 \\( \mathcal{O}(\sqrt{n}) \\) 個，而每個不同數值也只會被算到一次。
 
-因此時間複雜度從 \\(O(n)\\) 降為 \\(O(\sqrt{n})\\)。
+因此時間複雜度從 \\(\mathcal{O}(n)\\) 降為 \\(\mathcal{O}(\sqrt{n})\\)。
 
 ## 數論分塊的應用
 
@@ -215,4 +215,5 @@ for (int i = 1, r = 0; i <= n; i = r + 1) {
 * [Atcoder ABC 230 E](https://atcoder.jp/contests/abc230/tasks/abc230_e)
 * [Codeforces 1263 C](https://codeforces.com/problemset/problem/1263/C)
 * [Codefroces 616 E](https://codeforces.com/problemset/problem/616/E)
-* [Codeforces 1780 E](https://codeforces.cc/contest/1780/problem/E)，這題偏難。
+* [Codeforces 1780 E](https://codeforces.cc/contest/1780/problem/E)
+	* 這題偏難
