@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="spacer"></li><li class="chapter-item "><div>Fundemantal</div></li><li class="chapter-item "><a href="../greedy/intro.html">Greedy</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../greedy/basic.html">Basic Greedy</a></li></ol></li><li class="chapter-item "><div>Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div>Basic DP</div></li></ol></li><li class="chapter-item "><div>Flow</div></li><li class="chapter-item expanded "><a href="../math/intro.html">Mathematics</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../math/arithmetic_function.html" class="active">Arithmetic Function</a></li></ol></li><li class="chapter-item "><div>Miscellaneous</div></li><li class="spacer"></li><li class="chapter-item "><div>C++ Programming Tips</div></li><li class="chapter-item "><a href="../others/codebook.html">Make a Codebook</a></li><li class="chapter-item "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item "><div>CSES Problem Tag</div></li><li class="chapter-item "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
+                <ol class="chapter"><li class="chapter-item "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="spacer"></li><li class="chapter-item "><div>Fundemantal</div></li><li class="chapter-item "><a href="../greedy/intro.html">Greedy</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../greedy/basic.html">Basic Greedy</a></li></ol></li><li class="chapter-item "><div>Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div>Basic DP</div></li></ol></li><li class="chapter-item "><div>Flow</div></li><li class="chapter-item "><a href="../sqrt/intro.html">Sqrt Technique</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../sqrt/sqrt_decomposition.html">Square Root Decomposition</a></li><li class="chapter-item "><div>Sqrt-Related Observation</div></li><li class="chapter-item "><div>Mo's Algorithm</div></li></ol></li><li class="chapter-item expanded "><a href="../math/intro.html">Mathematics</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../math/arithmetic_function.html" class="active">Arithmetic Function</a></li><li class="chapter-item "><a href="../math/sqrt_decomposition.html">數論分塊</a></li><li class="chapter-item "><a href="../math/du_sieve.html">杜教篩</a></li></ol></li><li class="chapter-item "><div>Miscellaneous</div></li><li class="spacer"></li><li class="chapter-item "><div>C++ Programming Tips</div></li><li class="chapter-item "><a href="../others/codebook.html">Make a Codebook</a></li><li class="chapter-item "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item "><div>CSES Problem Tag</div></li><li class="chapter-item "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -157,17 +157,6 @@
 }
 </code></pre>
 <p>注意到，在線性篩中，每個數字只會被其「最小的質因數」篩到一次。</p>
-<h2 id="數論分塊整除分塊"><a class="header" href="#數論分塊整除分塊">數論分塊（整除分塊）</a></h2>
-<p>給定 \( N \) ，則對於 \(i=1、2\cdots、N$，$\lfloor N/i\rfloor\) 只會有 \(\sqrt{N}\) 種取值。</p>
-<p>定理：\(i\) 所在的塊（值為 \(\lfloor n/i\rfloor\) 的塊）的右端點為 \(\lfloor n/\lfloor n/i\rfloor\rfloor\)。</p>
-<p>因此，若已知 \(S(n) = \sum_{i=1}^n f(i)\)，則 \(\sum_{i=1}^n f(i)\lfloor n/i\rfloor\) 可以如下得到：</p>
-<pre><code class="language-cpp">for (int i = 1, r = 0; i &lt;= n; i = r + 1) {
-  r = n / (n / i);
-  ans += 1LL * (S[r] - S[i - 1]) * (n / i);
-}
-</code></pre>
-<p>時間複雜度從 \(O(n)\) 降為 \(O(\sqrt{n})\)。</p>
-<p>定理：對於任意正整數 \(n、a、b\)，都有 \(\lfloor\lfloor n/a\rfloor b\rfloor=\lfloor n/(ab)\rfloor\)。</p>
 <h2 id="數論函數-1"><a class="header" href="#數論函數-1">數論函數</a></h2>
 <p>定義：\(f:\mathbb{Z}\rightarrow\mathbb{C}\)，則稱 \(f\) 是數論函數。</p>
 <p>定義：若對於任意互質的 \(n\)、\(m\) 都有 \(f(nm)=f(n)f(m)\)，則稱 \(f\) 是積性的。</p>
@@ -245,7 +234,7 @@
                                 <i class="fa fa-angle-left"></i>
                             </a>
 
-                            <a rel="next" href="../others/codebook.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                            <a rel="next" href="../math/sqrt_decomposition.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                                 <i class="fa fa-angle-right"></i>
                             </a>
 
@@ -259,7 +248,7 @@
                         <i class="fa fa-angle-left"></i>
                     </a>
 
-                    <a rel="next" href="../others/codebook.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                    <a rel="next" href="../math/sqrt_decomposition.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
                         <i class="fa fa-angle-right"></i>
                     </a>
             </nav>
