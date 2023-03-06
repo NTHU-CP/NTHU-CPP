@@ -3,7 +3,7 @@
     <head>
         <!-- Book generated using mdBook -->
         <meta charset="UTF-8">
-        <title>Arithmetic Function - NTHU CPP</title>
+        <title>Introduction to Arithmetic Function - NTHU CPP</title>
 
 
         <!-- Custom HTML head -->
@@ -81,7 +81,7 @@
 
         <nav id="sidebar" class="sidebar" aria-label="Table of contents">
             <div class="sidebar-scrollbox">
-                <ol class="chapter"><li class="chapter-item "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="spacer"></li><li class="chapter-item "><div>Fundemantal</div></li><li class="chapter-item "><a href="../greedy/intro.html">Greedy</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../greedy/basic.html">Basic Greedy</a></li></ol></li><li class="chapter-item "><div>Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div>Basic DP</div></li></ol></li><li class="chapter-item "><div>Flow</div></li><li class="chapter-item "><a href="../sqrt/intro.html">Sqrt Technique</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../sqrt/sqrt_decomposition.html">Square Root Decomposition</a></li><li class="chapter-item "><div>Sqrt-Related Observation</div></li><li class="chapter-item "><div>Mo's Algorithm</div></li></ol></li><li class="chapter-item expanded "><a href="../math/intro.html">Mathematics</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../math/arithmetic_function.html" class="active">Arithmetic Function</a></li><li class="chapter-item "><a href="../math/sqrt_decomposition.html">數論分塊</a></li><li class="chapter-item "><a href="../math/du_sieve.html">杜教篩</a></li></ol></li><li class="chapter-item "><div>Miscellaneous</div></li><li class="spacer"></li><li class="chapter-item "><div>C++ Programming Tips</div></li><li class="chapter-item "><a href="../others/codebook.html">Make a Codebook</a></li><li class="chapter-item "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item "><div>CSES Problem Tag</div></li><li class="chapter-item "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
+                <ol class="chapter"><li class="chapter-item "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="spacer"></li><li class="chapter-item "><div>Fundemantal</div></li><li class="chapter-item "><a href="../greedy/intro.html">Greedy</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../greedy/basic.html">Basic Greedy</a></li></ol></li><li class="chapter-item "><div>Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div>Basic DP</div></li></ol></li><li class="chapter-item "><div>Flow</div></li><li class="chapter-item "><a href="../sqrt/intro.html">Sqrt Technique</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../sqrt/sqrt_decomposition.html">Square Root Decomposition</a></li><li class="chapter-item "><div>Sqrt-Related Observation</div></li><li class="chapter-item "><div>Mo's Algorithm</div></li></ol></li><li class="chapter-item expanded "><a href="../math/intro.html">Mathematics</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../math/introduction_to_arithmetic_function.html" class="active">Introduction to Arithmetic Function</a></li><li class="chapter-item "><a href="../math/sqrt_decomposition.html">數論分塊</a></li><li class="chapter-item "><a href="../math/du_sieve.html">杜教篩</a></li><li class="chapter-item "><a href="../math/revisit_arithmetic_function.html">Revisit Arithmetic Function</a></li></ol></li><li class="chapter-item "><div>Miscellaneous</div></li><li class="spacer"></li><li class="chapter-item "><div>C++ Programming Tips</div></li><li class="chapter-item "><a href="../others/codebook.html">Make a Codebook</a></li><li class="chapter-item "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item "><div>CSES Problem Tag</div></li><li class="chapter-item "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
             </div>
             <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
         </nav>
@@ -142,89 +142,104 @@
 
                 <div id="content" class="content">
                     <main>
-                        <h1 id="數論函數"><a class="header" href="#數論函數">數論函數</a></h1>
-<h2 id="線性篩"><a class="header" href="#線性篩">線性篩</a></h2>
-<pre><code class="language-cpp">for (int i = 2; i &lt;= n; ++i) {
-  if (isPrime[i])
-    primes.push_back(i);
-  for (auto p : primes) {
-    if (i * p &gt; n)
-      break;
-    isPrime[i * p] = false;
-    if (i % p == 0)
-      break;
-  }
-}
-</code></pre>
-<p>注意到，在線性篩中，每個數字只會被其「最小的質因數」篩到一次。</p>
-<h2 id="數論函數-1"><a class="header" href="#數論函數-1">數論函數</a></h2>
-<p>定義：\(f:\mathbb{Z}\rightarrow\mathbb{C}\)，則稱 \(f\) 是數論函數。</p>
+                        <h1 id="數論函數介紹"><a class="header" href="#數論函數介紹">數論函數介紹</a></h1>
+<blockquote>
+<p>定義：若 \(f:\mathbb{Z}\rightarrow\mathbb{C}\)，則稱 \(f\) 是數論函數。</p>
+</blockquote>
+<p>翻成白話就是，若一個函數的值域是整數（被定義在整數上）、對應域是複數，則其為數論函數。</p>
+<p>舉例來說：</p>
+<ul>
+<li>是否為質數： \( p(n)=\cases{1 &amp;: \( n \) 是質數 \\ 0 &amp;: \( n \) 不是質數} \)</li>
+<li>歐拉函數：\( \varphi(n)=n\text{以下與其互質的數字數量} \)</li>
+<li>因數和： \( \sigma(n)=\sum_{d\mid n} d \)</li>
+<li>GCD 函數：\( f_{7122}(n) = \gcd(7122, n) \)</li>
+</ul>
+<h2 id="積性函數"><a class="header" href="#積性函數">積性函數</a></h2>
+<blockquote>
 <p>定義：若對於任意互質的 \(n\)、\(m\) 都有 \(f(nm)=f(n)f(m)\)，則稱 \(f\) 是積性的。</p>
-<p>推論：積性函數的取值取決於在質數的冪次上的取值。</p>
-<p>定義：Dirichlet 捲積 \(f\ast g(n)=\sum_{d\mid n}f(d)g(\dfrac n d)\)。</p>
-<p>性質：Dirichlet 捲積滿足交換律、結合律、對於一般加法的分配律。</p>
-<p>定義：艾佛森括號 \([P]=\cases{1&amp;: If (P) is true \\ 0&amp;: Otherwise}\)；特別的，\([P=1]\) 可以記作 \(\iota(P)\)。</p>
-<p>定義：莫比烏斯函數 \(\mu(n)=\cases{1&amp;: \(n = 1\) \\ (-1)^k&amp;: \(n = p_1p_2\cdots p_k\) \\ 0&amp;: Otherwise}\)。</p>
-<hr />
-<p>只要是積性函數就能夠使用線性篩。</p>
-<p>一般來說，會分成三種情況來分析，其中 \(p\) 是任意（在線性篩中通常是最小）的質因數：</p>
-<p>\(n=\cases{1 \\ pk &amp; \(p \mid k\) \\ pk &amp; \(p\nmid k\)} \)</p>
-<h2 id="引理"><a class="header" href="#引理">引理</a></h2>
-<ol>
-<li>\( \sum_{d\mid n}\mu(d)=[n=1] \)</li>
-<li>\( f(n)=\sum_{d\mid n}g(d)\Longleftrightarrow g(n)=\sum_{d\mid n}\mu(\frac n d)f(d) \)</li>
-<li>\( f(n)=\sum_{n\mid d}g(d)\Longleftrightarrow g(n)=\sum_{n\mid d}\mu(\frac d n)f(d) \)</li>
-<li>\( \sum_{d\mid n}\varphi(d)=n \)，\( \varphi(n)=\sum_{d\mid n}\mu(\frac n d)\times d \)</li>
-</ol>
-<h2 id="例題"><a class="header" href="#例題">例題</a></h2>
-<ol>
-<li>\( \sum_{i=1}^N\sum_{j=1}^M [\gcd(i,j)=1] \)</li>
-<li>\( \sum_{i=1}^N\sum_{j=1}^M [\gcd(i,j)\ \mbox{is prime}] \)</li>
-<li>\( \sum_{i=1}^N\sum_{j=1}^M \gcd(i,j) \)</li>
-<li>\( \sum_{i=1}^N\sum_{j=1}^M ij\times \gcd(i,j) \)</li>
-</ol>
-<h2 id="套路"><a class="header" href="#套路">套路</a></h2>
-<p>可以發現，使用到的技巧不外乎是：</p>
+</blockquote>
+<p>舉例來說：</p>
+<blockquote>
+<p>\( \sigma(n) \) 是積性的。</p>
+</blockquote>
+<p>證明：</p>
+<p>令 \( n \) 的質因數分解為 \( p_1^{\alpha_1}p_2^{\alpha_1}\cdots p_m^{\alpha_m} \)。</p>
+<p>其因數和為 \( \displaystyle\sigma(n)=\prod_{i=1}^m(1+p_i+\cdots +p_i^{\alpha_i}) \)，考慮展開後的每一項即可知其正確性。</p>
+<p>而對於任何質數的冪次 \( p^\alpha \)，也容易知道 \( \sigma(p^\alpha)=1+p+\cdots + p^\alpha \)。</p>
+<p>因此，\( \displaystyle\sigma(n)=\prod_{i=1}^m \sigma(p_i^{\alpha_i}) \)，從這條式子可以知道 \( \sigma \) 符合積性函數的定義。</p>
+<p align="right">\( \blacksquare \)</p>
+<p>以上是一個由公式中可以看出其積性的例子。</p>
+<blockquote>
+<p>推論：積性函數的取值可以由其在質數的冪次上的取值來求出。</p>
+</blockquote>
+<p>寫成式子來說：\( f(n)=f(p_1^{\alpha-1})f(p_2^{\alpha_2})\cdots f(p_m^{\alpha_m})=\prod_{i=1}^m f(p_i^{\alpha_i}) \)。</p>
+<p>上述的因數和函數就是其中一個例子。</p>
+<blockquote>
+<p>定理：歐拉函數是積性的，也就是說若 \( n \)、\( m \) 互質，則 \( \varphi(nm)=\varphi(n)\times\varphi(m) \)。</p>
+</blockquote>
+<p>當然，如果知道歐拉函數的公式，就可以輕易說明其為積性，但我們先忘掉公式。</p>
+<p>證明：</p>
+<p>將 \( 1\sim nm \) 擺成 \( n\times m \) 的樣子。</p>
+<p>\[
+\left[\begin{array}{cccc}
+1 &amp; 2 &amp; \cdots &amp; m \\
+m + 1 &amp; m + 2 &amp; \cdots &amp; 2m \\
+\vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+(n-1)m+1 &amp; (n-1)m+2 &amp; \cdots &amp; nm
+\end{array}\right]
+\]</p>
+<p>注意到，每個橫排在模 \( m \) 之後，恰好會對應到 \( 0\sim m-1 \) 的每個數字。</p>
+<p>所以對於第 \( i \) （\( i=1\sim m \)） 個直排，若 \( \gcd(i, m)\neq 1 \)，則其上所有數字都不會和 \( nm \) 互質。</p>
+<p>相反的，若 \( \gcd(i, m)=1 \)，則其上所有數字都和 \( nm \) 互質，這樣的直排共有 \( \varphi(m) \) 個。</p>
+<p>另一方面因為 \( \gcd(n,m)=1 \)，因此 \( m\times (0\sim n-1) \) 在模 \( n \) 後會是 \( 0\sim n-1 \)。</p>
+<p>所以每個直排在模 \( n \) 之後，恰好會對應到 \( 0\sim n-1 \) 的每個數字。</p>
+<p>由此可知每個直排上恰有 \( \varphi(n) \) 個數字與 \( n \) 互質。</p>
+<p>考慮到恰有 \( \varphi(m) \) 個直排與 \( m \) 互質，且這些直排上恰有 \( \varphi(n) \) 個數字與 \( n \) 互質。</p>
+<p>綜合起來就是整個表格上恰有 \( \varphi(m)\times\varphi(n) \) 個數字與 \( n\times m \) 互質。</p>
+<p>根據定義，這也就是 \( \varphi(nm) \)。</p>
+<p align="right">\( \blacksquare \)</p>
+<blockquote>
+<p>推論：歐拉函數 \( \displaystyle\varphi(n)=n\times\prod_{i=1}^m \frac{p_i - 1}{p_i} \)，其中 \( p_i \) 是 \( n \) 的質因數。</p>
+</blockquote>
+<p>證明：</p>
+<p>我們已經知道歐拉函數是積性的，因此只需要討論其在質數的冪次上的取值即可。</p>
+<p>對於 \( p^\alpha \)，其因數只有 \( p \)，因此在其之下與其不互質的數字有 \( p^{\alpha -1} \) 個。</p>
+<p>因此 \( \varphi(p^\alpha)=p^\alpha -p^{\alpha - 1} \)。</p>
+<p>所以對於 \( n=p_1^{\alpha_1}p_2^{\alpha_1}\cdots p_m^{\alpha_m} \)，\( \displaystyle\varphi(n)=\prod_{i=1}^m p_i^{\alpha_i} - p_i^{\alpha_i - 1}\)。</p>
+<p>整理後即可得 \( \displaystyle\varphi(n) = n\times\prod_{i=1}^m \frac{p_i - 1}{p_i} \)。</p>
+<p align="right">\( \blacksquare \)</p>
+<p>由此可知，若已知一個函數是積性的，那麼我們就可以藉由討論其在質數冪次上的取值來得到其公式。</p>
+<h2 id="許多數論函數的例子"><a class="header" href="#許多數論函數的例子">許多數論函數的例子</a></h2>
+<blockquote>
 <ul>
-<li>看到 \(\gcd\) 就枚舉他</li>
-<li>看到艾佛森括號就把他換掉</li>
-<li>原本枚舉因數的，就改成枚舉倍數</li>
-<li>原本枚舉倍數的，就改成枚舉因數</li>
-<li>把枚舉的倍數提出原本的數</li>
-<li>看到長得像 Lemma 的就套套看</li>
-<li>看到兩個 \(\Sigma\) 的變數乘在一起，就改成枚舉兩者乘積和其因數</li>
-</ul>
-<h2 id="習題"><a class="header" href="#習題">習題</a></h2>
-<ol>
-<li>\( \sum_{i=1}^N\sum_{j=1}^M [\gcd(i,j)\ \mbox{is a perfect number}] \)</li>
-<li>\( \sum_{i=1}^N\sum_{j=1}^M lcm(i,j) \)</li>
-<li>\( \sum_{i=1}^N\sum_{j=1}^M \sigma_0(ij) \)</li>
-<li>\( \prod_{i=1}^N\prod_{i=1}^M F_{\gcd(i,j)} \)</li>
-</ol>
-<p>其中 \( \sigma_0 \) 是因數數量；\( F \) 是費氏數列。</p>
-<p>每一題都有 \( Q \) 筆詢問，\( N、M、Q\le 1e5 \)</p>
-<h2 id="杜教篩"><a class="header" href="#杜教篩">杜教篩</a></h2>
-<p>題目：給定函數 \( f \)，要求 \( \sum_{i=1}^n f(n) \)。</p>
-<p>定理：杜教篩 \( \displaystyle g(1)S(n)=\sum_{i=1}^n (g\ast f)(i) - \sum_{i=2}^n g(i)S(\lfloor\frac n i\rfloor) \)。</p>
-<p>定義：\( R(n)={\frac n i\mid i=1,2,\cdots, n} \)。</p>
-<p>定理：若 \( m\in R(n) \)，則 \( R(m)\subseteq R(n) \)。</p>
-<p>若 \( g\ast f \) 還有 \( g \) 的前綴和都很好算，則可以使用杜教篩加速，複雜度能到 \( O(n^{2/3}) \)。</p>
-<h2 id="例題-1"><a class="header" href="#例題-1">例題</a></h2>
-<ol>
-<li>\( \sum_{i=1}^n \mu(i) \)</li>
-<li>\( \sum_{i=1}^n \varphi(i) \)</li>
-<li>\( \sum_{i=1}^n \sum_{j=1}^n ij\times \gcd(i,j) \)</li>
-</ol>
-<p>其中 \( n\le 10^{10} \)。</p>
-<h2 id="其他"><a class="header" href="#其他">其他</a></h2>
-<ul>
-<li>給定一棵邊帶權樹，一個路徑的價值是路徑上所有權重的 \( \gcd \)，求所有相異路徑的價值總和
-<ul>
-<li>（點數、權重 \( \le 10^5 \) ）</li>
-</ul>
+<li>
+<p>艾佛森括號 \([P]=\cases{1&amp;: If (P) is true \\ 0&amp;: Otherwise}\)</p>
 </li>
-<li>給定 \( a_1,\cdots,a_n\) （\( n\le 10^5 \) ），求 \( \sum_{i=1}^n \sum_{i=1}^n \gcd(a_i,a_j)\times\gcd(i,j) \)</li>
+<li>
+<p>\( \epsilon(n)=[n=1] \)</p>
+</li>
+<li>
+<p>\( id(n)=n \)</p>
+</li>
+<li>
+<p>\( 1(n)=1 \)</p>
+</li>
+<li>
+<p>因數數量：\( d(n)=\sum_{d\mid n} 1 \)</p>
+</li>
+<li>
+<p>因數總和：\( \sigma(n)=\sum_{d\mid n} d \)</p>
+</li>
+<li>
+<p>歐拉函數：\( \displaystyle\varphi(n) = n\times\prod_{i=1}^m \frac{p_i - 1}{p_i} \)</p>
+</li>
+<li>
+<p>莫比烏斯函數： \(\mu(n)=\cases{1&amp;: \(n = 1\) \\ (-1)^k&amp;: \(n = p_1p_2\cdots p_k\) \\ 0&amp;: Otherwise}\)。</p>
+</li>
 </ul>
+</blockquote>
+<h2 id="結語"><a class="header" href="#結語">結語</a></h2>
+<p>在這一章節中我們暫且點到為止，比較艱澀的內容會放在再探數論函數的章節中。</p>
 
                     </main>
 

@@ -1,0 +1,352 @@
+<!DOCTYPE HTML>
+<html lang="zh-TW" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Revisit Arithmetic Function - NTHU CPP</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="spacer"></li><li class="chapter-item "><div>Fundemantal</div></li><li class="chapter-item "><a href="../greedy/intro.html">Greedy</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../greedy/basic.html">Basic Greedy</a></li></ol></li><li class="chapter-item "><div>Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div>Basic DP</div></li></ol></li><li class="chapter-item "><div>Flow</div></li><li class="chapter-item "><a href="../sqrt/intro.html">Sqrt Technique</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../sqrt/sqrt_decomposition.html">Square Root Decomposition</a></li><li class="chapter-item "><div>Sqrt-Related Observation</div></li><li class="chapter-item "><div>Mo's Algorithm</div></li></ol></li><li class="chapter-item expanded "><a href="../math/intro.html">Mathematics</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/introduction_to_arithmetic_function.html">Introduction to Arithmetic Function</a></li><li class="chapter-item "><a href="../math/sqrt_decomposition.html">數論分塊</a></li><li class="chapter-item "><a href="../math/du_sieve.html">杜教篩</a></li><li class="chapter-item expanded "><a href="../math/revisit_arithmetic_function.html" class="active">Revisit Arithmetic Function</a></li></ol></li><li class="chapter-item "><div>Miscellaneous</div></li><li class="spacer"></li><li class="chapter-item "><div>C++ Programming Tips</div></li><li class="chapter-item "><a href="../others/codebook.html">Make a Codebook</a></li><li class="chapter-item "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item "><div>CSES Problem Tag</div></li><li class="chapter-item "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">NTHU CPP</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/NTHU-CP/NTHU-CPP" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="再探數論函數"><a class="header" href="#再探數論函數">再探數論函數</a></h1>
+<h2 id="dirichlet-捲積"><a class="header" href="#dirichlet-捲積">Dirichlet 捲積</a></h2>
+<p>兩個數論函數可以透過捲積操作來產生新的函數。</p>
+<blockquote>
+<p>定義：Dirichlet 捲積 \(f\ast g(n)=\sum_{d\mid n}f(d)g(\dfrac n d)\)。</p>
+</blockquote>
+<p>Dirichlet 捲積滿足交換律、結合律、對於一般加法的分配律。</p>
+<p>這些性質留給讀者自行驗證（交換律應該是顯然的）。</p>
+<p>舉例來說：</p>
+<blockquote>
+<p>\( d = 1\ast 1 \)</p>
+</blockquote>
+<p>換句話說，因數和函數是 \( 1 \) 函數與自身做捲積得到的。</p>
+<p>寫成式子的話：</p>
+<p>\[ \displaystyle d(n)=\sum_{d\mid n} 1=\sum_{d\mid n}1(d)\times 1\left(\frac n d\right) \]</p>
+<blockquote>
+<p>\( \sigma = id\ast 1 \)</p>
+</blockquote>
+<p>寫成式子的話：</p>
+<p>\[ \displaystyle \sigma(n)=\sum_{d\mid n} d=\sum_{d\mid n}id(d)\times 1\left(\frac n d\right) \]</p>
+<h2 id="引理"><a class="header" href="#引理">引理</a></h2>
+<p>強烈推薦拿筆動手跟著推導一遍。</p>
+<blockquote>
+<p>\( \displaystyle\sum_{d\mid n} f(d)=\sum_{d\mid n} f\left(\frac n d\right) \)</p>
+</blockquote>
+<details><summary>證明</summary>
+<p>LHS 中的 \( d \) 會跑過所有 \( n \) 的所有因數。</p>
+<p>RHS 中的 \( \frac n d \) 實際上也會跑過 \( n \) 的所有因數。</p>
+<p>因此兩邊枚舉的數字的集合是一樣的，因此自然相等。</p>
+<p align="right">\( \blacksquare \)</p>
+</details> 
+<blockquote>
+<p>\( \displaystyle\sum_{d\mid n}\mu(d)=[n=1] \)</p>
+<p>也就是 \( \mu\ast 1=\epsilon \)</p>
+</blockquote>
+<details><summary>證明</summary>
+<p>根據莫比烏斯函數 \( \mu \) 的定義，只要 \( n \) 的因數中有平方數，則函數值為 \( 0 \)。</p>
+<p>因此對於 \( n=p_1^{\alpha_1}p_2^{\alpha_1}\cdots p_m^{\alpha_m} \)，我們只需考慮 \( \alpha_i = 1 \) 的情況，也就是 \( n=p_1\times p_2\cdots p_m \)。</p>
+<p>再根據 \( \mu \) 的定義，對於每個質數我們可以將其視作貢獻一個 \( -1 \)。</p>
+<p>若是 \( m \) 個質數的連乘，由於每個質數貢獻一個 \( -1 \)，因此函數值就會是 \( (-1)^m \)。</p>
+<p>對於 \( \displaystyle\sum_{d\mid p_1 p_2\cdots p_m} \mu(d)\)，我們分別考慮 \( d \) 是 \( 0\sim m \) 個質數的連乘的取法。</p>
+<ul>
+<li>\( d \) 是 \( 0 \) 個質數的連乘的取法有 \( \binom{m}{0} \) 種，函數值是 \( (-1)^0 \)。</li>
+<li>\( d \) 是 \( 1 \) 個質數的連乘的取法有 \( \binom{m}{1} \) 種，函數值是 \( (-1)^1 \)。</li>
+<li>\( \vdots \)</li>
+<li>\( d \) 是 \( m \) 個質數的連乘的取法有 \( \binom{m}{m} \) 種，函數值是 \( (-1)^m \)。</li>
+</ul>
+<p>因此 </p>
+<p>\[ \displaystyle\mu(n) = \sum_{d\mid n}\mu(d) = \sum_{i=0}^m \binom{m}{i}\times (-1)^i \]</p>
+<p>若 \( m=0 \)，則結果為 \( 1 \)；否則根據二項式定理，結果為 \( 0 \)。</p>
+<p align="right">\( \blacksquare \)</p>
+</details> 
+<blockquote>
+<p>莫比烏斯反演：</p>
+<p>\( \displaystyle f(n)=\sum_{d\mid n}g(d)\Longleftrightarrow g(n)=\sum_{d\mid n}\mu\left(\frac n d\right)f(d) \)</p>
+<p>也就是 \( f=g\ast 1\Leftrightarrow g=\mu\ast f \)</p>
+</blockquote>
+<details><summary>證明一</summary>
+<p>已知左邊，推導右邊：</p>
+<p>\begin{align}
+\displaystyle\sum_{d\mid n}\mu\left(\frac n d\right)f(d) &amp;= \sum_{d\mid n}\mu\left(\frac n d\right)\sum_{t\mid d}g(t) &amp; \text{將 LHS 代入} \\
+&amp;=\sum_{t\mid n}\sum_{t\mid d\mid n} g(t)\times\mu\left(\frac n d\right) &amp; \text{交換 } \sum \text{ 的順序} \\
+&amp;=\sum_{t\mid n}\sum_{d\mid \frac n t} g(t)\times\mu\left(\frac{n}{dt}\right) &amp; \text{將枚舉的 } d \text{ 除 } t \text{，並在式子中補回去}\\
+&amp;=\sum_{t\mid n}g(t) \left(\sum_{d\mid \frac n t} \mu\left(\frac{\left(\frac{n}{t}\right)}{d}\right)\right) &amp; g(t) \text{ 與 } d \text{無關，可以移到前面} \\
+&amp;=\sum_{t\mid n}g(t) \left(\sum_{d\mid \frac n t} \mu(d)\right) &amp; \text{注意到括號裡就是枚舉 } \frac n t \text{ 的因數} \\
+&amp;=\sum_{t\mid n}g(t) \left[\frac{n}{t} =1\right] &amp; \text{根據上一條引理} \\
+&amp;=g(n) &amp; \text{根據定義可知只有 } t=n \text{ 時才有值}
+\end{align}</p>
+<p>注意到交換 \( \sum \) 的這一個步驟，此時的 \( t \)、\( d \)、\( n \) 之間滿足 \( t\mid d\mid n \)。</p>
+<p>因此在已知 \( n \) 的條件下，</p>
+<ul>
+<li>先枚舉 \( d \) 再枚舉 \( d \) 的因數作為 \( t \)</li>
+<li>先枚舉 \( t \) 再枚舉其小於等於 \( n \) 的倍數作為 \( d \)</li>
+</ul>
+<p>兩種枚舉方法其實是一樣的。</p>
+<p>已知右邊，推導左邊：</p>
+<p>\begin{align}
+\displaystyle\sum_{d\mid n}g(d)&amp;=\sum_{d\mid n}\sum_{t\mid d}\mu\left(\frac d t\right)f(t) &amp; \text{將 RHS 代入} \\
+&amp;= \sum_{t\mid n}\sum_{t\mid d\mid n} f(t)\times\mu\left(\frac d t\right) &amp; \text{交換 } \sum \text{ 的順序} \\
+&amp;= \sum_{t\mid n}\sum_{d\mid\frac n t} f(t)\times\mu(d) &amp; \text{將枚舉的 } d \text{ 除 } t \text{，並在式子中補回去}\\
+&amp;= \sum_{t\mid n}f(t)\times\left( \sum_{d\mid\frac n t}\mu(d) \right) &amp; f(t) \text{與 } d \text{無關，可以移到前面} \\
+&amp;= \sum_{t\mid n}f(t)\times \left[\frac{n}{t} =1\right] &amp; \text{根據上一條引裡} \\
+&amp;= f(n) &amp; \text{根據定義可知只有 } t=n \text{ 時才有值}
+\end{align}</p>
+<p>至此兩個方向可以互相推導，因此證明完畢。</p>
+<p align="right">\( \blacksquare \)</p>
+</details> 
+<details><summary>證明二</summary>
+<p>以捲積的角度來看的話，將 LHS 的兩邊對 \( \mu \) 做捲積：</p>
+<p>\[ \mu\ast f=g\ast 1\ast\mu=g\ast\epsilon=g \]</p>
+<p>將 RHS 的兩邊對 \( 1 \) 做捲積：</p>
+<p>\[ g\ast 1=\mu\ast 1\ast f=\epsilon\ast f=f \]</p>
+<p>因此兩個方向能夠互相推導，得證。</p>
+<p align="right">\( \blacksquare \)</p>
+<blockquote>
+<p>\( \displaystyle f(n)=\sum_{n\mid d}g(d)\Longleftrightarrow g(n)=\sum_{n\mid d}\mu\left(\frac d n\right)f(d) \)</p>
+</blockquote>
+<p>不同於莫比烏斯反演，這裡的 \( d \) 是枚舉 \( n \) 的倍數。</p>
+<p>不用懷疑，它就是會無止盡的枚舉下去。</p>
+<p>證明的方法與莫比烏斯反演的證明一雷同，這裡不再贅述。</p>
+</details> 
+<blockquote>
+<p>\( \displaystyle\sum_{d\mid n}\varphi(d)=n \)</p>
+<p>\( \displaystyle\varphi(n)=\sum_{d\mid n}\mu\left(\frac n d\right)\times d \)</p>
+</blockquote>
+<details><summary>證明</summary>
+<p>我們先證明上式。</p>
+<p>固定 \( n \) 的因數 \( d \)，我們想計算 \( 1\sim n \) 中與 \( n \) 的 \( \gcd \) 為 \( d \) 的數字有幾個。</p>
+<p>注意到：</p>
+<p>\[ \gcd(i, n) = d\Longleftrightarrow \gcd\left(\frac{i}{d}, \frac{n}{d}\right)=1 \]</p>
+<p>因此 \( 1\sim n \) 中與 \( n \) 的 \( \gcd \) 為 \( d \) 的數字共有 \( \varphi\left(\frac n d\right) \) 個。</p>
+<p>另一方面，所有 \( 1\sim n \) 的數字和 \( n \) 的 \( \gcd \) 一定是 \( n \) 的某個因數。</p>
+<p>所以自然地，\( \displaystyle n=\sum_{d\mid n}\varphi\left(\frac n d\right)=\sum_{d\mid n}\varphi(d) \)。</p>
+<p align="right">\( \blacksquare \)</p>
+<p>接著我們由上式來證明下式。</p>
+<p>證明：</p>
+<p>注意到上式的捲積寫法為：\( \varphi\ast 1=id \)。</p>
+<p>由莫比烏斯反演即可得到下式 \( \varphi = id\ast\mu \)。</p>
+<p>也因為同樣的原因，因此上下式其實是能夠互相推導的。</p>
+<p align="right">\( \blacksquare \)</p>
+</details> 
+<h2 id="例題"><a class="header" href="#例題">例題</a></h2>
+<ol>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M [\gcd(i,j)=1] \)</li>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M [\gcd(i,j)\ \mbox{is prime}] \)</li>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M \gcd(i,j) \)</li>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M ij\times \gcd(i,j) \)</li>
+</ol>
+<h2 id="套路"><a class="header" href="#套路">套路</a></h2>
+<p>可以發現，使用到的技巧不外乎是：</p>
+<ul>
+<li>看到 \(\gcd\) 就枚舉他</li>
+<li>看到艾佛森括號就把他換掉</li>
+<li>原本枚舉因數的，就改成枚舉倍數</li>
+<li>原本枚舉倍數的，就改成枚舉因數</li>
+<li>把枚舉的倍數提出原本的數</li>
+<li>看到長得像 Lemma 的就套套看</li>
+<li>看到兩個 \(\Sigma\) 的變數乘在一起，就改成枚舉兩者乘積和其因數</li>
+</ul>
+<h2 id="習題"><a class="header" href="#習題">習題</a></h2>
+<ol>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M [\gcd(i,j)\ \mbox{is a perfect number}] \)</li>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M lcm(i,j) \)</li>
+<li>\( \sum_{i=1}^N\sum_{j=1}^M \sigma_0(ij) \)</li>
+<li>\( \prod_{i=1}^N\prod_{i=1}^M F_{\gcd(i,j)} \)</li>
+</ol>
+<p>其中 \( \sigma_0 \) 是因數數量；\( F \) 是費氏數列。</p>
+<p>每一題都有 \( Q \) 筆詢問，\( N、M、Q\le 1e5 \)</p>
+<h2 id="其他"><a class="header" href="#其他">其他</a></h2>
+<ul>
+<li>給定一棵邊帶權樹，一個路徑的價值是路徑上所有權重的 \( \gcd \)，求所有相異路徑的價值總和
+<ul>
+<li>（點數、權重 \( \le 10^5 \) ）</li>
+</ul>
+</li>
+<li>給定 \( a_1,\cdots,a_n\) （\( n\le 10^5 \) ），求 \( \sum_{i=1}^n \sum_{i=1}^n \gcd(a_i,a_j)\times\gcd(i,j) \)</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../math/du_sieve.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../others/codebook.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../math/du_sieve.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../others/codebook.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
