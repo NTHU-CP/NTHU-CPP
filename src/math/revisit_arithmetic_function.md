@@ -32,7 +32,7 @@ Dirichlet 捲積滿足交換律、結合律、對於一般加法的分配律。
 
 > \\( \displaystyle\sum_{d\mid n} f(d)=\sum_{d\mid n} f\left(\frac n d\right) \\)
 
-證明：
+<details><summary>證明</summary>
 
 LHS 中的 \\( d \\) 會跑過所有 \\( n \\) 的所有因數。
 
@@ -42,11 +42,13 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 
 <p align="right">\( \blacksquare \)</p>
 
+</details> 
+
 > \\( \displaystyle\sum_{d\mid n}\mu(d)=[n=1] \\)
 >
 > 也就是 \\( \mu\ast 1=\epsilon \\)
 
-證明：
+<details><summary>證明</summary>
 
 根據莫比烏斯函數 \\( \mu \\) 的定義，只要 \\( n \\) 的因數中有平方數，則函數值為 \\( 0 \\)。
 
@@ -71,13 +73,15 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 
 <p align="right">\( \blacksquare \)</p>
 
+</details> 
+
 > 莫比烏斯反演：
 >
 > \\( \displaystyle f(n)=\sum_{d\mid n}g(d)\Longleftrightarrow g(n)=\sum_{d\mid n}\mu\left(\frac n d\right)f(d) \\)
 >
 > 也就是 \\( f=g\ast 1\Leftrightarrow g=\mu\ast f \\)
 
-證明一
+<details><summary>證明一</summary>
 
 已知左邊，推導右邊：
 
@@ -114,7 +118,9 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 
 <p align="right">\( \blacksquare \)</p>
 
-證明二：
+</details> 
+
+<details><summary>證明二</summary>
 
 以捲積的角度來看的話，將 LHS 的兩邊對 \\( \mu \\) 做捲積：
 
@@ -136,13 +142,15 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 
 證明的方法與莫比烏斯反演的證明一雷同，這裡不再贅述。
 
+</details> 
+
 > \\( \displaystyle\sum_{d\mid n}\varphi(d)=n \\)
 >
 > \\( \displaystyle\varphi(n)=\sum_{d\mid n}\mu\left(\frac n d\right)\times d \\)
 
-我們先證明上式。
+<details><summary>證明</summary>
 
-證明：
+我們先證明上式。
 
 固定 \\( n \\) 的因數 \\( d \\)，我們想計算 \\( 1\sim n \\) 中與 \\( n \\) 的 \\( \gcd \\) 為 \\( d \\) 的數字有幾個。
 
@@ -169,6 +177,8 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 也因為同樣的原因，因此上下式其實是能夠互相推導的。
 
 <p align="right">\( \blacksquare \)</p>
+
+</details> 
 
 ## 例題
 
