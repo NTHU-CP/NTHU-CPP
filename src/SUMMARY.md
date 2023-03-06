@@ -16,10 +16,10 @@
   - [Sqrt-Related Observation]()
   - [Mo's Algorithm]()
 - [Mathematics](math/intro.md)
-	- [Arithmetic Function](math/arithmetic_function.md)
-  - [Linear Sieve](math/linear_sieve.md)
+  - [Introduction to Arithmetic Function](math/introduction_to_arithmetic_function.md)
   - [數論分塊](math/sqrt_decomposition.md)
   - [杜教篩](math/du_sieve.md)
+  - [Revisit Arithmetic Function](math/revisit_arithmetic_function.md)
 - [Miscellaneous]()
 
 ---
