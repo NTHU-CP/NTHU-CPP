@@ -23,17 +23,23 @@
 
 令 \\( n \\) 的質因數分解為 \\( p_1^{\alpha_1}p_2^{\alpha_1}\cdots p_m^{\alpha_m} \\)。
 
-其因數和為 \\( \displaystyle\sigma(n)=\prod_{i=1}^m(1+p_i+\cdots +p_i^{\alpha_i}) \\)，由於每個質數獨立貢獻，因此是積性的。
+其因數和為 \\( \displaystyle\sigma(n)=\prod_{i=1}^m(1+p_i+\cdots +p_i^{\alpha_i}) \\)，考慮展開後的每一項即可知其正確性。
+
+而對於任何質數的冪次 \\( p^\alpha \\)，也容易知道 \\( \sigma(p^\alpha)=1+p+\cdots + p^\alpha \\)。
+
+因此，\\( \displaystyle\sigma(n)=\prod_{i=1}^m \sigma(p_i^{\alpha_i}) \\)，從這條式子可以知道 \\( \sigma \\) 符合積性函數的定義。
 
 <p align="right">\( \blacksquare \)</p>
 
 以上是一個由公式中可以看出其積性的例子。
 
-> 推論：積性函數的取值取決於在質數的冪次上的取值。
+> 推論：積性函數的取值可以由其在質數的冪次上的取值來求出。
 
-寫成式子來說：\\( f(n)=f(p_1^{\alpha-1})f(p_2^{\alpha_2}\cdots p_m^{\alpha_m}) \\)。
+寫成式子來說：\\( f(n)=f(p_1^{\alpha-1})f(p_2^{\alpha_2})\cdots f(p_m^{\alpha_m})=\prod_{i=1}^m f(p_i^{\alpha_i}) \\)。
 
-> 歐拉函數是積性的，也就是說若 \\( \gcd(n, m)=1 \\)，則 \\( \varphi(nm)=\varphi(n)\times\varphi(m) \\)。
+上述的因數和函數就是其中一個例子。
+
+> 歐拉函數是積性的，也就是說若 \\( n \\)、\\( m \\) 互質，則 \\( \varphi(nm)=\varphi(n)\times\varphi(m) \\)。
 
 當然，如果知道歐拉函數的公式，就可以輕易說明其為積性，但我們先忘掉公式。
 
@@ -106,6 +112,6 @@ m + 1 & m + 2 & \cdots & 2m \\\\
 >
 > * 莫比烏斯函數： \\(\mu(n)=\cases{1&: \\(n = 1\\) \\\\ (-1)^k&: \\(n = p_1p_2\cdots p_k\\) \\\\ 0&: Otherwise}\\)。
 
-## 附註
+## 結語
 
 在這一章節中我們暫且點到為止，比較艱澀的內容會放在再探數論函數的章節中。

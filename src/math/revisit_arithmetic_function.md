@@ -26,7 +26,7 @@ Dirichlet 捲積滿足交換律、結合律、對於一般加法的分配律。
 
 \\[ \displaystyle \sigma(n)=\sum_{d\mid n} d=\sum_{d\mid n}id(d)\times 1\left(\frac n d\right) \\]
 
-## 很重要的引理們
+## 引理
 
 強烈推薦拿筆動手跟著推導一遍。
 
