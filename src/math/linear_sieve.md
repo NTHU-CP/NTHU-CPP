@@ -9,16 +9,22 @@
 直接看 code。
 
 ```cpp
-for (int i = 2; i <= n; ++i) {
-  if (notPrime[i] == false)
-    primes.push_back(i);
-  for (auto p : primes) {
-    if (i * p > n)
-      break;
-    notPrime[i * p] = true;
-    if (i % p == 0)
-      break;
+vector<int> LinearPrimeSieve(int n) {
+  vector<int> primes;
+  vector<int> notPrime(n + 1, false);
+  notPrime[0] = notPrime[1] = true;
+  for (int i = 2; i <= n; ++i) {
+    if (notPrime[i] == false)
+      primes.push_back(i);
+    for (auto p : primes) {
+      if (i * p > n)
+        break;
+      notPrime[i * p] = true;
+      if (i % p == 0)
+        break;
+    }
   }
+  return notPrime;
 }
 ```
 
@@ -30,7 +36,7 @@ for (int i = 2; i <= n; ++i) {
 
 證明：
 
-> 所有質數的 ``notPrime`` 值都會是 ``false``。
+> 對於所有質數 \\( i \\)，經過上述計算後，``notPrime[i]``等於 ``false``。
 
 注意到 ``notPrime[i * p]`` 中的 ``i`` 和 ``p`` 都大於 \\( 1 \\)，因此只有合數的 ``notPrime`` 值會被設為 ``true``。
 
@@ -42,11 +48,11 @@ for (int i = 2; i <= n; ++i) {
 
 所有小於 \\( p_1 \\) 的質數都無法整除 \\( i \\)，因此會順利執行到 ``notPrime[i * p] = true`` 這行而將 \\( x \\) 設成合數。
 
-> 所有合數 \\( x \\) 都只會被篩到一次。
+> 對於所有合數 \\( i \\)，在上述計算中，``notPrime[i] = true`` 恰好會被執行一次。
 
-對於並非最小的質數 \\( p_2 \\)，當 \\( i = \frac{x}{p_2} \\) 的時候，因為 \\( i\mod p_2 = 0 \\)，因此會提早 ``break``。
+對於並非最小的質數 \\( p_2 \\)，當 \\( i = \frac{x}{p_2} \\) 的時候，因為 \\( i\bmod p_1 = 0 \\) 而且 \\( p_1 < p_2 \\)，因此會在 \\( p = p_1 \\) 時提早 ``break``。
 
-因此所有合數僅會被其最小的質因數篩到一次。
+所以所有合數僅會被其最小的質因數篩到一次。
 
 <br>
 
@@ -63,18 +69,23 @@ for (int i = 2; i <= n; ++i) {
 根據前述證明可知，記錄下來的數字恰好會是最小質因數。
 
 ```cpp
-for (int i = 2; i <= n; ++i) {
-  if (primeFactor[i] == 0) {
-    primes.push_back(i);
-    primeFactor[i] = i;
+vector<int> LinearPrimeFactorSieve(int n) {
+  vector<int> primes;
+  vector<int> primeFactor(n + 1, 0);
+  for (int i = 2; i <= n; ++i) {
+    if (primeFactor[i] == 0) {
+      primes.push_back(i);
+      primeFactor[i] = i;
+    }
+    for (auto p : primes) {
+      if (i * p > n)
+        break;
+      primeFactor[i * p] = p;
+      if (i % p == 0)
+        break;
+    }
   }
-  for (auto p : primes) {
-    if (i * p > n)
-      break;
-    primeFactor[i * p] = p;
-    if (i % p == 0)
-      break;
-  }
+  return primeFactor;
 }
 ```
 
@@ -82,7 +93,7 @@ for (int i = 2; i <= n; ++i) {
 
 許多的數論函數都能夠透過線性篩進行打表。
 
-一般而言，給定函數 \\( f \\)要求 \\( f(n) \\)，假設 \\( p \\) 是 \\( n \\) 的最小質因數。
+一般而言，給定函數 \\( f \\) 要求 \\( f(n) \\)，假設 \\( p \\) 是 \\( n \\) 的最小質因數。
 
 我們會分成三個情況討論：
 
@@ -117,12 +128,16 @@ Otherwise 的情況，假設 \\( n \\) 有其他的平方以上的質因數。
 寫成 code 如下：
 
 ```cpp
-mu[1] = 1;
-for (int i = 2; i <= n; ++i) {
-  if (i % (1LL * primeFactor[i] * primeFactor[i]) == 0)
-    mu[i] = 0;
-  else
-    mu[i] = -mu[i / primeFactor[i]];
+vector<int> LinearMuSieve(int n, vector<int> &primeFactor) {
+  vector<int> mu(n + 1, 0);
+  mu[1] = 1;
+  for (int i = 2; i <= n; ++i) {
+    if (i % (1LL * primeFactor[i] * primeFactor[i]) == 0)
+      mu[i] = 0;
+    else
+      mu[i] = -mu[i / primeFactor[i]];
+  }
+  return mu;
 }
 ```
 
@@ -159,12 +174,16 @@ Otherwise 的情況，同樣觀察一下 \\( \varphi(n) \\) 和 \\( \varphi(\fra
 寫成 code 如下：
 
 ```cpp
-phi[1] = 1;
-for (int i = 2; i <= n; ++i) {
-  if (i % (1LL * primeFactor[i] * primeFactor[i]) == 0)
-    phi[i] = phi[i / primeFactor[i]] * primeFactor[i];
-  else
-    phi[i] = phi[i / primeFactor[i]] * (primeFactor[i] - 1);
+vector<int> LinearPhiSieve(int n, vector<int> &primeFactor) {
+  vector<int> phi(n + 1, 0);
+  phi[1] = 1;
+  for (int i = 2; i <= n; ++i) {
+    if (i % (1LL * primeFactor[i] * primeFactor[i]) == 0)
+      phi[i] = phi[i / primeFactor[i]] * primeFactor[i];
+    else
+      phi[i] = phi[i / primeFactor[i]] * (primeFactor[i] - 1);
+  }
+  return phi;
 }
 ```
 
