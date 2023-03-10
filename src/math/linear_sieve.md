@@ -9,9 +9,9 @@
 直接看 code。
 
 ```cpp
-vector<int> LinearPrimeSieve(int n) {
+vector<bool> LinearPrimeSieve(int n) {
   vector<int> primes;
-  vector<int> notPrime(n + 1, false);
+  vector<bool> notPrime(n + 1, false);
   notPrime[0] = notPrime[1] = true;
   for (int i = 2; i <= n; ++i) {
     if (notPrime[i] == false)
@@ -40,7 +40,7 @@ vector<int> LinearPrimeSieve(int n) {
 
 注意到 ``notPrime[i * p]`` 中的 ``i`` 和 ``p`` 都大於 \\( 1 \\)，因此只有合數的 ``notPrime`` 值會被設為 ``true``。
 
-> 所有合數的 ``notPrime`` 值都會是 ``true``。
+> 對於所有合數 \\( i \\)，經過上述計算後，``notPrime[i]`` 等於 ``true``。
 
 對於任何合數 \\( x \\)，假設其質因數分解為 \\( p_1^{\alpha_1}p_2^{\alpha_2}\cdots p_m^{\alpha_m} \\)，其中 \\( p_1 \\) 是最小質因數。
 
@@ -103,7 +103,11 @@ p^2\mid n\\\\
 p\mid n
 \end{cases}
 
-特別注意到第三個情況也可以視作第一、二情況的 Otherwise。
+\\( n = 1 \\) 的情況單獨處理。
+
+\\( n\neq 1 \\) 的時候分成兩種情況，一種是 \\( n \\) 的最小質因數 \\( p \\) 在 \\( n \\) 上的冪次為二次以上，也就是第二條式子，或者是只有一次，也就是第三條式子。
+
+方便起見，我們將第三條式子註記成前兩條式子的 \\( Otherwise \\)，如下方例題所示。
 
 ### 莫比烏斯函數線性篩
 
@@ -187,7 +191,7 @@ vector<int> LinearPhiSieve(int n, vector<int> &primeFactor) {
 }
 ```
 
-## 附註
+## 結語
 
 或許有人會認為埃氏篩法的複雜度 \\( \mathcal{O}(n\log{\log{n}}) \\) 已經夠接近線性，因此不需要弄懂線性篩。
 
