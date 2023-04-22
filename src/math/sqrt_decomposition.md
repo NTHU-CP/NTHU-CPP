@@ -68,7 +68,7 @@
 
 \begin{align}
 \left\lfloor\frac n j\right\rfloor =k &\Leftrightarrow k\le \frac n j< k+1 \\\\
-&\Leftrightarrow \frac{n}{k+1}< j \le\frac{n}{k} 
+&\Leftrightarrow \frac{n}{k+1}< j \le\frac{n}{k}
 \end{align}
 
 注意到 \\( i \\) 是滿足 \\( \left\lfloor\frac n i\right\rfloor =k \\) 的，因此至少有個正整數 \\( j \\) 滿足 \\( \frac{n}{k+1}< j \le\frac{n}{k} \\)。
@@ -216,4 +216,4 @@ for (int i = 1, r = 0; i <= n; i = r + 1) {
 * [Codeforces 1263 C](https://codeforces.com/problemset/problem/1263/C)
 * [Codefroces 616 E](https://codeforces.com/problemset/problem/616/E)
 * [Codeforces 1780 E](https://codeforces.cc/contest/1780/problem/E)
-	* 這題偏難
+  * 這題偏難

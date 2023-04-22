@@ -29,7 +29,7 @@
 證明如下：
 
 \begin{align}
-\displaystyle \sum_{i=1}^n (g\ast f)(i) 
+\displaystyle \sum_{i=1}^n (g\ast f)(i)
 &= \sum_{i=1}^n \sum_{d\mid i} g(d)\times f\left(\frac{i}{d}\right) & \text{根據 Dirichlet 捲積的定義展開} \\\\
 &= \sum_{d=1}^n \sum_{i=1}^{\left\lfloor\frac{n}{d}\right\rfloor} g(d)\times f(i) & \text{套路，將 sigma 的順序交換，並改變枚舉的變數} \\\\
 &= \sum_{d=1}^n g(d) \sum_{i=1}^{\left\lfloor\frac{n}{d}\right\rfloor} f(i) & g(d) \text{ 與 } i \text{ 無關，將其移到前面} \\\\
@@ -54,7 +54,6 @@
 ---
 
 <br>
-
 
 寫成 pseudo code 可以得到：
 
@@ -129,7 +128,7 @@ def Find_S(n):
 
 根據定義，\\( m\in R(n)) \\) 代表存在某個正整數 \\( i \\)（\\( 1\le i\le n \\)） 使得 \\( \left\lfloor\dfrac n i\right\rfloor = m \\)。
 
-因此 
+因此
 
 \\[ R(m)=\left\\{\left\lfloor\frac{\left\lfloor\frac{n}{i}\right\rfloor}{j}\right\rfloor :\  j=1, 2, \cdots, m \right\\} \\]
 
@@ -709,9 +708,8 @@ signed main() {
 }
 ```
 
-
 ## 練習題
 
->  求\\( \displaystyle S(n)=\sum_{i=1}^n \sum_{j=1}^n ij\times \gcd(i,j) \\) 的值。（\\( n\le 10^{10} \\)）
+> 求\\( \displaystyle S(n)=\sum_{i=1}^n \sum_{j=1}^n ij\times \gcd(i,j) \\) 的值。（\\( n\le 10^{10} \\)）
 
 （hint：先以數論函數章節所教的技巧進行化簡，變成前綴和的樣子後再做杜教篩。）

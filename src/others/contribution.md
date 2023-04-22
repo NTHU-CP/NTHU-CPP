@@ -5,6 +5,7 @@
 NTHU CPP 是由 mdBook 製作而成，搭配 Github Action，將網站的最新版本部署到 Github Pages。
 
 ## Before your contribution
+
 - 如果是針對現有文章做修改或補充，請直接發 PR。若改動不小，可以先開個 issue 與作者或管理員討論。
 - 若有想新增的章節，請先去 issue 確認是否有人正在撰寫。若沒有，可開一個 issue 並在其中簡述想新增的內容與一些資源，管理員認為沒問題的話會將該 issue assgin 給你，即可開始撰寫並發 PR。
 - 也可以去看有 help wanted 標籤的 issue，有興趣的即可留言並著手開始。
@@ -59,5 +60,6 @@ push 上去之後應該就能在 NTHU CPP 的 repository 或者是 fork 出來�
 建議需要熟悉 Git 的操作，但也不需要擔心會把整個 repository 搞砸，因為你是在 fork 出來的那份上編輯，也需要通過 review 才能被 merge 進去。
 
 以下附上一些可能有用的參考資料：
+
 - [連猴子都能懂的Git入門指南](https://backlog.com/git-tutorial/tw/)
 - [與其它開發者的互動 - 使用 Pull Request（PR）- 為你自己學Git](https://gitbook.tw/chapters/github/pull-request)
