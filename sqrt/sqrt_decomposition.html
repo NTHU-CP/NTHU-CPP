@@ -598,13 +598,13 @@ int main() {
 </details>
 <blockquote>
 <p><a href="https://codeforces.com/contest/13/problem/E">CF 13E - Holes</a></p>
-<p>給一個長度為 \( N \) 的序列 \( a \)，代表 \( N \) 個洞。若將球放到第 \( x \) 個洞，球會跑到第 \( i + a_x \) 個洞，接著從第 \( i + a_x \) 個洞跑到第 \( i + a_ x + a_{a_x} \) 個洞，持續直到編號超出 \( N \) 為止。本題要處理 \( M \) 筆操作。操作有兩種：</p>
+<p>給一個長度為 \( N \) 的序列 \( a \)，代表 \( N \) 個洞。若將球放到第 \( x \) 個洞，球會跑到第 \( i + a_x \) 個洞，接著從第 \( i + a_x \) 個洞跑到第 \( i + a_x + a_{a_x} \) 個洞，持續直到編號超出 \( N \) 為止。本題要處理 \( M \) 筆操作。操作有兩種：</p>
 <ol>
 <li>給定 \( x, y \)，將 \( a_x \) 改成 \( y \)。</li>
 <li>給定 \( x \)，請輸出若將球放到第 \( x \) 個洞，球總共會通過幾個洞，以及離開這個序列前最後通過的洞的編號。</li>
 </ol>
 <ul>
-<li>\( 1 \leq N, M \leq 10^5 \) </li>
+<li>\( 1 \leq N, M \leq 10^5 \)</li>
 </ul>
 </blockquote>
 <details><summary> Solution </summary>

@@ -159,7 +159,7 @@
 </blockquote>
 <p>令 \( d_i \) 為第 \(i \) 個執行的任務的死線，\( f_i \) 為第 \( i \) 個執行的任務的完成時間，我們要最大化 \( \sum{d_i - f_i} \)。</p>
 <p>可以發現 \( \sum{d_i} \) 其實是固定的我們無法改變它，可以將其先忽略。問題變成要找到一個執行順序最小化 \( \sum{f_i} \)。解答是按照花費時間由小到大執行即可，以下來證明為什麼這個演算法是正確的。</p>
-<h4 id="greedy-choice-property"><a class="header" href="#greedy-choice-property">Greedy-choice property</a></h4>
+<h3 id="greedy-choice-property"><a class="header" href="#greedy-choice-property">Greedy-choice property</a></h3>
 <p>我們的 greedy choice 是花費時間最小的任務第一個執行。以下使用反證法證明必定存在一組最佳解是首先執行花費時間最小的任務。</p>
 <p>考慮一個最佳解但第一個執行的不是花費時間最小的任務，我們可以將花費時間最小的任務和第一個交換執行順序，這樣所有在他們之間的任務的結束時間以及執行完第一個任務的時間都會減少，導致獲得一個更好的解與最佳解這個前提矛盾，故得證。</p>
 <p>例如，假設四個任務的時間花費為 3, 4, 5, 6：</p>
@@ -167,7 +167,7 @@
 <li>若執行順序為 5 -&gt; 4 -&gt; 3 -&gt; 6，則結束時間分別是 5, 9, 12, 18</li>
 <li>將最小的和第一個交換，執行順序變成 3 -&gt; 4 -&gt; 5 -&gt; 6，則結束時間分別是 3, 7, 12, 18，這樣 \( \sum{f_i} \) 更小。</li>
 </ul>
-<h4 id="optimal-substructure"><a class="header" href="#optimal-substructure">Optimal Substructure</a></h4>
+<h3 id="optimal-substructure"><a class="header" href="#optimal-substructure">Optimal Substructure</a></h3>
 <p>接著我們來證明有 Optimal Substruture 的性質，也就是最佳解會包含子問題的最佳解。</p>
 <p>原問題是要計算 \( \sum{f_i} \) 的最小值。我們首先 greedy choice 了一個花費時間最小的任務來執行之後，假設其時間花費為 \( d \)，原問題將變成計算 \( d × n + \)剩餘 \( n - 1 \) 個任務的 \( \sum{f_i} \)。可以輕易用反證法證明一定是取剩餘 \( n - 1 \) 個任務的最佳解。故得證此問題有 Optimal Substructure。</p>
 <p>由上述兩個性質，我們可以選擇我們的 Greedy choice，也就是選擇當前花費時間最小的任務來執行，因為我們已經證明了至少有一組最佳解會先選他，然後將問題轉換成相同問題但是 problem size 減一，又因為有 Optimal Substurcture，可以重複使用我們的 greedy choice。最終即可找到最佳解。</p>

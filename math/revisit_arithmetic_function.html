@@ -172,7 +172,7 @@
 <p>RHS 中的 \( \frac n d \) 實際上也會跑過 \( n \) 的所有因數。</p>
 <p>因此兩邊枚舉的數字的集合是一樣的，因此自然相等。</p>
 <p align="right">\( \blacksquare \)</p>
-</details> 
+</details>
 <blockquote>
 <p>\( \displaystyle\sum_{d\mid n}\mu(d)=[n=1] \)</p>
 <p>也就是 \( \mu\ast 1=\epsilon \)</p>
@@ -189,11 +189,11 @@
 <li>\( \vdots \)</li>
 <li>\( d \) 是 \( m \) 個質數的連乘的取法有 \( \binom{m}{m} \) 種，函數值是 \( (-1)^m \)。</li>
 </ul>
-<p>因此 </p>
+<p>因此</p>
 <p>\[ \displaystyle\mu(n) = \sum_{d\mid n}\mu(d) = \sum_{i=0}^m \binom{m}{i}\times (-1)^i \]</p>
 <p>若 \( m=0 \)，則結果為 \( 1 \)；否則根據二項式定理，結果為 \( 0 \)。</p>
 <p align="right">\( \blacksquare \)</p>
-</details> 
+</details>
 <blockquote>
 <p>莫比烏斯反演：</p>
 <p>\( \displaystyle f(n)=\sum_{d\mid n}g(d)\Longleftrightarrow g(n)=\sum_{d\mid n}\mu\left(\frac n d\right)f(d) \)</p>
@@ -228,7 +228,7 @@
 \end{align}</p>
 <p>至此兩個方向可以互相推導，因此證明完畢。</p>
 <p align="right">\( \blacksquare \)</p>
-</details> 
+</details>
 <details><summary>證明二</summary>
 <p>以捲積的角度來看的話，將 LHS 的兩邊對 \( \mu \) 做捲積：</p>
 <p>\[ \mu\ast f=g\ast 1\ast\mu=g\ast\epsilon=g \]</p>
@@ -242,7 +242,7 @@
 <p>不同於莫比烏斯反演，這裡的 \( d \) 是枚舉 \( n \) 的倍數。</p>
 <p>不用懷疑，它就是會無止盡的枚舉下去。</p>
 <p>證明的方法與莫比烏斯反演的證明一雷同，這裡不再贅述。</p>
-</details> 
+</details>
 <blockquote>
 <p>\( \displaystyle\sum_{d\mid n}\varphi(d)=n \)</p>
 <p>\( \displaystyle\varphi(n)=\sum_{d\mid n}\mu\left(\frac n d\right)\times d \)</p>
@@ -262,7 +262,7 @@
 <p>由莫比烏斯反演即可得到下式 \( \varphi = id\ast\mu \)。</p>
 <p>也因為同樣的原因，因此上下式其實是能夠互相推導的。</p>
 <p align="right">\( \blacksquare \)</p>
-</details> 
+</details>
 <h2 id="例題"><a class="header" href="#例題">例題</a></h2>
 <ol>
 <li>\( \sum_{i=1}^N\sum_{j=1}^M [\gcd(i,j)=1] \)</li>
