@@ -1,0 +1,7 @@
+- [ ] Read [Contribute to NTHU-CPP](https://nthu-cp.github.io/NTHU-CPP/others/contribution.html).
+- [ ] List all the references.
+- [ ] Successfully build the website by mdBook with no error after the change.
+- [ ] Exclude any irrelevant files.
+- [ ] Link to the issue which is related to your change.
+- [ ] Review the content by myself.
+- [ ] Pass tests/CI.
