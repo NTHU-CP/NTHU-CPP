@@ -1,7 +1,7 @@
 ---
 name: Content Proposal
 about: Proposal for adding a new content
-title: "[Proposal]"
+title: 'Add '
 labels: proposal
 assignees: ''
 

@@ -2,7 +2,7 @@
 name: Suggestion / Request
 about: Suggestion or request for new content
 title: ''
-labels: ''
+labels: suggestion / request
 assignees: ''
 
 ---
