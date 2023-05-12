@@ -13,6 +13,10 @@
 - [Flow]()
 - [Mathematics](math/intro.md)
 	- [Arithmetic Function](math/arithmetic_function.md)
+- [String]()
+  - [Rolling Hash](string/hash/intro.md)
+    - [Hacking](string/hash/hacking.md)
+    - [Advanced](string/hash/advanced.md)
 - [Miscellaneous]()
 
 ---
