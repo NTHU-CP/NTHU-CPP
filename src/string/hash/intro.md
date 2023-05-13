@@ -77,8 +77,18 @@ $P(k,m)=1−\frac{(m−k)!m}{k \cdot m!}$
 
 對於 Polynomial Hash，哈希值空間的大小可以看作是模 $p$ 的值，其中 $p$ 是一個大質數。因此，我們可以使用上述公式來估計 Polynomial Hash 的 Collision Rate。
 
+# Picking the correct modulo and base
+首先，選定的 $m$ 跟 $a$ 必須要互質，假設 $m$ 跟 $a$ 不互質的話，就會造成 $a^1, a^2, ..., a^m$ 中出現重複的數字，進而使得哈希碰撞的概率上升。
 
+以 $m=8, a=6$ 為例，$a^1=6, a^2=4, a^3=a^4=a^5=a^6=0$，可以觀察到有多個數字重複，因此必須選擇互質的 $m, a$。
 
+其次，不要選擇 $2$ 的冪次作為 $m$，這會讓出題者能夠構造一個 Thue-Morse Sequence 去攻擊你的 Hash，後續章節會介紹更多怎麼攻擊 Rolling Hash。
+
+最後，建議選擇幾組冷門的 $m, a$ 作為你的模板，許多邪惡的出題者會對常用的 $m, a$ 構造容易碰撞的測資，如果你選的 $m, a$ 夠冷門（像是你的生日），就不容易被出題者猜中。下面是幾個常見的 $m, a$
+1. $m = 10^N+7$
+2. $m = 2^N+1$
+3. $m = 2 \cdot 3 \cdot 5 \cdot 7 ...$，然後 $a$ 選再下一個質數
+4. $a = 2, 3, 4, 5, 6, 7, 8, 9, 10$
 
 - Compare the string lexicographically (by binary search)
 - A simple introduction of how to pick the right modulo and base (General case)
