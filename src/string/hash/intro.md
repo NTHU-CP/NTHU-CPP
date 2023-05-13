@@ -93,6 +93,10 @@ $P(k,m)=1−\frac{(m−k)!m}{k \cdot m!}$
 # Get the hash value of a substring
 
 # Compare the string lexicographically (by binary search)
+給定兩個相同長度的字串 $X$ 與 $Y$，判斷兩者的字典序的方法如下
+1. 找到最小的 $i \geq 0$，使得 $X[i] \neq Y[i]$，如果找不到的話，這兩個字串必然相等
+2. 判斷是否 $X[i] > Y[i]$
+
 - Basic hash problems
 - Alternative solution of KMP, Manacher
 - For normal competitive programmers
