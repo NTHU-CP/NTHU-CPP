@@ -55,8 +55,31 @@ def polynomial_hash(s, a, m):
     return h
 ```
 
-- Check if strings are identical
-- Mathematical analysis of the collision rate
+## 判斷字串是否相等
+很簡單的，比對兩個哈希值 (Hash Value) 是否相等即可，舉例而言，有兩個字串 $S_1$ 與 $S_2$ 要判斷是否相等，那麼，判斷 $polynomial_hash(s_1, a, m) == polynomial_hash(s_2, a, m)$ 即可。
+
+# Hash Collision and Mathematical Analysis
+哈希碰撞（Hash Collision）指的是兩個不同的輸入值在經過哈希函數計算後產生了相同的哈希值。由於哈希函數的值域通常比輸入值的集合小得多，因此哈希碰撞是不可避免的現象。
+
+而在 Rolling Hash 中，哈希碰撞就會導致本不該相等的兩個字串，被視為相同的字串，最終使得程式的邏輯出現錯誤。
+
+以 $a=1, m=2$ 為例，字串 `ab` 與 `ba` 有相同的哈希值，進而兩者被視為相等的字串，但實際上這兩者並不相等，最終使得程式結果錯誤。
+
+而要估計 Rolling Hash 的 Collision Rate，可以使用生日悖論（Birthday Paradox）的概念。
+
+生日悖論指的是當有一群人在一起時，假設他們的生日是獨立均勻分布在一年中的每一天，那麼當這個群體的大小達到一定程度時，至少有兩個人的生日是相同的機率遠高於我們通常感覺到的機率。具體來說，當群體的大小為23人時，至少有兩人生日相同的概率已經超過50%。
+
+將生日悖論應用到哈希碰撞的情境中，假設我們有一個哈希函數 $h$，它將 $n$ 個不同的輸入值映射到 $m$ 個哈希值中的某一個。如果我們隨機選擇 $k$ 個輸入值，那麼它們中至少有兩個輸入值的哈希值相同的概率就可以用生日悖論的公式計算：
+
+$P(k,m)=1−\frac{(m−k)!m}{k \cdot m!}$
+​
+其中 $P(k, m)$ 表示選擇 $k$ 個輸入值中至少有兩個輸入值的哈希值相同的概率，$m$ 表示哈希值的空間大小。
+
+對於 Polynomial Hash，哈希值空間的大小可以看作是模 $p$ 的值，其中 $p$ 是一個大質數。因此，我們可以使用上述公式來估計 Polynomial Hash 的 Collision Rate。
+
+
+
+
 - Compare the string lexicographically (by binary search)
 - A simple introduction of how to pick the right modulo and base (General case)
 - Basic hash problems
