@@ -90,14 +90,12 @@ $P(k,m)=1−\frac{(m−k)!m}{k \cdot m!}$
 3. $m = 2 \cdot 3 \cdot 5 \cdot 7 ...$，然後 $a$ 選再下一個質數
 4. $a = 2, 3, 4, 5, 6, 7, 8, 9, 10$
 
-- Compare the string lexicographically (by binary search)
-- A simple introduction of how to pick the right modulo and base (General case)
+# Get the hash value of a substring
+
+# Compare the string lexicographically (by binary search)
 - Basic hash problems
-- Get the hash value of a substring
 - Alternative solution of KMP, Manacher
 - For normal competitive programmers
-
-請搭配一個範例
 
 # 總結
 
