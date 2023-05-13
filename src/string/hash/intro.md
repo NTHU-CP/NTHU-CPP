@@ -91,6 +91,14 @@ $P(k,m)=1−\frac{(m−k)!m}{k \cdot m!}$
 4. $a = 2, 3, 4, 5, 6, 7, 8, 9, 10$
 
 # Get the hash value of a substring
+如何計算字串 $S$ substring 的 hash value 呢？最直觀的，直接計算 `polynomial_hash(S[i:j], a, m)` 即可，但這樣做並不效率。
+
+此時，使用 prefix sum 能夠減少計算 substring 的額外開銷，具體作法如下。
+1. 建立一個數列 $H[i] = polynomial_hash(S[0:i], a, m)$
+2. 初始設定 $H[0] = 0$，$H[i] = H[i - 1] + S[i] \cdot a^i \mod m$，並遞推這個數列
+3. 計算 $(H[j] - H[i]) \cdot a^{-i}$ 即為 `polynomial_hash(S[i:j], a, m)`，計算 $a^{-i}$ 時，可以參考模逆元的作法。
+
+這樣做的話，只要先付出 $O(N)$ 的時間建表，每次查詢 substring 就只要 $O(1)$ 了。
 
 # Compare the string lexicographically (by binary search)
 給定兩個相同長度的字串 $X$ 與 $Y$，判斷兩者的字典序的方法如下
