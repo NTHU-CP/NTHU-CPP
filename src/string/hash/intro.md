@@ -97,6 +97,22 @@ $P(k,m)=1−\frac{(m−k)!m}{k \cdot m!}$
 1. 找到最小的 $i \geq 0$，使得 $X[i] \neq Y[i]$，如果找不到的話，這兩個字串必然相等
 2. 判斷是否 $X[i] > Y[i]$
 
+平常比大小時，找最小的 $i$ 就很樸素的 $O(|X|)$ 枚舉而已，但是在能夠 $O(1)$ 取得 substring hash value 的狀況下，能夠加速成 $O(log |X|)$，具體而言，可以參照下列虛擬碼。
+
+```python
+def get_first_difference(X, Y):
+    l, r = 0, len(X)
+    while l < r:
+        mid = (l + r) // 2
+        if substring_hash(X, 0, mid) == substring_hash(Y, 0, mid):
+            l = mid
+        else:
+            r = mid
+    return l + 1
+```
+
+完成 1. 之後，只需要 $O(1)$ 比較 $X[i] > Y[i]$ 即可。
+
 - Basic hash problems
 - Alternative solution of KMP, Manacher
 - For normal competitive programmers
