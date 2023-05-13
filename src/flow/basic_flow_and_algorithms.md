@@ -127,7 +127,6 @@
   ```
   template<class T>
   class Edmond_Karp {
-
       public :
           #define INF 100000000000000009
           struct _edge{
