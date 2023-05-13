@@ -22,6 +22,8 @@
   - [杜教篩](math/du_sieve.md)
   - [Revisit Arithmetic Function](math/revisit_arithmetic_function.md)
 - [Miscellaneous]()
+- [Tree]()
+  - [Heavy Light Decomposition](tree/heavy_light_decomposition.md)
 
 ---
 
