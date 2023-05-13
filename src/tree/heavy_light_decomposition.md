@@ -1,7 +1,3 @@
----
-tags: school
----
-
 # Heavy Light Decomposition
 ## Intro
 ### Intro to Leavy Light Decomposition
@@ -48,7 +44,7 @@ tags: school
 - `int arr[N]`：紀錄節點資訊。
 
 以線段樹實作維護鏈上最大值的樹鏈剖分的範例程式碼。
-```cpp=
+```cpp
 const int N = 2e5 + 5;
 int t, n, q, seg[N << 1]; // t := time-stamp
 int sz[N], fa[N], dep[N], to[N], top[N], dfn[N], arr[N];
