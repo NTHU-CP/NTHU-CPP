@@ -1,10 +1,7 @@
 # Introduction to Rolling Hash
 
 # 前言
-Skip
-<br>
-
-# Outlines
+如果你是一名正常的競技程式選手，你只要把這篇讀完就行了，後續的章節是不用讀的。但如果你閒閒沒事，想要增加自己奇怪的知識，可以把後續的章節也讀完 XDD
 
 # How to calculate Rolling Hash
 Hash (哈希)，是一種將字串壓縮成一個數字的方法，藉此加速字串匹配。而在競技程式設計中，最常用的方法是 Polynomial Hash (多項式哈希)，在台灣更多被稱作 Rolling Hash (滾動哈希)。
@@ -121,9 +118,11 @@ def get_first_difference(X, Y):
 
 完成 1. 之後，只需要 $O(1)$ 比較 $X[i] > Y[i]$ 即可。
 
-- Basic hash problems
-- Alternative solution of KMP, Manacher
-- For normal competitive programmers
+# Basic hash problems
+
+## KMP
+
+## Manacher
 
 # 總結
 
