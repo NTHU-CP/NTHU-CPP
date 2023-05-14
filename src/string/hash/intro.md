@@ -185,7 +185,12 @@ def max_palindrome(T):
 經過演算法計算後得知，最長的回文子字串長度是 7，從兩個 E 中間的 \$ 開始擴張，直到 D 停止擴張，這就是最長的回文子字串。而 \ceil*{\frac{7}{2}}=4，因此，最長的回文子字串大小是 4！
 
 # 總結
+儘管 Rolling Hash 並不是一個完美的解法，但在實際競賽中很有用，因為實作難度較低，且算法本身不複雜。
 
+請各位同學要熟記如何使用 Rolling Hash 解決「字串匹配」與「最大回文子字串」的方法，儘管有 100% 正確的方法能解決該問題，但算法本身較複雜，且通用性較低。
 
+總而言之，Rolling Hash 是解決字串問題的常用利器，請各位同學要熟記！
+
+# 資源
 - [Medium Blog](https://medium.com/@lawrence910426/rolling-hash-%E7%9A%84%E5%A5%87%E6%B7%AB%E6%8A%80%E5%B7%A7-24a54ea32d10)
 - [OI Wiki](https://oi-wiki.org/string/hash/)
