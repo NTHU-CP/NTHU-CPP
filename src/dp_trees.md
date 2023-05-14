@@ -134,6 +134,92 @@ int main() {
 
 其實筆者自己也認為，以上內容應該是樹分治，而不是樹DP。不過，接下來就要介紹一類含有大量重疊子問題，必須用DP來解的問題。
 
+### Examples
+
+> [CSES - Tree Distances II](https://cses.fi/problemset/task/1133)
+>
+> 給定一棵樹，對於**每個點**計算該點與所有點的距離總和。
+
+如果讀者有讀懂「樹分治」的話，定根之後，對於每棵子樹計算根與所有點的距離總和，應該是足夠輕鬆愉快的。令\\(sz[u]\\)為以\\(u\\)為根的子樹大小（一共有幾個點），\\(in[u]\\)為以\\(u\\)為根的子樹，上述簡化版問題的答案。作為驗收，在往下讀之前，請試著列出它們的轉移式。
+
+<details><summary>參考答案</summary>
+
+\\[sz[u]=1+\sum_{v\in child(u)}sz[v]\\]
+
+\\[in[u]=sz[u]-1+\sum_{v\in child(u)}in[v]\\]
+
+</details>
+
+問題來了：可以利用剛剛求出來的資訊，快速得到原題目的答案嗎？
+
+答案是可以的。
+
+我們已經知道每個點到其後代(descendant)的距離總和，只需要再算出那些不是後代的點的答案，就解決問題了。
+
+令\\(out[u]\\)為所有不是\\(u\\)的後代的點到\\(u\\)的距離總和。（\\(u\\)是它自己的後代，所以不包含在\\(out[u]\\)裡面，雖然這並不重要。）
+
+那麼，\\(in[u]+out[u]\\)就是點\\(u\\)的最終答案。
+
+如果\\(u\\)是根，那麼顯然\\(out[u]=0\\)。否則，有以下三個情形需要討論：
+
+1. \\(u\\)到\\(parent(u)\\)的距離是\\(1\\)。
+2. 對於所有\\(parent(u)\\)的proper descendant \\(v\\)（但不是\\(u\\)的後代），\\(u\\)到\\(v\\)的路徑依序會是\\(parent(u)\\)、一個\\(u\\)的sibling \\(w\\)、從\\(w\\)到\\(v\\)的路徑。  
+   對於每個這樣的\\(v\\)，前面兩段路徑的長度為\\(2\\)，而這樣的\\(v\\)共有\\(\sum_{w\in sibling(u),w\neq u}sz[w]\\)個。  
+   至於最後一段路徑，我們需要計算所有「從一個\\(u\\)的sibling到其後代的距離」總和。類似Tree Matching的第1. 種情形，其實就是把每個sibling的\\(in[w]\\)相加。
+3. 對於所有不是\\(parent(u)\\)的proper descendant的節點\\(v\\)，\\(u\\)到\\(v\\)的路徑依序會是\\(parent(u)\\)、\\(parent(parent(u))\\)、從\\(parent(parent(u))\\)到\\(v\\)的路徑。  
+   第一段路徑的長度為\\(1\\)，而這樣的\\(v\\)共有\\(n-sz[parent(u)]\\)個；後面兩段路徑，全部囊括在\\(out[parent(u)]\\)裡面。
+
+整理這三種情形，可以得到\\(out[u]\\)的轉移式如下：
+
+\\[out[u]=1+\sum_{v\in sibling(u),v\neq u}(2\times sz[v]+in[v])+(n-sz[parent(u)]+out[parent(u)])\\]
+
+其中
+
+\\[\sum_{v\in sibling(u),v\neq u}(2\times sz[v]+in[v])=\sum_{v\in child(parent(u))}(2\times sz[v]+in[v])-2\times sz[u]-in[u]\\]
+
+<details><summary>Solution Code</summary>
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+#define MAXN (int)2e5
+int n; vector<int> tree[MAXN];
+int sz[MAXN]; long long in[MAXN], out[MAXN];
+void DFS(int u, int parent) {
+    sz[u] = 1; in[u] = -1;
+    for (const int &v: tree[u]) if (v != parent) {
+        DFS(v, u);
+        sz[u] += sz[v]; in[u] += in[v];
+    }
+    in[u] += sz[u];
+}
+void DFSout(int u, int parent) {
+    long long Sigma = 0;
+    if (parent == -1) out[u] = 0;
+    for (const int &v: tree[u]) if (v != parent)
+        Sigma += (sz[v] << 1) + in[v];
+    for (const int &v: tree[u]) if (v != parent) {
+        out[v] = 1 + Sigma - (sz[v] << 1) - in[v] + n - sz[u] + out[u];
+        DFSout(v, u);
+    }
+}
+int main() {
+    cin >> n;
+    for (int i = 1; i < n; ++i) {
+        int a, b; cin >> a >> b;
+        tree[a - 1].push_back(b - 1);
+        tree[b - 1].push_back(a - 1);
+    }
+    DFS(0, -1);
+    DFSout(0, -1);
+    for (int i = 0; i < n; ++i) cout << in[i] + out[i] << " \n"[i == n - 1];
+    return 0;
+}
+```
+
+</details>
+
 ## References
 - [DP on Trees - Introduction · USACO Guide](https://usaco.guide/gold/dp-trees?lang=cpp)
 - [7. 樹與DP進階 - 2017建中校內培訓講義](https://tioj.ck.tp.edu.tw/uploads/attachment/11/54/7.pdf)
