@@ -126,6 +126,6 @@ def get_first_difference(X, Y):
 
 # 總結
 
-# 資源
 
-待補
+- [Medium Blog](https://medium.com/@lawrence910426/rolling-hash-%E7%9A%84%E5%A5%87%E6%B7%AB%E6%8A%80%E5%B7%A7-24a54ea32d10)
+- [OI Wiki](https://oi-wiki.org/string/hash/)
