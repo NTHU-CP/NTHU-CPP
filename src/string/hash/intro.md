@@ -137,7 +137,6 @@ def get_first_difference(X, Y):
 
 這個問題，可以使用 KMP/Z 演算法來解決，但是，也可以使用 Rolling-Hash 乾淨俐落的解決，在此，我們介紹 Rolling Hash 的解法。
 
-## Manacher
 藉由 Rolling Hash 前綴和，我們先對 $T$ 做預處理，再來，我們枚舉 $i$，並查詢 $T[i,i+|P|]$ 的值，如果 $H(P)$ 等同 $H(T[i,i+|P|])$，我們就得知這兩串字串相等，也就能夠把這題做完了！只需要 $O(|T|+|P|)$ 的時間複雜度，便能做完這一題！
 
 ```python
@@ -152,6 +151,38 @@ def string_match(T, P):
 
 乾淨、簡單、俐落！這就是 Rolling Hash 魅力！用短短幾行程式碼，即可解決問題！
 
+# Rolling Hash 最大回文子字串
+> 給定一個字串 $T$，已知最長的回文子字串長度是奇數，最長的回文子字串有多長？
+
+這個問題，可以使用 Manacher 演算法來解決，但是，也可以使用 Rolling-Hash 乾淨俐落的解決，在此，我們介紹 Rolling Hash 的解法。
+
+定義 $T$ 倒過來的字串叫做 $T^\prime$，也就是說 $T^\prime = T[::-1]$
+
+枚舉 $i$，對於 $T[i]$，可以藉由 Rolling Hash 判斷 $T[i,i+K]$ 是否等於 $T^\prime[i-K,i]$，並對 $K$ 二分搜，即可找到最大的 $K$ 使得 $T[i-K,i+K]$ 為回文字串。
+
+二分搜耗費 $O(\log T)$ 的時間，而每次枚舉耗費 $O(T)$ 的時間，共計需要 $O(T \log T)$ 的時間，即可把問題解決！
+
+```python
+def max_palindrome(T):
+    ans, T_prime = 0, T[::-1]
+    H, H_prime = preprocess_substring(T), preprocess_substring(T_prime)
+    for i in range(len(T)):
+        l, r = 0, len(T)
+        while l < r:
+            mid = (l + r) // 2
+            if substring_hash(H, i - mid, i) == substring_hash(H_prime, i, i + mid):
+                l = mid
+            else:
+                r = mid
+        ans = max(ans, l)
+    return ans
+```
+
+眼尖的讀者可能會發現，這套演算法只能解決答案是奇數的情況，如果答案是偶數的話，要怎麼辦呢？很簡單，如果答案是偶數，在每一個字元之間，安插一個垃圾符號（Dummy character），再運行演算法，即可得到解答！垃圾符號不能在原本的字串中出現，不然會影響原先的演算法。
+
+舉例而言，$T=ACDEED$，垃圾符號是 \$，新的字串就會是 `A \$ C \$ D \$ E \$ E \$ D`。
+
+經過演算法計算後得知，最長的回文子字串長度是 7，從兩個 E 中間的 \$ 開始擴張，直到 D 停止擴張，這就是最長的回文子字串。而 \ceil*{\frac{7}{2}}=4，因此，最長的回文子字串大小是 4！
 
 # 總結
 
