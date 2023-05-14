@@ -22,6 +22,7 @@
   - [杜教篩](math/du_sieve.md)
   - [Revisit Arithmetic Function](math/revisit_arithmetic_function.md)
 - [Miscellaneous]()
+  - [逆序對](misc/inversion_pair.md)
 
 ---
 
