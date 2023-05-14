@@ -95,6 +95,20 @@ $P(k,m)=1−\frac{(m−k)!m}{k \cdot m!}$
 2. 初始設定 $H[0] = 0$，$H[i] = H[i - 1] + S[i] \cdot a^i \mod m$，並遞推這個數列
 3. 計算 $(H[j] - H[i]) \cdot a^{-i}$ 即為 `polynomial_hash(S[i:j], a, m)`，計算 $a^{-i}$ 時，可以參考模逆元的作法。
 
+```python
+def preprocess_substring(S):
+    H = [0]
+    p = 1
+    for i in range(len(S)):
+        H.append((H[i] + ord(S[i]) * p) % m)
+        p = (p * a) % m
+    return H
+
+def substring_hash(H, l, r):
+    difference = (H[r] - H[l] + m) % m
+    return (difference * mod_inverse(pow(a, i), m)) % m
+```
+
 這樣做的話，只要先付出 $O(N)$ 的時間建表，每次查詢 substring 就只要 $O(1)$ 了。
 
 # Compare the string lexicographically (by binary search)
