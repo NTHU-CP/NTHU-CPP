@@ -21,6 +21,8 @@
   - [杜教篩](math/du_sieve.md)
   - [Revisit Arithmetic Function](math/revisit_arithmetic_function.md)
 - [Miscellaneous]()
+- [Graph]()
+  - [Ap,Bridge,BCC](graph/introduction_to_AP_bridge_BCC.md)
 
 ---
 
