@@ -21,6 +21,7 @@
   - [數論分塊](math/sqrt_decomposition.md)
   - [杜教篩](math/du_sieve.md)
   - [Revisit Arithmetic Function](math/revisit_arithmetic_function.md)
+  - [Game Theory](math/game_theory.md)
 - [Miscellaneous]()
 
 ---
