@@ -6,7 +6,7 @@
 ### Classic Examples
 > [CSES - Tree Matching](https://cses.fi/problemset/task/1130)
 >
-> 給定一棵樹，找出這棵樹上的最大（邊數）配對，並印出總共有幾個邊。配對的定義是：一個邊集合，其中每個點與至多一條邊相鄰。
+> 給定一棵\\(n\\)個點的樹，找出這棵樹上的最大（邊數）配對，並印出總共有幾個邊。配對的定義是：一個邊集合，其中每個點與至多一條邊相鄰。
 
 許多（無根）樹上問題的第一步，就是隨便選一個點當作根。  
 ![](tree_matching_example_tree.png)![](tree_matching_example_rooted_tree.png)
@@ -63,9 +63,12 @@ void DFS(int u, int parent) {
 DFS(0, -1);
 
 ```
-一個子樹的根可以用這個根節點的編號來代表，所以前一節的dp表會寫成`int dp[2][MAXN];`。  
-樹DP的轉移通常採用memoization而不是填表，因為要了解一棵樹的整體結構，必定要經過一次（通常是深度優先）搜尋；memoization可以邊DFS邊做，而填表需要先知道轉移順序，也就是需要完整DFS一遍之後才能做，多此一舉。  
-以下實作中，`tmp`指的是\\(\max_{v\in child(u)}\bigl(dp[0][v]-dp[1][v]\bigr)\\)。
+一個子樹的根可以用這個根節點的編號來代表，所以前一節的dp表會寫成`int dp[2][MAXN];`。
+
+樹DP的轉移通常採用memoization而不是填表，因為要了解一棵樹的整體結構，必定要經過一次（通常是深度優先）搜尋；memoization可以邊DFS邊做，而填表需要先知道轉移順序，也就是需要完整DFS一遍之後才能做，多此一舉。
+
+以下實作中，`tmp`指的是\\(\max_{v\in child(u)}\bigl(dp[0][v]-dp[1][v]\bigr)\\)。  
+兩個`for (const int &v: tree[u]) if (v != parent)`迴圈看似會讓複雜度變差，但只有第一個迴圈會遞迴呼叫`DFS`，所以時間複雜度會是好好的\\(\Theta(n)\\)。
 ```cpp
 void DFS(int u, int parent) {
     dp[0][u] = 0;
