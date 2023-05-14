@@ -13,6 +13,7 @@
 - [Flow]()
 - [Mathematics](math/intro.md)
 	- [Arithmetic Function](math/arithmetic_function.md)
+	- [Generating Function](math/generating_function.md)
 - [Miscellaneous]()
 
 ---
