@@ -117,6 +117,16 @@ int main() {
 
 </details>
 
+> Finding the Diameter and a Center of a Tree
+>
+> 一張圖的直徑(diameter)為圖中任兩點距離中最長的[^note-1]；圓心(center)則為使一個點與其它點最遠的距離最小的點[^note-2]。對於樹，以圓心為樹根，則樹高會最小[^note-3]。給定一棵\\(n\\)個點的樹，請在\\(\Theta(n)\\)的時間內，找出這棵樹的直徑（長度）以及一個圓心。
+
 ## References
 - [DP on Trees - Introduction · USACO Guide](https://usaco.guide/gold/dp-trees?lang=cpp)
 - [7. 樹與DP進階 - 2017建中校內培訓講義](https://tioj.ck.tp.edu.tw/uploads/attachment/11/54/7.pdf)
+
+[^note-1]: [Graph Diameter -- from Wolfram MathWorld](https://mathworld.wolfram.com/GraphDiameter.html)
+
+[^note-2]: [Graph Center -- from Wolfram MathWorld](https://mathworld.wolfram.com/GraphCenter.html)
+
+[^note-3]: [3. 圖論 - 2017建中校內培訓講義](https://tioj.ck.tp.edu.tw/uploads/attachment/11/42/3.pdf)
