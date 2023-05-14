@@ -15,6 +15,8 @@
   - [Square Root Decomposition](sqrt/sqrt_decomposition.md)
   - [Sqrt-Related Observation]()
   - [Mo's Algorithm]()
+- [Data Structure]()
+  - [Treap](data_structure/treap.md)
 - [Mathematics](math/intro.md)
   - [Introduction to Arithmetic Function](math/introduction_to_arithmetic_function.md)
   - [Linear Sieve](math/linear_sieve.md)
