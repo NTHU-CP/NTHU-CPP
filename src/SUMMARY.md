@@ -21,6 +21,8 @@
   - [數論分塊](math/sqrt_decomposition.md)
   - [杜教篩](math/du_sieve.md)
   - [Revisit Arithmetic Function](math/revisit_arithmetic_function.md)
+- [Data Structures]()
+  - [Persistable Segment Tree](data_structures/persistable_segment_tree.md)
 - [Miscellaneous]()
 
 ---
