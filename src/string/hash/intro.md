@@ -132,11 +132,26 @@ def get_first_difference(X, Y):
 
 完成 1. 之後，只需要 $O(1)$ 比較 $X[i] > Y[i]$ 即可。
 
-# Basic hash problems
+# Rolling Hash 字串匹配
+> 給定你兩個字串 $T,P$，問你 $P$ 在 $T$ 中出現過幾次？
 
-## KMP
+這個問題，可以使用 KMP/Z 演算法來解決，但是，也可以使用 Rolling-Hash 乾淨俐落的解決，在此，我們介紹 Rolling Hash 的解法。
 
 ## Manacher
+藉由 Rolling Hash 前綴和，我們先對 $T$ 做預處理，再來，我們枚舉 $i$，並查詢 $T[i,i+|P|]$ 的值，如果 $H(P)$ 等同 $H(T[i,i+|P|])$，我們就得知這兩串字串相等，也就能夠把這題做完了！只需要 $O(|T|+|P|)$ 的時間複雜度，便能做完這一題！
+
+```python
+def string_match(T, P):
+    occurences = 0
+    H, hash = preprocess_substring(T), polynomial_hash(P)
+    for i in range(len(T) - len(P)):
+        if substring_hash(H, i, i + len(P)) == hash:
+            occurences += 1
+    return occurences
+```
+
+乾淨、簡單、俐落！這就是 Rolling Hash 魅力！用短短幾行程式碼，即可解決問題！
+
 
 # 總結
 
