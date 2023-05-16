@@ -8,12 +8,12 @@ AC自動機是結合Trie的結構(Data Structure)及KMP演算法(Algorithm)而�
 
 ## 自動機理論
 Trie的節點(Vertex)可以視為確定有限狀態自動機(Finite deterministic automaton)的狀態，藉由輸入的字母達到狀態轉移
-待補充
+(待補充)
 ## Trie的實現
-在一個Trie中節點的含意是某個模式串的前綴，或者我們也可以將其稱之為一種狀態(State)，一個節點即代表一個狀態，而邊則是代表狀態之間的轉移，
-一個簡單具有插入及搜尋操作的Trie可以如以下方式呈現，對於長度為n的字串，可能出現的字元數為k的字串，時間複雜度顯然是線性的O(n)，
-但其空間複雜度可以至O(nk)。
-```
+在一個Trie中節點的含意是某個模式串的前綴，或者我們也可以將其稱之為一種狀態(State)，一個節點即代表一個狀態。而邊則是代表狀態之間的轉移，
+對於長度為n的字串，可能出現的字元數為k的字串，一個簡單具有插入及搜尋操作的Trie可以如以下方式呈現，時間複雜度顯然是線性的 \\(O(n)\\)，
+但其空間複雜度可以至 \\(O(nk)\\)，占用過多的空間是Trie在實作上必須特別注意的一個點。
+```c++=
 const int K = 26;
 struct Vertex {
     int next[K];
@@ -50,6 +50,9 @@ bool search(string const& s) {
 }
 
 ```
+![Trie](image/Trie.svg)
+
+## 失配指針
 
 ## AC自動機的構建
 
@@ -61,3 +64,4 @@ bool search(string const& s) {
 ## Reference
 - [[Tutorial] Aho-Corasick algorithm](https://cp-algorithms.com/string/aho_corasick.html)
 - [[Tutorial] https://oi-wiki.org/string/ac-automaton/](https://oi-wiki.org/string/ac-automaton/)
+- [[Slides] Stanford's CS166 - Aho-Corasick Automata](http://web.stanford.edu/class/archive/cs/cs166/cs166.1166/lectures/02/Slides02.pdf)
