@@ -17,19 +17,98 @@ Connected Component 是點的集合，集合中任兩點都是 connected 的，�
 <img src="image/Connected_Component.JPG" width="500" style="display:block; margin: 0 auto;"/>
 
 ## AP & Bridge
+ 
+AP 指的是一張圖 \\(G \\) 移除一個點 \\(V \\) 之後 connected component 的數量變多，則點 \\(V \\) 為 AP。例如下圖的 A 點就是 AP  
+<img src="image/AP.JPG" width="500" style="display:block; margin: 0 auto;"/>
 
-### definition
-若一張圖 G 移除一個點 V 之後有超過一個connected component，則點 V 為 AP  
-若一張圖 G 移除一條邊 E 之後有超過一個connected component，則邊 E 為 Bridge  
-(補圖)
-### Tarjan's Algorithm for AP/Bridge
-很簡單可以想到O(V^2)的做法
+而 Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(E \\) 之後 connected component 的數量變多，則邊 \\(E \\) 為 Bridge。例如下圖的紅色邊就是 Bridge   
+<img src="image/Bridge.JPG" width="500" style="display:block; margin: 0 auto;"/>
 
-### Using DFS Tree 
+那我們要如何快速找到圖上所有的 AP 跟 Bridge 呢？很容易可以想到枚舉每個點或邊，把他拔掉之後看看圖上有沒有多出新的connected component。但這樣做的時間複雜度會是 \\(O((V+E)^2) \\)。不過實際上，我們只要好好觀察圖上的性質就可以在 \\(O(V+E) \\) 的時間做完！以下介紹兩種不同的方法來找出圖上所有的 AP 跟 Bridge
 
-## BCC
+## Using DFS Tree for Bridge
 
-### definition
+### DFS Tree
+
+### 觀察
+
+我們觀察圖中那些邊絕對不可能是 bridge
+<img src="image/DFS Tree Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+首先，back edge 絕對不會是 bridge。再來**如果\\( (u,v) \\)是back edge，那麼樹上 \\(u \\) 到 \\( v \\) 的路徑都不會是bridge**。例如圖中因為有\\( (F,C) \\) 這條back edge，因此樹上 \\(F \\) 到 \\(C \\) 的路徑都不會是 bridge。
+
+所以，如果我們每遇到一條 back edge \\( (u,v) \\)，就把 Tree 上 \\(u \\) 到 \\( v \\) 的路徑都標記成不是 bridge，那麼最後那些沒被標記到的邊就會是 bridge 了。問題是，**我們要如何快速標記一條路徑上所有的邊？**
+
+### 快速標記
+
+這個問題我們可以用差分來解決。當我們遇到一條back edge \\( (u,v) \\) 時，就在\\(u \\) 上 +1， 在 \\( v \\) 上 -1，最後我們由下而上計算前綴和，\\(u \\) 到 \\( v \\) 的 path 就全部被標記好了! (補圖)
+
+### Time Complexity
+我們做完一次DFS之後就能得到答案，因此 Time Complexity 為 \\( O(V+E) \\)
+
+### Code
+```cpp
+void dfs(int u, int parent) {
+	color[u] = 1;
+	for(auto &v : G[u]) {
+		if(v == parent) continue;
+
+		if(color[v] == 0) {
+			dfs(v, u);
+			if(sum[v] == 0) 
+				bridge.emplace_back(u, v);
+			sum[u]+=sum[v];
+		} else if(color[v] == 1){
+			sum[u]+=1;
+			sum[v]-=1;
+		}
+	}
+	color[u] = 2;
+}
+```
+## Tarjan's Algorithm for AP/Bridge
+接著我們要來介紹 Tarjan 所提出的找 AP/Bridge 的演算法。同樣的，我們也會用到 DFS Tree。
+
+### 觀察 for AP
+我們觀察下圖中 \\( C \\) 點的左子樹。 你會發現當我們移除 \\( C \\) 點後， \\( C \\) 點的左子樹**就沒有路可以走到原本 \\( C \\) 點的祖先**，因此移除\\( C \\) 點後會讓 \\( C \\) 點的左子樹跟\\( C \\) 點的祖先處在不同的 Connected Component。
+
+<img src="image/Tarjan AP Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+更一般的說，對於一個點 \\(v \\)，如果 \\(v \\) 的某一顆子樹無法在不經過 \\(v \\) 的情況下走到 \\(v \\)的祖先，那麼 \\(v \\) 一定是 AP。
+
+<img src="image/General AP.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+但 root 是沒有祖先的呀，因此 root 我們要拉出來特別判斷。很明顯，當 root 有至少兩顆子樹的時候，root 一定會是 AP，否則就不是。
+<img src="image/Root AP Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+### 觀察 for Bridge
+我們觀察下圖中 \\( (C,D) \\) 這條邊，當我們把這條邊拔掉後，以 \\(D \\) 為根的子樹**就沒有路可以走到 \\( C \\) 點**，因此移除 \\( (C,D) \\) 後會讓\\( C \\) 跟 \\( D \\) 處在不同的 Connected Component。
+
+<img src="image/Tarjan Bridge Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+更一般的說，令\\(u \\) 是 \\( v \\) 的 parent，則對於一條邊 \\( (u,v) \\)，如果 \\( v \\) 的子樹都無法在不經過 \\( (u,v) \\) 的情況下走到 \\( u \\)，那麼 \\( (u,v) \\) 一定是 bridge。
+
+<img src="image/General Bridge.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+### 演算法
+現在我們來看看 Tarjan 是怎麼把這個東西做出來的。
+
+Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
+
+\\(depth(v) \\) 表示 \\( v \\) 這個點在 DFS Tree 上的深度。
+<img src="image/Depth Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+\\( low(v) \\) 表示 \\(v \\) 子樹中所有的點和這些點的鄰點，以及\\( v \\)本身的最淺深度。
+
+例如下圖的 \\( C \\) 點，本身的深度是 \\(3\\)，子樹中所有的點深度都 \\(>3\\)，而子樹中最淺的鄰點為 \\( B \\)，深度為 \\(2\\)，因此 \\(low(C) = 2\\) 
+<img src="image/Low Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+
+## code
+發現 Tarjan 找 AP 跟 Bridge 的方法其實有很多地方是一樣的，因此我們可以把他寫在同一份code裡！
+
+## BCC(Biconnected Component)
+BCC 指的是沒有 AP 的 Connected Component。例如下圖我們能找到三個 BCC
+<img src="image/Biconnected Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
 ## Problems
 
@@ -43,7 +122,14 @@ AP 模板題
 > 
 > 給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，要你找出圖上所有的 Bridge
 
+
 Bridge 模板題
+
+> [Codeforces - Break Up](https://codeforces.com/problemset/problem/700/C)
+>
+> 給一張帶權無向圖與兩點 \\(S \\) , \\(T \\)，要你選至多兩條邊刪除後使\\(S \\) , \\(T \\)不連通。要求選的邊權重和最小。
+
+
 ## Reference
 - [CP Algorithm - Connected components](https://cp-algorithms.com/graph/search-for-connected-components.html)
 - [演算法筆記 - Connected components](https://web.ntnu.edu.tw/~algo/ConnectedComponent.html)
@@ -54,8 +140,8 @@ Bridge 模板題
 - [Hackerearth - AP & bridge](https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial/)
 - [演算法海牛 - bridge](https://www.facebook.com/algo.seacow/posts/pfbid0PMMPJEWmh3XgFtstTh8pptxjnJKK5jwpeVCQWEmfWVyRKT66LqccAv5DiSZ22zDhl)
 - [codeforce blog - AP & bridge](https://codeforces.com/blog/entry/71146)
-- [oi-wiki - bcc](https://oi-wiki.org/graph/bcc/)
-- [Hackerearth - bcc](https://www.hackerearth.com/practice/algorithms/graphs/biconnected-components/tutorial/)
+- [oi-wiki - BCC](https://oi-wiki.org/graph/bcc/)
+- [Hackerearth - BCC](https://www.hackerearth.com/practice/algorithms/graphs/biconnected-components/tutorial/)
 - [codeforce blog - DFS Tree](https://codeforces.com/blog/entry/68138)
 
 
