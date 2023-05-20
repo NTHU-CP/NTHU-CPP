@@ -230,7 +230,7 @@
 &amp;= S_f\left(\left\lfloor\frac{n}{i}\right\rfloor\right)\times\sum_{j=1}^{\left\lfloor\frac{n}{\left\lfloor\frac n i\right\rfloor}\right\rfloor} g(j) \\
 &amp;= S_f\times\left(S_g\left( \left\lfloor\frac{n}{\left\lfloor\frac{n}{i}\right\rfloor}\right\rfloor \right) - S_g(i - 1)\right)
 \end{align}</p>
-<p>可以將 \( f \) 、\( g \) 的前綴和進行預處理，這樣就能夠在 \( \mathcal{O}(1) \) 的時間內得到 \( S_f \) 和 \( S_g \) 了。</p>
+<p>可以將 \( f \)、\( g \) 的前綴和進行預處理，這樣就能夠在 \( \mathcal{O}(1) \) 的時間內得到 \( S_f \) 和 \( S_g \) 了。</p>
 <p>因此捲積的前綴和就能夠利用數論分塊的方法在 \( \mathcal{O}(\sqrt{n}) \) 的時間內算出。</p>
 <p>Code 如下：</p>
 <pre><code class="language-cpp">for (int i = 1, r = 0; i &lt;= n; i = r + 1) {

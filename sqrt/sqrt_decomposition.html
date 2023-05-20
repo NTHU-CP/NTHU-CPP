@@ -305,7 +305,7 @@ int main() {
 <p>我們接著再看一題。</p>
 <blockquote>
 <p><a href="https://codeforces.com/contest/455/problem/D">CF 445D - Serega and Fun</a><br />
-給一個長度為 \( N  \) 的陣列 \( A \)，\( Q \) 筆操作，強制在線，有兩種操作：</p>
+給一個長度為 \( N \) 的陣列 \( A \)，\( Q \) 筆操作，強制在線，有兩種操作：</p>
 <ol>
 <li>給定 \( l, r \)，將 \( l \) 到 \( r \) 的元素向右循環移位，也就是說 \( a_l, a_{l + 1}, ..., a_{r - 1}, a_{r} \) 會變成 \( a_{r}, a_{l}, a_{l - 1}, ..., a_{r - 1} \)。</li>
 <li>給定 \( l, r, k \)，輸出 \( l \) 到 \( r \) 之間有幾個元素數值等於 \( k \)。</li>
@@ -639,7 +639,7 @@ int main() {
 </ol>
 <p>對於額外被修改成紅色的點，我們直接計算他與詢問的點距離是多少。</p>
 <p>樹上給定兩點求距離是一個非常經典的問題，請讀者參考其他章節，或自行研究。總而言之，這裡你可以透過將查詢距離的問題轉換成 LCA 問題後再轉換成 RMQ 問題，然後搭配 Sparse Table 來達到 \( O(N\log N) \) 預處理、\( O(1) \) 查詢兩點距離的算法。</p>
-<p>事實上此處就算是使用倍增法來求 LCA ，也就是查詢時會是 \( O(\log N) \)，仍然能通過此題。</p>
+<p>事實上此處就算是使用倍增法來求 LCA，也就是查詢時會是 \( O(\log N) \)，仍然能通過此題。</p>
 <ol start="3">
 <li>如何快速的重建維護的資訊</li>
 </ol>
@@ -681,7 +681,7 @@ int main() {
 </blockquote>
 <details><summary> Solution </summary>
 <p>這題在當年台北站算是有難度的題目，僅有 14 隊做出來。官解做法複雜度為 \( O(M\log N) \)，但是在賽中有隊伍直接使用分塊算法解出這題。</p>
-<p>首先因為 \( n \leq 10^6 \)，而 \( e \leq 2 \times 10^5 \)，所以可以先 relabel ，讓序列的大小變成 \( 2 \times 10^5 \)。</p>
+<p>首先因為 \( n \leq 10^6 \)，而 \( e \leq 2 \times 10^5 \)，所以可以先 relabel，讓序列的大小變成 \( 2 \times 10^5 \)。</p>
 <p>接著對序列分塊，每一塊需要維護兩種 stack，完整覆蓋到的 stack，稱作 \(whole\)，以及部分覆蓋的 stack，稱做 \(part\)。每一個元素也要自己維護一個 stack。</p>
 <p>每當第一種操作時，就將新增的人 push 到區間完整覆蓋到的塊的 \( whole \) 與左右沒完整覆蓋到的元素自己的 stack 上。注意到，左右只包含到部分的塊，會需要 push 到該塊的 \( part \) 上。因為有一種可能是第二種操作的區間完整包含這一塊，如果只有 push 進個別的小元素的 stack 內，會沒辦法知道其實他可供選擇。</p>
 <p>第二種操作時，對於查詢區間完整覆蓋到的塊，他的 \( whole \) 與 \( part \) 的 top 會是答案候選人，對於左右區間沒完整覆蓋到的部分，各自元素自己的 stack 的 \( top \) 與他們所在的塊的 \( whole \) 的 \( top \) 會是答案候選人，將所有答案候選人挑最晚加進來的就是答案。</p>
@@ -707,15 +707,15 @@ int main() {
 <li><a href="https://cp-algorithms.com/data_structures/sqrt_decomposition.html">Sqrt Decomposition - Algorithms for Competitive Programming</a></li>
 <li><a href="https://codeforces.com/blog/entry/54133">SQRT decomposition for beginners</a></li>
 <li><a href="https://blog.csdn.net/BWzhuzehao/article/details/111057797">分块算法总结&amp;专题训练</a></li>
-<li><a href="http://hzwer.com/8053.html">「分块」数列分块入门1 – 9 by hzwer</a></li>
+<li><a href="http://hzwer.com/8053.html">「分块」数列分块入门 1 – 9 by hzwer</a></li>
 <li><a href="https://codeforces.com/blog/entry/23005">SQRT decomposition</a></li>
-<li><a href="https://github.com/enkerewpo/OI-Public-Library/blob/master/IOI%E4%B8%AD%E5%9B%BD%E5%9B%BD%E5%AE%B6%E5%80%99%E9%80%89%E9%98%9F%E8%AE%BA%E6%96%87/%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F2017%E8%AE%BA%E6%96%87%E9%9B%86.pdf">&lt;&lt;非常规大小分块算法初探&gt;&gt; - 国家集训队2017论文集</a></li>
+<li><a href="https://github.com/enkerewpo/OI-Public-Library/blob/master/IOI%E4%B8%AD%E5%9B%BD%E5%9B%BD%E5%AE%B6%E5%80%99%E9%80%89%E9%98%9F%E8%AE%BA%E6%96%87/%E5%9B%BD%E5%AE%B6%E9%9B%86%E8%AE%AD%E9%98%9F2017%E8%AE%BA%E6%96%87%E9%9B%86.pdf">&lt;&lt;非常规大小分块算法初探&gt;&gt; - 国家集训队 2017 论文集</a></li>
 </ul>
 <div class="footnote-definition" id="note-1"><sup class="footnote-definition-label">1</sup>
 <p>經驗上，多數題目的分塊大小都是 \( \sqrt{N} \) 為最佳，所以在想解法時很自然會直接將塊的大小設為根號，但對於一些特殊的算法可能需要取不同的分塊大小。</p>
 </div>
 <div class="footnote-definition" id="note-2"><sup class="footnote-definition-label">2</sup>
-<p><a href="https://blog.csdn.net/KIKO_caoyue/article/details/83413687">线段树模板?VS分块【POJ3264】</a></p>
+<p><a href="https://blog.csdn.net/KIKO_caoyue/article/details/83413687">线段树模板?VS 分块【POJ3264】</a></p>
 </div>
 
                     </main>

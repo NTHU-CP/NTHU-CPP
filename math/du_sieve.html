@@ -153,7 +153,7 @@
 <p>\( \mu\ast 1 = \sum_{d\mid n}\mu(d)=[n=1] \)</p>
 </blockquote>
 <p>對它取前綴和，會發現它很好算，也就是 \(\sum_{i=1}^n \mu\ast 1 = \sum_{i=1}^n [i=1] = 1\)。</p>
-<p>因此若可以找到 \(\mu\ast 1\)  的前綴和，還有 \(\mu\) 的前綴和之間的關係，說不定就能夠加速計算 \(\mu\) 的前綴和。</p>
+<p>因此若可以找到 \(\mu\ast 1\) 的前綴和，還有 \(\mu\) 的前綴和之間的關係，說不定就能夠加速計算 \(\mu\) 的前綴和。</p>
 <p>而這就是大名鼎鼎的杜教篩。</p>
 <h2 id="杜教篩-1"><a class="header" href="#杜教篩-1">杜教篩</a></h2>
 <p>杜教篩適用於以下情況：</p>
@@ -230,11 +230,11 @@
 <p>若 \( m\in R(n) \)，則 \( R(m)\subseteq R(n) \)。</p>
 </blockquote>
 <p>證明：</p>
-<p>根據定義，\( m\in R(n)) \) 代表存在某個正整數 \( i \)（\( 1\le i\le n \)） 使得 \( \left\lfloor\dfrac n i\right\rfloor = m \)。</p>
+<p>根據定義，\( m\in R(n) \) 代表存在某個正整數 \( i \) (\( 1\le i\le n \)) 使得 \( \left\lfloor\dfrac n i\right\rfloor = m \)。</p>
 <p>因此</p>
-<p>\[ R(m)=\left\{\left\lfloor\frac{\left\lfloor\frac{n}{i}\right\rfloor}{j}\right\rfloor :\  j=1, 2, \cdots, m \right\} \]</p>
+<p>\[ R(m)=\left\{\left\lfloor\frac{\left\lfloor\frac{n}{i}\right\rfloor}{j}\right\rfloor :\ j=1, 2, \cdots, m \right\} \]</p>
 <p>利用前述引理，可以簡化成：</p>
-<p>\[ R(m)=\left\{\left\lfloor\frac{n}{ij}\right\rfloor :\  j=1, 2, \cdots, m \right\} \]</p>
+<p>\[ R(m)=\left\{\left\lfloor\frac{n}{ij}\right\rfloor :\ j=1, 2, \cdots, m \right\} \]</p>
 <p>由此可見 \( R(m)\subseteq R(n) \)。</p>
 <p align="right">\( \blacksquare \)</p>
 <p>有了這份定理，我們回顧 <code>Find_S</code>。</p>
@@ -632,10 +632,10 @@ int main() {
 <br>
 <hr />
 <br>
-<p><a href="https://www.luogu.com.cn/problem/P4213">洛谷 P213</a>即是上面兩道練習的模板題。</p>
+<p><a href="https://www.luogu.com.cn/problem/P4213">洛谷 P213</a> 即是上面兩道練習的模板題。</p>
 <p>在此附上 AC code。</p>
 <p>在這道題目中要注意，\( n + 1 \) 可能會導致 overflow。</p>
-<p>附註：  我只有測試過以下的 code，上面的 code 並沒有丟到 OJ 上測試過。</p>
+<p>附註：我只有測試過以下的 code，上面的 code 並沒有丟到 OJ 上測試過。</p>
 <pre><code class="language-cpp">#include &lt;bits/stdc++.h&gt;
 using namespace std;
 

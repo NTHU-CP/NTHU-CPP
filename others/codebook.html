@@ -146,14 +146,14 @@
 <p>ICPC 以及台灣的各大競技程式比賽，經常允許攜帶 20 到 25 頁 A4 大小的紙本作為參考資料。大學以後的競賽使用的演算法種類繁多，其中不少非常複雜以至於人腦難以記憶，因此大多數的隊伍會將這些演算法記錄在參考資料中，而有 codebook 之名。</p>
 <p>有些比賽要求 codebook 的每一頁都要標上頁碼以及學校名稱，以及字體大小要在 50 公分外正常視力範圍的人能夠辨識出內容。為了最佳化 codebook 的文字量，本校隊伍 Jinkela (退休前改名 Angry Crow Takes Flight!) 製作了簡易的 codebook 生成器，提供給本校學生做為參考。</p>
 <h2 id="1-下載以及編譯"><a class="header" href="#1-下載以及編譯">1. 下載以及編譯</a></h2>
-<p>要使用 Jinkela codebook ，請先下載或是 clone <a href="https://github.com/Jinkela-Xiao-Zuan-Feng-Mountaineer/Codebook">Codebook</a> 這個 repository。</p>
-<p>Jinkela codebook 的特點在於無論是 Windows 以及 Linux 環境都能使用，所有的操作都可以在該系統的命令列介面中完成。首先確認自己的電腦有安裝 <code>python3</code> 以及 <code>xelatex</code> ，盡量將兩個套件都安裝到最新的版本， <code>xelatex</code> 由於是比較少見的套件，可以參考 <code>README.md</code> 中的資訊安裝。</p>
+<p>要使用 Jinkela codebook，請先下載或是 clone <a href="https://github.com/Jinkela-Xiao-Zuan-Feng-Mountaineer/Codebook">Codebook</a> 這個 repository。</p>
+<p>Jinkela codebook 的特點在於無論是 Windows 以及 Linux 環境都能使用，所有的操作都可以在該系統的命令列介面中完成。首先確認自己的電腦有安裝 <code>python3</code> 以及 <code>xelatex</code>，盡量將兩個套件都安裝到最新的版本，<code>xelatex</code> 由於是比較少見的套件，可以參考 <code>README.md</code> 中的資訊安裝。</p>
 <p>接著打開命列列介面進入 Codebook 的路徑，將 <code>Codebook.pdf</code> 刪除後，執行以下指令進行編譯：</p>
 <pre><code class="language-shell">python build.py
 </code></pre>
-<p>執行結束後，如果編譯成功會產生一個新的 <code>Codebook.pdf</code> ，請檢察內容是否正常，如果完全沒有問題就可以進行下一步，否則請將出現的問題透過 <a href="https://github.com/Jinkela-Xiao-Zuan-Feng-Mountaineer/Codebook/issues">issues</a> 告訴我們。</p>
+<p>執行結束後，如果編譯成功會產生一個新的 <code>Codebook.pdf</code>，請檢察內容是否正常，如果完全沒有問題就可以進行下一步，否則請將出現的問題透過 <a href="https://github.com/Jinkela-Xiao-Zuan-Feng-Mountaineer/Codebook/issues">issues</a> 告訴我們。</p>
 <h2 id="2-codebookpdf-內容"><a class="header" href="#2-codebookpdf-內容">2. Codebook.pdf 內容</a></h2>
-<p><code>Codebook.pdf</code> 是最終產生的參考資料，按照順許可以分成 3 個部分：</p>
+<p><code>Codebook.pdf</code> 是最終產生的參考資料，按照順序可以分成 3 個部分：</p>
 <ol>
 <li>程式碼以及數學公式<br>
 該部分從第一頁開始，到目錄頁結束，佔據了檔案中的絕大部分</li>
@@ -163,9 +163,9 @@
 有些比賽在正式開始前有個測試執行環境的時間，而且通常不會限制攜帶的參考資料數量，因此可以多帶一份專門測試用的程式碼。當前該部分是本校競技程式設計課程所教授的內容，可以自行研究使用方式。</li>
 </ol>
 <h2 id="3-合法的檔案結構"><a class="header" href="#3-合法的檔案結構">3. 合法的檔案結構</a></h2>
-<p>Codebook 的路徑下有三個資料夾： <code>codes</code> 、 <code>fonts</code> 、 <code>judge-test</code> 。其中 <code>fonts</code> 存放的是會用到的字體，而 <code>judge-test</code> 中放的是測機用程式碼，會在下一節介紹。這兩個資料夾理論上不會有任何修改，本小節的重點會放在 <code>codes</code> 資料夾中。</p>
+<p>Codebook 的路徑下有三個資料夾：<code>codes</code>、<code>fonts</code>、<code>judge-test</code>。其中 <code>fonts</code> 存放的是會用到的字體，而 <code>judge-test</code> 中放的是測機用程式碼，會在下一節介紹。這兩個資料夾理論上不會有任何修改，本小節的重點會放在 <code>codes</code> 資料夾中。</p>
 <p><img src="image/codebook/codes.jpg" alt="" /></p>
-<p><code>codes</code> 資料夾中存放了所有想要被放進 codebook 中的程式碼以及數學公式，目前支援的格式有： <code>.cpp</code>、<code>.py</code> 以及 <code>.tex</code>。所有檔案都支援中英文的使用，若想要支援其他程式語言請自行學習 latex 語法來完成。</p>
+<p><code>codes</code> 資料夾中存放了所有想要被放進 codebook 中的程式碼以及數學公式，目前支援的格式有：<code>.cpp</code>、<code>.py</code> 以及 <code>.tex</code>。所有檔案都支援中英文的使用，若想要支援其他程式語言請自行學習 latex 語法來完成。</p>
 <p><code>codes</code> 資料夾透過其中的子資料夾名稱對檔案進行分類，子資料夾最多只能有一層，而且所有檔案都要放在子資料夾中。舉例來說，以下為 <code>codes</code> 其中兩個子資料夾的結構：</p>
 <pre><code>codes
 ├── Computational Geometry
@@ -185,9 +185,9 @@
 </code></pre>
 <p>可以在生成出來的 <code>Codebook.pdf</code> 中的目錄頁找到以下的結構：</p>
 <p><img src="image/codebook/tableofcontents.jpg" alt="" /></p>
-<p>透過這個規則，使用者可以自行增減 <code>codes</code> 資料夾中的任何資料已完成自己想要的 codebook 。</p>
+<p>透過這個規則，使用者可以自行增減 <code>codes</code> 資料夾中的任何資料已完成自己想要的 codebook。</p>
 <h2 id="4-設定每頁顯示的欄數橫版或直版顯示"><a class="header" href="#4-設定每頁顯示的欄數橫版或直版顯示">4. 設定每頁顯示的欄數、橫版或直版顯示</a></h2>
-<p>Jinkela codebook 的另一大特點是可以自由設定每頁顯示的欄數、以及要橫版或直版顯示。想要做到這些設定，請打開 <code>Codebook-setup.tex</code> ，並在其中找到以下幾行的參數設定：</p>
+<p>Jinkela codebook 的另一大特點是可以自由設定每頁顯示的欄數、以及要橫版或直版顯示。想要做到這些設定，請打開 <code>Codebook-setup.tex</code>，並在其中找到以下幾行的參數設定：</p>
 <pre><code class="language-tex">\setboolean{UsingGeometryLandscape}{true} % 是否使用橫版頁面
 \newcommand{\NumberOfColumn}{4} % 每頁有幾欄
 \newcommand{\UniversityName}{National Tsing Hua University} % 學校名稱
@@ -195,12 +195,12 @@
 </code></pre>
 <p>接著來介紹每個參數的作用：</p>
 <h3 id="usinggeometrylandscape"><a class="header" href="#usinggeometrylandscape">UsingGeometryLandscape</a></h3>
-<p>Jinkela codebook 使用 geometry landscape 來產生橫版頁面。該參數預設是 true ，若將其調成 false 就會使用直版頁面。</p>
+<p>Jinkela codebook 使用 geometry landscape 來產生橫版頁面。該參數預設是 true，若將其調成 false 就會使用直版頁面。</p>
 <pre><code class="language-tex">\setboolean{UsingGeometryLandscape}{true} % 使用橫版頁面
 \setboolean{UsingGeometryLandscape}{false} % 使用直版頁面
 </code></pre>
 <h3 id="numberofcolumn"><a class="header" href="#numberofcolumn">NumberOfColumn</a></h3>
-<p>表示每頁有幾欄。一般來說橫版頁面會使用 4 欄或是 3 欄，直版頁面會使用 3 欄或 2 欄。該參數預設是 4 ，但實際上要達到最佳的程式碼壓縮量，建議使用直版頁面、每頁有 3 欄的樣式。</p>
+<p>表示每頁有幾欄。一般來說橫版頁面會使用 4 欄或是 3 欄，直版頁面會使用 3 欄或 2 欄。該參數預設是 4，但實際上要達到最佳的程式碼壓縮量，建議使用直版頁面、每頁有 3 欄的樣式。</p>
 <pre><code class="language-tex">\newcommand{\NumberOfColumn}{3} % 每頁有 3 欄
 </code></pre>
 <h3 id="學校名稱以及隊伍名稱"><a class="header" href="#學校名稱以及隊伍名稱">學校名稱以及隊伍名稱</a></h3>

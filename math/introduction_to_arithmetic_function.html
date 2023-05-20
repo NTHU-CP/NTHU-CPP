@@ -149,9 +149,9 @@
 <p>翻成白話就是，若一個函數的值域是整數（被定義在整數上）、對應域是複數，則其為數論函數。</p>
 <p>舉例來說：</p>
 <ul>
-<li>是否為質數： \( p(n)=\cases{1 &amp;: \( n \) 是質數 \\ 0 &amp;: \( n \) 不是質數} \)</li>
+<li>是否為質數：\( p(n)=\cases{1 &amp;: \( n \) 是質數 \\ 0 &amp;: \( n \) 不是質數} \)</li>
 <li>歐拉函數：\( \varphi(n)=n\text{以下與其互質的數字數量} \)</li>
-<li>因數和： \( \sigma(n)=\sum_{d\mid n} d \)</li>
+<li>因數和：\( \sigma(n)=\sum_{d\mid n} d \)</li>
 <li>GCD 函數：\( f_{7122}(n) = \gcd(7122, n) \)</li>
 </ul>
 <h2 id="積性函數"><a class="header" href="#積性函數">積性函數</a></h2>
@@ -189,7 +189,7 @@ m + 1 &amp; m + 2 &amp; \cdots &amp; 2m \\
 \end{array}\right]
 \]</p>
 <p>注意到，每個橫排在模 \( m \) 之後，恰好會對應到 \( 0\sim m-1 \) 的每個數字。</p>
-<p>所以對於第 \( i \) （\( i=1\sim m \)） 個直排，若 \( \gcd(i, m)\neq 1 \)，則其上所有數字都不會和 \( nm \) 互質。</p>
+<p>所以對於第 \( i \)（\( i=1\sim m \)）個直排，若 \( \gcd(i, m)\neq 1 \)，則其上所有數字都不會和 \( nm \) 互質。</p>
 <p>相反的，若 \( \gcd(i, m)=1 \)，則其上所有數字都和 \( nm \) 互質，這樣的直排共有 \( \varphi(m) \) 個。</p>
 <p>另一方面因為 \( \gcd(n,m)=1 \)，因此 \( m\times (0\sim n-1) \) 在模 \( n \) 後會是 \( 0\sim n-1 \)。</p>
 <p>所以每個直排在模 \( n \) 之後，恰好會對應到 \( 0\sim n-1 \) 的每個數字。</p>
@@ -234,7 +234,7 @@ m + 1 &amp; m + 2 &amp; \cdots &amp; 2m \\
 <p>歐拉函數：\( \displaystyle\varphi(n) = n\times\prod_{i=1}^m \frac{p_i - 1}{p_i} \)</p>
 </li>
 <li>
-<p>莫比烏斯函數： \(\mu(n)=\cases{1&amp;: \(n = 1\) \\ (-1)^k&amp;: \(n = p_1p_2\cdots p_k\) \\ 0&amp;: Otherwise}\)。</p>
+<p>莫比烏斯函數：\(\mu(n)=\cases{1&amp;: \(n = 1\) \\ (-1)^k&amp;: \(n = p_1p_2\cdots p_k\) \\ 0&amp;: Otherwise}\)。</p>
 </li>
 </ul>
 </blockquote>
