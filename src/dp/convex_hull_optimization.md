@@ -64,7 +64,6 @@
 
 ```cpp
 #include <bits/stdc++.h>
-#pragma GCC optimize("O2")
 using namespace std;
 
 typedef pair<int, int> pii;
@@ -72,21 +71,10 @@ typedef long long ll;
 typedef pair<ll, ll> pll;
 #define X first
 #define Y second
-#define io ios_base::sync_with_stdio(0); cin.tie(0);
-#define setpr setprecision
-#define ef emplace_front
-#define eb emplace_back
-#define pub push_back
-#define em emplace
+#define pf pop_front 
 #define pb pop_back
-#define pf pop_front
-#define lowb lower_bound
-#define uppb upper_bound
-#define lowbit(x) ((x) & -(x))
-#define mk make_pair
-const ll M = 1e9 + 7;
-const ll INF = 1e14;
-# define N 200005
+#define eb emplace_back
+#define N 200005
 
 ll s[N], f[N];
 ll dp[N];
@@ -94,7 +82,6 @@ ll dp[N];
 ll cal(ll x, pll line){
     return x * line.X + line.Y;
 }
-
 bool cmp(pll line1, pll line2, pll line3){
     return (line3.Y - line1.Y) * (line1.X - line2.X) <= (line2.Y - line1.Y) * (line1.X - line3.X); 
 }
@@ -164,7 +151,6 @@ int main(){
 
 ```cpp
 #include <bits/stdc++.h>
-#pragma GCC optimize("O2")
 using namespace std;
 
 typedef pair<int, int> pii;
@@ -172,21 +158,10 @@ typedef long long ll;
 typedef pair<ll, ll> pll;
 #define X first
 #define Y second
-#define io ios_base::sync_with_stdio(0); cin.tie(0);
-#define setpr setprecision
-#define ef emplace_front
 #define eb emplace_back
-#define pub push_back
-#define em emplace
 #define pb pop_back
 #define pf pop_front
-#define lowb lower_bound
-#define uppb upper_bound
-#define lowbit(x) ((x) & -(x))
-#define mk make_pair
-const ll M = 1e9 + 7;
-const ll INF = 1e14;
-# define N 200005
+#define N 200005
 
 ll s[N], f[N];
 ll dp[N];
@@ -194,11 +169,9 @@ ll dp[N];
 ll cal(ll x, pll line){
     return x * line.X + line.Y;
 }
-
 ll cmp2(pll p1, pll p2, ll x){
     return (p2.Y - p1.Y) > (p1.X - p2.X) * x;
 }
-
 pll find_line(vector <pll> v, ll x){
     int l = 0, r = v.size() - 2, mid, ans = max(r + 1, 0);
     while(l <= r){
@@ -279,21 +252,10 @@ typedef long long ll;
 typedef pair<ll, ll> pll;
 #define X first
 #define Y second
-#define io ios_base::sync_with_stdio(0); cin.tie(0);
-#define setpr setprecision
-#define ef emplace_front
 #define eb emplace_back
-#define pub push_back
-#define em emplace
 #define pb pop_back
-#define pf pop_front
-#define lowb lower_bound
-#define uppb upper_bound
-#define lowbit(x) ((x) & -(x))
-#define mk make_pair
-const ll M = 1e9 + 7;
-const ll INF = 1e14;
 #define N 200005
+const ll INF = 1e14;
 
 ll dp[N], s[N], f[N];
 
@@ -446,21 +408,8 @@ typedef long long ll;
 typedef pair<ll, ll> pll;
 #define X first
 #define Y second
-#define io ios_base::sync_with_stdio(0); cin.tie(0);
-#define setpr setprecision
-#define ef emplace_front
-#define eb emplace_back
-#define pub push_back
-#define em emplace
-#define pb pop_back
-#define pf pop_front
-#define lowb lower_bound
-#define uppb upper_bound
-#define lowbit(x) ((x) & -(x))
-#define mk make_pair
-const ll M = 1e9 + 7;
-const ll INF = 1e18;
 #define N 1000005
+const ll INF = 1e18;
 
 ll s[N], f[N];
 ll dp[N];
