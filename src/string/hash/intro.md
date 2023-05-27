@@ -1,12 +1,15 @@
 # Introduction to Rolling Hash
 
 ## 前言
+
 如果你是一名正常的競技程式選手，你只要把這篇讀完就行了，後續的章節是不用讀的。但如果你閒閒沒事，想要增加自己奇怪的知識，可以把後續的章節也讀完 XDD
 
 ## How to calculate Rolling Hash
+
 Hash (哈希)，是一種將字串壓縮成一個數字的方法，藉此加速字串匹配。而在競技程式設計中，最常用的方法是 Polynomial Hash (多項式哈希)，在台灣更多被稱作 Rolling Hash (滾動哈希)。
 
 ### 如何計算
+
 多項式哈希（Polynomial Hash）是一種常用的哈希算法，它通常用於字符串匹配、文本搜索、比較和壓縮等應用場景。其基本思想是將字符串看作一個多項式，並使用多項式求值的方式來計算字符串的哈希值。
 
 以下是計算 Polynomial hash 的基本步驟：
@@ -22,6 +25,7 @@ Hash (哈希)，是一種將字串壓縮成一個數字的方法，藉此加速�
 將多項式中各項的係數和次方相乘，然後將所有項的結果相加，最後對模數值 m 取模，得到最終的哈希值。
 
 ### 範例
+
 例如，對於一個字符串 s = "hello"，假設基數 a = 31，模數值 m = 10^9 + 7，則可以按照以下方式計算其 Polynomial hash：
 
 將字符串 s 轉換為對應的數字序列，得到 [104, 101, 108, 108, 111]。
@@ -35,6 +39,7 @@ Hash (哈希)，是一種將字串壓縮成一個數字的方法，藉此加速�
 對模數值 m 取模，得到最終的哈希值 105834283。
 
 ### Python Code
+
 ```python
 def polynomial_hash(s, a, m):
     # 初始化哈希值為 0
@@ -53,9 +58,11 @@ def polynomial_hash(s, a, m):
 ```
 
 ### 判斷字串是否相等
+
 很簡單的，比對兩個哈希值 (Hash Value) 是否相等即可，舉例而言，有兩個字串 $S_1$ 與 $S_2$ 要判斷是否相等，那麼，判斷 $polynomial_hash(s_1, a, m) == polynomial_hash(s_2, a, m)$ 即可。
 
 ## Hash Collision and Mathematical Analysis
+
 哈希碰撞（Hash Collision）指的是兩個不同的輸入值在經過哈希函數計算後產生了相同的哈希值。由於哈希函數的值域通常比輸入值的集合小得多，因此哈希碰撞是不可避免的現象。
 
 而在 Rolling Hash 中，哈希碰撞就會導致本不該相等的兩個字串，被視為相同的字串，最終使得程式的邏輯出現錯誤。
@@ -75,6 +82,7 @@ $P(k,m)=1−\frac{(m−k)!m}{k \cdot m!}$
 對於 Polynomial Hash，哈希值空間的大小可以看作是模 $p$ 的值，其中 $p$ 是一個大質數。因此，我們可以使用上述公式來估計 Polynomial Hash 的 Collision Rate。
 
 ## Picking the correct modulo and base
+
 首先，選定的 $m$ 跟 $a$ 必須要互質，假設 $m$ 跟 $a$ 不互質的話，就會造成 $a^1, a^2, ..., a^m$ 中出現重複的數字，進而使得哈希碰撞的概率上升。
 
 以 $m=8, a=6$ 為例，$a^1=6, a^2=4, a^3=a^4=a^5=a^6=0$，可以觀察到有多個數字重複，因此必須選擇互質的 $m, a$。
@@ -88,6 +96,7 @@ $P(k,m)=1−\frac{(m−k)!m}{k \cdot m!}$
 4. $a = 2, 3, 4, 5, 6, 7, 8, 9, 10$
 
 ## Get the hash value of a substring
+
 如何計算字串 $S$ substring 的 hash value 呢？最直觀的，直接計算 `polynomial_hash(S[i:j], a, m)` 即可，但這樣做並不效率。
 
 此時，使用 prefix sum 能夠減少計算 substring 的額外開銷，具體作法如下。
@@ -112,6 +121,7 @@ def substring_hash(H, l, r):
 這樣做的話，只要先付出 $O(N)$ 的時間建表，每次查詢 substring 就只要 $O(1)$ 了。
 
 ## Compare the string lexicographically (by binary search)
+
 給定兩個相同長度的字串 $X$ 與 $Y$，判斷兩者的字典序的方法如下
 1. 找到最小的 $i \geq 0$，使得 $X[i] \neq Y[i]$，如果找不到的話，這兩個字串必然相等
 2. 判斷是否 $X[i] > Y[i]$
@@ -133,6 +143,7 @@ def get_first_difference(X, Y):
 完成 1. 之後，只需要 $O(1)$ 比較 $X[i] > Y[i]$ 即可。
 
 ## Rolling Hash 字串匹配
+
 > 給定你兩個字串 $T,P$，問你 $P$ 在 $T$ 中出現過幾次？
 
 這個問題，可以使用 KMP/Z 演算法來解決，但是，也可以使用 Rolling-Hash 乾淨俐落的解決，在此，我們介紹 Rolling Hash 的解法。
@@ -152,6 +163,7 @@ def string_match(T, P):
 乾淨、簡單、俐落！這就是 Rolling Hash 魅力！用短短幾行程式碼，即可解決問題！
 
 ## Rolling Hash 最大回文子字串
+
 > 給定一個字串 $T$，已知最長的回文子字串長度是奇數，最長的回文子字串有多長？
 
 這個問題，可以使用 Manacher 演算法來解決，但是，也可以使用 Rolling-Hash 乾淨俐落的解決，在此，我們介紹 Rolling Hash 的解法。
@@ -185,6 +197,7 @@ def max_palindrome(T):
 經過演算法計算後得知，最長的回文子字串長度是 7，從兩個 E 中間的 \$ 開始擴張，直到 D 停止擴張，這就是最長的回文子字串。而 \ceil*{\frac{7}{2}}=4，因此，最長的回文子字串大小是 4！
 
 ## 總結
+
 儘管 Rolling Hash 並不是一個完美的解法，但在實際競賽中很有用，因為實作難度較低，且算法本身不複雜。
 
 請各位同學要熟記如何使用 Rolling Hash 解決「字串匹配」與「最大回文子字串」的方法，儘管有 100% 正確的方法能解決該問題，但算法本身較複雜，且通用性較低。
@@ -192,5 +205,6 @@ def max_palindrome(T):
 總而言之，Rolling Hash 是解決字串問題的常用利器，請各位同學要熟記！
 
 ## 資源
+
 - [Medium Blog](https://medium.com/@lawrence910426/rolling-hash-%E7%9A%84%E5%A5%87%E6%B7%AB%E6%8A%80%E5%B7%A7-24a54ea32d10)
 - [OI Wiki](https://oi-wiki.org/string/hash/)
