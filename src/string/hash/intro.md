@@ -90,6 +90,7 @@ $P(k,m)=1−\frac{(m−k)!m}{k \cdot m!}$
 其次，不要選擇 $2$ 的冪次作為 $m$，這會讓出題者能夠構造一個 Thue-Morse Sequence 去攻擊你的 Hash，後續章節會介紹更多怎麼攻擊 Rolling Hash。
 
 最後，建議選擇幾組冷門的 $m, a$ 作為你的模板，許多邪惡的出題者會對常用的 $m, a$ 構造容易碰撞的測資，如果你選的 $m, a$ 夠冷門（像是你的生日），就不容易被出題者猜中。下面是幾個常見的 $m, a$
+
 1. $m = 10^N+7$
 2. $m = 2^N+1$
 3. $m = 2 \cdot 3 \cdot 5 \cdot 7 ...$，然後 $a$ 選再下一個質數
@@ -100,6 +101,7 @@ $P(k,m)=1−\frac{(m−k)!m}{k \cdot m!}$
 如何計算字串 $S$ substring 的 hash value 呢？最直觀的，直接計算 `polynomial_hash(S[i:j], a, m)` 即可，但這樣做並不效率。
 
 此時，使用 prefix sum 能夠減少計算 substring 的額外開銷，具體作法如下。
+
 1. 建立一個數列 $H[i] = polynomial_hash(S[0:i], a, m)$
 2. 初始設定 $H[0] = 0$，$H[i] = H[i - 1] + S[i] \cdot a^i \mod m$，並遞推這個數列
 3. 計算 $(H[j] - H[i]) \cdot a^{-i}$ 即為 `polynomial_hash(S[i:j], a, m)`，計算 $a^{-i}$ 時，可以參考模逆元的作法。
@@ -123,6 +125,7 @@ def substring_hash(H, l, r):
 ## Compare the string lexicographically (by binary search)
 
 給定兩個相同長度的字串 $X$ 與 $Y$，判斷兩者的字典序的方法如下
+
 1. 找到最小的 $i \geq 0$，使得 $X[i] \neq Y[i]$，如果找不到的話，這兩個字串必然相等
 2. 判斷是否 $X[i] > Y[i]$
 
