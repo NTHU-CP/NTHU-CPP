@@ -1,10 +1,10 @@
 # Introduction to **Hacking** Rolling Hash
 
-# 前言
+## 前言
 Skip
 <br>
 
-# Outlines
+## Outlines
 - Thue-Morse could be used for for modulo like 2^N
 - Guarantee to construct a collision
 - Birthday-Paradox could be used for most scenarios
@@ -17,8 +17,8 @@ No example problem needed
 Codeforces Educational Round
 A template function would be nice
 
-# 總結
+## 總結
 
-# 資源
+## 資源
 [blog](https://codeforces.com/blog/entry/60442)
 [blog](https://codeforces.com/blog/entry/100027)
