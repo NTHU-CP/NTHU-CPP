@@ -129,6 +129,16 @@ int main() {
 >
 > 一張圖的直徑(diameter)為圖中任兩點距離中最長的；[^note-1]圓心(center)則為使一個點與其它點最遠的距離最小的點。[^note-2]對於樹，以圓心為樹根，則樹高會最小。[^note-3]給定一棵\\(n\\)個點的樹，請在\\(\Theta(n)\\)的時間內，找出這棵樹的直徑（長度）以及一個圓心。
 
+### Exercises
+
+> [AtCoder Educational DP Contest P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
+>
+> 給定一棵樹，每個點可以是白色或黑色，但是相鄰的兩個點不能都是黑色，請計算有幾種塗色方法（除以\\(10^9+7\\)的餘數）。
+
+> [CSES - Finding a Centroid](https://cses.fi/problemset/task/2079)
+>
+> 給定一棵\\(n\\)個點的樹，找出這棵樹的一個重心。重心的定義是：如果把重心定為根，那麼每個子樹最多有\\(\lfloor\frac n2\rfloor\\)個點（不包含根在重心的那棵子樹）。
+
 ## DP on Trees with Rerooting
 
 ### "Dynamic Programming" on Trees or "Divide and Conquer" on Trees?
@@ -230,6 +240,12 @@ int main() {
 
 * 請證明\\(in[u]+out[u]=in[parent(u)]+out[parent(u)]-sz[u]+(n-sz[u])\\)。
 * 這個轉移式給你什麼啟發？
+
+### Exercises
+
+> [CF 1805D - A Wide, Wide Graph](https://codeforces.com/problemset/problem/1805/D)
+>
+> 給定一棵\\(n\\)個點的樹\\(T\\)，定義\\(G_k\\)為一張\\(n\\)個點的圖，其中任兩點之間有邊若且唯若它們在\\(T\\)中的距離\\(\geq k\\)。對於所有\\(k\in[1,n]\\)，計算\\(G_k\\)有幾個連通塊。
 
 ## References
 - [DP on Trees - Introduction · USACO Guide](https://usaco.guide/gold/dp-trees?lang=cpp)
