@@ -120,9 +120,14 @@ int main() {
 
 </details>
 
+#### Discussion
+* 如果邊有權重(weight)的話，要找出最大權重配對，假設邊權重皆正（否則直接把非正權的邊刪掉比較容易），那以上討論的轉移式還能輕易套用嗎？如果可以，需要更動哪些細節？
+* 假設\\(n\geq2\\)，如果把根定在葉子，此時\\(dp[1][u]\\)的轉移式會變得如何？這樣的轉移式給你什麼啟發？
+* 如果邊有權重的話，上一點的討論還會成立嗎？
+
 > Finding the Diameter and a Center of a Tree
 >
-> 一張圖的直徑(diameter)為圖中任兩點距離中最長的[^note-1]；圓心(center)則為使一個點與其它點最遠的距離最小的點[^note-2]。對於樹，以圓心為樹根，則樹高會最小[^note-3]。給定一棵\\(n\\)個點的樹，請在\\(\Theta(n)\\)的時間內，找出這棵樹的直徑（長度）以及一個圓心。
+> 一張圖的直徑(diameter)為圖中任兩點距離中最長的；[^note-1]圓心(center)則為使一個點與其它點最遠的距離最小的點。[^note-2]對於樹，以圓心為樹根，則樹高會最小。[^note-3]給定一棵\\(n\\)個點的樹，請在\\(\Theta(n)\\)的時間內，找出這棵樹的直徑（長度）以及一個圓心。
 
 ## DP on Trees with Rerooting
 
@@ -219,6 +224,12 @@ int main() {
 ```
 
 </details>
+
+#### Discussion
+上述\\(out[u]\\)的轉移式還是太毒。以這題來說，有比分成以上三種情形討論，更容易理解的想法。
+
+* 請證明\\(in[u]+out[u]=in[parent(u)]+out[parent(u)]-sz[u]+(n-sz[u])\\)。
+* 這個轉移式給你什麼啟發？
 
 ## References
 - [DP on Trees - Introduction · USACO Guide](https://usaco.guide/gold/dp-trees?lang=cpp)
