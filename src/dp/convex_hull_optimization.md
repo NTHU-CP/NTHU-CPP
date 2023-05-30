@@ -112,6 +112,176 @@ int main(){
 
 </details>
 
+<br>
+
+---
+
+我們來看一個稍微複雜的例題。
+
+> [TIOJ 1676 - 烏龜疊疊樂](https://tioj.ck.tp.edu.tw/problems/1676)
+>
+> 給定一個長度為 \\(n\\) 的陣列與一個整數 \\(k\\)，你可以將陣列切成數段連續的區間，區間大小不能超過 \\(k\\)，求切完之後的最大價值。
+> 一段長度為 \\(x\\)、為整個陣列由左至右數來第 \\(m\\) 個區間，其價值被定義為 \\((m-1)\times \Sigma^r_{i=l}a_i-x^2\\)。其中 \\(l\\)、\\(r\\) 分別為區間左右界、\\(a_i\\) 為陣列中第 \\(i\\) 個值。
+> - \\(1 \leq k \leq n \leq 500000\\)
+
+一樣，我們先試著列出轉移式。令 \\(F(i)\\) 為前 \\(i\\) 個數字貢獻的價值（同時第 \\(i\\) 個元素為區間右界）。
+
+轉移式為：\\(F(i)=\underset{i>j}{\max}(F(j)-(i-j)^2+suf(i+1))\\)
+
+其中 \\(suf(k)\\) 是後綴和，範圍從 \\(k\\) 到 \\(n\\)。
+
+除了 \\(suf(i+1)\\) 這一項外，其他部分還蠻直觀的。而 \\(suf(i+1)\\) 這一項對應到題目的 \\((m-1)\times \Sigma^r_{i=l}a_i\\)，我們看一張示意圖以更好理解 \\(suf(i+1)\\) 的意義：
+
+// 示意圖
+
+上面的示意圖對每個的區間畫出了其  \\(suf(i+1)\\) 的值。我們可以將它們重新分割變成下面這樣：
+
+// 重新著色的示意圖
+
+可以發現這每一塊其實就是一段後綴，而且每個後綴的起點對應到每個區間的起點（除了第一個區間不考慮）。我們轉移式中的 \\(i\\) 是區間終點，因此 \\(i+1\\) 便對應到區間起點。而所有的 \\(suf(i+1)\\) 加起來，就對應到所有區間的 \\((m-1)\times \Sigma^r_{i=l}a_i\\) ，這個部分的總和。
+
+瞭解轉移式的推導後，我們回來觀察這個轉移式。它看起來與 \\(y=ax+b\\) 的形式不太像，但我們試著將它展開：
+\\(F(i)=\underset{i>j>i-k}{\max}(F(j)-(i-j)^2+suf(i+1))\\)
+\\(=\underset{i>j>i-k}{\max}(F(j)-i^2+2ij-j^2+suf(i+1))\\)
+\\(=\underset{i>j>i-k}{\max}(F(j)-j^2+2ij)-i^2+suf(i+1)\\)
+
+可以發現 \\(max\\) 裡面的部分變成\\(y=ax+b\\)的形式了：
+\\[y=F(i)\\]
+\\[x=2i\\]
+\\[a=j\\]
+\\[b=F(j)-j^2\\]
+
+這麼一來就可以使用剛剛提到的技巧了！但仔細觀察一下，這個轉移式與上一個例題有兩個不同的地方：
+1. 上一題是取 \\(min\\)、這一題是取 \\(max\\)，同時斜率從遞增變為遞減。
+    其實概念是差不多的，我們一樣把線畫出來觀察一下：
+    
+    // 畫兩張：所有直線、標記下凸包
+
+    可以發現我們只是從在上凸包中尋找答案，改為在下凸包中尋找答案而已。實作上來說，我們只要在比較哪個答案比較好時，改成越大的答案越好就好。也就是下面這份 code 的第二行，後面比較時要使用小於（這邊的 \\(x\\)、\\(a\\)、\\(b\\)，意義同 \\(y=ax+b\\) 中的 \\(x\\)、\\(a\\)、\\(b\\)）。
+
+    ```cpp
+    for(ll i = 1; i <= n; i++){
+        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])) dq.pf();
+        dp[i] = cal(x[i], dq[0]);
+        pll line(a[i], b[i]);
+        while(dq.size() >= 2 && cmp(dq[dq.size() - 2], dq[dq.size() - 1], line)) dq.pb();
+        dq.eb(line);
+    }
+    ```
+
+2. 轉移範圍有限制，只能從往前 \\(k-1\\) 個轉移點來轉移。
+    看起來也不是什麼大問題，好像只需要在 pop deque 前端的直線時，將過期的線也 pop 掉就好。
+
+    這邊假設 deque 裡面的每個元素由 \\(a\\)、\\(b\\)、\\(idx\\) 組成，\\(a\\)、\\(b\\) 代表直線的資訊，\\(idx\\) 代表轉移點的 index。
+    ```cpp
+    for(ll i = 1; i <= n; i++){
+        while(dq.size() >= 1 && dq[0].idx < i - k) dq.pf();
+        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])) dq.pf();
+        dp[i] = cal(x[i], dq[0]);
+        pll line(a[i], b[i]);
+        while(dq.size() >= 2 && cmp(dq[dq.size() - 2], dq[dq.size() - 1], line)) dq.pb();
+        dq.eb(line);
+    }
+    ```
+
+    但這樣真的解決了嗎？我們考慮一下下面這種情況：
+
+    // 一張圖，兩條直線
+
+    我們現在要求最大值、且斜率遞增。假設現在我們要插入一條新直線（X色）：
+
+    // 一張圖，兩條直線跟一條新直線
+
+    依照前一個例題的概念，藍色線上的所有點都不在凸包上，我們應該要移除它。這邊將它變虛線表示移除。
+
+    // 一張圖，倒數第二條線變虛線
+
+    接下來我們要進行下一個查詢：
+
+    // 一張圖，加上 x=x' 示意查詢
+
+    假設這時最左邊的線過期了，於是我們將它移除：
+
+    // 一張圖，移除最左邊的線
+
+    這時我們發現其實剛剛被我們移除掉的藍色線才能提供最好答案，但我們已經將它移除了。從這個例子我們發現，在加了直線會過期的限制後，我們除了要在直線過期時移除它之外，我們也要更改一下移除不在凸包上直線的策略。
+
+    注意到在綠色線被移除之前，藍色線都不可能提供答案。因此我們要多判斷的是藍色線在綠色線被移除之後，會不會成為可能的轉移來源。具體而言，在我們放入紅色線前，要決定藍色線是否要被移除，而方法是多判斷在綠色線被 pop 時的那一個查詢，藍色線會不會提供比紅色線更好的答案。
+    
+    直接來看 code 比較好理解，這邊以這題的情況，假設線過期的條件是 \\(j < i-k\\) 則過期。
+
+    ```cpp
+    for(ll i = 1; i <= n; i++){
+        while(dq.size() >= 1 && dq[0].idx < i - k) dq.pf();
+        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])) dq.pf();
+        dp[i] = cal(x[i], dq[0]);
+        pll line(a[i], b[i]);
+        while(dq.size() >= 2 
+        && cmp(dq[dq.size() - 2], dq[dq.size() - 1], line)
+        && cal(x[dq[dq.size() - 2].idx], dq[dq.size() - 1]) <= cal(x[dq[dq.size() - 2].idx], line)) dq.pb();
+        dq.eb(line);
+    }
+    ```
+
+    在加線之前判斷是否要 pop 掉 deque 最後方的線那一部分，我們多加了一個條件判斷 deque 最後方的線是否有可能在它前方的線被 pop 掉後提供答案。由此我們可以保證每一條在 deque 裡面的線都是可能的轉移來源。
+    
+其他部分便與上一個例題概念相同，上述做法複雜度一樣為 \\(O(n)\\)。
+
+<details><summary> Solution Code </summary>
+
+```cpp
+#include <bits/stdc++.h>
+#pragma GCC optimize("O2")
+using namespace std;
+
+typedef long long ll;
+typedef pair<ll, ll> pll;
+#define X first
+#define Y second
+#define io ios_base::sync_with_stdio(0); cin.tie(0);
+#define eb emplace_back
+#define pb pop_back
+#define pf pop_front
+#define N 500005
+
+ll a[N], suf[N], dp[N];
+
+ll cal(ll x, pll line){
+    return x * line.X + line.Y;
+}
+bool cmp(pll line1, pll line2, pll line3){
+    return (line3.Y - line1.Y) * (line1.X - line2.X) <= (line2.Y - line1.Y) * (line1.X - line3.X);
+}
+
+int main(){
+    io
+    ll n, k;
+    cin >> n >> k;
+    for(int i = 1; i <= n; i++){
+        cin >> a[i];
+    }
+    for(int i = n; i >= 1; i--){
+        suf[i] = a[i] + suf[i + 1];
+    }
+    deque <pll> dq;
+    dq.eb(0, 0);
+    for(ll i = 1; i <= n; i++){
+        while(dq.size() >= 1 && dq[0].X < i-k) dq.pf();
+        while(dq.size() >= 2 && cal(2 * i, dq[0]) <= cal(2 * i, dq[1])) dq.pf();
+        dp[i] = cal(2 * i, dq[0]) - i * i + suf[i + 1];
+        pll line(i, dp[i] - i * i);
+        while(dq.size() >= 2
+            && cal(2 * (dq[dq.size() - 2].X + k), dq.back()) <= cal(2 * (dq[dq.size() - 2].X + k), line)
+            && cmp(dq[dq.size() - 2], dq.back(), line)) dq.pb();
+        dq.eb(line);
+    }
+    cout << dp[n] << "\n";
+    return 0;
+}
+```
+
+</details>
+
 #### 小結
 
 以上就是斜率優化的例題與概念，我們再複習一下大致的步驟：
@@ -128,7 +298,7 @@ int main(){
 雖然步驟都大同小異，但不同題目還是有一些差異，在實作前要特別注意：
 - 要注意斜率以及查詢的單調性是遞增或遞減，會影響實作（比較線段時要用大於還是小於等等）。
 - 注意題目是否會有轉移範圍的限制。如果有的話，在計算 dp 值之前，過期的線段也要 pop 掉。
-- 轉移式改成取 max 只是從建上凸包變成建下凸包，方法是差不多的。
+- 轉移式取 max 與取 min 的差別在於建下凸包或是建上凸包，方法是差不多的。
 
 #### 另一種思路
 
