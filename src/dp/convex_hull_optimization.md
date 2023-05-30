@@ -681,7 +681,7 @@ https://codeforces.com/problemset/problem/319/C)
 > [TIOJ 1921 - 吐鈔機2](https://tioj.ck.tp.edu.tw/problems/1921)
 
 ## References
-底下的資源都是在介紹斜率優化，但講解方式不盡相同，可以多參考幾個以更深入了解斜率優化的概念。其中我認為前兩個 reference 的講解最清楚詳細，而最後一個 reference 對於李超線段樹的說明也很清楚，建議可以去看看。Codeforces 上面還有更多關於斜率優化的 tutorial 與題單，有興趣的讀者可以自己去搜尋。
+底下的資源都是在介紹斜率優化，但講解方式不盡相同，可以多參考幾個以更深入了解斜率優化的概念。其中我認為第一個 reference 的講解最清楚詳細，而最後一個 reference 對於李超線段樹的說明也很清楚，建議可以去看看。Codeforces 上面還有更多關於斜率優化的 tutorial 與題單，有興趣的讀者可以自己去搜尋。
 - [[Tutorial] Convex Hull Trick — Geometry being useful](<https://codeforces.com/blog/entry/63823>)
 - [【學習筆記】動態規劃—斜率優化DP（超詳細）](https://www.cnblogs.com/Xing-Ling/p/11210179.html)
 - [Oi wiki - 斜率優化](https://oi-wiki.org/dp/opt/slope/)
