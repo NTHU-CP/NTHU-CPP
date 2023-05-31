@@ -140,7 +140,7 @@ int main(){
 // 示意圖
 <!-- <img src="image/convex_hull_optimization/tioj1676_formula_1.png" width="700" style="display:block; margin: 0 auto;"/> -->
 
-上面的示意圖對每個的區間畫出了其  \\(suf(i+1)\\) 的值。我們可以將它們重新分割變成下面這樣：
+上面的示意圖對每個的區間畫出了其 \\((m-1)\times \Sigma^r_{i=l}a_i\\) 的值。我們可以將它們重新分割變成下面這樣：
 
 // 重新著色的示意圖
 <!-- <img src="image/convex_hull_optimization/tioj1676_formula_2.png" width="700" style="display:block; margin: 0 auto;"/> -->
@@ -198,7 +198,7 @@ int main(){
     // 一張圖，兩條直線
     <!-- <img src="image/convex_hull_optimization/tioj1676_lines_1.png" width="700" style="display:block; margin: 0 auto;"/> -->
 
-    我們現在要求最大值、且斜率遞增。假設現在我們要插入一條新直線（X色）：
+    我們現在要求最大值、且斜率遞增。假設現在我們要插入一條新直線（紅色）：
 
     // 一張圖，兩條直線跟一條新直線
     <!-- <img src="image/convex_hull_optimization/tioj1676_lines_2.png" width="700" style="display:block; margin: 0 auto;"/> -->
@@ -322,7 +322,38 @@ int main(){
 
 上面的題目由於查詢單調，我們才能保證可以只看 deque 前端的線段就找到最小值。那麼，要是查詢不單調該怎麼辦？
 
-查詢不再單調，意味著轉移來源不單調，因此我們查詢的時候不能再取最左（右）邊的線來做比較。但是斜率依然是單調的，因此我們可以改為使用二分搜來尋找答案。我們一樣維護一個斜率有單調性的序列，不過這次我們不再取最前端的直線來計算答案，而是改為使用二分搜。這時我們不再需要 pop 最前段的線，但是在 insert 新的直線到序列最尾端時，我們一樣要將不可能是答案的直線 pop 掉。
+我們來看另一個例題：
+> [P5785 任務安排](https://www.luogu.com.cn/problem/P5785)
+>
+> 有 \\(n\\) 個任務，第 \\(i\\) 個任務單獨完成所需的時間為 \\(T_i\\)、費用為 \\(C_i\\)。現在我們可以將任務分批，每批包含相鄰的若干個任務。任務被依序執行，完成一批任務所需的時間是各個任務需要時間的總和，同一批任務會在同一時刻完成。另外，在每批任務開始前，機器需要啟動時間 \\(s\\)。一個任務的 cost 被定義為它的完成時刻乘以它的費用。起始時間為 \\(0\\)，求最小的 total cost。 
+> - \\(1 \leq n \leq 300000\\)
+> - \\(-2^8 \leq T_i \leq 2^8\\)
+> - \\(0 \leq C_i \leq 2^8\\)
+>
+
+先列轉移式。令 \\(F(i)\\) 為完成前 \\(i\\) 個任務的最小 cost。
+
+轉移式為：\\(F(i)=\underset{i>j}{\min}(\Sigma_{k=1}^i T_k \times \Sigma_{k=j+1}^i C_k+s \times \Sigma_{k=j+1}^n C_k+F(j))\\)
+
+其中，\\(s \times \Sigma_{k=j+1}^n C_k\\) 這一項是為了計算 \\(s\\) 所影響的任務完成時刻。由於影響的時間與總共切幾個區間有關，這裡用類似前面例題 [TIOJ 1676 - 烏龜疊疊樂](https://tioj.ck.tp.edu.tw/problems/1676)，使用後綴和的想法，在每多切一個區間出來時就加上後綴因此而產生的 cost。
+
+接下來，我們將轉移式展開：
+
+\\(F(i)=\underset{i>j}{\min}(\Sigma_{k=1}^i T_k \times \Sigma_{k=j+1}^i C_k+s \times \Sigma_{k=j+1}^n C_k+F(j))\\)
+\\(=\underset{i>j}{\min}(pre_t(i) \times (pre_c(i)-pre_c(j))+s \times (pre_c(n)-pre_c(j))+F(j))\\)
+\\(=\underset{i>j}{\min}(-pre_t(i) \times pre_c(j)-s \times pre_c(j)+F(j))+pre_c(i) \times pre_t(i)+s \times pre_c(n)\\)
+
+其中 \\(pre_t(i)\\) 為 \\(T\\) 的前綴和，即 \\(\Sigma_{k=1}^i T_k\\)；\\(pre_c(i)\\) 為 \\(C\\) 的前綴和，即 \\(\Sigma_{k=1}^i C_k\\)。
+
+我們可以得到：
+\\[y=F(i)\\]
+\\[x=-pre_t(i)\\]
+\\[a=pre_c(j)\\]
+\\[b=F(j)-s \times pre_c(j)\\]
+
+\\(pre_c(j)\\) 是遞增的，沒什麼問題。但 \\(pre_t(i)\\) 就不是了。由於 \\(T_i\\) 有可能小於 \\(0\\)，\\(T\\) 的前綴和不具單調性。也就是說，我們的查詢不再單調了。
+
+查詢不再單調，意味著轉移來源不單調，因此我們查詢的時候不能再取最左（右）邊的線來做比較。但是，斜率依然是單調的，因此我們可以改為使用二分搜來尋找答案。我們一樣維護一個斜率有單調性的序列，不過這次我們不再取最前端的直線來計算答案，而是改為使用二分搜。這時我們不再需要 pop 最前段的線，但是在 insert 新的直線到序列最尾端時，我們一樣要將不可能是答案的直線 pop 掉。
 
 至於二分搜要搜什麼呢？注意到我們維護的是一個凸包，凸包上的點的 \\(x\\) 座標是單調的。而每當我們要查詢的時候，我們想找的那條線上的兩個頂點會在當前查詢的 \\(x\\) 座標的左右兩側：
 
@@ -332,35 +363,34 @@ int main(){
 
 將查詢改為二分搜會讓複雜度多一個 \\(\log\\)，總複雜度是 \\(O(n\log n)\\)。
 
-以下是用此方法解 [CSES - Monster Game I](https://cses.fi/problemset/task/2084/) 的範例 code。
-
 <details><summary> Solution Code </summary>
+
+此題時間較緊，需要壓一下常數，因此這邊使用陣列來實作。一般情況下，只要可以 push_back 與 pop_back 的資料結構都可以，像是 vector。
 
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef pair<int, int> pii;
 typedef long long ll;
 typedef pair<ll, ll> pll;
 #define X first
 #define Y second
-#define eb emplace_back
-#define pb pop_back
-#define pf pop_front
-#define N 200005
+#define io ios_base::sync_with_stdio(0); cin.tie(0);
+#define N 300005
 
-ll s[N], f[N];
+ll pret[N], prec[N];
 ll dp[N];
+pll v[N];
+ll sz;
 
-ll cal(ll x, pll line){
+inline ll cal(ll x, pll line){
     return x * line.X + line.Y;
 }
-ll cmp2(pll p1, pll p2, ll x){
+inline bool cmp2(pll p1, pll p2, ll x){
     return (p2.Y - p1.Y) > (p1.X - p2.X) * x;
 }
-pll find_line(vector <pll> v, ll x){
-    int l = 0, r = v.size() - 2, mid, ans = max(r + 1, 0);
+inline pll find_line(ll x){
+    int l = 0, r = sz - 2, mid, ans = r + 1;
     while(l <= r){
         mid = (l + r) >> 1;
         if(cmp2(v[mid], v[mid + 1], x)){
@@ -371,28 +401,26 @@ pll find_line(vector <pll> v, ll x){
     }
     return v[ans];
 }
-
-bool cmp(pll line1, pll line2, pll line3){
-    return (line3.Y - line1.Y) * (line1.X - line2.X) <= (line2.Y - line1.Y) * (line1.X - line3.X); 
+inline bool cmp(pll line1, pll line2, pll line3){
+    return (__int128)(line3.Y - line1.Y) * (__int128)(line1.X - line2.X) <= (__int128)(line2.Y - line1.Y) * (__int128)(line1.X - line3.X); 
 }
 
 int main(){
-    int n;
-    cin >> n >> f[0];
+    io
+    ll n, s;
+    cin >> n >> s;
     for(int i = 1; i <= n; i++){
-        cin >> s[i];
+        cin >> pret[i] >> prec[i];
+        pret[i] += pret[i - 1];
+        prec[i] += prec[i - 1];
     }
+    v[sz++] = pll(0, 0);
     for(int i = 1; i <= n; i++){
-        cin >> f[i];
-    }
-    vector <pll> v;
-    v.eb(f[0], 0);
-    for(int i = 1; i <= n; i++){
-        pll fl = find_line(v, s[i]);
-        dp[i] = cal(s[i], fl);
-        pll line(f[i], dp[i]);
-        while(v.size() >= 2 && cmp(v[v.size() - 2], v[v.size() - 1], line)) v.pb();
-        v.eb(line);
+        pll fl = find_line(pret[i]);
+        dp[i] = cal(pret[i], fl) + prec[i] * pret[i] + s * prec[n];
+        pll line(-prec[i], dp[i] - s * prec[i]);
+        while(sz >= 2 && cmp(v[sz - 2], v[sz - 1], line)) sz--;
+        v[sz++] = line;
     }
     cout << dp[n] << "\n";
     return 0;
