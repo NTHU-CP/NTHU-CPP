@@ -228,7 +228,7 @@ int main(){
     這時我們發現其實剛剛被我們移除掉的藍色線才能提供最好答案，但我們已經將它移除了。從這個例子我們發現，在加了直線會過期的限制後，我們除了要在直線過期時移除它之外，我們也要更改一下移除不在凸包上直線的策略。
 
     注意到在綠色線被移除之前，藍色線都不可能提供答案。因此我們要多判斷的是藍色線在綠色線被移除之後，會不會成為可能的轉移來源。具體而言，在我們放入紅色線前，要決定藍色線是否要被移除，而方法是多判斷在綠色線被 pop 時的那一個查詢，藍色線會不會提供比紅色線更好的答案。
-    
+
     直接來看 code 比較好理解，這邊以這題的情況，假設線過期的條件是 \\(j < i-k\\) 則過期。
 
     ```cpp
@@ -782,6 +782,7 @@ int main(){
 ### 總結
 
 以上就是斜率優化的簡單介紹，最後這裡做個重點整理：
+
 - 斜率優化的功能在於優化特定形式轉移式的轉移複雜度。在這之前，觀察題目並列出、整理轉移式也是很重要的技巧。
 - 斜率是否單調會影響凸包維護的方式：單調時可以用 deque、vector；不單調時需要李超線段樹或是動態凸包等等。
 - 查詢是否單調會影響尋找轉移來源的方式：單調時可以用單調隊列就好；不單調時需要使用二分搜。
@@ -793,21 +794,44 @@ int main(){
 
 > [CF 1083E - The Fair Nut and Rectangles](https://codeforces.com/contest/1083/problem/E)
 
+<details><summary> Solution </summary>
+
+</details>
+
 > [CF 311B - Cats Transport](https://codeforces.com/contest/311/problem/B)
+
+<details><summary> Solution </summary>
+
+</details>
 
 > [CF 319C - Kalila and Dimna in the Logging Industry](https://codeforces.com/problemset/problem/319/C)
 
+<details><summary> Solution </summary>
+
+</details>
+
 > [CF 1715E - Long Way Home](https://codeforces.com/problemset/problem/1715/E)
+
+<details><summary> Solution </summary>
+
+</details>
 
 > [CSES - Subarray Squares](https://cses.fi/problemset/task/2086)
 
+<details><summary> Solution </summary>
+
+</details>
+
 > [ICPC WF 2011](https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=3547)
 
-> [TIOJ 1921 - 吐鈔機2](https://tioj.ck.tp.edu.tw/problems/1921)
+<details><summary> Solution </summary>
+
+</details>
 
 ## References
 
 底下的資源都是在介紹斜率優化，但講解方式不盡相同，可以多參考幾個以更深入了解斜率優化的概念。其中我認為第一個 reference 的講解最清楚詳細，而最後一個 reference 對於李超線段樹的說明也很清楚，建議可以去看看。Codeforces 上面還有更多關於斜率優化的 tutorial 與題單，有興趣的讀者可以自己去搜尋。
+
 - [[Tutorial] Convex Hull Trick — Geometry being useful](<https://codeforces.com/blog/entry/63823>)
 - [【學習筆記】動態規劃—斜率優化DP（超詳細）](https://www.cnblogs.com/Xing-Ling/p/11210179.html)
 - [Oi wiki - 斜率優化](https://oi-wiki.org/dp/opt/slope/)
