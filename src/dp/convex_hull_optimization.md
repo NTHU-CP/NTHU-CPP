@@ -147,7 +147,7 @@ int main(){
 // 重新著色的示意圖
 <!-- <img src="image/convex_hull_optimization/tioj1676_formula_2.png" width="700" style="display:block; margin: 0 auto;"/> -->
 
-可以發現這每一塊其實就是一段後綴，而且每個後綴的起點對應到每個區間的起點（除了第一個區間不考慮）。我們轉移式中的 \\(i\\) 是區間終點，因此 \\(i+1\\) 便對應到區間起點。而所有的 \\(suf(i+1)\\) 加起來，就對應到所有區間的 \\((m-1)\times \Sigma^r_{i=l}a_i\\) ，這個部分的總和。
+可以發現這每一塊其實就是一段後綴，而且每個後綴的起點對應到每個區間的起點（除了第一個區間不考慮）。我們轉移式中的 \\(i\\) 是區間終點，因此 \\(i+1\\) 便對應到區間起點。而所有的 \\(suf(i+1)\\) 加起來，就對應到所有區間的 \\((m-1)\times \Sigma^r_{i=l}a_i\\)，這個部分的總和。
 
 瞭解轉移式的推導後，我們回來觀察這個轉移式。它看起來與 \\(y=ax+b\\) 的形式不太像，但我們試著將它展開：
 
@@ -157,7 +157,7 @@ int main(){
 
 \\(=\underset{i>j>i-k}{\max}(F(j)-j^2+2ij)-i^2+suf(i+1)\\)
 
-可以發現 \\(max\\) 裡面的部分變成\\(y=ax+b\\)的形式了：
+可以發現 \\(max\\) 裡面的部分變成 \\(y=ax+b\\) 的形式了：
 \\[y=F(i)\\]
 \\[x=2i\\]
 \\[a=j\\]
@@ -166,6 +166,7 @@ int main(){
 這麼一來就可以使用剛剛提到的技巧了！但仔細觀察一下，這個轉移式與上一個例題有兩個不同的地方：
 
 1. 上一題是取 \\(min\\)、這一題是取 \\(max\\)，同時斜率從遞增變為遞減。
+
     其實概念是差不多的，我們一樣把線畫出來觀察一下：
 
     // 畫兩張：所有直線、標記下凸包
@@ -185,6 +186,7 @@ int main(){
     ```
 
 2. 轉移範圍有限制，只能從往前 \\(k-1\\) 個轉移點來轉移。
+
     看起來也不是什麼大問題，好像只需要在 pop deque 前端的直線時，將過期的線也 pop 掉就好。
 
     這邊假設 deque 裡面的每個元素由 \\(a\\)、\\(b\\)、\\(idx\\) 組成，\\(a\\)、\\(b\\) 代表直線的資訊，\\(idx\\) 代表轉移點的 index。
@@ -832,8 +834,8 @@ int main(){
 
 底下的資源都是在介紹斜率優化，但講解方式不盡相同，可以多參考幾個以更深入了解斜率優化的概念。其中我認為第一個 reference 的講解最清楚詳細，而最後一個 reference 對於李超線段樹的說明也很清楚，建議可以去看看。Codeforces 上面還有更多關於斜率優化的 tutorial 與題單，有興趣的讀者可以自己去搜尋。
 
-- [[Tutorial] Convex Hull Trick — Geometry being useful](<https://codeforces.com/blog/entry/63823>)
-- [【學習筆記】動態規劃—斜率優化DP（超詳細）](https://www.cnblogs.com/Xing-Ling/p/11210179.html)
+- [[Tutorial] Convex Hull Trick - Geometry being useful](https://codeforces.com/blog/entry/63823)
+- [【學習筆記】動態規劃—斜率優化 DP（超詳細）](https://www.cnblogs.com/Xing-Ling/p/11210179.html)
 - [Oi wiki - 斜率優化](https://oi-wiki.org/dp/opt/slope/)
 - [TIOJ 建中培訓講義](https://tioj.ck.tp.edu.tw/uploads/attachment/5/27/5.pdf)
 - [Algorithms for competitive programming - Convex hull trick](https://cp-algorithms.com/geometry/convex_hull_trick.html)
