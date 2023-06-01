@@ -31,37 +31,51 @@
 
 因此對於所有的 \\(j\\)，我們可以將所有的 \\(y=ax+b\\) 在座標平面上畫出來。這時我們的題目便轉變成：給定一個 \\(x\\)，我們要在一個線集中找出最小的 \\(y\\)。
 
-接下來便要思考如何找最小值。如果要代入每一條直線再取極值才能找到答案，並不會優化複雜度，但我們可以來觀察一下這個線集：
+接下來便要思考如何找最小值。如果要代入每一條直線再取極值才能找到答案，並不會優化複雜度，但我們可以來觀察一下這個線集，應該會長類似這個樣子：
 
-// 對範例輸入畫個圖
-<!-- <img src="image/convex_hull_optimization/cses2084_1.png" width="700" style="display:block; margin: 0 auto;"/> -->
+<img src="image/convex_hull_optimization/cses2084_1.png" width="600" style="display:block; margin: 0 auto;"/>
 
 可以發現這是一個斜率不斷遞減的線集（從算式中也能看出，作為斜率的 \\(f_j\\) 是遞減的）。對於每個 \\(x\\)，我們都能在這個線集中找到對應的最小值，如果我們將它們通通標出來，可以發現會形成一個上凸包：
 
-// 畫圖標記上凸包
-<!-- <img src="image/convex_hull_optimization/cses2084_2.png" width="700" style="display:block; margin: 0 auto;"/> -->
+<img src="image/convex_hull_optimization/cses2084_2.png" width="600" style="display:block; margin: 0 auto;"/>
+
+將不在凸包上的線拿掉後：
+
+<img src="image/convex_hull_optimization/cses2084_3.png" width="600" style="display:block; margin: 0 auto;"/>
 
 對任何 \\(x'\\) 而言，\\(x=x'\\) 與這個上凸包的交點便是所求的最小值。要找到這個交點，我們必須維護這個凸包，並支援兩種操作：
 
 - 查詢：對於 \\(x=s_i\\)，我們要能找出其與凸包的交點。
 
-    由於查詢具單調性，以此題而言，查詢遞增且我們要找最小值，我們取的直線斜率一定會越來越小。因此我們可以只考慮目前最左邊的直線，並確認目前直線與 \\(x=s_i\\) 的交點是否真的是最小值。確認的方法便是比較當前交點以及下一條直線與 \\(x=s_i\\) 的交點，若下一條直線能讓我們得到更好的答案，我們就要把當前最左邊的直線丟掉。反之，最左邊的直線與 \\(x=s_i\\) 的交點就是我們要找的最小值。
+    由於查詢具單調性，以此題而言，查詢遞增且我們要找最小值，我們取的直線斜率一定會越來越小。因此我們可以只考慮目前斜率最大的直線，並確認目前直線與 \\(x=s_i\\) 的交點是否真的是最小值。確認的方法便是比較當前交點以及下一條直線（斜率第二大的直線）與 \\(x=s_i\\) 的交點，若下一條直線能讓我們得到更好的答案，我們就要把當前斜率最大的直線丟掉。反之，斜率最大的直線與 \\(x=s_i\\) 的交點就是我們要找的最小值。
 
-    // 補圖說明
-    <!-- <img src="image/convex_hull_optimization/cses2084_3.png" width="700" style="display:block; margin: 0 auto;"/> -->
+    比較兩條直線提供的答案：
+
+    <img src="image/convex_hull_optimization/cses2084_query_1.png" width="600" style="display:block; margin: 0 auto;"/>
+
+    下一條直線提供的答案更小，因此我們刪除斜率最大的直線：
+
+    <img src="image/convex_hull_optimization/cses2084_query_2.png" width="600" style="display:block; margin: 0 auto;"/>
 
 - 插入：插入一條新的線
-    插入似乎相對直觀，只是畫一條新的線在凸包上。由於斜率單調，插入直線時我們只要將直線插入最右（左）邊就好。但我們考慮下列情況：
 
-    // 畫圖，有直線不在凸包上
-    <!-- <img src="image/convex_hull_optimization/cses2084_4.png" width="700" style="display:block; margin: 0 auto;"/> -->
+    插入似乎相對直觀，只是畫一條新的線在凸包上。由於斜率單調，插入直線時我們只要將直線插入凸包最右（左）邊就好。但我們考慮下列情況：
+
+    原本的線集：
+
+    <img src="image/convex_hull_optimization/cses2084_insert_1.png" width="600" style="display:block; margin: 0 auto;"/>
+
+    加入新的直線：
+
+    <img src="image/convex_hull_optimization/cses2084_insert_2.png" width="600" style="display:block; margin: 0 auto;"/>
 
     在我們加入新的直線後，有一些直線便不在凸包上了，意即它們不可能成為任何查詢的答案。這時我們要將它們移出凸包，否則會取到錯誤的答案。
 
 綜合上述，我們可以使用單調隊列，開一個 deque 完成這兩項操作。具體而言，每算完一個 \\(F(i)\\)，便將 pair \\((f_i, F(i))\\) 插入隊列尾端，分別代表直線的 \\(a\\) 與 \\(b\\)。插入之前，我們要檢查是否有直線在這次插入後，再也不會被當成答案。檢查的方式是看 deque 中的倒數第二條線與當前要插入的直線的交點，以及 deque 中的倒數第二條線與 deque 中的最後一條線的交點。若前者有更小的 \\(x\\) 座標，則 deque 中的最後一條線永遠不會被取到，要 pop 掉。
 
-// 畫圖
-<!-- <img src="image/convex_hull_optimization/cses2084_5.png" width="700" style="display:block; margin: 0 auto;"/> -->
+此圖中，\\(line1\\) 為 deque 中的倒數第二條線；\\(line2\\) 為 deque 中的最後一條線；\\(line3\\) 為新加入的直線。在這裡，\\(line1\\) 與 \\(line3\\) 的交點有更小的 \\(x\\) 座標，因此 \\(line2\\) 要被刪掉：
+
+<img src="image/convex_hull_optimization/cses2084_4.png" width="600" style="display:block; margin: 0 auto;"/>
 
 在查詢最小值時，我們不斷比較隊列中第一個與第二個元素，如果將當前的 \\(x\\) 代入兩條直線後，發現代入第二條直線有更好的解，則將第一條直線 pop 掉。
 
@@ -139,13 +153,11 @@ int main(){
 
 除了 \\(suf(i+1)\\) 這一項外，其他部分還蠻直觀的。而 \\(suf(i+1)\\) 這一項對應到題目的 \\((m-1)\times \Sigma^r_{i=l}a_i\\)，我們看一張示意圖以更好理解 \\(suf(i+1)\\) 的意義：
 
-// 示意圖
-<!-- <img src="image/convex_hull_optimization/tioj1676_formula_1.png" width="700" style="display:block; margin: 0 auto;"/> -->
+<img src="image/convex_hull_optimization/tioj1676_formula_1.png" width="500" style="display:block; margin: 0 auto;"/>
 
-上面的示意圖對每個的區間畫出了其 \\((m-1)\times \Sigma^r_{i=l}a_i\\) 的值。我們可以將它們重新分割變成下面這樣：
+上面的示意圖對每個區間畫出了其 \\((m-1)\times \Sigma^r_{i=l}a_i\\) 的值。我們可以將它們重新分割變成下面這樣：
 
-// 重新著色的示意圖
-<!-- <img src="image/convex_hull_optimization/tioj1676_formula_2.png" width="700" style="display:block; margin: 0 auto;"/> -->
+<img src="image/convex_hull_optimization/tioj1676_formula_2.png" width="500" style="display:block; margin: 0 auto;"/>
 
 可以發現這每一塊其實就是一段後綴，而且每個後綴的起點對應到每個區間的起點（除了第一個區間不考慮）。我們轉移式中的 \\(i\\) 是區間終點，因此 \\(i+1\\) 便對應到區間起點。而所有的 \\(suf(i+1)\\) 加起來，就對應到所有區間的 \\((m-1)\times \Sigma^r_{i=l}a_i\\)，這個部分的總和。
 
@@ -165,13 +177,15 @@ int main(){
 
 這麼一來就可以使用剛剛提到的技巧了！但仔細觀察一下，這個轉移式與上一個例題有兩個不同的地方：
 
-1. 上一題是取 \\(min\\)、這一題是取 \\(max\\)，同時斜率從遞增變為遞減。
+1. 上一題是取 \\(min\\)、這一題是取 \\(max\\)，同時斜率從遞減變為遞增。
 
     其實概念是差不多的，我們一樣把線畫出來觀察一下：
 
-    // 畫兩張：所有直線、標記下凸包
-    <!-- <img src="image/convex_hull_optimization/tioj1676_hull_1.png" width="700" style="display:block; margin: 0 auto;"/> -->
-    <!-- <img src="image/convex_hull_optimization/tioj1676_hull_2.png" width="700" style="display:block; margin: 0 auto;"/> -->
+    <img src="image/convex_hull_optimization/tioj1676_hull_1.png" width="500" style="display:block; margin: 0 auto;"/>
+
+    標記凸包：
+
+    <img src="image/convex_hull_optimization/tioj1676_hull_2.png" width="500" style="display:block; margin: 0 auto;"/>
 
     可以發現我們只是從在上凸包中尋找答案，改為在下凸包中尋找答案而已。實作上來說，我們只要在比較哪個答案比較好時，改成越大的答案越好就好。也就是下面這份 code 的第二行，後面比較時要使用小於（這邊的 \\(x\\)、\\(a\\)、\\(b\\)，意義同 \\(y=ax+b\\) 中的 \\(x\\)、\\(a\\)、\\(b\\)）。
 
@@ -204,28 +218,23 @@ int main(){
 
     但這樣真的解決了嗎？我們考慮一下下面這種情況：
 
-    // 一張圖，兩條直線
-    <!-- <img src="image/convex_hull_optimization/tioj1676_lines_1.png" width="700" style="display:block; margin: 0 auto;"/> -->
+    <img src="image/convex_hull_optimization/tioj1676_lines_1.png" width="500" style="display:block; margin: 0 auto;"/>
 
     我們現在要求最大值、且斜率遞增。假設現在我們要插入一條新直線（紅色）：
 
-    // 一張圖，兩條直線跟一條新直線
-    <!-- <img src="image/convex_hull_optimization/tioj1676_lines_2.png" width="700" style="display:block; margin: 0 auto;"/> -->
+    <img src="image/convex_hull_optimization/tioj1676_lines_2.png" width="500" style="display:block; margin: 0 auto;"/>
 
     依照前一個例題的概念，藍色線上的所有點都不在凸包上，我們應該要移除它。這邊將它變虛線表示移除。
 
-    // 一張圖，倒數第二條線變虛線
-    <!-- <img src="image/convex_hull_optimization/tioj1676_lines_3.png" width="700" style="display:block; margin: 0 auto;"/> -->
+    <img src="image/convex_hull_optimization/tioj1676_lines_3.png" width="500" style="display:block; margin: 0 auto;"/>
 
     接下來我們要進行下一個查詢：
 
-    // 一張圖，加上 x=x' 示意查詢
-    <!-- <img src="image/convex_hull_optimization/tioj1676_lines_4.png" width="700" style="display:block; margin: 0 auto;"/> -->
+    <img src="image/convex_hull_optimization/tioj1676_lines_4.png" width="500" style="display:block; margin: 0 auto;"/>
 
     假設這時最左邊的線過期了，於是我們將它移除：
 
-    // 一張圖，移除最左邊的線
-    <!-- <img src="image/convex_hull_optimization/tioj1676_lines_5.png" width="700" style="display:block; margin: 0 auto;"/> -->
+    <img src="image/convex_hull_optimization/tioj1676_lines_5.png" width="500" style="display:block; margin: 0 auto;"/>
 
     這時我們發現其實剛剛被我們移除掉的藍色線才能提供最好答案，但我們已經將它移除了。從這個例子我們發現，在加了直線會過期的限制後，我們除了要在直線過期時移除它之外，我們也要更改一下移除不在凸包上直線的策略。
 
@@ -366,9 +375,9 @@ int main(){
 
 查詢不再單調，意味著轉移來源不單調，因此我們查詢的時候不能再取最左（右）邊的線來做比較。但是，斜率依然是單調的，因此我們可以改為使用二分搜來尋找答案。我們一樣維護一個斜率有單調性的序列，不過這次我們不再取最前端的直線來計算答案，而是改為使用二分搜。這時我們不再需要 pop 最前段的線，但是在 insert 新的直線到序列最尾端時，我們一樣要將不可能是答案的直線 pop 掉。
 
-至於二分搜要搜什麼呢？注意到我們維護的是一個凸包，凸包上的點的 \\(x\\) 座標是單調的。而每當我們要查詢的時候，我們想找的那條線上的兩個頂點會在當前查詢的 \\(x\\) 座標的左右兩側：
+至於二分搜要搜什麼呢？注意到我們維護的是一個凸包，凸包上的點的 \\(x\\) 座標是單調的。而每當我們要查詢的時候，我們想找的那條線上的兩個頂點（下圖的灰色點）會在當前查詢的 \\(x\\) 座標（下圖的灰色線）的左右兩側：
 
-// 一個凸包的圖，標記兩側頂點
+<img src="image/convex_hull_optimization/binary_search_1.png" width="500" style="display:block; margin: 0 auto;"/>
 
 因此我們在二分搜時，可以比較當前線段與下一條線段交點的 \\(x\\) 座標，以及當前要查詢的 \\(x\\) 座標，若前者較大則右界改為當前 \\(mid\\)、反之更改左界。
 
@@ -584,8 +593,7 @@ int main(){
 
         我們可以將當前區間分為兩個區間：\\(f\\) 比較大的區間與 \\(g\\) 較大的區間，以下稱這兩個區間為 \\(F\\) 和 \\(G\\)，如下圖。我們可以發現 \\(G\\) 一定能被 \\(\[L, mid\]\\) 或 \\(\[mid + 1, R)\\) 其中之一完全包含。我們將 \\(G\\) 向下推，像在線段樹上更新懶惰標記一樣，更新對應的子節點。\\(F\\) 則保留下來存在當前節點。
 
-        // 補圖
-        <!-- <img src="image/convex_hull_optimization/lichao_1.png" width="700" style="display:block; margin: 0 auto;"/> -->
+        <img src="image/convex_hull_optimization/lichao_1.png" width="400" style="display:block; margin: 0 auto;"/>
 
         判斷方式：\\(f\\) 在 \\(mid\\) 的值大於 \\(g\\) 則成立。
 
