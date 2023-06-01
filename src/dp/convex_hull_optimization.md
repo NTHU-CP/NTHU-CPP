@@ -696,7 +696,78 @@ int main(){
 
 #### 動態凸包
 
-// 希望這一part可以日後再補Q
+動態凸包，顧名思義就是動態維護的凸包，支援的操作有插入直線與詢問在 \\(x\\) 處的最大值。這個東西有模板可以用，應該蠻好找的，因此這邊不討論如何實作，只討論如何使用它。
+
+插入直線與查詢最大值恰好就是我們需要的兩個操作，因此就直接使用即可。如果轉移式是要求最小值，我們就只要把所有東西都加負號並改取最大值就好。
+
+這邊提供使用動態凸包解 [CSES - Monster Game II](https://cses.fi/problemset/task/2085) 的範例 code。模板是使用 kth-competitive-programming 的 [LineContainer](https://github.com/kth-competitive-programming/kactl/blob/main/content/data-structures/LineContainer.h)。時間複雜度一樣是 \\(O(n\log n)\\)。
+
+<details><summary> Solution Code </summary>
+
+```cpp
+#include <bits/stdc++.h>
+#pragma GCC optimize("O2")
+using namespace std;
+
+typedef long long ll;
+#define io ios_base::sync_with_stdio(0); cin.tie(0);
+#define N 200005
+
+struct Line {
+	mutable ll k, m, p;
+	bool operator<(const Line& o) const { return k < o.k; }
+	bool operator<(ll x) const { return p < x; }
+};
+
+struct LineContainer : multiset<Line, less<>> {
+	// (for doubles, use inf = 1/.0, div(a,b) = a/b)
+	static const ll inf = LLONG_MAX;
+	ll div(ll a, ll b) { // floored division
+		return a / b - ((a ^ b) < 0 && a % b); }
+	bool isect(iterator x, iterator y) {
+		if (y == end()) return x->p = inf, 0;
+		if (x->k == y->k) x->p = x->m > y->m ? inf : -inf;
+		else x->p = div(y->m - x->m, x->k - y->k);
+		return x->p >= y->p;
+	}
+	void add(ll k, ll m) {
+		auto z = insert({k, m, 0}), y = z++, x = y;
+		while (isect(y, z)) z = erase(z);
+		if (x != begin() && isect(--x, y)) isect(x, y = erase(y));
+		while ((y = x) != begin() && (--x)->p >= y->p)
+			isect(x, erase(y));
+	}
+	ll query(ll x) {
+		assert(!empty());
+		auto l = *lower_bound(x);
+		return l.k * x + l.m;
+	}
+};
+
+ll s[N], f[N], dp[N];
+
+int main(){
+    io
+    ll n, x;
+    cin >> n >> x;
+    for(int i = 1; i <= n; i++){
+        cin >> s[i];
+    }
+    for(int i = 1; i <= n; i++){
+        cin >> f[i];
+    }
+    LineContainer lc;
+    lc.add(-x, 0);
+    for(int i = 1; i <= n; i++){
+        dp[i] = -lc.query(s[i]);
+        lc.add(-f[i], -dp[i]);
+    }
+    cout << dp[n] << "\n";
+    return 0;
+}
+```
+
+</details>
 
 ### 總結
 
@@ -735,4 +806,5 @@ int main(){
 - [PEGWiki - Convex hull trick](https://wcipeg.com/wiki/Convex_hull_trick)
 - [USACO Guide - Convex Hull Trick](https://usaco.guide/plat/convex-hull-trick?lang=cpp)
 - [Oi wiki - 李超線段樹](https://oi-wiki.org/ds/li-chao-tree/)
+- [DP optimization - Convex Hull Optimization](https://robert1003.github.io/2020/02/17/dp-opt-convex-hull-trick.html#convex-hull-trick-cht)
 - [A Simple Introduction to Li-Chao Segment Tree](https://robert1003.github.io/2020/02/06/li-chao-segment-tree.html)
