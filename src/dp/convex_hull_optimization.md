@@ -128,6 +128,7 @@ int main(){
 >
 > 給定一個長度為 \\(n\\) 的陣列與一個整數 \\(k\\)，你可以將陣列切成數段連續的區間，區間大小不能超過 \\(k\\)，求切完之後的最大價值。
 > 一段長度為 \\(x\\)、為整個陣列由左至右數來第 \\(m\\) 個區間，其價值被定義為 \\((m-1)\times \Sigma^r_{i=l}a_i-x^2\\)。其中 \\(l\\)、\\(r\\) 分別為區間左右界、\\(a_i\\) 為陣列中第 \\(i\\) 個值。
+>
 > - \\(1 \leq k \leq n \leq 500000\\)
 
 一樣，我們先試著列出轉移式。令 \\(F(i)\\) 為前 \\(i\\) 個數字貢獻的價值（同時第 \\(i\\) 個元素為區間右界）。
@@ -149,8 +150,11 @@ int main(){
 可以發現這每一塊其實就是一段後綴，而且每個後綴的起點對應到每個區間的起點（除了第一個區間不考慮）。我們轉移式中的 \\(i\\) 是區間終點，因此 \\(i+1\\) 便對應到區間起點。而所有的 \\(suf(i+1)\\) 加起來，就對應到所有區間的 \\((m-1)\times \Sigma^r_{i=l}a_i\\) ，這個部分的總和。
 
 瞭解轉移式的推導後，我們回來觀察這個轉移式。它看起來與 \\(y=ax+b\\) 的形式不太像，但我們試著將它展開：
+
 \\(F(i)=\underset{i>j>i-k}{\max}(F(j)-(i-j)^2+suf(i+1))\\)
+
 \\(=\underset{i>j>i-k}{\max}(F(j)-i^2+2ij-j^2+suf(i+1))\\)
+
 \\(=\underset{i>j>i-k}{\max}(F(j)-j^2+2ij)-i^2+suf(i+1)\\)
 
 可以發現 \\(max\\) 裡面的部分變成\\(y=ax+b\\)的形式了：
@@ -160,9 +164,10 @@ int main(){
 \\[b=F(j)-j^2\\]
 
 這麼一來就可以使用剛剛提到的技巧了！但仔細觀察一下，這個轉移式與上一個例題有兩個不同的地方：
+
 1. 上一題是取 \\(min\\)、這一題是取 \\(max\\)，同時斜率從遞增變為遞減。
     其實概念是差不多的，我們一樣把線畫出來觀察一下：
-    
+
     // 畫兩張：所有直線、標記下凸包
     <!-- <img src="image/convex_hull_optimization/tioj1676_hull_1.png" width="700" style="display:block; margin: 0 auto;"/> -->
     <!-- <img src="image/convex_hull_optimization/tioj1676_hull_2.png" width="700" style="display:block; margin: 0 auto;"/> -->
@@ -183,6 +188,7 @@ int main(){
     看起來也不是什麼大問題，好像只需要在 pop deque 前端的直線時，將過期的線也 pop 掉就好。
 
     這邊假設 deque 裡面的每個元素由 \\(a\\)、\\(b\\)、\\(idx\\) 組成，\\(a\\)、\\(b\\) 代表直線的資訊，\\(idx\\) 代表轉移點的 index。
+
     ```cpp
     for(ll i = 1; i <= n; i++){
         while(dq.size() >= 1 && dq[0].idx < i - k) dq.pf();
@@ -239,7 +245,7 @@ int main(){
     ```
 
     在加線之前判斷是否要 pop 掉 deque 最後方的線那一部分，我們多加了一個條件判斷 deque 最後方的線是否有可能在它前方的線被 pop 掉後提供答案。由此我們可以保證每一條在 deque 裡面的線都是可能的轉移來源。
-    
+
 其他部分便與上一個例題概念相同，上述做法複雜度一樣為 \\(O(n)\\)。
 
 <details><summary> Solution Code </summary>
@@ -300,17 +306,18 @@ int main(){
 #### 小結
 
 以上就是斜率優化的例題與概念，我們再複習一下大致的步驟：
+
 1. 將初始值放入 deque
 2. 跑迴圈，從 1 到 n，做下面兩個步驟：
 
     i. 不斷比較 deque 最前端的兩條線。若第二條線有較好的答案就 pop 掉最前端的線，不斷重複直到最前端的線有最好的答案，或是 deque 中只剩一條線。
 
     ii. 利用 deque 最前端的線計算 \\(dp[i]\\)。
-    
+
     iii. 不斷比較 deque 最尾端的線與新的直線。若前者在新的線加入後便不在凸包中就 pop 掉，最後插入新的直線。
 
-
 雖然步驟都大同小異，但不同題目還是有一些差異，在實作前要特別注意：
+
 - 要注意斜率以及查詢的單調性是遞增或遞減，會影響實作（比較線段時要用大於還是小於等等）。
 - 注意題目是否會有轉移範圍的限制。如果有的話，在計算 dp 值之前，過期的線段也要 pop 掉，同時拔掉不在凸包上的點的條件也要做更改。
 - 轉移式取 max 與取 min 的差別在於建下凸包或是建上凸包，方法是差不多的。
@@ -326,7 +333,8 @@ int main(){
 我們來看另一個例題：
 > [P5785 任務安排](https://www.luogu.com.cn/problem/P5785)
 >
-> 有 \\(n\\) 個任務，第 \\(i\\) 個任務單獨完成所需的時間為 \\(T_i\\)、費用為 \\(C_i\\)。現在我們可以將任務分批，每批包含相鄰的若干個任務。任務被依序執行，完成一批任務所需的時間是各個任務需要時間的總和，同一批任務會在同一時刻完成。另外，在每批任務開始前，機器需要啟動時間 \\(s\\)。一個任務的 cost 被定義為它的完成時刻乘以它的費用。起始時間為 \\(0\\)，求最小的 total cost。 
+> 有 \\(n\\) 個任務，第 \\(i\\) 個任務單獨完成所需的時間為 \\(T_i\\)、費用為 \\(C_i\\)。現在我們可以將任務分批，每批包含相鄰的若干個任務。任務被依序執行，完成一批任務所需的時間是各個任務需要時間的總和，同一批任務會在同一時刻完成。另外，在每批任務開始前，機器需要啟動時間 \\(s\\)。一個任務的 cost 被定義為它的完成時刻乘以它的費用。起始時間為 \\(0\\)，求最小的 total cost。
+>
 > - \\(1 \leq n \leq 300000\\)
 > - \\(-2^8 \leq T_i \leq 2^8\\)
 > - \\(0 \leq C_i \leq 2^8\\)
@@ -440,6 +448,7 @@ int main(){
 > [CSES - Monster Game II](https://cses.fi/problemset/task/2085)
 >
 > 有 \\(n\\) 個關卡，每關有一個怪物，通關時必須從第一關開始依序通關。打敗一關的怪物需消耗 \\(sf\\) 的 cost，\\(s\\) 為怪物血量，\\(f\\) 為能力值。你會有一個起始的能力值，每到一關，你可以選擇是否打敗該關怪物，並將能力值更新為 \\(f_i\\)。求打敗第 \\(n\\) 關怪物的最小 cost。
+>
 > - \\(1\leq n\leq 2\times 10^5\\)
 
 令 \\(f(i)\\) 為殺掉第 \\(i\\) 關怪物所需花的最少時間。
@@ -563,62 +572,62 @@ int main(){
 
 看起來像是區間修改、單點查詢的題目。我們考慮線段樹的作法，令左右界為值域，每個節點存的東西是一條直線。接著我們來思考如何插入與查詢。
 
-**插入**
+- **插入**
 
-如果當前的節點沒有存直線，那我們就直接將要插入的直線存進去。
+    如果當前的節點沒有存直線，那我們就直接將要插入的直線存進去。
 
-如果當前的節點已經存直線了，那我們要想辦法將他們合併起來。假設當前節點的區間是 \\(\[L, R)\\)、中點為 \\(mid=\frac{L+R}{2}\\)。要加進去的直線為 \\(f\\)、在節點中的直線為 \\(g\\)。不失一般性，我們假設 \\(g\\) 的斜率大於 \\(f\\) （如果不是的話就交換，其餘做法相同）。這兩條直線可能會有以下兩種情況：
+    如果當前的節點已經存直線了，那我們要想辦法將他們合併起來。假設當前節點的區間是 \\(\[L, R)\\)、中點為 \\(mid=\frac{L+R}{2}\\)。要加進去的直線為 \\(f\\)、在節點中的直線為 \\(g\\)。不失一般性，我們假設 \\(g\\) 的斜率大於 \\(f\\) （如果不是的話就交換，其餘做法相同）。這兩條直線可能會有以下兩種情況：
 
-1. 在 \\(\[L, R)\\) 中，\\(f\\) 大於 \\(g\\) 的部分較多。
+    1. 在 \\(\[L, R)\\) 中，\\(f\\) 大於 \\(g\\) 的部分較多。
 
-    我們可以將當前區間分為兩個區間：\\(f\\) 比較大的區間與 \\(g\\) 較大的區間，以下稱這兩個區間為 \\(F\\) 和 \\(G\\)，如下圖。我們可以發現 \\(G\\) 一定能被 \\(\[L, mid\]\\) 或 \\(\[mid + 1, R)\\) 其中之一完全包含。我們將 \\(G\\) 向下推，像在線段樹上更新懶惰標記一樣，更新對應的子節點。\\(F\\) 則保留下來存在當前節點。
+        我們可以將當前區間分為兩個區間：\\(f\\) 比較大的區間與 \\(g\\) 較大的區間，以下稱這兩個區間為 \\(F\\) 和 \\(G\\)，如下圖。我們可以發現 \\(G\\) 一定能被 \\(\[L, mid\]\\) 或 \\(\[mid + 1, R)\\) 其中之一完全包含。我們將 \\(G\\) 向下推，像在線段樹上更新懶惰標記一樣，更新對應的子節點。\\(F\\) 則保留下來存在當前節點。
 
-    // 補圖
-    <!-- <img src="image/convex_hull_optimization/lichao_1.png" width="700" style="display:block; margin: 0 auto;"/> -->
+        // 補圖
+        <!-- <img src="image/convex_hull_optimization/lichao_1.png" width="700" style="display:block; margin: 0 auto;"/> -->
 
-    判斷方式：\\(f\\) 在 \\(mid\\) 的值大於 \\(g\\) 則成立。
+        判斷方式：\\(f\\) 在 \\(mid\\) 的值大於 \\(g\\) 則成立。
 
-2. 在 \\(\[L, R)\\) 中，\\(f\\) 小於 \\(g\\) 的部分較多。
+    2. 在 \\(\[L, R)\\) 中，\\(f\\) 小於 \\(g\\) 的部分較多。
 
-    與上一個情況相似，這次我們將 \\(G\\) 存於當前節點，將 \\(F\\) 向下推。
+        與上一個情況相似，這次我們將 \\(G\\) 存於當前節點，將 \\(F\\) 向下推。
 
-    判斷方式：\\(f\\) 在 \\(mid\\) 的值小於 \\(g\\) 則成立。
+        判斷方式：\\(f\\) 在 \\(mid\\) 的值小於 \\(g\\) 則成立。
 
-若 \\(f\\) 在 \\(mid\\) 的值等於 \\(g\\)，可以歸入上述任一種情況做操作。
+    若 \\(f\\) 在 \\(mid\\) 的值等於 \\(g\\)，可以歸入上述任一種情況做操作。
 
-由於我們向下推的時候只會推左或右其中一個子區間，這麼做的複雜度為 \\(O(\log C)\\)，其中 \\(C\\) 是值域大小。
+    由於我們向下推的時候只會推左或右其中一個子區間，這麼做的複雜度為 \\(O(\log C)\\)，其中 \\(C\\) 是值域大小。
 
-```cpp
-void insert(int l, int r, int id, pll line){
-    if(l == r){
-        if(cal(line, l) < cal(seg[id], l)) seg[id] = line;
-        return;
+    ```cpp
+    void insert(int l, int r, int id, pll line){
+        if(l == r){
+            if(cal(line, l) < cal(seg[id], l)) seg[id] = line;
+            return;
+        }
+        int mid = (l + r) >> 1;
+        if(line.X > seg[id].X) swap(line, seg[id]);
+        if(cal(line, mid) <= cal(seg[id], mid)){
+            insert(l, mid, id * 2, seg[id]);
+            seg[id] = line;
+        }
+        else{
+            insert(mid + 1, r, id * 2 + 1, line);
+        }
     }
-    int mid = (l + r) >> 1;
-    if(line.X > seg[id].X) swap(line, seg[id]);
-    if(cal(line, mid) <= cal(seg[id], mid)){
-        insert(l, mid, id * 2, seg[id]);
-        seg[id] = line;
+    ```
+
+- **查詢**
+
+    類似一般線段樹上的區間修改、單點查詢一樣，我們只看包含 \\(k\\) 的那些區間，並從這些線段中取位於 \\(k\\) 的最大值。
+
+    ```cpp
+    ll query(int l, int r, int id, ll x){
+        if(x < l || x > r) return INF;
+        if(l == r) return cal(seg[id], x);
+        int mid = (l + r) >> 1;
+        ll val = x <= mid ? query(l, mid, id * 2, x) : query(mid + 1, r, id * 2 + 1, x);
+        return min(val, cal(seg[id], x));
     }
-    else{
-        insert(mid + 1, r, id * 2 + 1, line);
-    }
-}
-```
-
-**查詢**
-
-類似一般線段樹上的區間修改、單點查詢一樣，我們只看包含 \\(k\\) 的那些區間，並從這些線段中取位於 \\(k\\) 的最大值。
-
-```cpp
-ll query(int l, int r, int id, ll x){
-    if(x < l || x > r) return INF;
-    if(l == r) return cal(seg[id], x);
-    int mid = (l + r) >> 1;
-    ll val = x <= mid ? query(l, mid, id * 2, x) : query(mid + 1, r, id * 2 + 1, x);
-    return min(val, cal(seg[id], x));
-}
-```
+    ```
 
 ---
 
@@ -715,34 +724,34 @@ typedef long long ll;
 #define N 200005
 
 struct Line {
-	mutable ll k, m, p;
-	bool operator<(const Line& o) const { return k < o.k; }
-	bool operator<(ll x) const { return p < x; }
+    mutable ll k, m, p;
+    bool operator<(const Line& o) const { return k < o.k; }
+    bool operator<(ll x) const { return p < x; }
 };
 
 struct LineContainer : multiset<Line, less<>> {
-	// (for doubles, use inf = 1/.0, div(a,b) = a/b)
-	static const ll inf = LLONG_MAX;
-	ll div(ll a, ll b) { // floored division
-		return a / b - ((a ^ b) < 0 && a % b); }
-	bool isect(iterator x, iterator y) {
-		if (y == end()) return x->p = inf, 0;
-		if (x->k == y->k) x->p = x->m > y->m ? inf : -inf;
-		else x->p = div(y->m - x->m, x->k - y->k);
-		return x->p >= y->p;
-	}
-	void add(ll k, ll m) {
-		auto z = insert({k, m, 0}), y = z++, x = y;
-		while (isect(y, z)) z = erase(z);
-		if (x != begin() && isect(--x, y)) isect(x, y = erase(y));
-		while ((y = x) != begin() && (--x)->p >= y->p)
-			isect(x, erase(y));
-	}
-	ll query(ll x) {
-		assert(!empty());
-		auto l = *lower_bound(x);
-		return l.k * x + l.m;
-	}
+    // (for doubles, use inf = 1/.0, div(a,b) = a/b)
+    static const ll inf = LLONG_MAX;
+    ll div(ll a, ll b) { // floored division
+        return a / b - ((a ^ b) < 0 && a % b); }
+    bool isect(iterator x, iterator y) {
+        if (y == end()) return x->p = inf, 0;
+        if (x->k == y->k) x->p = x->m > y->m ? inf : -inf;
+        else x->p = div(y->m - x->m, x->k - y->k);
+        return x->p >= y->p;
+    }
+    void add(ll k, ll m) {
+        auto z = insert({k, m, 0}), y = z++, x = y;
+        while (isect(y, z)) z = erase(z);
+        if (x != begin() && isect(--x, y)) isect(x, y = erase(y));
+        while ((y = x) != begin() && (--x)->p >= y->p)
+            isect(x, erase(y));
+    }
+    ll query(ll x) {
+        assert(!empty());
+        auto l = *lower_bound(x);
+        return l.k * x + l.m;
+    }
 };
 
 ll s[N], f[N], dp[N];
