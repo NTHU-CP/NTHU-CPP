@@ -939,7 +939,7 @@ int main(){
 
 </details>
 
-> [TIOJ 1921 - 吐鈔機2](https://tioj.ck.tp.edu.tw/problems/1921)
+> [TIOJ 1921 - 吐鈔機 2](https://tioj.ck.tp.edu.tw/problems/1921)
 >
 > 有 \\(N\\) 台機器，每台機器都有 \\(D_i, P_i, G_i, R_i\\)：售出的日期、購入的價格、每天產出的金額、賣出的價格。給定 \\(C, D\\)：第 \\(0\\) 天持有的金額，停止交易的日期。
 > 問在停止交易當天所能持有的最大金額是多少。
