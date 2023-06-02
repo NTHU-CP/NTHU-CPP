@@ -33,15 +33,15 @@
 
 接下來便要思考如何找最小值。如果要代入每一條直線再取極值才能找到答案，並不會優化複雜度，但我們可以來觀察一下這個線集，應該會長類似這個樣子：
 
-<img src="image/convex_hull_optimization/cses2084_1.png" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/convex_hull_optimization/cses2084_1.png" width="500" style="display:block; margin: 0 auto;"/>
 
 可以發現這是一個斜率不斷遞減的線集（從算式中也能看出，作為斜率的 \\(f_j\\) 是遞減的）。對於每個 \\(x\\)，我們都能在這個線集中找到對應的最小值，如果我們將它們通通標出來，可以發現會形成一個上凸包：
 
-<img src="image/convex_hull_optimization/cses2084_2.png" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/convex_hull_optimization/cses2084_2.png" width="500" style="display:block; margin: 0 auto;"/>
 
 將不在凸包上的線拿掉後：
 
-<img src="image/convex_hull_optimization/cses2084_3.png" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/convex_hull_optimization/cses2084_3.png" width="500" style="display:block; margin: 0 auto;"/>
 
 對任何 \\(x'\\) 而言，\\(x=x'\\) 與這個上凸包的交點便是所求的最小值。要找到這個交點，我們必須維護這個凸包，並支援兩種操作：
 
@@ -51,11 +51,11 @@
 
     比較兩條直線提供的答案：
 
-    <img src="image/convex_hull_optimization/cses2084_query_1.png" width="600" style="display:block; margin: 0 auto;"/>
+    <img src="image/convex_hull_optimization/cses2084_query_1.png" width="500" style="display:block; margin: 0 auto;"/>
 
     下一條直線提供的答案更小，因此我們刪除斜率最大的直線：
 
-    <img src="image/convex_hull_optimization/cses2084_query_2.png" width="600" style="display:block; margin: 0 auto;"/>
+    <img src="image/convex_hull_optimization/cses2084_query_2.png" width="500" style="display:block; margin: 0 auto;"/>
 
 - 插入：插入一條新的線
 
@@ -63,11 +63,11 @@
 
     原本的線集：
 
-    <img src="image/convex_hull_optimization/cses2084_insert_1.png" width="600" style="display:block; margin: 0 auto;"/>
+    <img src="image/convex_hull_optimization/cses2084_insert_1.png" width="500" style="display:block; margin: 0 auto;"/>
 
     加入新的直線：
 
-    <img src="image/convex_hull_optimization/cses2084_insert_2.png" width="600" style="display:block; margin: 0 auto;"/>
+    <img src="image/convex_hull_optimization/cses2084_insert_2.png" width="500" style="display:block; margin: 0 auto;"/>
 
     在我們加入新的直線後，有一些直線便不在凸包上了，意即它們不可能成為任何查詢的答案。這時我們要將它們移出凸包，否則會取到錯誤的答案。
 
@@ -75,7 +75,7 @@
 
 此圖中，\\(line1\\) 為 deque 中的倒數第二條線；\\(line2\\) 為 deque 中的最後一條線；\\(line3\\) 為新加入的直線。在這裡，\\(line1\\) 與 \\(line3\\) 的交點有更小的 \\(x\\) 座標，因此 \\(line2\\) 要被刪掉：
 
-<img src="image/convex_hull_optimization/cses2084_4.png" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/convex_hull_optimization/cses2084_4.png" width="500" style="display:block; margin: 0 auto;"/>
 
 在查詢最小值時，我們不斷比較隊列中第一個與第二個元素，如果將當前的 \\(x\\) 代入兩條直線後，發現代入第二條直線有更好的解，則將第一條直線 pop 掉。
 
@@ -333,9 +333,8 @@ int main(){
 - 注意題目是否會有轉移範圍的限制。如果有的話，在計算 dp 值之前，過期的線段也要 pop 掉，同時拔掉不在凸包上的點的條件也要做更改。
 - 轉移式取 max 與取 min 的差別在於建下凸包或是建上凸包，方法是差不多的。
 
-#### 另一種思路
-
-// 補上讓 j 為點、i 為線的想法與實作方法
+<!-- #### 另一種思路
+// 補上讓 j 為點、i 為線的想法與實作方法 -->
 
 ### 斜率單調 & 查詢不單調
 
@@ -800,41 +799,164 @@ int main(){
 
 ## Exercises
 
-// 題敘與 code 待補
-
 > [CF 1083E - The Fair Nut and Rectangles](https://codeforces.com/contest/1083/problem/E)
+>
+> 有 \\(n\\) 個矩形，第 \\(i\\) 個矩形四個頂點的座標分別為 \\((0, 0), (0, y_i), (x_i, 0), (x_i, y_i)\\)。保證沒有任一個矩形包含在另一個矩形中。每個矩形還有一個對應的數字 \\(a_i\\)。現在要選一些矩形，使得他們聯集的面積減掉這些矩形的 \\(a_i\\) 的和最大。
+>
+> - \\(1 \leq n \leq 10^6\\)
 
 <details><summary> Solution </summary>
+
+先將所有矩形依照 \\(x\\) 座標由大至小 sort，這時 \\(y\\) 座標也會由小至大排好。
+
+令 \\F(i\\) 為考慮前 \\(i\\) 個矩形，且要取第 \\(i\\) 個矩形，所能得到的最大值。
+
+轉移式為：\\(F(i)=\underset{i>j}{\max}(x_i(y_i-y_j)+F(j)-a_i)\\)
+
+\\(=\underset{i>j}{\max}(F(j)-x_iy_j)+x_iy_i-a_i\\)
+
+我們得到：
+
+\\[y=F(i)\\]
+\\[x=x_i\\]
+\\[a=y_j\\]
+\\[b=F(j)\\]
+
+斜率、查詢皆單調，使用單調隊列做斜率優化。此題數字較大，要特別注意 overflow 的問題（可能需要使用 `__int128` 之類的）。
 
 </details>
 
 > [CF 311B - Cats Transport](https://codeforces.com/contest/311/problem/B)
+>
+> 有 \\(p\\) 個 feeders 想把 \\(m\\) 隻貓接回農場。貓現在分布在各個山上，共有 \\(n\\) 座山，由左至右編號 \\(1\sim n\\)，相鄰的兩座山 \\(i\\) 與 \\(i-1\\) 山隔著 \\(d_i\\) 公尺。每隻貓都會給定其在哪座山上，以及一個時間 \\(t_i\\)，表示經過 \\(t_i\\) 單位時間後貓會開始等待被接走。現在 feeders 要從 \\(1\\) 號山出發往右走，以每單位時間一公尺的速度去接貓，當 feeder 抵達一座山，他會接走該座山中所有正在等待的貓。現在我們要安排 feeders 的出發時間，使得所有貓的等待時間總和最短。
+>
+> - \\(2 \leq n \leq 10^5\\)
+> - \\(1 \leq m \leq 10^5\\)
+> - \\(1 \leq p \leq 10^2\\)
 
 <details><summary> Solution </summary>
+
+先將所有貓的 \\(t_i\\) 減掉 \\(h_1\\) 至 \\(h_i\\) 的距離，這樣就可以得到每隻貓最早能被接走時，feeder 的出發時間。
+
+接著將貓照處理過的 \\(t_i\\) 由小至大 sort，題目便轉成如何將序列切成 \\(p\\) 個部分，使得 cost 最小。
+
+令 \\(F(i, j)\\) 為前 \\(i\\) 個 feeder 帶走前 \\(j\\) 隻貓所需的最小 cost。
+
+則轉移式為：\\(F(i, j)=\underset{j>k}{\min}(F(i-1, k)-\Sigma_{p=k+1}^j\space t_p+t_j \times (j-k))\\)
+
+\\(=\underset{j>k}{\min}(F(i-1, k)-suf(k+1)+suf(j+1)+t_{j} \times (j-k))\\)
+
+其中 \\(suf(i)\\) 為後綴和（從 \\(i\\) 加到 \\(n\\)）。
+
+由轉移式我們得到：
+
+\\[y=F(i, j)\\]
+\\[x=t_j\\]
+\\[a=-k\\]
+\\[b=F(i-1, k)-suf(k+1)\\]
+
+斜率、查詢皆單調，可以使用單調隊列做斜率優化。
 
 </details>
 
 > [CF 319C - Kalila and Dimna in the Logging Industry](https://codeforces.com/problemset/problem/319/C)
+>
+> 有 \\(n\\) 棵樹，第 \\(i\\) 棵樹高度為 \\(a_i\\)。每次使用鋸子砍樹可以使任意棵樹的高度減\\(1\\)，且使用完鋸子後需要充電才能做下一次使用。充電的成本是已經被砍到\\(0\\)的樹中\\(id\\)最大的那棵，的\\(b_i\\)的值。請找出把樹全部砍光的最小成本。
+>
+> - 保證\\(a_1 = 1, b_n = 0\\)，且\\(a_1 < a_2 < \dots < a_n\\)且\\(b_1 > b_2 > \dots > b_n\\)。
+> - \\(1 \le n \le 10^5\\)
 
 <details><summary> Solution </summary>
+
+由於 \\(b_n=0\\)，在砍掉最後一棵樹後，砍所有樹都不需要成本了。因此題目轉變成：砍掉最後一棵樹的最小成本。
+
+令 \\(F(i)\\) 為只砍 index 小於 \\(i\\) 的樹的情況下，砍掉第 \\(i\\) 棵樹的最小 cost。
+
+\\(F(i)=\underset{i>j}{\min}(F(j)+b_j \times a_i)\\)
+
+由轉移式我們得到：
+
+\\[y=F(i)\\]
+\\[x=a_i\\]
+\\[a=b_j\\]
+\\[b=F(j)\\]
+
+斜率、查詢皆單調，可以使用單調隊列做斜率優化。
 
 </details>
 
 > [CF 1715E - Long Way Home](https://codeforces.com/problemset/problem/1715/E)
+>
+> 有 \\(n\\) 個城市編號 \\(1 \sim n\\)，從城市 \\(u\\) 移動到城市 \\(v\\) 的成本是 \\((u-v)^2\\)。
+> 現在 Stanley 想從城市 \\(1\\) 用至多 \\(k\\) 步走到城市 \\(n\\)，請找出最小的成本。
+>
+> - \\(2 \le n \le 10^5, 1 \le k \le 20\\)
 
 <details><summary> Solution </summary>
+
+令 \\(F(i, j)\\) 代表從城市 \\(1\\) 用 \\(j\\) 步走到城市 \\(i\\) 的最小成本，則：
+
+\\(F(i, j) = \underset{1 \le k \le n}{\min}(F(k, j-1)+i^2+k^2-2ik)\\)
+
+\\(= \underset{1 \le k \le n}{\min}(F(k, j-1)+k^2-2ik)+i^2\\)
+
+由轉移式我們得到：
+
+\\[y=F(i, j)\\]
+\\[x=i\\]
+\\[a=-2k\\]
+\\[b=F(k, j-1)+k^2\\]
+
+斜率、查詢皆單調，可以使用單調隊列做斜率優化。
 
 </details>
 
 > [CSES - Subarray Squares](https://cses.fi/problemset/task/2086)
+>
+> 將長度 \\(n\\) 的陣列分成 \\(k\\) 個子陣列，每個子陣列的成本是這個子列中數值總和的平方，此分法的總成本為每個子陣列的成本和。
+> 請輸出所有分法中的最小成本。
+>
+> - \\(1 \le k \le n \le 3000\\)
 
 <details><summary> Solution </summary>
+
+令 \\(F(i, j)\\) 為將前 \\(j\\) 個 elements 分成 \\(i\\) 個 subarrays 的最小 cost。
+
+\\(F(i, j)=\underset{j>k}{\min}(F(i-1, k)+(\Sigma_{t=k+1}^{j}x_t)^2)\\)
+
+\\(=\underset{j>k}{\min}(F(i-1, k)+(pre_{j}-pre_k)^2)\\)
+
+\\(=\underset{j>k}{\min}(F(i-1, k)+pre_j^2+pre_k^2-2\times pre_j\times pre_k)\\)
+
+由轉移式我們得到：
+
+\\[y=F(i, j)\\]
+\\[x=pre_j\\]
+\\[a=-2\times pre_k\\]
+\\[b=F(i-1, k)+pre_k^2\\]
+
+斜率、查詢皆單調，可以使用單調隊列做斜率優化。
 
 </details>
 
-> [ICPC WF 2011](https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=3547)
+> [TIOJ 1921 - 吐鈔機2](https://tioj.ck.tp.edu.tw/problems/1921)
+>
+> 有 \\(N\\) 台機器，每台機器都有 \\(D_i, P_i, G_i, R_i\\)：售出的日期、購入的價格、每天產出的金額、賣出的價格。給定 \\(C, D\\)：第 \\(0\\) 天持有的金額，停止交易的日期。
+> 問在停止交易當天所能持有的最大金額是多少。
+>
+> - \\(1 \le N \le 10^5\\)
+>
+> 註：本題與 [ICPC WF 2011](https://onlinejudge.org/index.php?option=onlinejudge&Itemid=8&page=show_problem&problem=3547) 題目非常相似，可以也去看看這題。
 
 <details><summary> Solution </summary>
+
+考慮 \\(F(i, j)\\) 代表能使用的機器只有前 \\(i\\) 種，第 \\(j\\) 天能得到的最大收益。
+
+考慮\\(F(i)\\) 到 \\(F(i+1)\\)的轉移會發現，如果 \\(F(i, D_{i+1}) \ge P_{i+1}\\)，\\(F(i+1)\\) 的函數圖形會是 \\(F(i)\\) 與直線 \\(y = G_{i+1} \times (j-D_{i+1}-1) - P_{i+1} + R_{i+1}\\) 形成的凸包。
+
+不然我們不可能構入此機器，\\(F(i+1) = F(i)\\)。
+
+於是我們只要一個能夠支援加入直線、詢問單點值的資料結構：即動態凸包。
 
 </details>
 
