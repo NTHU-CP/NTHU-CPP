@@ -79,7 +79,7 @@ void DFS(int u, int parent) { //call(u,u) at first
             //tree edge
             dfs(v, u);
             ...
-        } else if(color[v] == 1){
+        } else if(color[v] == 1) {
             //第一次看到的back edge
             ...
         }
@@ -174,7 +174,7 @@ void dfs(int u, int parent, int dep) {
             child++;
             dfs(v, u, dep+1);
             low[u] = min(low[v], low[u]);
-            if(low[v] \geq depth[u]) isAP = true;
+            if(low[v] >= depth[u]) isAP = true;
             if(low[v] > depth[u]) Bridge.emplace_back(u,v);
         } else {
             low[u] = min(low[u], depth[v]);
@@ -233,7 +233,7 @@ void dfs(int u, int parent) {
             if(sum[v] == 0) 
                 bridge.emplace_back(u, v);
             sum[u]+=sum[v];
-        } else if(color[v] == 1){
+        } else if(color[v] == 1) {
             sum[u]+=1;
             sum[v]-=1;
         }
@@ -332,7 +332,7 @@ void dfs(int u, int parent, int dep) {
         if(depth[v] == 0) {
             dfs(v, u, dep+1);
             low[u] = min(low[v], low[u]);
-            if(low[v] \geq depth[u]) {
+            if(low[v] >= depth[u]) {
                 edge x;
                 bcc.emplace_back({});
                 do {
@@ -439,22 +439,52 @@ Bridge 模板題
 >
 > 給一張帶權無向圖與兩點 \\(S \\) , \\(T \\)，要你選至多兩條邊刪除後使 \\(S \\) , \\(T \\) 不連通。要求選的邊權重和最小。
 
+<details><summary> Solution </summary>
+
+still working
+
+</details>
+
 >[Uva - Mining Your Own Business](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=246&page=show_problem&problem=3549)
 >
 >在一張無向圖上選擇盡可能少的點塗黑，使得刪除任一個點後，每個連通分量裡至少有一個黑點。
+
+<details><summary> Solution </summary>
+
+still working
+
+</details>
 
 >[Codeforces - Tourist Reform](https://codeforces.com/contest/732/problem/F)
 >
 >給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，定義 \\(r_i \\) 為幫每條邊定向後，\\(i \\) 點可以走到的點數。要你給出一種定向方法使得 \\(min_i({r_i})\\) 最大
 
+<details><summary> Solution </summary>
+
+still working
+
+</details>
+
 >[Codeforce - Simple Cycles Edges](https://codeforces.com/problemset/problem/962/F)
 >
 >給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，問那些邊剛好位於一個簡單環上。
+
+<details><summary> Solution </summary>
+
+still working
+
+</details>
 
 >[Codeforce - Two Fairs](https://codeforces.com/contest/1259/problem/E)
 >
 >給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖及兩個點 \\(a, b\\) ，問有幾對 \\( (x,y) \\) 滿足由 \\(x \\) 到 \\( y \\) 的路徑上一定會經過
 >\\(a, b\\) 這兩個點。其中 \\( x \neq a,b\\)  且  \\(y \neq a,b \\)。
+
+<details><summary> Solution </summary>
+
+still working
+
+</details>
 
 ## Reference
 
