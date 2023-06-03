@@ -32,14 +32,14 @@ Connected Component 是點的集合，滿足以下條件
 
 ```cpp
 void DFS(int u) {
-	visited[u] = true;
-	for(int &v : G[u]) {
-		if(!visited[v]) {
-			DFS(v);//u->v 為 tree edge
-		} else {
-			//u->v為 back edge
-		}
-	}
+    visited[u] = true;
+    for(int &v : G[u]) {
+        if(!visited[v]) {
+            DFS(v);//u->v 為 tree edge
+        } else {
+            //u->v為 back edge
+        }
+    }
 }
 ```
 
@@ -55,16 +55,16 @@ void DFS(int u) {
 
 ```cpp
 void DFS(int u) {
-	visited[u] = true;
-	for(int &v : G[u]) {
-		if(!visited[v]) {
-			DFS(v);
-			...
-		} else {
-			...
-			//你可能會在這裡先看到 a->b，之後又看到 b->a
-		}
-	}
+    visited[u] = true;
+    for(int &v : G[u]) {
+        if(!visited[v]) {
+            DFS(v);
+            ...
+        } else {
+            ...
+            //你可能會在這裡先看到 a->b，之後又看到 b->a
+        }
+    }
 }
 ```
 
@@ -72,21 +72,21 @@ void DFS(int u) {
 
 ```cpp
 void DFS(int u, int parent) { //call(u,u) at first
-	color[u] = 1;
-	for(auto &v : G[u]) {
-		if(v == parent) continue;//已經是 tree edge
-		if(color[v] == 0) {
-			//tree edge
-			dfs(v, u);
-			...
-		} else if(color[v] == 1){
-			//第一次看到的back edge
-			...
-		}
-		//如果color[v] == 2，代表 v 的 DFS 已經結束，因此 (u,v) 這條邊已經被 v 看過了
-		//如果還沒，那 v 的 DFS 就不應該結束。
-	}
-	color[u] = 2;
+    color[u] = 1;
+    for(auto &v : G[u]) {
+        if(v == parent) continue;//已經是 tree edge
+        if(color[v] == 0) {
+            //tree edge
+            dfs(v, u);
+            ...
+        } else if(color[v] == 1){
+            //第一次看到的back edge
+            ...
+        }
+        //如果color[v] == 2，代表 v 的 DFS 已經結束，因此 (u,v) 這條邊已經被 v 看過了
+        //如果還沒，那 v 的 DFS 就不應該結束。
+    }
+    color[u] = 2;
 }
 ```
 
@@ -163,27 +163,27 @@ Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
 
 ``` cpp
 void dfs(int u, int parent, int dep) {
-	
-	depth[u] = low[u] = dep;
-	int child = 0;
-	bool isAP = false; 
-	
-	for(auto &v : G[u]) {
-		if(v == parent) continue;
-		if(depth[v] == 0) {
-			child++;
-			dfs(v, u, dep+1);
-			low[u] = min(low[v], low[u]);
-			if(low[v] \geq depth[u]) isAP = true;
-			if(low[v] > depth[u]) Bridge.emplace_back(u,v);
-		} else {
-			low[u] = min(low[u], depth[v]);
-		}
-	}
+    
+    depth[u] = low[u] = dep;
+    int child = 0;
+    bool isAP = false; 
+    
+    for(auto &v : G[u]) {
+        if(v == parent) continue;
+        if(depth[v] == 0) {
+            child++;
+            dfs(v, u, dep+1);
+            low[u] = min(low[v], low[u]);
+            if(low[v] \geq depth[u]) isAP = true;
+            if(low[v] > depth[u]) Bridge.emplace_back(u,v);
+        } else {
+            low[u] = min(low[u], depth[v]);
+        }
+    }
 
-	if(u == parent && child < 2) isAP = false;
-	if(isAP) AP.emplace_back(u);	
-	
+    if(u == parent && child < 2) isAP = false;
+    if(isAP) AP.emplace_back(u);    
+    
 }
 ```
 
@@ -225,20 +225,20 @@ void dfs(int u, int parent, int dep) {
 
 ```cpp
 void dfs(int u, int parent) {
-	color[u] = 1;
-	for(auto &v : G[u]) {
-		if(v == parent) continue;
-		if(color[v] == 0) {
-			dfs(v, u);
-			if(sum[v] == 0) 
-				bridge.emplace_back(u, v);
-			sum[u]+=sum[v];
-		} else if(color[v] == 1){
-			sum[u]+=1;
-			sum[v]-=1;
-		}
-	}
-	color[u] = 2;
+    color[u] = 1;
+    for(auto &v : G[u]) {
+        if(v == parent) continue;
+        if(color[v] == 0) {
+            dfs(v, u);
+            if(sum[v] == 0) 
+                bridge.emplace_back(u, v);
+            sum[u]+=sum[v];
+        } else if(color[v] == 1){
+            sum[u]+=1;
+            sum[v]-=1;
+        }
+    }
+    color[u] = 2;
 }
 ```
 
@@ -270,30 +270,30 @@ void dfs(int u, int parent) {
 
 ```cpp
 void dfs(int now, int pa) {
-	color[now] = 1;
-	bool isAP = false;
-	int child = 0;
+    color[now] = 1;
+    bool isAP = false;
+    int child = 0;
 
-	for(auto &e : G[now]) {
-		if(e == pa) continue;
-		if(color[e] == 0) {
-			child++;
-			int backEdgeEndNum = backEdgeEnd[now];
-			dfs(e, now);
-			if(sum[e] - (backEdgeEnd[now] - backEdgeEndNum) == 0) {
-				isAP = true;;
-			}
-			sum[now]+=sum[e];
-		} else if(c[e] == 1){
-			sum[now]+=1;
-			backEdgeEnd[e]+=1; 
-		}
-	}
-	sum[now] -= backEdgeEnd[now];
-	color[now] = 2;
-	
-	if(now == pa && child == 1) isAP = false;
-	if(isAP) AP.emplace_back(now);
+    for(auto &e : G[now]) {
+        if(e == pa) continue;
+        if(color[e] == 0) {
+            child++;
+            int backEdgeEndNum = backEdgeEnd[now];
+            dfs(e, now);
+            if(sum[e] - (backEdgeEnd[now] - backEdgeEndNum) == 0) {
+                isAP = true;;
+            }
+            sum[now]+=sum[e];
+        } else if(color[e] == 1) {
+            sum[now]+=1;
+            backEdgeEnd[e]+=1; 
+        }
+    }
+    sum[now] -= backEdgeEnd[now];
+    color[now] = 2;
+    
+    if(now == pa && child == 1) isAP = false;
+    if(isAP) AP.emplace_back(now);
 }
 
 ```
@@ -323,38 +323,38 @@ BCC 指的是沒有 AP 的 Connected Component，在中文常稱之為點雙連�
 ```cpp
 using edge = pair<int, int>;
 void dfs(int u, int parent, int dep) {
-	
-	depth[u] = low[u] = dep;
+    
+    depth[u] = low[u] = dep;
 
-	for(auto &v : G[u]) {
-		if(v == parent) continue;
-		if(depth[v] < depth[u]) stk.emplace(u,v);
-		if(depth[v] == 0) {
-			dfs(v, u, dep+1);
-			low[u] = min(low[v], low[u]);
-			if(low[v] \geq depth[u]) {
-				edge x;
-				bcc.emplace_back({});
-				do {
-					x = stk.top(); stk.pop();
-					bcc.back().emplace_back(x);
-				} while(x != edge(u,v));
-			}
-		} else {
-			low[u] = min(low[u], depth[v]);
-		}
-	}
-	
-	if(u == parent) {
-		while(!stk.empty()) {
-			edge x;
-			bcc.emplace_back({});
-			do {
-				x = stk.top(); stk.pop();
-				bcc.emplace_back(x);
-			} while(x.first != 1)
-		}
-	}
+    for(auto &v : G[u]) {
+        if(v == parent) continue;
+        if(depth[v] < depth[u]) stk.emplace(u,v);
+        if(depth[v] == 0) {
+            dfs(v, u, dep+1);
+            low[u] = min(low[v], low[u]);
+            if(low[v] \geq depth[u]) {
+                edge x;
+                bcc.emplace_back({});
+                do {
+                    x = stk.top(); stk.pop();
+                    bcc.back().emplace_back(x);
+                } while(x != edge(u,v));
+            }
+        } else {
+            low[u] = min(low[u], depth[v]);
+        }
+    }
+    
+    if(u == parent) {
+        while(!stk.empty()) {
+            edge x;
+            bcc.emplace_back({});
+            do {
+                x = stk.top(); stk.pop();
+                bcc.emplace_back(x);
+            } while(x.first != 1)
+        }
+    }
 }
 
 ```
@@ -383,28 +383,28 @@ BCC 指的是沒有 Bridge 的 Connected Component，在中文常稱之為邊雙
 ```cpp
 
 void dfs(int u, int parent, int dep) {
-	
-	depth[u] = low[u] = dep;
-	stk.emplace(u);
+    
+    depth[u] = low[u] = dep;
+    stk.emplace(u);
 
-	for(auto &v : G[u]) {
-		if(v == parent) continue;
-		if(depth[v] == 0) {
-			dfs(v, u, dep+1);
-			low[u] = min(low[v], low[u]);
-		} else {
-			low[u] = min(low[u], depth[v]);
-		}
-	}
-	
-	if(low[u] == depth[u]) {
-		bcc.emplace_back({});
-		int x;
-		do {
-			x = stk.top(); stk.pop();
-			bcc.back().emplace_back(x);
-		} while(x != u);
-	}
+    for(auto &v : G[u]) {
+        if(v == parent) continue;
+        if(depth[v] == 0) {
+            dfs(v, u, dep+1);
+            low[u] = min(low[v], low[u]);
+        } else {
+            low[u] = min(low[u], depth[v]);
+        }
+    }
+    
+    if(low[u] == depth[u]) {
+        bcc.emplace_back({});
+        int x;
+        do {
+            x = stk.top(); stk.pop();
+            bcc.back().emplace_back(x);
+        } while(x != u);
+    }
 }
 
 ```
