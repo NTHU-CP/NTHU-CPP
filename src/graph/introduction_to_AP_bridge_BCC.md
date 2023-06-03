@@ -2,7 +2,7 @@
 
 ## 前言
 
-在此章節中，我們將介紹無向圖上的 AP(Articulation point), Bridge 與 BCC(Bi-connected Component & Bridge Connected Component)，包括他們的定義、相關的演算法和題目。
+在此章節中，我們將介紹無向圖上的 AP (Articulation point), Bridge 與 BCC (Bi-connected Component & Bridge Connected Component)，包括他們的定義、相關的演算法和題目。
 
 ## Connected & Connected Component
 在正式開始我們的主題之前，我們先介紹一些之後會用到的東西。
@@ -16,7 +16,7 @@ Connected Component 是點的集合，滿足以下條件
 - 集合中任兩點都是 connected 的
 - 如果兩個點位於不同的 Connected Component，則這兩點必不 connected。  
 
-如下圖的例子，顏色相同的點表示他們屬於相同的 Connected Component，可以看到若是兩個點不同顏色，那他們一定不 connected。而我們不會說紅圈圈起來的那三個點是一個 Connected Component(因為紅圈外還有跟他們連通的點)。
+如下圖的例子，顏色相同的點表示他們屬於相同的 Connected Component，可以看到若是兩個點不同顏色，那他們一定不 connected。而我們不會說紅圈圈起來的那三個點是一個 Connected Component (因為紅圈外還有跟他們連通的點)。
 
 <img src="image/Connected_Component.JPG" width="500" style="display:block; margin: 0 auto;"/>
 
@@ -96,10 +96,89 @@ Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Compon
 
 那我們要如何快速找到圖上所有的 AP 跟 Bridge 呢？很容易可以想到枚舉每個點或邊，把他拔掉之後看看圖上有沒有多出新的 Connected Component。但這樣做的時間複雜度會是 \\(O((V+E)^2) \\)。不過實際上，我們只要好好觀察圖上的性質就可以在 \\(O(V+E) \\) 的時間做完！以下介紹兩種不同的方法來找出圖上所有的 AP 跟 Bridge
 
+## Tarjan's Algorithm for AP/Bridge
+
+### 觀察 for AP
+我們觀察下圖中 \\( C \\) 點的左子樹。 你會發現當我們移除 \\( C \\) 點後， \\( C \\) 點的左子樹**就沒有路可以走到原本 \\( C \\) 點的祖先**，因此移除 \\( C \\) 點後會讓 \\( C \\) 點的左子樹跟 \\( C \\) 點的祖先處在不同的 Connected Component。
+
+<img src="image/Tarjan AP Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+更一般的說，對於一個點 \\(v \\)，如果 \\(v \\) 的某一棵子樹無法在不經過 \\(v \\) 的情況下走到 \\(v \\) 的祖先，那麼 \\(v \\) 一定是 AP。
+
+<img src="image/General AP.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+但 root 是沒有祖先的，因此 root 我們要拉出來特別判斷。很明顯，當 root 有至少兩棵子樹的時候，root 一定會是 AP，否則就不是。
+<img src="image/Root AP Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+### 觀察 for Bridge
+我們觀察下圖中 \\( (C,D) \\) 這條邊，當我們把這條邊拔掉後，以 \\(D \\) 為根的子樹**就沒有路可以走到 \\( C \\) 點**，因此移除 \\( (C,D) \\) 後會讓 \\( C \\) 跟 \\( D \\) 處在不同的 Connected Component。
+
+<img src="image/Tarjan Bridge Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+更一般的說，令 \\(u \\) 是 \\( v \\) 的 parent，則對於一條邊 \\( (u,v) \\)，如果 \\( v \\) 的子樹都無法在不經過 \\( (u,v) \\) 的情況下走到 \\( u \\)，那麼 \\( (u,v) \\) 一定是 bridge。
+
+<img src="image/General Bridge.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+### 演算法
+現在我們來看看 Tarjan 是怎麼把這個東西做出來的。
+
+Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
+
+\\(depth(v) \\) 表示 \\( v \\) 這個點在 DFS tree 上的深度。
+<img src="image/Depth Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+\\( low(v) \\) 表示 \\(v \\) 子樹中所有的點和這些點的鄰點，以及 \\( v \\) 本身的最淺深度。
+
+例如下圖的 \\( C \\) 點，本身的深度是 \\(3\\)，子樹中所有的點深度都 \\(>3\\)，而子樹中最淺的鄰點為 \\( B \\)  ( \\( L \\) 的鄰點)，深度為 \\(2\\)，因此 \\(low(C) = 2\\) 
+<img src="image/Low Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+我們回想一下剛才的圖，發現對於一個點 \\(u \\)，如果他的某個子節點 \\(v \\) 滿足 \\(low(v) \geq depth(u) \\)，那麼 \\(u\\) 就會是 AP。
+
+<img src="image/General AP Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+而對於一條邊 \\((u,v)\\)，如果滿足 \\(low(v) > depth(u)\\)，那麼 \\((u,v) \\) 就會是 Bridge
+
+<img src="image/General Bridge Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+我們現在的問題只剩下如何求出 \\(low(v) \\)。
+
+可以發現，對於一個點 \\(v \\)，如果我們知道他所有子節點的 \\(low \\) 的答案，那麼我們就可以簡單推出 \\(low(v) \\) 的答案，如下圖所示。而要達成這件事情，我們只需在 DFS 的時候用 post order 的順序計算 \\(low \\) 的答案就可以了！
+
+<img src="image/Compute Low.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+### Time Complexity
+同樣也是做完一次 DFS 之後就能得到答案，因此 Time Complexity 為 \\( O(V+E) \\)
+
+## code
+``` cpp
+void dfs(int u, int parent, int dep) {
+	
+	depth[u] = low[u] = dep;
+	int child = 0;
+	bool isAP = false; 
+	
+	for(auto &v : G[u]) {
+		if(v == parent) continue;
+		if(depth[v] == 0) {
+			child++;
+			dfs(v, u, dep+1);
+			low[u] = min(low[v], low[u]);
+			if(low[v] \geq depth[u]) isAP = true;
+			if(low[v] > depth[u]) Bridge.emplace_back(u,v);
+		} else {
+			low[u] = min(low[u], depth[v]);
+		}
+	}
+
+	if(u == parent && child < 2) isAP = false;
+	if(isAP) AP.emplace_back(u);	
+	
+}
+```
+
 ## Using DFS tree for Bridge/AP
 
 ### 觀察 for bridge
-
 我們觀察圖中那些邊絕對不可能是 bridge
 
 <img src="image/DFS Tree Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
@@ -159,8 +238,11 @@ void dfs(int u, int parent) {
 
 對於第二點，我們要檢查的其實就是**對於一棵子樹，有沒有 back edge 跨過 \\( v \\)**，如果沒有那 \\( v \\) 就會是 AP。
 
-而這個東西要計算的，其實就是 \\(v \\) 的子樹標記總和減去這顆子樹中在 \\( v \\) 結束的 back edge 數量。我們可以看下圖的例子，左邊的子樹總和為 1，而在 \\(v \\) 結束的 back edge 也為 1， 因此 1-1 = 0， \\( v \\) 為 AP。而在右邊則因為沒有 back edge 在 \\(v \\) 結束，因此 1-0 = 1，\\( v \\) 不是 
-AP 
+而這個東西要計算的其實就是：
+
+- \\(v \\) 的子樹標記總和減去這顆子樹在 \\( v \\) 結束的 back edge 數量。
+
+如下圖的例子，左邊的 \\( v \\) 為 AP，因為他的子樹標記總和為 1，在 \\( v \\) 結束的 back edge 數量也為 1。而右邊則否，因為他的子樹標記總和為 1，但沒有 back edge 在 \\( v \\) 結束。
 <img src="image/AP subtree sum.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 ### Time Complexity
@@ -177,9 +259,9 @@ void dfs(int now, int pa) {
 		if(e == pa) continue;
 		if(color[e] == 0) {
 			child++;
-			int backEdgeNum = backEdgeEnd[now];
+			int backEdgeEndNum = backEdgeEnd[now];
 			dfs(e, now);
-			if(sum[e] - (backEdgeEnd[now] - backEdgeNum) == 0) {
+			if(sum[e] - (backEdgeEnd[now] - backEdgeEndNum) == 0) {
 				isAP = true;;
 			}
 			sum[now]+=sum[e];
@@ -197,88 +279,6 @@ void dfs(int now, int pa) {
 
 ```
 
-
-## Tarjan's Algorithm for AP/Bridge
-接著我們要介紹 Tarjan 所提出的找 AP/Bridge 的演算法。同樣會用到 DFS tree。
-
-### 觀察 for AP
-我們觀察下圖中 \\( C \\) 點的左子樹。 你會發現當我們移除 \\( C \\) 點後， \\( C \\) 點的左子樹**就沒有路可以走到原本 \\( C \\) 點的祖先**，因此移除 \\( C \\) 點後會讓 \\( C \\) 點的左子樹跟 \\( C \\) 點的祖先處在不同的 Connected Component。
-
-<img src="image/Tarjan AP Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
-
-更一般的說，對於一個點 \\(v \\)，如果 \\(v \\) 的某一棵子樹無法在不經過 \\(v \\) 的情況下走到 \\(v \\) 的祖先，那麼 \\(v \\) 一定是 AP。
-
-<img src="image/General AP.JPG" width="400" style="display:block; margin: 0 auto;"/>
-
-但 root 是沒有祖先的，因此 root 我們要拉出來特別判斷。很明顯，當 root 有至少兩棵子樹的時候，root 一定會是 AP，否則就不是。
-<img src="image/Root AP Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
-
-### 觀察 for Bridge
-我們觀察下圖中 \\( (C,D) \\) 這條邊，當我們把這條邊拔掉後，以 \\(D \\) 為根的子樹**就沒有路可以走到 \\( C \\) 點**，因此移除 \\( (C,D) \\) 後會讓 \\( C \\) 跟 \\( D \\) 處在不同的 Connected Component。
-
-<img src="image/Tarjan Bridge Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
-
-更一般的說，令 \\(u \\) 是 \\( v \\) 的 parent，則對於一條邊 \\( (u,v) \\)，如果 \\( v \\) 的子樹都無法在不經過 \\( (u,v) \\) 的情況下走到 \\( u \\)，那麼 \\( (u,v) \\) 一定是 bridge。
-
-<img src="image/General Bridge.JPG" width="400" style="display:block; margin: 0 auto;"/>
-
-### 演算法
-現在我們來看看 Tarjan 是怎麼把這個東西做出來的。
-
-Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
-
-\\(depth(v) \\) 表示 \\( v \\) 這個點在 DFS tree 上的深度。
-<img src="image/Depth Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
-
-\\( low(v) \\) 表示 \\(v \\) 子樹中所有的點和這些點的鄰點，以及 \\( v \\) 本身的最淺深度。
-
-例如下圖的 \\( C \\) 點，本身的深度是 \\(3\\)，子樹中所有的點深度都 \\(>3\\)，而子樹中最淺的鄰點為 \\( B \\)  ( \\( L \\) 的鄰點)，深度為 \\(2\\)，因此 \\(low(C) = 2\\) 
-<img src="image/Low Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
-
-我們回想一下剛才的圖，發現對於一個點 \\(u \\)，如果他的某個子節點 \\(v \\) 滿足 \\(low(v) >= depth(u) \\)，那麼 \\(u\\)就會是 AP。
-
-<img src="image/General AP Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
-
-而對於一條邊 \\((u,v)\\)，如果滿足 \\(low(v) > depth(u)\\)，那麼 \\((u,v) \\) 就會是 Bridge
-
-<img src="image/General Bridge Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
-
-我們現在的問題只剩下如何求出 \\(low(v) \\)。
-
-可以發現，對於一個點 \\(v \\)，如果我們知道他所有子節點的 \\(low \\) 的答案，那麼我們就可以簡單推出 \\(low(v) \\) 的答案，如下圖所示。而要達成這件事情，我們只需在 DFS 的時候用 post order 的順序計算 \\(low \\) 的答案就可以了！
-
-<img src="image/Compute Low.JPG" width="400" style="display:block; margin: 0 auto;"/>
-
-### Time Complexity
-同樣也是做完一次 DFS 之後就能得到答案，因此 Time Complexity 為 \\( O(V+E) \\)
-
-## code
-``` cpp
-void dfs(int u, int parent, int dep) {
-	
-	depth[u] = low[u] = dep;
-	int child = 0;
-	bool isAP = false; 
-	
-	for(auto &v : G[u]) {
-		if(v == parent) continue;
-		if(depth[v] == 0) {
-			child++;
-			dfs(v, u, dep+1);
-			low[u] = min(low[v], low[u]);
-			if(low[v] >= depth[u]) isAP = true;
-			if(low[v] > depth[u]) Bridge.emplace_back(u,v);
-		} else {
-			low[u] = min(low[u], depth[v]);
-		}
-	}
-
-	if(u == parent && child < 2) isAP = false;
-	if(isAP) AP.emplace_back(u);	
-	
-}
-```
-
 ## BCC(Bi-connected Component)
 
 BCC 指的是沒有 AP 的 Connected Component，在中文常稱之為點雙連通分量。例如下圖中有三個 BCC
@@ -288,7 +288,7 @@ BCC 指的是沒有 AP 的 Connected Component，在中文常稱之為點雙連�
 而要找出圖上所有的 BCC，我們可以通過修改找 AP 的演算法來達成。
 
 ### 如何修改
-我們可以用 stack 紀錄首次遇到的邊。這樣當我們發現 \\(low(v) >= depth(u) \\) 時，stack 中 \\( (u,v) \\) 及它上面的邊就會位於同一個 BCC 中。就像是下圖 \\( (C,D) \\) 這條邊。
+我們可以用 stack 紀錄首次遇到的邊。這樣當我們發現 \\(low(v) \geq depth(u) \\) 時，stack 中 \\( (u,v) \\) 及它上面的邊就會位於同一個 BCC 中。就像是下圖 \\( (C,D) \\) 這條邊。
 <img src="image/BCC Algo explain.PNG" width="300" style="display:block; margin: 0 auto;"/>
 
 一個完整的例子如下
@@ -310,14 +310,13 @@ void dfs(int u, int parent, int dep) {
 		if(depth[v] == 0) {
 			dfs(v, u, dep+1);
 			low[u] = min(low[v], low[u]);
-			if(low[v] >= depth[u]) {
+			if(low[v] \geq depth[u]) {
+				edge x;
 				bcc.emplace_back({});
-				while(stk.top() != edge(u,v)) { 
-					bcc.back().emplace_back(stk.top());
-					stk.pop();
-				}
-				bcc.back().emplace_back(stk.top());
-				stk.pop();
+				do {
+					x = stk.top(); stk.pop();
+					bcc.back().emplace_back(x);
+				} while(x != edge(u,v));
 			}
 		} else {
 			low[u] = min(low[u], depth[v]);
@@ -326,13 +325,12 @@ void dfs(int u, int parent, int dep) {
 	
 	if(u == parent) {
 		while(!stk.empty()) {
+			edge x;
 			bcc.emplace_back({});
-			while(stk.top().first != 1) {
-				bcc.back().emplace_back(stk.top());
-				stk.pop();
-			}
-			bcc.back().emplace_back(stk.top());
-			stk.pop();
+			do {
+				x = stk.top(); stk.pop();
+				bcc.emplace_back(x);
+			} while(x.first != 1)
 		}
 	}
 }
@@ -357,7 +355,32 @@ BCC 指的是沒有 Bridge 的 Connected Component，在中文常稱之為邊雙
 
 ### code
 ```cpp
-wait
+
+void dfs(int u, int parent, int dep) {
+	
+	depth[u] = low[u] = dep;
+	stk.emplace(u);
+
+	for(auto &v : G[u]) {
+		if(v == parent) continue;
+		if(depth[v] == 0) {
+			dfs(v, u, dep+1);
+			low[u] = min(low[v], low[u]);
+		} else {
+			low[u] = min(low[u], depth[v]);
+		}
+	}
+	
+	if(low[u] == depth[u]) {
+		bcc.emplace_back({});
+		int x;
+		do {
+			x = stk.top(); stk.pop();
+			bcc.back().emplace_back(x);
+		} while(x != u);
+	}
+}
+
 ```
 
 ## Problems
@@ -389,7 +412,7 @@ Bridge 模板題
 
 >[Codeforces - Break Up](https://codeforces.com/problemset/problem/700/C)
 >
-> 給一張帶權無向圖與兩點 \\(S \\) , \\(T \\)，要你選至多兩條邊刪除後使\\(S \\) , \\(T \\)不連通。要求選的邊權重和最小。
+> 給一張帶權無向圖與兩點 \\(S \\) , \\(T \\)，要你選至多兩條邊刪除後使 \\(S \\) , \\(T \\) 不連通。要求選的邊權重和最小。
 
 >[Uva - Mining Your Own Business](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=246&page=show_problem&problem=3549)
 >
@@ -401,7 +424,12 @@ Bridge 模板題
 
 >[Codeforce - Simple Cycles Edges](https://codeforces.com/problemset/problem/962/F)
 >
+>給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，問那些邊剛好位於一個簡單環上。
+
+>[Codeforce - Two Fairs](https://codeforces.com/contest/1259/problem/E)
 >
+>給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖及兩個點 \\(a, b\\) ，問有幾對 \\( (x,y) \\) 滿足由 \\(x \\) 到 \\( y \\) 的路徑上一定會經過
+>\\(a, b\\) 這兩個點。其中 \\( x \neq a,b\\)  且  \\(y \neq a,b \\)。
 
 
 ## Reference
