@@ -129,6 +129,30 @@ int main() {
 >
 > 一張圖的直徑(diameter)為圖中任兩點距離中最長的；[^note-1]圓心(center)則為使一個點與其它點最遠的距離最小的點。[^note-2]對於樹，以圓心為樹根，則樹高會最小。[^note-3]給定一棵\\(n\\)個點的樹，請在\\(\Theta(n)\\)的時間內，找出這棵樹的直徑（長度）以及一個圓心。
 
+先討論如何求出直徑。首先，樹上任兩點之間存在唯一一條簡單路徑，而它們的距離就是這條路徑的長度。所以，樹上的直徑就是所有簡單路徑中，最長的那條的長度。  
+（有時候直徑也代表那條路徑。[^note-4]筆者認為，這跟圓上的直徑，同時代表一個線段以及該線段的長度，有異曲同工之妙。）
+
+定根之後，可以簡單把樹上的路徑分為兩種：通過或不通過根的。顯然，通過根的路徑，只能在根的地方分析；稍後再討論如何處理。
+
+那不通過根的呢？一樣可以直接遞迴到子樹求得嗎？  
+既然不通過根，不妨直接把根（與所有與根相連的邊）拿走。  
+![](diameter_example_path_1.png)![](diameter_example_path_1_noroot.png)![](diameter_example_path_2.png)![](diameter_example_path_2_noroot.png)  
+剩餘的圖仍然是一棵一棵子樹，但是剛剛的路徑並沒有被破壞，因為它不通過根與那些與根相連的邊。所以，這條路徑一定在剩餘圖的一個連通塊中，也就是一棵子樹。
+
+確認完這個事實之後，接著就要分析那些會通過根的路徑。同樣地，通過根的路徑可以分成三種：起點與終點都在根節點、恰有一端點在根節點、根節點不在路徑端點（而在路途中）。  
+![](diameter_example_path_3.png)![](diameter_example_path_4.png)![](diameter_example_path_5.png)
+
+第一種路徑，長度顯然是零，以本題而言基本上不用多加考慮。  
+對於第二種路徑，假設由根出發，第一個經過的節點是\\(v\\)，那麼這條路徑可以分解成「根與\\(v\\)之間的邊」以及「在以\\(v\\)為根的子樹中，以\\(v\\)為一端點的路徑」。至於為什麼後面那條路徑一定完全落在以\\(v\\)為根的子樹中，其實道理跟「完全不通過根的路徑，恰好位於其中一棵子樹中」是一樣的。  
+![](diameter_example_path_4_decomposition.png)  
+對於第三種路徑，從根的位置將這種路徑一分為二，就變成兩條第二種路徑。  
+要注意的是，這兩條路徑不能通過根的同一個小孩：  
+![](diameter_example_path_6-1.png)![](diameter_example_path_6-2.png)![](diameter_example_path_6.png)
+
+最後是圓心的部分。我們需要用到一個性質：樹的圓心一定位於直徑的中點。（如果直徑的長度為奇數，那麼圓心就有兩個。）
+
+（註：一般圖的圓心，不一定在任意一條直徑上面！反例請見[^note-4]與[^note-5]。）
+
 ### Exercises
 
 > [AtCoder Educational DP Contest P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
@@ -138,6 +162,22 @@ int main() {
 > [CSES - Finding a Centroid](https://cses.fi/problemset/task/2079)
 >
 > 給定一棵\\(n\\)個點的樹，找出這棵樹的一個重心。重心的定義是：如果把重心定為根，那麼每個子樹最多有\\(\lfloor\frac n2\rfloor\\)個點（不包含根在重心的那棵子樹）。
+
+### Non-Classic Examples
+
+> [CF 1083A - The Fair Nut and the Best Path](https://codeforces.com/problemset/problem/1083/A)
+>
+> 給定一棵樹，每個節點有一些汽油，通過每條邊則需要消耗一些汽油。假設你的汽車原來沒有任何汽油，請選擇一個起點（沒錯，起點是可以任選的）以及一個終點，使得你的汽車在終點處的剩餘汽油量最大。當然，你的汽車不能在半路上用光汽油。此外。終點處的汽油也要加進你的油箱。
+
+> [ARC 112C - DFS Game](https://atcoder.jp/contests/arc112/tasks/arc112_c)
+>
+> 給定一棵有根樹，每個點都有一塊錢，而一開始在根節點有一顆跳棋。在這棵樹上玩一個雙人遊戲，每一步可進行的操作如下：
+> * 如果跳棋所在節點有一塊錢，把它拿走並結束這回合。
+> * 如果沒有，就把跳棋跳到任意一個有一塊錢的小孩，並結束這回合。
+> * 如果還是沒有，就把跳棋跳到父節點，並結束這回合。
+> * 如果還是沒有，那麼跳棋已經回到根節點了，遊戲結束。
+>
+> 請計算先手最後會拿到多少錢。
 
 ## DP on Trees with Rerooting
 
@@ -243,6 +283,10 @@ int main() {
 
 ### Exercises
 
+> [AtCoder Educational DP Contest V - Subtree](https://atcoder.jp/contests/dp/tasks/dp_v)
+>
+> 給定一棵樹，每個點可以是白色或黑色，但是黑色的點必須連通（意即：任兩個黑色點之間的路徑不能有白色點）。對於每個點\\(v\\)，如果把\\(v\\)塗成黑色，請計算有幾種合法的塗色方法（除以\\(M\\)的餘數）。
+
 > [CF 1805D - A Wide, Wide Graph](https://codeforces.com/problemset/problem/1805/D)
 >
 > 給定一棵\\(n\\)個點的樹\\(T\\)，定義\\(G_k\\)為一張\\(n\\)個點的圖，其中任兩點之間有邊若且唯若它們在\\(T\\)中的距離\\(\geq k\\)。對於所有\\(k\in[1,n]\\)，計算\\(G_k\\)有幾個連通塊。
@@ -258,3 +302,7 @@ int main() {
 [^note-2]: [Graph Center -- from Wolfram MathWorld](https://mathworld.wolfram.com/GraphCenter.html)
 
 [^note-3]: [3. 圖論 - 2017建中校內培訓講義](https://tioj.ck.tp.edu.tw/uploads/attachment/11/42/3.pdf)
+
+[^note-4]: Bang Ye Wu and Kun-Mao Chao.  *Spanning Trees and Optimization Problems*, 154-155.  Chapman & Hall/CRC, 2004.
+
+[^note-5]: Kun-Mao Chao. [Slides](https://www.csie.ntu.edu.tw/~kmchao/tree21spr/a_note_for_tree_diameter.pdf) on the eccentricities, diameters, and radii, (4)-1. Special topics on graph algorithms, spring semester, 2021.
