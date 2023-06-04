@@ -10,7 +10,7 @@
 
 ### Connected(連通)
 
-我們說兩個點 A, B connected，表示 A, B之間存在一條 path。如下圖例子中，A 跟 B connected，但 A 跟 C 不 connected
+我們說兩個點 A, B connected，表示 A, B 之間存在一條 path。如下圖例子中，A 跟 B connected，但 A 跟 C 不 connected
 <img src="image/Connected.JPG" width="500" style="display:block; margin: 0 auto;"/>
 
 ### Connected Component(連通分量)
@@ -138,7 +138,7 @@ Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
 
 \\( low(v) \\) 表示 \\(v \\) 子樹中所有的點和這些點的鄰點，以及 \\( v \\) 本身的最淺深度。
 
-例如下圖的 \\( C \\) 點，本身的深度是 \\(3\\)，子樹中所有的點深度都 \\(>3\\)，而子樹中最淺的鄰點為 \\( B \\)  ( \\( L \\) 的鄰點)，深度為 \\(2\\)，因此 \\(low(C) = 2\\)
+例如下圖的 \\( C \\) 點，本身的深度是 \\(3\\)，子樹中所有的點深度都 \\(>3\\)，而子樹中最淺的鄰點為 \\( B \\)( \\( L \\) 的鄰點)，深度為 \\(2\\)，因此 \\(low(C) = 2\\)
 <img src="image/Low Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 我們回想一下剛才的圖，發現對於一個點 \\(u \\)，如果他的某個子節點 \\(v \\) 滿足 \\(low(v) \geq depth(u) \\)，那麼 \\(u\\) 就會是 AP。
@@ -201,7 +201,7 @@ void dfs(int u, int parent, int dep) {
 
 ### 快速標記
 
-這個問題我們可以用前綴和的想法來解決。當我們遇到一條 back edge \\( (u,v) \\) 時，就在 \\(u \\) 上 +1， 在 \\( v \\) 上 -1。 **這代表說有一條 back edge 從 \\(u \\) 開始，在 \\( v \\) 結束**。
+這個問題我們可以用前綴和的想法來解決。當我們遇到一條 back edge \\( (u,v) \\) 時，就在 \\(u \\) 上 +1，在 \\( v \\) 上 -1。 **這代表說有一條 back edge 從 \\(u \\) 開始，在 \\( v \\) 結束**。
 
 <img src="image/prefix 1.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
@@ -363,7 +363,7 @@ void dfs(int u, int parent, int dep) {
 BCC 指的是沒有 Bridge 的 Connected Component，在中文常稱之為邊雙連通分量、橋連通分量。例如下圖我們能找到兩個 BCC
 <img src="image/Bridge Connected Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
-不同的BCC沒有交集。而要找出圖上所有的 BCC，我們可以通過修改找 Bridge 的算法來達成
+不同的 BCC 沒有交集。而要找出圖上所有的 BCC，我們可以通過修改找 Bridge 的算法來達成
 
 ### 如何修改
 
@@ -477,7 +477,7 @@ still working
 >[Codeforce - Two Fairs](https://codeforces.com/contest/1259/problem/E)
 >
 >給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖及兩個點 \\(a, b\\) ，問有幾對 \\( (x,y) \\) 滿足由 \\(x \\) 到 \\( y \\) 的路徑上一定會經過
->\\(a, b\\) 這兩個點。其中 \\( x \neq a,b\\)  且  \\(y \neq a,b \\)。
+>\\(a, b\\) 這兩個點。其中 \\( x \neq a,b\\) 且 \\(y \neq a,b \\)。
 
 <details><summary> Solution </summary>
 
