@@ -28,7 +28,9 @@
 
 此外，考慮一個 permutation 的柯西表示法，如 \\(\left(\begin{array}{ccccc}1&2&3&4&5\\\\3&1&5&4&2\end{array}\right)\\), 則其對應的 _arrow diagram_ 的交點數量就是（最多；或是我們把 \\(n\\) 點共線算成 \\(n-1\\) 個交點）逆序對數量。（另外，選最多線而不相交則是 LIS 長度）
 
-tktk: Add a figure
+![](perm.png)
+
+由上圖我們可以知道，permutation \\(\left(\begin{array}{ccccc}1&6&2&3&5&4\end{array}\right)\\) 有 5 個逆序對（，而其 LIS 長度為 4）。
 
 #### Kendall's \\(\tau\\) Distance
 
