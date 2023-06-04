@@ -24,11 +24,11 @@ Connected Component 是點的集合，滿足以下條件
 
 <img src="image/Connected_Component.JPG" width="500" style="display:block; margin: 0 auto;"/>
 
-### DFS tree on undirected graph
+## DFS tree on undirected graph
 
-我們先介紹無向圖上的 DFS tree。 DFS tree 就如同他的名字，是一棵根據 DFS 的過程長出的 tree。
+DFS tree 就如同他的名字，是一棵根據 DFS 的過程長出的 tree，由於其良好的性質，在處理圖相關的問題時是很有用的工具。
 
-考慮以下 DFS 的走訪，那些直接走訪的邊被稱為 tree edge，而其他的邊被稱為 back edge。(在有向圖上的 DFS tree 還會有其他種類的邊，這部分留給讀者自行學習)
+考慮以下 DFS 的走訪，那些直接走訪的邊被稱為 tree edge，而其他的邊被稱為 back edge。
 
 ```cpp
 void DFS(int u) {
@@ -47,7 +47,7 @@ void DFS(int u) {
 
 <img src="image/DFS Tree.gif" width="400" style="display:block; margin: 0 auto;"/>
 
-如果把上圖畫成 DFS tree 就會長成這樣：
+如果把上圖畫成 DFS tree 就會長成如下圖這樣。我們發現在 DFS tree 上，**一個點可以通過 back edge，回到他的祖先**。
 
 <img src="image/DFS Tree.JPG" width="200" style="display:block; margin: 0 auto;"/>
 
@@ -106,7 +106,7 @@ Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Compon
 
 ### 觀察 for AP
 
-我們觀察下圖中 \\( C \\) 點的左子樹。 你會發現當我們移除 \\( C \\) 點後， \\( C \\) 點的左子樹**就沒有路可以走到原本 \\( C \\) 點的祖先**，因此移除 \\( C \\) 點後會讓 \\( C \\) 點的左子樹跟 \\( C \\) 點的祖先處在不同的 Connected Component。
+我們觀察下圖中 \\( C \\) 點的左子樹。你會發現這棵子樹一定要通過 \\( C \\) 點才能走到 \\( C \\) 點的祖先，所以理所當然的，當我們將 \\( C \\) 點移除，整張圖就會斷成兩個 Connected Component。而 \\( C \\) 點就會是 AP。
 
 <img src="image/Tarjan AP Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
@@ -119,7 +119,7 @@ Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Compon
 
 ### 觀察 for Bridge
 
-我們觀察下圖中 \\( (C,D) \\) 這條邊，當我們把這條邊拔掉後，以 \\(D \\) 為根的子樹**就沒有路可以走到 \\( C \\) 點**，因此移除 \\( (C,D) \\) 後會讓 \\( C \\) 跟 \\( D \\) 處在不同的 Connected Component。
+與 AP 的觀察相似。我們觀察下圖中 \\( (C,D) \\) 這條邊，你會發現以 \\( D \\) 為根的子樹一定要通過這條邊才能回到 \\( C \\) 點。所以理所當然的，當我們將 \\( (C,D) \\) 移除，整張圖就會斷成兩個 Connected Component。而 \\( (C,D) \\) 就會是 bridge。
 
 <img src="image/Tarjan Bridge Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
@@ -182,8 +182,7 @@ void dfs(int u, int parent, int dep) {
     }
 
     if(u == parent && child < 2) isAP = false;
-    if(isAP) AP.emplace_back(u);    
-    
+    if(isAP) AP.emplace_back(u);
 }
 ```
 
@@ -258,7 +257,7 @@ void dfs(int u, int parent) {
 
 - \\(v \\) 的子樹標記總和減去這顆子樹在 \\( v \\) 結束的 back edge 數量。
 
-如下圖的例子，左邊的 \\( v \\) 為 AP，因為他的子樹標記總和為 1，在 \\( v \\) 結束的 back edge 數量也為 1。而右邊則否，因為他的子樹標記總和為 1，但沒有 back edge 在 \\( v \\) 結束。
+為甚麼？因為子樹的標記總和相當於是：這棵子樹有多少條 back edge 還沒結束。像下圖的兩個例子中，子樹標記總和都為 1。而如果這些 back edge 都在 \\(v\\) 結束，那麼這棵子樹顯然一定要通過 \\(v\\) 才能回到 \\(v\\) 的祖先，如下圖左例，那麼 \\( v \\) 就一定會是 AP 了。
 
 <img src="image/AP subtree sum.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
@@ -269,31 +268,31 @@ void dfs(int u, int parent) {
 ### Code
 
 ```cpp
-void dfs(int now, int pa) {
-    color[now] = 1;
+void dfs(int u, int parent) {
+    color[u] = 1;
     bool isAP = false;
     int child = 0;
 
-    for(auto &e : G[now]) {
-        if(e == pa) continue;
-        if(color[e] == 0) {
+    for(auto &v : G[u]) {
+        if(v == parent) continue;
+        if(color[v] == 0) {
             child++;
-            int backEdgeEndNum = backEdgeEnd[now];
-            dfs(e, now);
-            if(sum[e] - (backEdgeEnd[now] - backEdgeEndNum) == 0) {
+            int backEdgeEndNum = backEdgeEnd[u];
+            dfs(v, u);
+            if(sum[v] - (backEdgeEnd[u] - backEdgeEndNum) == 0) {
                 isAP = true;;
             }
-            sum[now]+=sum[e];
-        } else if(color[e] == 1) {
-            sum[now]+=1;
-            backEdgeEnd[e]+=1; 
+            sum[u]+=sum[v];
+        } else if(color[v] == 1) {
+            sum[u]+=1;
+            backEdgeEnd[v]+=1; 
         }
     }
-    sum[now] -= backEdgeEnd[now];
-    color[now] = 2;
+    sum[u] -= backEdgeEnd[u];
+    color[u] = 2;
     
-    if(now == pa && child == 1) isAP = false;
-    if(isAP) AP.emplace_back(now);
+    if(u == parent && child == 1) isAP = false;
+    if(isAP) AP.emplace_back(u);
 }
 
 ```
@@ -368,7 +367,7 @@ BCC 指的是沒有 Bridge 的 Connected Component，在中文常稱之為邊雙
 
 ### 如何修改
 
-跟找 Bi-connected Component 的想法很像。我們用 stack 紀錄走過的點，當我們發現 \\(low(u) == depth(u) \\) 時，我們就發現了橋的下端點。而 stack 中 \\(u \\) 和他上面的點就會位於同一個 BCC。就像下圖 \\( D \\) 這個點。
+跟找 Bi-connected Component 的想法很像。我們用 stack 紀錄走過的點，當我們發現 \\(low(u) == depth(u) \\) 時，我們就發現了橋的下端點。而 stack 中 \\(u \\) 和他上面的點就會位於同一個 BCC。就像下圖 \\( D \\) 這個點，他是 \\( (C,D) \\) 這條 bridge 的下端點。
 <img src="image/BCC Algo explain 2.PNG" width="300" style="display:block; margin: 0 auto;"/>
 
 一個完整的例子如下
