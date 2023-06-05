@@ -251,6 +251,8 @@ int64_t inversions(const vector<int> &v)
 
 ## References
 
+- Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein. 2022. Introduction to Algorithms, Third Edition (4th. ed.). The MIT Press.
+- Donald E. Knuth. 1998. The art of computer programming, volume 3: (2nd ed.) sorting and searching. Addison Wesley Longman Publishing Co., Inc., USA.
 - Maurice G. Kendall. 1938. A new measure of rank correlation. Biometrika 30, 1–2, 81–93.
 - Derrick H. Lehmer. 1960. Teaching combinatorial tricks to a computer. Combinatorial Analysis, 179–193.
 - Paul F. Dietz. 1989. Optimal Algorithms for List Indexing and Subset Rank. In Proceedings of the Workshop on Algorithms and Data Structures (WADS '89). Springer-Verlag, Berlin, Heidelberg, 39–46.
