@@ -135,7 +135,7 @@ for (int i = 1, r = 0; i <= n; i = r + 1) {
 &= S_f\times\left(S_g\left( \left\lfloor\frac{n}{\left\lfloor\frac{n}{i}\right\rfloor}\right\rfloor \right) - S_g(i - 1)\right)
 \end{align}
 
-可以將 \\( f \\) 、\\( g \\) 的前綴和進行預處理，這樣就能夠在 \\( \mathcal{O}(1) \\) 的時間內得到 \\( S_f \\) 和 \\( S_g \\) 了。
+可以將 \\( f \\)、\\( g \\) 的前綴和進行預處理，這樣就能夠在 \\( \mathcal{O}(1) \\) 的時間內得到 \\( S_f \\) 和 \\( S_g \\) 了。
 
 因此捲積的前綴和就能夠利用數論分塊的方法在 \\( \mathcal{O}(\sqrt{n}) \\) 的時間內算出。
 
