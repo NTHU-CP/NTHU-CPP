@@ -224,7 +224,7 @@ int64_t inversions(const vector<int> &v)
 ### 競賽實戰題
 
 - [2021 ICPC Asia TOPC C. A Sorting Problem](https://codeforces.com/gym/103373/problem/C)
-  - tktk: Maybe add some proof
+  - 題目給的是 permutation 中每個元素的 index, 如果我們將元素們與 indexes 互換，則原本的操作就變為 swap 相鄰的元素。於是，題目所求的最小數量即相當於 bubble sort swap 數，也就是逆序對數量
 - [2022 ICPC Asia Taoyuan Regional C. Distance Calculator](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/view.php?id=65292)
   > Wonder kingdom has \\(n!\\) cities. Each city is encoded with \\(n\\) number \\(d_1d_2\dots d_n\\) which is a permutation of \\(1 2\dots n\\). The castle of Wonder kingdom is located in the city encoded as \\(1 2\dots n\\). Let \\(a_1a_2\dots a_n\\) and \\(b_1b_2\dots b_n\\) be the codes of cities A and B, respectively. A road with distance one is built between cities A and B in the kingdom if and only if there exists an \\(i,1\leq i<n\\), such that the following two conditions are satisfied.
   >
