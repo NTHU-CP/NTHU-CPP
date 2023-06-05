@@ -232,7 +232,9 @@ int64_t inversions(const vector<int> &v)
   > 2. \\(a_j=b_j\forall j\in\\{1,2,\dots,n\\}\setminus\\{i,i+1\\}\\).
   >
   > One day the king invites all mayors for a meeting in the castle. Please help mayors calculate their travel distance to the castle. Notice that the city of the castle is encoded with \\(1 2 3\dots n\\).
+  >
   > #### Constraints
+  >
   > - \\(1\leq m\leq50\\)
   > - \\(1\leq n\leq100\\)
 
