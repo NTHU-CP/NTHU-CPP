@@ -30,7 +30,7 @@
 
 ![](perm.png)
 
-由上圖我們可以知道，permutation \\(\left(\begin{array}{ccccc}1&6&2&3&5&4\end{array}\right)\\) 有 5 個逆序對（，而其 LIS 長度為 4）。
+由上圖我們可以知道，permutation \\(\left(\begin{array}{cccccc}1&6&2&3&5&4\end{array}\right)\\) 有 5 個逆序對（而其 LIS 長度為 4）。
 
 #### Kendall's \\(\tau\\) Distance
 
@@ -79,7 +79,7 @@ Kendall's \\(\tau\\) distance 的一個重點是其代表兩個 permutations 需
 
 如何高效地計算逆序對的數量呢？逆序對與排序的關係密不可分、千絲萬縷，因此我們想到分治法是個好策略。一個逆序對不是皆在序列的中點的同側，就是跨越中點。對於皆在中點左或右側的逆序對，我們可以遞迴求出該數量。至於跨越中點的逆序對，我們發現在 merge sort 合併的過程，如果左側有一元素 \\(l_i\\) 大於右側某一元素 \\(r_j\\), 則我們知道左側任何大於 \\(l_i\\) 的元素亦都可以對 \\(r_j\\) 形成逆序對；換句話說，\\(r_j\\) 將貢獻 \\(|l|-i+1\\) _(1-indexed)_ 個逆序對。據此，我們就可以在 \\(O(n\log n)\\) 的時間內計算逆序對的數量了。
 
-tktk: Add example
+舉例來說，對於 permutation \\(\left(\begin{array}{ccccc}1&6&2&3&5&4\end{array}\right)\\), 假設我們已經將左右兩半 \\(\left(\begin{array}{ccc}1&6&2\end{array}\right),\left(\begin{array}{ccc}3&5&4\end{array}\right)\\) 分別排序得 \\(\left(\begin{array}{ccc}1&2&6\end{array}\right),\left(\begin{array}{ccc}3&4&5\end{array}\right)\\) 並計算出逆序對數量各有 \\(1\\), 最終合併時可以發現左側 \\(1,2\\) 不能造成任何逆序對而 \\(6\\) 可以形成 \\(3\\) 個，因此原 permutation 一共有 \\(5\\) 個逆序對。
 
 ```cpp
 int64_t merge_sort_inversions(vector<int>::iterator begin, vector<int>::iterator end)
