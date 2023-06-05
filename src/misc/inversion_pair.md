@@ -10,7 +10,7 @@
 
 ---
 
-假若我們嘗試從另一個角度切入，則逆序對本質上可以被當成長度恰好為 \\(2\\)（最短）的遞減子序列 _(decreasing subsequence)_. 因此，不意外地，我們可以發現有些最長遞增子序列 _(longest increasing subsequence, LIS)_ 的題目能夠與逆序對相互闡釋、啟發。
+假若我們嘗試從另一個角度切入，則逆序對本質上可以被當成長度恰好為 \\(2\\)（最短）的遞減子序列 _(decreasing subsequence)_. 因此，不意外地，我們可以發現有些最長遞增子序列 _(longest increasing subsequence, LIS)_ 的題目能夠與逆序對相互闡釋、啟發，可謂一體兩面。
 
 ## 逆序對數量
 
@@ -215,17 +215,17 @@ int64_t inversions(const vector<int> &v)
 
 - [Codeforces Round 790 (Div. 4) H1. Maximum Crossings (Easy Version)](https://codeforces.com/contest/1676/problem/H1), [Codeforces Round 790 (Div. 4) H2. Maximum Crossings (Hard Version)](https://codeforces.com/contest/1676/problem/H2)
 
-以上這題與前揭 arrow diagram of permutation 的 crossings 相關。而下面這題非常相關，但考的則是 LIS 而且又更變化而難不少。
+以上這題與前揭 arrow diagram of permutation 的 crossings 相關。而下面這題可以說是非常相似，但考的則是 LIS 而且又更變化而難不少。
 
 - [2021 TOI 1! 入營考 C. 粉刷護欄](https://tioj.ck.tp.edu.tw/problems/2195)
 
-其實 NCPC 2021 Final 也有一題 LIS
+其實 NCPC 2021 Final 也有一題 [LIS](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/view.php?id=60575).
 
 ### 競賽實戰題
 
 - [2021 ICPC Asia TOPC C. A Sorting Problem](https://codeforces.com/gym/103373/problem/C)
   - tktk: Maybe add some proof
-- 2022 ICPC Asia Taoyuan Regional C. Distance Calculator _(No OJ)_
+- [2022 ICPC Asia Taoyuan Regional C. Distance Calculator](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/view.php?id=65292)
   > Wonder kingdom has \\(n!\\) cities. Each city is encoded with \\(n\\) number \\(d_1d_2\dots d_n\\) which is a permutation of \\(1 2\dots n\\). The castle of Wonder kingdom is located in the city encoded as \\(1 2\dots n\\). Let \\(a_1a_2\dots a_n\\) and \\(b_1b_2\dots b_n\\) be the codes of cities A and B, respectively. A road with distance one is built between cities A and B in the kingdom if and only if there exists an \\(i,1\leq i<n\\), such that the following two conditions are satisfied.
   >
   > 1. \\(a_i=b_i+1\\) and \\(b_i=a_i+1\\);
