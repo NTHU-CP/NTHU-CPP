@@ -14,7 +14,6 @@ EGF 的定義與 OGF 類似，只是每一項多除以 \\( i! \\)，也就是 \\
 
 在計算時，我們會希望能夠化簡為容易觀察係數的多項式。常見的生成函數有：
 
-
 1. \\( \frac{1}{1 - x} = \sum_{k = 0}^{\infty} x^k \\)，在 OGF 中 \\( a_k = 1 \\)，等比級數的公式
 2. \\( (1 + x)^n = \sum_{k = 0}^n \binom{n}{k} x^k \\)，在 OGF 中 \\( a_k = \binom{n}{k} \\)，二項式定理
 3. \\( \frac{1}{(1 - x)^k} = \sum_{n = 0}^{\infty} \binom{n + k - 1}{k - 1} x^n = \sum_{n = 0}^{\infty} \binom{n + k - 1}{n} x^n \\)，\\( a_k = \binom{n + k - 1}{k - 1} = \binom{n + k - 1}{n} \\)
@@ -187,6 +186,7 @@ g &= \sum_{n \geq 0} \frac{(n + 1)!}{(n + 1 - k)!} x^n \\\\
 > [CF 438E - The Child and Binary Tree](https://codeforces.com/problemset/problem/438/E)
 >
 > 對於 \\( S = 1, \dots, m \\)，求點權和為 \\( S \\)，且所有點權 \\( \in C \\) 的二元樹數量 \\( \bmod 998244353 \\)。
+> 
 > - \\( 1 \leq m \leq 10^5 \\)
 > - \\( 1 \leq c_i \leq 10^5 \\)
 
@@ -239,6 +239,7 @@ F(x) = (1 + x + x^2 + \cdots)(1 + x^5 + x^{10} + \cdots)(1 + x^{10} + x^{20} + \
 > [ABC303 Ex - Constrained Tree Degree](https://atcoder.jp/contests/abc303/tasks/abc303_h)
 >
 > 給定正整數 \\( N \\) 和集合 \\( S \\)，求 \\( N \\) 個節點且每個節點的 degree \\( \in S \\) 的樹數量 \\( \bmod 998244353 \\)。
+> 
 > - \\( 2 \leq N \leq 2 \cdot 10^5 \\)
 > - \\( 1 \leq s_1 < s_2 < \dots < s_{p} < N - 1 \\)
 
