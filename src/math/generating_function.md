@@ -186,7 +186,7 @@ g &= \sum_{n \geq 0} \frac{(n + 1)!}{(n + 1 - k)!} x^n \\\\
 > [CF 438E - The Child and Binary Tree](https://codeforces.com/problemset/problem/438/E)
 >
 > 對於 \\( S = 1, \dots, m \\)，求點權和為 \\( S \\)，且所有點權 \\( \in C \\) 的二元樹數量 \\( \bmod 998244353 \\)。
-> 
+>
 > - \\( 1 \leq m \leq 10^5 \\)
 > - \\( 1 \leq c_i \leq 10^5 \\)
 
@@ -239,7 +239,7 @@ F(x) = (1 + x + x^2 + \cdots)(1 + x^5 + x^{10} + \cdots)(1 + x^{10} + x^{20} + \
 > [ABC303 Ex - Constrained Tree Degree](https://atcoder.jp/contests/abc303/tasks/abc303_h)
 >
 > 給定正整數 \\( N \\) 和集合 \\( S \\)，求 \\( N \\) 個節點且每個節點的 degree \\( \in S \\) 的樹數量 \\( \bmod 998244353 \\)。
-> 
+>
 > - \\( 2 \leq N \leq 2 \cdot 10^5 \\)
 > - \\( 1 \leq s_1 < s_2 < \dots < s_{p} < N - 1 \\)
 
