@@ -286,10 +286,10 @@ f(n - 1, k) + f(n - 1, k - 1), n, k \geq 1 \\\\
 經過一些化簡後得到 \\( f(n, k) \\) 的 OGF 為 \\( F(x, y) = \frac{1}{1 - x - xy} \\)。我們可以觀察 OGF 在單一變數的變化。比如固定 \\( n \\)，也就是求 \\( f_n(k) = \binom{n}{k} \\) 的 OGF，就會是
 
 \begin{aligned}
-f_n(k) &= [x^n]F(x, y) \\\\
-&= [x^n]\frac{1}{1 - x - xy} \\\\
-&= [x^n]\frac{1}{1 - x(1 + y)} \\\\
-&= [x^n]\sum_{n = 0}^{\infty} (1 + y)^n x^n \\\\
+f_n(k) &= [x^n] F(x, y) \\\\
+&= [x^n] \frac{1}{1 - x - xy} \\\\
+&= [x^n] \frac{1}{1 - x(1 + y)} \\\\
+&= [x^n] \sum_{n = 0}^{\infty} (1 + y)^n x^n \\\\
 &= (1 + y)^n \\\\
 &= \sum_{k = 0}^n \binom{n}{k} y^k
 \end{aligned}
@@ -299,23 +299,23 @@ f_n(k) &= [x^n]F(x, y) \\\\
 再比方說固定 \\( k \\)，也就是求 \\( f_k(n) = \binom{n}{k} \\) 的 OGF，可以列出
 
 \begin{aligned}
-f_k(n) &= [y^k]F(x, y) \\\\
-&= [y^k]\frac{1}{1 - x - xy} \\\\
-&= [y^k]\frac{1}{(1 - x) - xy} \\\\
-&= [y^k]\frac{\frac{1}{1 - x}}{1 - \frac{xy}{1 - x}} \\\\
-&= [y^k]\frac{1}{1 - x} \sum_{k = 0}^{\infty} (\frac{x}{1 - x})^k y^k \\\\
+f_k(n) &= [y^k] F(x, y) \\\\
+&= [y^k] \frac{1}{1 - x - xy} \\\\
+&= [y^k] \frac{1}{(1 - x) - xy} \\\\
+&= [y^k] \frac{\frac{1}{1 - x}}{1 - \frac{xy}{1 - x}} \\\\
+&= [y^k] \frac{1}{1 - x} \sum_{k = 0}^{\infty} (\frac{x}{1 - x})^k y^k \\\\
 &= \frac{x^k}{(1 - x)^{k + 1}}
 \end{aligned}
 
 我們可以從 \\( f_k(n) \\) 的 OGF 得到一些性質，因為
 
 \begin{aligned}
-\binom{n}{k} &= [x^n][y^k]F(x, y) \\\\
-&= [x^n]\frac{x^k}{(1 - x)^{k + 1}} \\\\
-&= [x^{n - k}]\frac{1}{(1 - x)^{k + 1}}
+\binom{n}{k} &= [x^n] [y^k] F(x, y) \\\\
+&= [x^n] \frac{x^k}{(1 - x)^{k + 1}} \\\\
+&= [x^{n - k}] \frac{1}{(1 - x)^{k + 1}}
 \end{aligned}
 
-因此，\\( \binom{n + k - 1}{k - 1} = [x^n]\frac{1}{(1 - x)^k} \\)。
+因此，\\( \binom{n + k - 1}{k - 1} = [x^n] \frac{1}{(1 - x)^k} \\)。
 
 ## References
 
