@@ -27,14 +27,9 @@
   
   * 剩餘網路(Residual Network)： 為由所有弧、其反向邊、不存在的邊，以及所有原本的點所組成的網路流圖，以定義來看的話，有以下關係。
   
-      \\( \left\{ 
-        \begin{array}{c}
-        c_f(u, v) = c(u, v) - f(u, v)\ \ \  u, v \in G\\ 
-        c_f(v, u) = f(u, v) \qquad \qquad \quad u, v \in G\\ 
-        c_f = 0 \qquad \qquad \qquad \ \ otherwise
-        \end{array}
-        \right.
-      \\)
+    * \\(c_f(u, v) = c(u, v) - f(u, v)\ \ \  u, v \in G\\ \\)
+    * \\(c_f(v, u) = f(u, v) \qquad \qquad \quad u, v \in G\\ \\)
+    * \\(c_f = 0 \qquad \qquad \qquad \ \ otherwise\\)
 
   * 割(Cut)：
     * 割將網路流圖切分成兩集合 \\(S, T\\) ，其中 \\(S \cap T = \emptyset\\) 且 \\(S \cup T = G\\) ，其中 \\(s \in S\\) ， \\(t \in T\\) 。 
@@ -78,7 +73,7 @@
         <details>
         <summary> 點擊展開圖片 </summary>
     
-        ![](https://hackmd.io/_uploads/S17xzYhB2.jpg)
+        ![](images/FF_image_1.jpg)
 
         </details>
     
@@ -87,7 +82,7 @@
         <details>
         <summary> 點擊展開圖片 </summary>
 
-        ![](https://hackmd.io/_uploads/rJb-ztnSn.jpg)
+        ![](images/FF_image_2.jpg)
 
         </details>
     
@@ -96,7 +91,7 @@
         <details>
         <summary> 點擊展開圖片 </summary>
 
-        ![](https://hackmd.io/_uploads/B18ZGt3B2.jpg)
+        ![](images/FF_image_3.jpg)
 
         </details>
     
@@ -107,7 +102,7 @@
         <details>
         <summary> 點擊展開圖片 </summary>
 
-        ![](https://hackmd.io/_uploads/SJpNMt2rn.jpg)
+        ![](images/FF_image_4.jpg)
 
         </details>
 
@@ -116,7 +111,7 @@
         <details>
         <summary> 點擊展開圖片 </summary>
 
-        ![](https://hackmd.io/_uploads/B1HKGKnH2.jpg)
+        ![](images/FF_image_5.jpg)
 
         </details>
         
@@ -125,14 +120,14 @@
         <details>
         <summary> 最大流為2的圖一 </summary>
 
-        ![](https://hackmd.io/_uploads/HyCkwqnrn.jpg)
+        ![](images/FF_image_6.jpg)
 
         </details>
         
         <details>
         <summary> 最大流為3的圖二 </summary>
 
-        ![](https://hackmd.io/_uploads/BkmgPq3S3.jpg)
+        ![](images/FF_image_7.jpg)
 
         </details>
     
@@ -149,27 +144,28 @@
         
         * 以下為理論上存在的最壞情況，圖片中邊的數值為剩餘容量。
     
-        ![](https://hackmd.io/_uploads/B1wI-r0B3.jpg)
+        ![](images/FF_image_time_1.jpg)
         
         * 第一次找到的增廣路徑為 {\\(s \to A, \ A \to B, \ B \to t\\)}
     
-        ![](https://hackmd.io/_uploads/SkCIbBRHh.jpg)
+        ![](images/FF_image_time_2.jpg)
     
         * 第二次找到的增廣路徑為 {\\(s \to B, \ B \to A, \ A \to t\\)}
     
-        ![](https://hackmd.io/_uploads/S1EvZrRBh.jpg)
+        ![](images/FF_image_time_3.jpg)
         
         * 不斷重複同樣動作，直到出現最大流，此時共進行了1998次的尋找增廣路徑。
     
-        ![](https://hackmd.io/_uploads/Hy2D-rCH2.jpg)
+        ![](images/FF_image_time_4.jpg)
 
     
       </details> 
     * 根據最大流最小割定理中的條件(1)、(2)，只要在 \\(s, t\\) 之間還存在增廣路徑，則當前網路尚未達到最大流，反之，當 \\(s, t\\) 之間不存在增廣路徑，則當前流量為最大流，故在存在增廣路徑時不斷增加新流量，直至找不到增廣路徑後，當前網路即達到最大流。
     
-  * 程式碼範例（模板）
-  ```
-  class Ford_Fulkerson {
+  <details>
+      <summary> 程式碼範例（模板） </summary>
+
+    class Ford_Fulkerson {
 
     public :
         #define INF 100000000000000009
@@ -226,8 +222,8 @@
             }
             return ans;
         }
-};
-  ```
+      };
+  </details>
   
 ## Edmond-Karp 算法
 
@@ -237,19 +233,19 @@
       <details>
       <summary> 以BFS尋找增廣路徑的過程 </summary>
 
-        ![](https://hackmd.io/_uploads/SkPMDr2U3.jpg)
+        ![](images/EK_image_1.jpg)
     
-        ![](https://hackmd.io/_uploads/H1sMPBhLn.jpg)
+        ![](images/EK_image_2.jpg)
     
-        ![](https://hackmd.io/_uploads/BJLQPH282.jpg)
+        ![](images/EK_image_3.jpg)
     
-        ![](https://hackmd.io/_uploads/B1iQwSn8n.jpg)
+        ![](images/EK_image_4.jpg)
     
-        ![](https://hackmd.io/_uploads/HJkNvHhLh.jpg)
+        ![](images/EK_image_5.jpg)
     
-        ![](https://hackmd.io/_uploads/ryf4PH283.jpg)
+        ![](images/EK_image_6.jpg)
     
-        ![](https://hackmd.io/_uploads/SyIVPH28n.jpg)
+        ![](images/EK_image_7.jpg)
 
       </details>
     
@@ -257,7 +253,7 @@
       <details>
       <summary> 另一個例子 </summary>
       
-        ![](https://hackmd.io/_uploads/Bk63_LhIn.jpg)
+        ![](images/EK_image_8.jpg)
         
         * 在此圖中，若用DFS的話，會先找到上面那一條路徑，但因為最後最大流只需要底下那條較短的路徑貢獻就好，若是使用BFS則會在一開始就找到底下的路徑。
     
@@ -272,9 +268,10 @@
   * 時間複雜度及正確性分析
     * 尋找一條增廣路徑的複雜度為 \\(O(E)\\) ，最多會尋找 \\(O(VE)\\) 次增廣路徑，總複雜度為 \\(O(VE^{2})\\) ，而這樣的複雜度和Ford-Fulkerson相比，即可忽略掉值域的影響，算是優化了不少。
     * 和Ford-Fulkerson的正確性一樣，根據最大流最小割定理，找不到增廣路徑時，則當前網路上形成最大流。
-  * 程式碼範例（模板）
-  ```
-  class Edmond_Karp {
+  <details>
+      <summary> 程式碼範例（模板） </summary>
+  
+    class Edmond_Karp {
 
     public :
         #define INF 100000000000000009
@@ -346,14 +343,24 @@
             }
             return ans;
         }
-};
-  ```
+    };
+  
+  </details>
 
 ## 題目實作
 
-* 有 \\(N\\) 台電腦和 \\(M\\) 個連結， 每個連結 \\((a, b, c)\\) 代表 \\(a\\) 電腦單向以速度 \\(c\\) 傳輸資料到 \\(b\\) 電腦，電腦 \\(1\\) 是伺服器，電腦 \\(N\\) 是使用者，請求出使用者最大能從伺服器下載資料的總速度。https://cses.fi/problemset/task/1694
-  * 將每台電腦視為點，連結和速度分別視為弧和其容量，建完圖後將源點設為 \\(1\\) ，匯點設為 \\(N\\) ，最大流即為答案。
-  * 參考程式碼（使用Edmond-Karp模板）
+* 有 \\(N\\) 台電腦和 \\(M\\) 個連結， 每個連結 \\((a, b, c)\\) 代表 \\(a\\) 電腦單向以速度 \\(c\\) 傳輸資料到 \\(b\\) 電腦，電腦 \\(1\\) 是伺服器，電腦 \\(N\\) 是使用者，請求出使用者最大能從伺服器下載資料的總速度。[CSES 1694](https://cses.fi/problemset/task/1694)
+  
+  <details>
+      <summary> 解題想法 </summary>
+
+    * 將每台電腦視為點，連結和速度分別視為弧和其容量，建完圖後將源點設為 \\(1\\) ，匯點設為 \\(N\\) ，最大流即為答案。
+
+  </details>
+  
+  <details>
+      <summary> 參考程式碼（使用Edmond-Karp模板） </summary>
+
     ```
     int main(){
       int n, m, a, b, c, i;
@@ -368,9 +375,20 @@
       }
     }
     ```
+
+  </details>
 * 有一座城市有 \\(N\\) 棟建築物及 \\(M\\) 個道路，每條道路為雙向連接兩棟建築物，且有其長度，請求出最少需要關閉幾條道路，才能使建築物 \\(1\\) 和建築物 \\(N\\) 之間無法往來。
-  * 此問題等同於求出圖上的最小割，因有最大流等於最小割的性質，將每條邊的容量設為 \\(1\\) ，最後求出的最大流即為答案。
-  * 參考程式碼
+  
+  <details>
+      <summary> 解題想法 </summary>
+
+    * 此問題等同於求出圖上的最小割，因有最大流等於最小割的性質，將每條邊的容量設為 \\(1\\) ，最後求出的最大流即為答案。
+
+  </details>
+  
+  <details>
+      <summary> 參考程式碼 </summary>
+
     ```
     int main(){
       int n, m, a, b, i;
@@ -385,6 +403,8 @@
       }
     }
     ```
+
+  </details>
 
 ## References
 
