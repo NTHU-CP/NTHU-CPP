@@ -110,12 +110,12 @@ int main() {
 
 根據這個想法，我們可以列出下列遞迴關係式：
 
-$$  ancestor(u,\ i)= 
+$$ancestor(u,\ i)= 
     \begin{cases}
         parent(u) & \text {if $i = 0$}
         \newline
         ancestor(ancestor(u,\ i-1),\ i-1) & \text{if $i > 0$}
-    \end{cases} $$
+    \end{cases}$$
 
 這邊 \\( ancestor(u,\ i) \\) 代表點 \\( u \\) 的第 \\( 2^i \\) 個祖先。
 
