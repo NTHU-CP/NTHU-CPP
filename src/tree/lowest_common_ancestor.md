@@ -2,7 +2,7 @@
 
 ## 前言
 
-在此章節中，我們會介紹經典的最近共同祖先（LCA）問題且分析幾種常見的尋找 LCA 的方法。此外也會提及 LCA 問題與另一經典問題（Range Minimum Query）之間的轉化。
+在此章節中，我們會介紹經典的最近共同祖先（LCA）問題且整理幾種常見的尋找 LCA 的方法。此外也會提及 LCA 問題與另一經典問題（Range Minimum Query）之間的轉化。
 
 ## 定義
 
@@ -10,10 +10,22 @@
 
 ## 相關性質
 
-- [如果點 \\( u \\) 為點 \\( v \\) 的祖先，那麼 \\( LCA(u,\ v) \\) 為點 \\( u \\)。]
-- [如果點對 \\( (u,\ v) \\) 不具祖孫關係，那麼點 \\( u \\) 和點 \\( v \\) 會分別位於 \\( LCA(u,\ v) \\) 的兩個不同子樹內。]
-- [\\( LCA(u,\ v) \\) 必定會位於點 \\( u \\) 到點 \\( v \\) 的最短路徑上。]
-- [在 DFS 的走訪過程中，必定會先經過 \\( LCA(u,\ v) \\)，接著再經過點 \\( u \\) 和點 \\( v \\)。]
+- 如果點 \\( u \\) 為點 \\( v \\) 的祖先，那麼 \\( LCA(u,\ v) \\) 為點 \\( u \\)。
+- 如果點對 \\( (u,\ v) \\) 不具祖孫關係，那麼點 \\( u \\) 和點 \\( v \\) 會分別位於 \\( LCA(u,\ v) \\) 的兩個不同子樹內。
+- \\( LCA(u,\ v) \\) 必定會位於點 \\( u \\) 到點 \\( v \\) 的最短路徑上。
+- 在 DFS 的走訪過程中，必定會先經過 \\( LCA(u,\ v) \\)，接著再經過點 \\( u \\) 和點 \\( v \\)。
+
+## 經典題型
+
+> [CSES - Company Queries II](https://cses.fi/problemset/task/1688)
+>
+> 給定一間擁有 \\( N \\) 名員工的公司且該公司具有樹狀層級制度。除了總經理以外，每名員工都配有一名上司，而你的任務是要處理以下形式的 \\( Q \\) 次詢問：
+>
+> - 給定 \\( a \\) 和 \\( b \\)，請輸出員工 \\( a \\) 和員工 \\( b \\) 的最近共同上司。
+>
+> - \\( N,\ Q \leq 2 \times 10^5 \\)
+
+基本上此問題就是在問樹上兩點的最近共同祖先為何，下面我們將介紹幾種常見的作法。
 
 ## 常見作法
 
@@ -114,7 +126,7 @@ $$ancestor(u,\ i) = \begin{cases} parent(u) & \text {if $i = 0$} \newline ancest
 
 這邊 \\( ancestor(u,\ i) \\) 代表點 \\( u \\) 的第 \\( 2^i \\) 個祖先。
 
-利用上述關係式解 DP，我們可以在 \\( O(N\log N) \\) 的時間內預處理完所有點的第 \\( 2^i \\) 個祖先的資訊。而需要進行點的抬升時，我們可以在 \\( O(\log N) \\) 的時間內完成。
+利用上述關係式解 DP，我們可以在 \\( O(N\log N) \\) 的時間內預處理完所有點的第 \\( 2^i \\) 個祖先的資訊。等到需要進行點的抬升時，我們即可以在 \\( O(\log N) \\) 的時間內完成。
 
 除了抬升的優化以外，對於等深度的兩點找 LCA 本身具有單調性，直覺上可以利用二分搜來加速。但在稍早提到的 Brute force 當中，我們並沒有提到相關的操作。原因是因為我們只記錄了每個點的父節點的資訊，在處理二分搜的檢查函數上會花費線性的時間，導致整個二分搜的時間複雜度為 \\( O(N\log N) \\)，明顯沒有比較快。
 
@@ -341,7 +353,7 @@ int main() {
 
 ### Heavy Path Decomposition
 
-此小節主要關注於如何利用樹重鏈剖分的概念來查詢點對的最近共同祖先，如果讀者對於樹重鏈的定義以及其相關操作還不太清楚的話，建議可以先去觀看相關章節。
+此小節主要關注於如何利用樹重鏈剖分的概念來查詢點對的最近共同祖先，如果讀者對於樹重鏈的定義以及其相關操作（跳輕邊）還不太清楚的話，建議可以先去觀看相關章節。
 
 這邊我們簡單 recap 一下何謂重鏈，對於一點 \\( u \\) 的子節點 \\( v \\)，如果以點 \\( v \\) 為根的子樹是所有點 \\( u \\) 子樹中 size 最大的，我們稱點 \\( v \\) 為重小孩，點 \\( u \\) 和點 \\( v \\) 相連的邊稱作重邊，由重邊相連所形成的路徑則稱作重鏈，示意圖如下（紅色路徑為重鏈）：
 
@@ -462,7 +474,7 @@ int main() {
 
 ### 轉化成 RMQ 問題
 
-有許多問題可以透過轉化成其他問題的方式來獲得很好的解法，LCA 問題也不是例外。我們可以透過尤拉路徑來將 LCA 問題轉化成另一經典問題（Range Minimum Query），解決 RMQ 問題的同時我們也就解決了 LCA 問題。
+有許多問題可以透過轉化成其他問題的方式來獲得很好的解法，LCA 問題也不是例外。我們可以透過尤拉路徑在線性時間內將 LCA 問題轉化成另一經典問題（Range Minimum Query），解決 RMQ 問題的同時我們也就解決了 LCA 問題。
 
 #### 建立尤拉路徑
 
@@ -496,7 +508,7 @@ int main() {
 
 透過此轉換，我們可以發現新塊最多只會有 \\( 2^{K-1} \\) 種。而轉換後有著相同內容的塊，塊內所有區間組合的最小值在塊內所對應的 index offset 都會是相同的，因為新塊內容其實間接說明了原塊內的深度分布。因此，相較於每次查詢時都去暴力搜索塊內的最小值，我們其實可以預處理每一種新塊內所有區間組合的最小值在塊內所對應的 index offset，這部分會花費 \\( O(2^{K-1}K^2) \\) 的時間。針對之後塊內區間搜索最小值的查詢，我們就可以在 \\( O(1) \\) 的時間內查表得知。
 
-而為了比較好的時間複雜度，一般我們會取 \\( K \\) 等於 \\( 0.5\log N \\)，這樣我們就可以把預處理的時間複雜度壓到 \\( O(N) \\)。
+為了比較好的時間複雜度，一般我們會取 \\( K \\) 等於 \\( 0.5\log N \\)，這樣我們就可以把預處理的時間複雜度壓到 \\( O(N) \\)。
 
 總結一下此作法跟整體時間複雜度：
 
@@ -523,11 +535,14 @@ int main() {
 <details><summary> Sample Code </summary>
 
 - 用 adjacency list 來儲存樹的結構。
-- `depth[i]` 代表第 \\( i \\) 個節點的深度。
-- `heavyChild[i]` 代表第 \\( i \\) 個節點的重小孩。
-- `size[i]` 代表以第 \\( i \\) 個節點為根的子樹大小。
-- `top[i]` 代表點 \\( i \\) 所處重鏈上深度最淺的點。
-- `parent[i]` 代表第 \\( i \\) 個節點的父節點。
+- `euler_tour[i]` 代表尤拉路徑上的第 \\( i \\) 個點。
+- `depth[i]` 代表尤拉路徑上第 \\( i \\) 個點對應的點深度。
+- `first_occurrence[i]` 代表點 \\( i \\) 在尤拉路徑上第一次出現時所對應的 index。
+- `block[i]` 記錄了第 \\( i \\) 個塊內最小值所對應的 index。
+- `mask[i]` 代表第 \\( i \\) 個塊的 bitmask。
+- `st[i][j]` 記錄了 block 陣列上區間 \\( \left[i,\ i+2^j-1 \right] \\) 中間所有塊的最小值所對應的 index。
+- `in_block_RMQ[i][j][k]` 記錄了 bitmask 為 \\( i \\) 的塊，區間 \\( \left[j,\ k \right] \\) 的最小值在塊內所對應的 index offset。
+- 以下範例程式碼較為繁複，建議讀者可以花點時間 trace 過一遍。
 
 ```cpp
 #include <bits/stdc++.h>
@@ -540,46 +555,8 @@ int main() {
   int N, Q;
   cin >> N >> Q;
 
-  vector<int> depth(N + 1, 0), heavyChild(N + 1), size(N + 1), top(N + 1),
-      parent(N + 1);
   vector<vector<int>> adj(N + 1);
-
-  function<void(int, int)> findHeavyChild = [&](int u, int p) -> void {
-    size[u] = 1;
-    heavyChild[u] = -1;
-    parent[u] = p;
-    for (int v : adj[u])
-      if (v != p) {
-        depth[v] = depth[u] + 1;
-        findHeavyChild(v, u);
-        size[u] += size[v];
-        if (heavyChild[u] == -1 || size[v] > size[heavyChild[u]])
-          heavyChild[u] = v;
-      }
-  };
-
-  function<void(int, int, int)> build_link = [&](int u, int p,
-                                                 int link_top) -> void {
-    top[u] = link_top;
-    if (heavyChild[u] == -1) return;
-    build_link(heavyChild[u], u, link_top);
-    for (int v : adj[u])
-      if (v != p && v != heavyChild[u]) build_link(v, u, v);
-  };
-
-  function<int(int, int)> LCA = [&](int u, int v) -> int {
-    int tu = top[u], tv = top[v];
-    while (tu != tv) {
-      if (depth[tu] > depth[tv]) {
-        u = parent[tu];
-        tu = top[u];
-      } else {
-        v = parent[tv];
-        tv = top[v];
-      }
-    }
-    return depth[u] < depth[v] ? u : v;
-  };
+  vector<int> euler_tour, depth, first_occurrence(N + 1);
 
   for (int i = 2; i <= N; ++i) {
     int p;
@@ -588,28 +565,164 @@ int main() {
     adj[p].push_back(i);
   }
 
-  findHeavyChild(1, -1);
-  build_link(1, -1, 1);
+  function<void(int, int, int)> dfs = [&](int u, int p, int d) {
+    first_occurrence[u] = euler_tour.size();
+    euler_tour.push_back(u);
+    depth.push_back(d);
 
+    for (int v : adj[u])
+      if (v != p) {
+        dfs(v, u, d + 1);
+        euler_tour.push_back(u);
+        depth.push_back(d);
+      }
+  };
+
+  dfs(1, -1, 0);
+
+  // precompute the log values
+  int M = euler_tour.size();
+  vector<int> log(M + 1);
+  log[1] = 0;
+  for (int i = 2; i <= M; ++i) log[i] = log[i / 2] + 1;
+
+  // build block and mask array.
+  const int block_size = max(1, log[M] / 2),
+            block_cnt = (M + block_size - 1) / block_size;
+
+  vector<int> block(block_cnt), mask(block_cnt, 0);
+
+  for (int i = 0, j = 0, b = 0; i < M; ++i, ++j) {
+    if (j == block_size) j = 0, ++b;
+    if (j == 0 || depth[i] < depth[block[b]]) block[b] = i;
+    if (j > 0 && (i >= M || depth[i] > depth[i - 1])) mask[b] += 1 << (j - 1);
+  }
+
+  // build sparse table for block array.
+  const int table_size = log[block_cnt] + 1;
+  vector<vector<int>> st(block_cnt, vector<int>(table_size));
+
+  for (int i = 0; i < block_cnt; ++i) st[i][0] = block[i];
+  for (int j = 1; j < table_size; ++j) {
+    for (int i = 0; i < block_cnt; ++i) {
+      int ni = i + (1 << (j - 1));
+      if (ni >= block_cnt)
+        st[i][j] = st[i][j - 1];
+      else
+        st[i][j] = (depth[st[i][j - 1]] < depth[st[ni][j - 1]] ? st[i][j - 1]
+                                                               : st[ni][j - 1]);
+    }
+  }
+
+  // precompute in-block RMQ for each block
+  const int ways = 1 << (block_size - 1);
+  vector<vector<vector<int>>> in_block_RMQ(ways);
+
+  for (int i = 0; i < block_cnt; ++i) {
+    if (!in_block_RMQ[mask[i]].empty()) continue;
+
+    in_block_RMQ[mask[i]].resize(block_size, vector<int>(block_size));
+
+    for (int j = 0; j < block_size; ++j) {
+      in_block_RMQ[mask[i]][j][j] = j;
+      for (int k = j + 1; k < block_size; ++k) {
+        in_block_RMQ[mask[i]][j][k] = in_block_RMQ[mask[i]][j][k - 1];
+        int idx = i * block_size + k;
+        if (idx < M &&
+            depth[idx] < depth[i * block_size + in_block_RMQ[mask[i]][j][k]])
+          in_block_RMQ[mask[i]][j][k] = k;
+      }
+    }
+  }
+
+  auto LCA = [&](int u, int v) -> int {
+    u = first_occurrence[u], v = first_occurrence[v];
+    if (u > v) swap(u, v);
+
+    int u_block = u / block_size, v_block = v / block_size,
+        u_offset = u % block_size, v_offset = v % block_size;
+
+    if (u_block == v_block)
+      return euler_tour[u_block * block_size +
+                        in_block_RMQ[mask[u_block]][u_offset][v_offset]];
+
+    int mn1 = u_block * block_size +
+              in_block_RMQ[mask[u_block]][u_offset][block_size - 1];
+    int mn2 = v_block * block_size + in_block_RMQ[mask[v_block]][0][v_offset];
+    int lca = depth[mn1] < depth[mn2] ? mn1 : mn2;
+
+    if (u_block + 1 < v_block) {
+      int sz = log[v_block - u_block - 1];
+      int mn3 = st[u_block + 1][sz], mn4 = st[v_block - (1 << sz)][sz];
+      int mn = depth[mn3] < depth[mn4] ? mn3 : mn4;
+      lca = depth[lca] < depth[mn] ? lca : mn;
+    }
+
+    return euler_tour[lca];
+  };
+
+  // answer queries
   for (int i = 0; i < Q; ++i) {
     int u, v;
     cin >> u >> v;
     cout << LCA(u, v) << "\n";
   }
-
   return 0;
 }
-
 ```
+</details>
+
+## Exercises
+
+我們來看一些可以使用 LCA 去解的例題。
+
+> [CSES - Distance Queries](https://cses.fi/problemset/task/1135)
+>
+> 給定一棵有 \\( N \\) 個節點的樹，你的任務是要處理以下形式的 \\( Q \\) 次詢問：
+>
+> - 給定 \\( a \\) 和 \\( b \\)，請輸出點 \\( a \\) 到點 \\( b \\) 最短路徑的距離為何。
+>
+> - \\( N,\ Q \leq 2 \times 10^5 \\)
+
+<details><summary> Solution </summary>
+
+已知對於任意點對 \\( (u,\ v) \\)，\\( LCA(u,\ v) \\) 必定會位於點 \\( u \\) 到點 \\( v \\) 的最短路徑上。因此針對查詢點對 \\( (a,\ b) \\)，我們可以先找出 \\( LCA(a,\ b) \\)，然後利用點 \\( a \\) 的深度加上點 \\( b \\) 的深度，最後再減去兩倍的 \\( LCA(a,\ b) \\) 的深度，即為點 \\( a \\) 到點 \\( b \\) 的距離。
 
 </details>
 
+> [CF 519E - A and B and Lecture Rooms](https://codeforces.com/contest/519/problem/E)
+>
+> 題意為給定一棵有 \\( N \\) 個節點的樹，你的任務是要處理以下形式的 \\( Q \\) 次詢問：
+>
+> - 給定 \\( a \\) 和 \\( b \\)，請輸出樹上有多少點到點 \\( a \\) 的距離和到點 \\( b \\) 的距離相同。
+>
+> - \\( N,\ Q \leq 10^5 \\)
+
+<details><summary> Solution </summary>
+
+觀察一下可以發現，我們可以在點 \\( a \\) 到點 \\( b \\) 的最短路徑上找中點。如果找不到中點（點 \\( a \\) 到點 \\( b \\) 的距離為奇數），代表樹上沒有任何點滿足題目要求。而如果找的到中點，我們可以分成兩種 Case 來討論。Case 1 是中點剛好為 \\( LCA(a,\ b) \\) 的情況，
+
+</details>
+
+## Summary
+
+在本文當中，我們整理了五種常見的尋找樹上最近共同祖先的方法，分別為：
+
+- 預處理 \\( O(N) \\)、每次查詢 \\( O(N) \\) 的暴力作法。
+- 預處理 \\( O(N\log N) \\)、每次查詢 \\( O(\log N) \\) 的倍增法。
+- 強制離線 \\( O((N+Q)\alpha(N)) \\) 的 Tarjan's offline algorithm。
+- 利用樹重鏈剖分的相關操作達到預處理 \\( O(N) \\)、每次查詢 \\( O(\log N) \\) 的作法。
+- 預處理 \\( O(N) \\)、每次查詢 \\( O(1) \\) 的高度分塊區間最小值查詢。
+
+以時間複雜度來看，高度分塊區間最小值查詢的作法應該會是所有作法當中最快的。但由於其實作複雜、常數過大，實際跑起來跟其他做法相比並不會相差甚遠，單純只有理論上的意義。筆者自己比較喜歡使用倍增法來解決 LCA 的相關問題，因為實作上比較簡單，而且想法上也比較直覺。對於大部分 LCA 問題的 problem size 來說，每次查詢 \\( O(\log N) \\) 也算跑得過，因此滿推薦讀者們可以使用倍增法。
+
 ## References
 
-- [https://cp-algorithms.com/graph/lca.html](https://cp-algorithms.com/graph/lca.html)
-- [https://cp-algorithms.com/graph/lca_binary_lifting.html](https://cp-algorithms.com/graph/lca_binary_lifting.html)
-- [https://cp-algorithms.com/graph/lca_tarjan.html](https://cp-algorithms.com/graph/lca_tarjan.html)
+- [Lowest Common Ancestor - O(sqrt(N)) and O(log N) with O(N) preprocessing](https://cp-algorithms.com/graph/lca.html)
+- [Lowest Common Ancestor - Binary Lifting](https://cp-algorithms.com/graph/lca_binary_lifting.html)
+- [Lowest Common Ancestor - Tarjan's off-line algorithm](https://cp-algorithms.com/graph/lca_tarjan.html)
+- [Lowest Common Ancestor - Farach-Colton and Bender Algorithm](https://cp-algorithms.com/graph/lca_farachcoltonbender.html)
 - [解决LCA问题的三种算法](https://blog.csdn.net/qq_43549984/article/details/100144030?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-2-100144030-blog-7836649.235%5Ev32%5Epc_relevant_increate_t0_download_v2&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-2-100144030-blog-7836649.235%5Ev32%5Epc_relevant_increate_t0_download_v2&utm_relevant_index=5)
-- [https://oi-wiki.org/graph/lca/](https://oi-wiki.org/graph/lca/)
-- [https://web.ntnu.edu.tw/~algo/Tree2.html#1](https://web.ntnu.edu.tw/~algo/Tree2.html#1)
-- [https://www.topcoder.com/thrive/articles/Range%20Minimum%20Query%20and%20Lowest%20Common%20Ancestor](https://www.topcoder.com/thrive/articles/Range%20Minimum%20Query%20and%20Lowest%20Common%20Ancestor)
+- [最近公共祖先 - OI Wiki](https://oi-wiki.org/graph/lca/)
+- [Tree - 演算法筆記](https://web.ntnu.edu.tw/~algo/Tree2.html#1)
+- [Range Minimum Query and Lowest Common Ancestor](https://www.topcoder.com/thrive/articles/Range%20Minimum%20Query%20and%20Lowest%20Common%20Ancestor)
