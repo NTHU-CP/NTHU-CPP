@@ -164,6 +164,7 @@ int main() {
 > 給定一棵\\(n\\)個點的樹，找出這棵樹的一個重心。重心的定義是：如果把重心定為根，那麼每個子樹最多有\\(\lfloor\frac n2\rfloor\\)個點（不包含根在重心的那棵子樹）。
 
 ### Non-Classic Examples
+樹DP的形式，當然不侷限於以上提到的幾個經典題。固然，這些經典題是通往更多進階題的基石，但實戰上想要更靈活運用，就需要刷更多新鮮的題目。來看幾個「沒那麼經典」的例子：
 
 > [CF 1083A - The Fair Nut and the Best Path](https://codeforces.com/problemset/problem/1083/A)
 >
@@ -178,6 +179,12 @@ int main() {
 > * 如果還是沒有，那麼跳棋已經回到根節點了，遊戲結束。
 >
 > 請計算先手最後會拿到多少錢。
+
+### Exercises
+
+> [CF 1693B - Fake Plastic Trees](https://codeforces.com/problemset/problem/1693/B)
+>
+> 給定一棵有根樹，起初每個點\\(v\\)的權重\\(a_v\\)皆為零，而目標是使每個點的權重\\(a_v\\)介於\\(l_v\\)與\\(r_v\\)之間。每一次操作可以選擇一條由根出發的路徑，並增加這條路徑上每個點的權重，增幅原則上任意，但必須是非負整數，且父節點的增幅要比子節點小。請計算最少需要幾次操作。
 
 ## DP on Trees with Rerooting
 
@@ -280,6 +287,10 @@ int main() {
 
 * 請證明\\(in[u]+out[u]=in[parent(u)]+out[parent(u)]-sz[u]+(n-sz[u])\\)。
 * 這個轉移式給你什麼啟發？
+
+> [ABC 223G - Vertex Deletion](https://atcoder.jp/contests/abc223/tasks/abc223_g)
+>
+> 給定一棵樹，計算這棵樹上有幾個點，只移除該點並不會減少最大配對數。
 
 ### Exercises
 
