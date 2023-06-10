@@ -6,8 +6,8 @@ Greedy Algorithm 主要的想法就是對於當前的狀態，要做出一個最
 
 Greedy Algorithm 通常是由以下兩個性質組成：
 
-- **Greedy-choice property**: 最佳解可以從我當前的 greedy choice 來得出，或者說至少有一組最佳解會包含我做的 greedy choice。
-- **Optimal substructure**: 最佳解會包含子問題的最佳解。
+- **Greedy-choice property** : 最佳解可以從我當前的 greedy choice 來得出，或者說至少有一組最佳解會包含我做的 greedy choice。
+- **Optimal substructure** : 最佳解會包含子問題的最佳解。
 
 Greedy choice 即為我們 Greedy Algorithm 的策略。若滿足上面兩個性質，我們可以持續選擇我們的 Greedy choice，然後將問題轉換成相同問題只是 problem size 變小，直到找到最佳解為止。
 
