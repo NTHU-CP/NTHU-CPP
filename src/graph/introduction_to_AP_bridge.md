@@ -102,9 +102,9 @@ Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Compon
 
 那我們要如何快速找到圖上所有的 AP 跟 Bridge 呢？很容易可以想到枚舉每個點或邊，把他拔掉之後看看圖上有沒有多出新的 Connected Component。但這樣做的時間複雜度會是 \\(O((V+E)^2) \\)。不過實際上，我們只要好好觀察圖上的性質就可以在 \\(O(V+E) \\) 的時間做完！以下介紹兩種不同的方法來找出圖上所有的 AP 跟 Bridge
 
-## Tarjan's Algorithm for AP/Bridge
+## Tarjan's Algorithm to find AP/Bridge
 
-### 觀察 for AP
+### 觀察 AP 的性質
 
 我們觀察下圖中 \\( C \\) 點的左子樹。你會發現這棵子樹一定要通過 \\( C \\) 點才能走到 \\( C \\) 點的祖先，所以理所當然的，當我們將 \\( C \\) 點移除，整張圖就會斷成兩個 Connected Component。而 \\( C \\) 點就會是 AP。
 
@@ -117,7 +117,7 @@ Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Compon
 但 root 是沒有祖先的，因此 root 我們要拉出來特別判斷。很明顯，當 root 有至少兩棵子樹的時候，root 一定會是 AP，否則就不是。
 <img src="image/Root AP Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
-### 觀察 for Bridge
+### 觀察 Bridge 的性質
 
 與 AP 的觀察相似。我們觀察下圖中 \\( (C,D) \\) 這條邊，你會發現以 \\( D \\) 為根的子樹一定要通過這條邊才能回到 \\( C \\) 點。所以理所當然的，當我們將 \\( (C,D) \\) 移除，整張圖就會斷成兩個 Connected Component。而 \\( (C,D) \\) 就會是 bridge。
 
@@ -188,7 +188,7 @@ void dfs(int u, int parent, int dep) {
 
 ## Using DFS tree for Bridge/AP
 
-### 觀察 for bridge
+### 觀察 Bridge 的性質
 
 我們觀察圖中那些邊絕對不可能是 bridge
 
@@ -385,6 +385,4 @@ still working
 - [Hackerearth - AP & bridge](https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial/)
 - [演算法海牛 - bridge](https://www.facebook.com/algo.seacow/posts/pfbid0PMMPJEWmh3XgFtstTh8pptxjnJKK5jwpeVCQWEmfWVyRKT66LqccAv5DiSZ22zDhl)
 - [codeforce blog - AP & bridge](https://codeforces.com/blog/entry/71146)
-- [oi-wiki - BCC](https://oi-wiki.org/graph/bcc/)
-- [Hackerearth - BCC](https://www.hackerearth.com/practice/algorithms/graphs/biconnected-components/tutorial/)
 - [codeforce blog - DFS tree](https://codeforces.com/blog/entry/68138)

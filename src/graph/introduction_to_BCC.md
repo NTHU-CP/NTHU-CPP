@@ -6,15 +6,15 @@
 
 ## BCC-Vertex(Bi-connected Component)
 
-BCC 指的是沒有 AP 的 Connected Component，在中文常稱之為點雙連通分量。例如下圖中有三個 BCC
+BCC-Vertex 指的是沒有 AP 的 Connected Component，在中文常稱之為點雙連通分量。例如下圖中有三個 BCC-Vertex
 <img src="image/Biconnected Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
-不同的 BCC 之間會共用點，共用的部分恰好會是圖上的 AP。
-而要找出圖上所有的 BCC，我們可以通過修改找 AP 的演算法來達成。
+不同的 BCC-Vertex 之間會共用點，共用的部分恰好會是圖上的 AP。
+而要找出圖上所有的 BCC-Vertex，我們可以通過修改找 AP 的演算法來達成。
 
 ### 如何修改
 
-我們可以用 stack 紀錄首次遇到的邊。這樣當我們發現 \\(low(v) \geq depth(u) \\) 時，stack 中 \\( (u,v) \\) 及它上面的邊就會位於同一個 BCC 中。就像是下圖 \\( (C,D) \\) 這條邊。
+我們可以用 stack 紀錄首次遇到的邊。這樣當我們發現 \\(low(v) \geq depth(u) \\) 時，stack 中 \\( (u,v) \\) 及它上面的邊就會位於同一個 BCC-Vertex 中。就像是下圖 \\( (C,D) \\) 這條邊。
 <img src="image/BCC Algo explain.PNG" width="300" style="display:block; margin: 0 auto;"/>
 
 一個完整的例子如下
@@ -67,14 +67,14 @@ void dfs(int u, int parent, int dep) {
 
 ## BCC-Edge(Bridge Connected Component)
 
-BCC-Edge 指的是沒有 Bridge 的 Connected Component，在中文常稱之為邊雙連通分量、橋連通分量。例如下圖我們能找到兩個 BCC
+BCC-Edge 指的是沒有 Bridge 的 Connected Component，在中文常稱之為邊雙連通分量、橋連通分量。例如下圖我們能找到兩個 BCC-Edge
 <img src="image/Bridge Connected Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
-不同的 BCC 沒有交集。而要找出圖上所有的 BCC，我們可以通過修改找 Bridge 的算法來達成
+不同的 BCC-Edge 沒有交集。而要找出圖上所有的 BCC-Edge，我們可以通過修改找 Bridge 的算法來達成
 
 ### 如何修改
 
-跟找 Bi-connected Component 的想法很像。我們用 stack 紀錄走過的點，當我們發現 \\(low(u) == depth(u) \\) 時，我們就發現了橋的下端點。而 stack 中 \\(u \\) 和他上面的點就會位於同一個 BCC。就像下圖 \\( D \\) 這個點，他是 \\( (C,D) \\) 這條 bridge 的下端點。
+跟找 BCC-Vertex 的想法很像。我們用 stack 紀錄走過的點，當我們發現 \\(low(u) == depth(u) \\) 時，我們就發現了橋的下端點。而 stack 中 \\(u \\) 和他上面的點就會位於同一個 BCC。就像下圖 \\( D \\) 這個點，他是 \\( (C,D) \\) 這條 bridge 的下端點。
 <img src="image/BCC Algo explain 2.PNG" width="300" style="display:block; margin: 0 auto;"/>
 
 一個完整的例子如下
@@ -114,3 +114,8 @@ void dfs(int u, int parent, int dep) {
 }
 
 ```
+
+## Reference
+
+- [oi-wiki - BCC](https://oi-wiki.org/graph/bcc/)
+- [Hackerearth - BCC](https://www.hackerearth.com/practice/algorithms/graphs/biconnected-components/tutorial/)
