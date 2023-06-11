@@ -322,9 +322,9 @@ still working
 
 </details>
 
->[Codeforces - Break Up](https://codeforces.com/problemset/problem/700/C)
+>[Codeforces - Bertown roads](https://codeforces.com/contest/118/problem/E)
 >
-> 給一張帶權無向圖與兩點 \\(S \\) , \\(T \\)，要你選至多兩條邊刪除後使 \\(S \\) , \\(T \\) 不連通。要求選的邊權重和最小。
+> 給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，要你幫每一條邊定向後使整張圖上任兩點間都有 path
 
 <details><summary> Solution </summary>
 
@@ -337,6 +337,16 @@ still working
 >[Uva - Mining Your Own Business](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=246&page=show_problem&problem=3549)
 >
 >在一張無向圖上選擇盡可能少的點塗黑，使得刪除任一個點後，每個連通分量裡至少有一個黑點。
+
+<details><summary> Solution </summary>
+
+still working
+
+</details>
+
+>[Codeforces - Break Up](https://codeforces.com/problemset/problem/700/C)
+>
+> 給一張帶權無向圖與兩點 \\(S \\) , \\(T \\)，要你選至多兩條邊刪除後使 \\(S \\) , \\(T \\) 不連通。要求選的邊權重和最小。
 
 <details><summary> Solution </summary>
 
