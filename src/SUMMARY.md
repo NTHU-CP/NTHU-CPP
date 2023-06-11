@@ -10,6 +10,9 @@
   - [Basic Greedy](greedy/basic.md)
 - [Dynamic Programming]()
   - [Basic DP]()
+- [Graph]()
+  - [Ap,Bridge](graph/introduction_to_AP_bridge.md)
+  - [BCC](graph/introduction_to_BCC.md)
 - [Flow]()
 - [Sqrt Technique](sqrt/intro.md)
   - [Square Root Decomposition](sqrt/sqrt_decomposition.md)
@@ -21,8 +24,6 @@
   - [杜教篩](math/du_sieve.md)
   - [Revisit Arithmetic Function](math/revisit_arithmetic_function.md)
 - [Miscellaneous]()
-- [Graph]()
-  - [Ap,Bridge,BCC](graph/introduction_to_AP_bridge_BCC.md)
 
 ---
 
