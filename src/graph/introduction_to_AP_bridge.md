@@ -311,15 +311,14 @@ AP 模板題
 
 Bridge 模板題
 
-> [The 2020 ICPC Asia Taipei-Hsinchu Site Programming Contest pI - Critical Structures](https://codeforces.com/gym/102835/problem/I)
+>[Codeforce - Two Fairs](https://codeforces.com/contest/1259/problem/E)
 >
->請有興趣的讀者自行去連結查看題目敘述，以免暴雷未來打算模擬這屆台北站當作團練的人。
+>給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖及兩個點 \\(a, b\\) ，問有幾對 \\( (x,y) \\) 滿足由 \\(x \\) 到 \\( y \\) 的路徑上一定會經過
+>\\(a, b\\) 這兩個點。其中 \\( x \neq a,b\\) 且 \\(y \neq a,b \\)。
 
 <details><summary> Solution </summary>
 
-題目要找 AP, Bridge, Biconnected Component 的數量，以及擁有最多邊的 Biconnected Component 的邊數。
-
-其實就是模板題
+still working
 
 </details>
 
@@ -333,6 +332,8 @@ still working
 
 </details>
 
+## Exercise
+
 >[Uva - Mining Your Own Business](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=246&page=show_problem&problem=3549)
 >
 >在一張無向圖上選擇盡可能少的點塗黑，使得刪除任一個點後，每個連通分量裡至少有一個黑點。
@@ -343,30 +344,9 @@ still working
 
 </details>
 
->[Codeforces - Tourist Reform](https://codeforces.com/contest/732/problem/F)
+>[2015 ACM Amman Collegiate Programming Contest pH - Bridges](https://codeforces.com/gym/100712)
 >
->給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，定義 \\(r_i \\) 為幫每條邊定向後，\\(i \\) 點可以走到的點數。要你給出一種定向方法使得 \\(min_i({r_i})\\) 最大
-
-<details><summary> Solution </summary>
-
-still working
-
-</details>
-
->[Codeforce - Simple Cycles Edges](https://codeforces.com/problemset/problem/962/F)
->
->給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，問那些邊剛好位於一個簡單環上。
-
-<details><summary> Solution </summary>
-
-still working
-
-</details>
-
->[Codeforce - Two Fairs](https://codeforces.com/contest/1259/problem/E)
->
->給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖及兩個點 \\(a, b\\) ，問有幾對 \\( (x,y) \\) 滿足由 \\(x \\) 到 \\( y \\) 的路徑上一定會經過
->\\(a, b\\) 這兩個點。其中 \\( x \neq a,b\\) 且 \\(y \neq a,b \\)。
+> 請有興趣的讀者自行去連結查看題目敘述，以免暴雷未來打算模擬這場當作團練的人。
 
 <details><summary> Solution </summary>
 
@@ -386,3 +366,4 @@ still working
 - [演算法海牛 - bridge](https://www.facebook.com/algo.seacow/posts/pfbid0PMMPJEWmh3XgFtstTh8pptxjnJKK5jwpeVCQWEmfWVyRKT66LqccAv5DiSZ22zDhl)
 - [codeforce blog - AP & bridge](https://codeforces.com/blog/entry/71146)
 - [codeforce blog - DFS tree](https://codeforces.com/blog/entry/68138)
+- [sylveon slides - AP & Bridge](https://slides.com/sylveon/graph-7#/3)

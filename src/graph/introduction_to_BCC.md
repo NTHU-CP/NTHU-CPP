@@ -65,6 +65,20 @@ void dfs(int u, int parent, int dep) {
 
 ```
 
+## Exercise
+
+> [The 2020 ICPC Asia Taipei-Hsinchu Site Programming Contest pI - Critical Structures](https://codeforces.com/gym/102835/problem/I)
+>
+>請有興趣的讀者自行去連結查看題目敘述，以免暴雷未來打算模擬這屆台北站當作團練的人。
+
+<details><summary> Solution </summary>
+
+題目要找 AP, Bridge, BCC-Vertex 的數量，以及擁有最多邊的 BCC-Vertex 的邊數。
+
+其實就是模板題
+
+</details>
+
 ## BCC-Edge(Bridge Connected Component)
 
 BCC-Edge 指的是沒有 Bridge 的 Connected Component，在中文常稱之為邊雙連通分量、橋連通分量。例如下圖我們能找到兩個 BCC-Edge
@@ -115,7 +129,36 @@ void dfs(int u, int parent, int dep) {
 
 ```
 
+## Exercise
+
+> [POJ - Road Construction](http://poj.org/problem?id=3352)
+>
+> 給一張圖，問最少要加幾條邊才能使得圖上沒有橋。
+
+## Problems
+
+>[Codeforce - Simple Cycles Edges](https://codeforces.com/problemset/problem/962/F)
+>
+>給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，問那些邊剛好位於一個簡單環上。
+
+<details><summary> Solution </summary>
+
+still working
+
+</details>
+
+>[Codeforces - Tourist Reform](https://codeforces.com/contest/732/problem/F)
+>
+>給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，定義 \\(r_i \\) 為幫每條邊定向後，\\(i \\) 點可以走到的點數。要你給出一種定向方法使得 \\(min_i({r_i})\\) 最大
+
+<details><summary> Solution </summary>
+
+still working
+
+</details>
+
 ## Reference
 
 - [oi-wiki - BCC](https://oi-wiki.org/graph/bcc/)
 - [Hackerearth - BCC](https://www.hackerearth.com/practice/algorithms/graphs/biconnected-components/tutorial/)
+- [sylveon slides - BCC](https://slides.com/sylveon/graph-7#/4)
