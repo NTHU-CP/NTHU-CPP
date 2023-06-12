@@ -23,8 +23,6 @@
   - [Revisit Arithmetic Function](math/revisit_arithmetic_function.md)
 - [String]()
   - [Rolling Hash](string/hash/intro.md)
-    - [Hacking](string/hash/hacking.md)
-    - [Advanced](string/hash/advanced.md)
 - [Miscellaneous]()
 
 ---
