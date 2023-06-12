@@ -220,5 +220,8 @@ int max_palindrome(string T) {
 
 ## 資源
 
-- [Medium Blog](https://medium.com/@lawrence910426/rolling-hash-%E7%9A%84%E5%A5%87%E6%B7%AB%E6%8A%80%E5%B7%A7-24a54ea32d10)
-- [OI Wiki](https://oi-wiki.org/string/hash/)
+- [介紹 Rolling hash 的 Medium Blog](https://medium.com/@lawrence910426/rolling-hash-%E7%9A%84%E5%A5%87%E6%B7%AB%E6%8A%80%E5%B7%A7-24a54ea32d10)
+- [Introduction to Rolling Hash (OI Wiki)](https://oi-wiki.org/string/hash/)
+- [Rolling hash and interesting problems](https://codeforces.com/blog/entry/60445)
+- [Good Indian tutorial of Rolling Hash](https://www.youtube.com/watch?v=BQ9E-2umSWc)
+- [滾動雜湊 -- 知乎](https://zhuanlan.zhihu.com/p/67368838)
