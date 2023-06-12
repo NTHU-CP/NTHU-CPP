@@ -38,22 +38,15 @@ Hash (哈希)，是一種將資料壓縮成一個數字的方法，好比一個�
 
 對模數值 m 取模，得到最終的哈希值 105834283。
 
-### Python Code
+### Code Implementation
 
-```python
-def polynomial_hash(s, a, m):
-    # 初始化哈希值為 0
-    h = 0
-    # 計算多項式中各項的次方
-    p = 1
-    for c in s:
-        # 將字符轉換為對應的數字
-        x = ord(c)
-        # 更新多項式中各項的係數
-        h = (h + x * p) % m
-        # 更新多項式中各項的次方
-        p = (p * a) % m
-    # 返回最終的哈希值
+```C++
+long long polynomial_hash(long long s, long long a, long long m) {
+    long long h = 0, p = 1;
+    for(int i = 0; i < S.size(); i++) {
+        h = (h + (S[i] - 'a') * p) % m;
+        p = (p * a) % m;
+    }
     return h
 ```
 
@@ -102,22 +95,29 @@ $P(k,m)=1−\frac{(m−k)!m}{k \cdot m!}$
 
 此時，使用 prefix sum 能夠減少計算 substring 的額外開銷，具體作法如下。
 
-1. 建立一個數列 $H[i] = polynomial_hash(S[0:i], a, m)$
-2. 初始設定 $H[0] = 0$，$H[i] = H[i - 1] + S[i] \cdot a^i \mod m$，並遞推這個數列
-3. 計算 $(H[j] - H[i]) \cdot a^{-i}$ 即為 `polynomial_hash(S[i:j], a, m)`，計算 $a^{-i}$ 時，可以參考模逆元的作法。
+1. 建立一個數列 \\(H[i] = polynomial_hash(S[0:i], a, m)\\)
+2. 初始設定 \\(H[0] = 0\\)，\\(H[i] = H[i - 1] + S[i] \cdot a^i \mod m\\)，並遞推這個數列
+3. 計算 \\((H[j] - H[i]) \cdot a^{-i}\\) 即為 `polynomial_hash(S[i:j], a, m)`，計算 \\(a^{-i}\\) 時，可以參考模逆元的作法。
 
-```python
-def preprocess_substring(S):
-    H = [0]
-    p = 1
-    for i in range(len(S)):
-        H.append((H[i] + ord(S[i]) * p) % m)
-        p = (p * a) % m
-    return H
+```C++
+vector<long long> preprocess_substring(string S) {
+    vector<long long> H = {0};
+    long long p = 1;
+    for (int i = 0; i < S.size(); i++) {
+        H.push_back(((H[i] + S[i] - 'A') * p) % m);
+        p = (p * a) % m;
+    }
+    return H;
+}
 
-def substring_hash(H, l, r):
-    difference = (H[r] - H[l] + m) % m
-    return (difference * mod_inverse(pow(a, i), m)) % m
+
+long long mod_inverse(long long x, long long mod); // Returns the modulo inverse of x under mod
+long long pow(long long x, long long p, long long mod); // Returns x^{p} under mod
+
+long long substring_hash(vector<long long> H, int l, int r) {
+    difference = (H[r] - H[l] + m) % m;
+    return (difference * mod_inverse(pow(a, i, m), m)) % m
+}
 ```
 
 這樣做的話，只要先付出 $O(N)$ 的時間建表，每次查詢 substring 就只要 $O(1)$ 了。
@@ -131,16 +131,19 @@ def substring_hash(H, l, r):
 
 平常比大小時，找最小的 $i$ 就很樸素的 $O(|X|)$ 枚舉而已，但是在能夠 $O(1)$ 取得 substring hash value 的狀況下，能夠加速成 $O(log |X|)$，具體而言，可以參照下列虛擬碼。
 
-```python
-def get_first_difference(X, Y):
-    l, r = 0, len(X)
-    while l < r:
-        mid = (l + r) // 2
-        if substring_hash(X, 0, mid) == substring_hash(Y, 0, mid):
-            l = mid
-        else:
-            r = mid
+```C++
+long long get_first_difference(X, Y) {
+    int l = 0, r = X.size(), mid;
+    while (l < r) {
+        mid = (l + r) / 2
+        if (substring_hash(X, 0, mid) == substring_hash(Y, 0, mid)) {
+            l = mid;
+        } else {
+            r = mid;
+        }
+    }
     return l + 1
+}
 ```
 
 完成 1. 之後，只需要 $O(1)$ 比較 $X[i] > Y[i]$ 即可。
@@ -153,14 +156,17 @@ def get_first_difference(X, Y):
 
 藉由 Rolling Hash 前綴和，我們先對 $T$ 做預處理，再來，我們枚舉 $i$，並查詢 $T[i,i+|P|]$ 的值，如果 $H(P)$ 等同 $H(T[i,i+|P|])$，我們就得知這兩串字串相等，也就能夠把這題做完了！只需要 $O(|T|+|P|)$ 的時間複雜度，便能做完這一題！
 
-```python
-def string_match(T, P):
-    occurences = 0
-    H, hash = preprocess_substring(T), polynomial_hash(P)
-    for i in range(len(T) - len(P)):
-        if substring_hash(H, i, i + len(P)) == hash:
+```C++
+long long string_match(string T, string P) {
+    int occurences = 0;
+    vector<long long> H = preprocess_substring(T);
+    long long hash = polynomial_hash(P);
+    for (int i = 0; i < T.size() - P.size(); i++) {
+        if(substring_hash(H, i, i + len(P)) == hash)
             occurences += 1
+    }   
     return occurences
+}
 ```
 
 乾淨、簡單、俐落！這就是 Rolling Hash 魅力！用短短幾行程式碼，即可解決問題！
@@ -177,20 +183,25 @@ def string_match(T, P):
 
 二分搜耗費 $O(\log T)$ 的時間，而每次枚舉耗費 $O(T)$ 的時間，共計需要 $O(T \log T)$ 的時間，即可把問題解決！
 
-```python
-def max_palindrome(T):
-    ans, T_prime = 0, T[::-1]
-    H, H_prime = preprocess_substring(T), preprocess_substring(T_prime)
-    for i in range(len(T)):
-        l, r = 0, len(T)
-        while l < r:
-            mid = (l + r) // 2
-            if substring_hash(H, i - mid, i) == substring_hash(H_prime, i, i + mid):
+```C++
+int max_palindrome(string T) {
+    int ans = 0;
+    string T_prime = reverse(T);
+    vector<long long> H = preprocess_substring(T), H_prime = preprocess_substring(T_prime);
+    for i in range(len(T)) {
+        int l = 0, r = T.size();
+        while (l < r) {
+            int mid = (l + r) / 2
+            if (substring_hash(H, i - mid, i) == substring_hash(H_prime, i, i + mid)) {
                 l = mid
-            else:
+            } else {
                 r = mid
+            }
+        }
         ans = max(ans, l)
+    }
     return ans
+}
 ```
 
 眼尖的讀者可能會發現，這套演算法只能解決答案是奇數的情況，如果答案是偶數的話，要怎麼辦呢？很簡單，如果答案是偶數，在每一個字元之間，安插一個垃圾符號（Dummy character），再運行演算法，即可得到解答！垃圾符號不能在原本的字串中出現，不然會影響原先的演算法。
