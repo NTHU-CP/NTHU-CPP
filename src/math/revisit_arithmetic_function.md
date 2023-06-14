@@ -42,7 +42,7 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 
 <p align="right">\( \blacksquare \)</p>
 
-</details> 
+</details>
 
 > \\( \displaystyle\sum_{d\mid n}\mu(d)=[n=1] \\)
 >
@@ -65,7 +65,7 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 * \\( \vdots \\)
 * \\( d \\) 是 \\( m \\) 個質數的連乘的取法有 \\( \binom{m}{m} \\) 種，函數值是 \\( (-1)^m \\)。
 
-因此 
+因此
 
 \\[ \displaystyle\mu(n) = \sum_{d\mid n}\mu(d) = \sum_{i=0}^m \binom{m}{i}\times (-1)^i \\]
 
@@ -73,7 +73,7 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 
 <p align="right">\( \blacksquare \)</p>
 
-</details> 
+</details>
 
 > 莫比烏斯反演：
 >
@@ -98,6 +98,7 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 注意到交換 \\( \sum \\) 的這一個步驟，此時的 \\( t \\)、\\( d \\)、\\( n \\) 之間滿足 \\( t\mid d\mid n \\)。
 
 因此在已知 \\( n \\) 的條件下，
+
 * 先枚舉 \\( d \\) 再枚舉 \\( d \\) 的因數作為 \\( t \\)
 * 先枚舉 \\( t \\) 再枚舉其小於等於 \\( n \\) 的倍數作為 \\( d \\)
 
@@ -118,7 +119,7 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 
 <p align="right">\( \blacksquare \)</p>
 
-</details> 
+</details>
 
 <details><summary>證明二</summary>
 
@@ -142,7 +143,7 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 
 證明的方法與莫比烏斯反演的證明一雷同，這裡不再贅述。
 
-</details> 
+</details>
 
 > \\( \displaystyle\sum_{d\mid n}\varphi(d)=n \\)
 >
@@ -178,7 +179,7 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 
 <p align="right">\( \blacksquare \)</p>
 
-</details> 
+</details>
 
 ## 例題
 
@@ -190,6 +191,7 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 ## 套路
 
 可以發現，使用到的技巧不外乎是：
+
 * 看到 \\(\gcd\\) 就枚舉他
 * 看到艾佛森括號就把他換掉
 * 原本枚舉因數的，就改成枚舉倍數
@@ -212,5 +214,5 @@ RHS 中的 \\( \frac n d \\) 實際上也會跑過 \\( n \\) 的所有因數。
 ## 其他
 
 * 給定一棵邊帶權樹，一個路徑的價值是路徑上所有權重的 \\( \gcd \\)，求所有相異路徑的價值總和
-    * （點數、權重 \\( \le 10^5 \\) ）
-* 給定 \\( a_1,\cdots,a_n\\) （\\( n\le 10^5 \\) ），求 \\( \sum_{i=1}^n \sum_{i=1}^n \gcd(a_i,a_j)\times\gcd(i,j) \\)
+  * （點數、權重 \\( \le 10^5 \\)）
+* 給定 \\( a_1,\cdots,a_n\\)（\\( n\le 10^5 \\)），求 \\( \sum_{i=1}^n \sum_{i=1}^n \gcd(a_i,a_j)\times\gcd(i,j) \\)

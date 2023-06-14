@@ -36,7 +36,7 @@ vector<bool> LinearPrimeSieve(int n) {
 
 證明：
 
-> 對於所有質數 \\( i \\)，經過上述計算後，``notPrime[i]``等於 ``false``。
+> 對於所有質數 \\( i \\)，經過上述計算後，``notPrime[i]`` 等於 ``false``。
 
 注意到 ``notPrime[i * p]`` 中的 ``i`` 和 ``p`` 都大於 \\( 1 \\)，因此只有合數的 ``notPrime`` 值會被設為 ``true``。
 

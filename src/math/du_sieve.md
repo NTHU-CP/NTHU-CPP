@@ -12,7 +12,7 @@
 
 對它取前綴和，會發現它很好算，也就是 \\(\sum_{i=1}^n \mu\ast 1 = \sum_{i=1}^n [i=1] = 1\\)。
 
-因此若可以找到 \\(\mu\ast 1\\)  的前綴和，還有 \\(\mu\\) 的前綴和之間的關係，說不定就能夠加速計算 \\(\mu\\) 的前綴和。
+因此若可以找到 \\(\mu\ast 1\\) 的前綴和，還有 \\(\mu\\) 的前綴和之間的關係，說不定就能夠加速計算 \\(\mu\\) 的前綴和。
 
 而這就是大名鼎鼎的杜教篩。
 
@@ -29,7 +29,7 @@
 證明如下：
 
 \begin{align}
-\displaystyle \sum_{i=1}^n (g\ast f)(i) 
+\displaystyle \sum_{i=1}^n (g\ast f)(i)
 &= \sum_{i=1}^n \sum_{d\mid i} g(d)\times f\left(\frac{i}{d}\right) & \text{根據 Dirichlet 捲積的定義展開} \\\\
 &= \sum_{d=1}^n \sum_{i=1}^{\left\lfloor\frac{n}{d}\right\rfloor} g(d)\times f(i) & \text{套路，將 sigma 的順序交換，並改變枚舉的變數} \\\\
 &= \sum_{d=1}^n g(d) \sum_{i=1}^{\left\lfloor\frac{n}{d}\right\rfloor} f(i) & g(d) \text{ 與 } i \text{ 無關，將其移到前面} \\\\
@@ -54,7 +54,6 @@
 ---
 
 <br>
-
 
 寫成 pseudo code 可以得到：
 
@@ -127,15 +126,15 @@ def Find_S(n):
 
 證明：
 
-根據定義，\\( m\in R(n)) \\) 代表存在某個正整數 \\( i \\)（\\( 1\le i\le n \\)） 使得 \\( \left\lfloor\dfrac n i\right\rfloor = m \\)。
+根據定義，\\( m\in R(n) \\) 代表存在某個正整數 \\( i \\) (\\( 1\le i\le n \\)) 使得 \\( \left\lfloor\dfrac n i\right\rfloor = m \\)。
 
-因此 
+因此
 
-\\[ R(m)=\left\\{\left\lfloor\frac{\left\lfloor\frac{n}{i}\right\rfloor}{j}\right\rfloor :\  j=1, 2, \cdots, m \right\\} \\]
+\\[ R(m)=\left\\{\left\lfloor\frac{\left\lfloor\frac{n}{i}\right\rfloor}{j}\right\rfloor :\ j=1, 2, \cdots, m \right\\} \\]
 
 利用前述引理，可以簡化成：
 
-\\[ R(m)=\left\\{\left\lfloor\frac{n}{ij}\right\rfloor :\  j=1, 2, \cdots, m \right\\} \\]
+\\[ R(m)=\left\\{\left\lfloor\frac{n}{ij}\right\rfloor :\ j=1, 2, \cdots, m \right\\} \\]
 
 由此可見 \\( R(m)\subseteq R(n) \\)。
 
@@ -611,13 +610,13 @@ Bottleneck 在於求 \\( \mu \\) 的前綴和，時間複雜度依然是 \\( \ma
 
 <br>
 
-[洛谷 P213](https://www.luogu.com.cn/problem/P4213)即是上面兩道練習的模板題。
+[洛谷 P213](https://www.luogu.com.cn/problem/P4213) 即是上面兩道練習的模板題。
 
 在此附上 AC code。
 
 在這道題目中要注意，\\( n + 1 \\) 可能會導致 overflow。
 
-附註：  我只有測試過以下的 code，上面的 code 並沒有丟到 OJ 上測試過。
+附註：我只有測試過以下的 code，上面的 code 並沒有丟到 OJ 上測試過。
 
 ```cpp
 #include <bits/stdc++.h>
@@ -709,9 +708,8 @@ signed main() {
 }
 ```
 
-
 ## 練習題
 
->  求\\( \displaystyle S(n)=\sum_{i=1}^n \sum_{j=1}^n ij\times \gcd(i,j) \\) 的值。（\\( n\le 10^{10} \\)）
+> 求\\( \displaystyle S(n)=\sum_{i=1}^n \sum_{j=1}^n ij\times \gcd(i,j) \\) 的值。（\\( n\le 10^{10} \\)）
 
 （hint：先以數論函數章節所教的技巧進行化簡，變成前綴和的樣子後再做杜教篩。）

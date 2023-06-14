@@ -1,0 +1,36 @@
+name: Textlint
+
+on:
+  pull_request:
+    paths:
+      - '**.md'
+  push:
+    paths:
+      - '**.md'
+
+jobs:
+  textlint:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+      with:
+        fetch-depth: 0
+
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '14'
+
+    - name: Install textlint
+      run: |
+        npm install textlint textlint-rule-preset-zh-technical-writing
+
+    - name: Run textlint
+      continue-on-error: true
+      run: |
+        echo "::remove-matcher owner=eslint-compact::"
+        echo "::remove-matcher owner=eslint-stylish::"
+        CHANGED_FILES=$(git diff --name-only --diff-filter=d origin/${{ github.base_ref }}...${{ github.sha }} | grep '\.md$' | xargs)
+        npx textlint $CHANGED_FILES
