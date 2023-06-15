@@ -55,7 +55,7 @@ void DFS(int u) {
 
 <img src="image/DFS Tree note 1.JPG" width="200" style="display:block; margin: 0 auto;"/>
 
-所以如果你的 code 只有寫看到一條邊就根據它是 tree edge/back edge 做事，那你有可能會因為做了重複的操作而導致 WA。
+所以如果你的 code 只有寫看到一條邊就根據它是 tree edge/back edge 做事，那你有可能會因為看到一條 edge 兩次而做了重複的操作，從而導致 WA。
 
 例如下面的 code 我們想要統計一個點上接出幾條 back edge。當 \\( E \\) 看到 \\( (E,A) \\) 這條邊時，因為 \\( A \\) 點已經被看過，因此 \\( E,A \\) 兩點都會 +1；而當 \\( A \\) 看到 \\( (E,A) \\) 這條邊，因為 \\( E \\) 點已經被看過，因此 \\( E,A \\) 兩點都會 +1。所以最後 \\( A \\) 點跟 \\( E \\) 點都會算出 2 而不是正確答案的 1。
 
@@ -73,11 +73,9 @@ void DFS(int u) {
 }
 ```
 
-因此，在無向圖上使用 DFS tree 時，要嘛想辦法處理掉因為重複操作帶來的影響(如上面的例子就是把每個點的答案除二)，要嘛讓每條 edge 都只在第一次被看到的時候做事。
+因此，在無向圖上使用 DFS tree 時，要嘛想辦法處理掉因為看到一條邊兩次帶來的影響(如上面的例子就是把每個點的答案除二)，要嘛讓每條邊都只在第一次被看到的時候做事。
 
-以下給出一個修改方法可以讓每條 edge 都只在第一次被看到的時候做事。簡單來說就是通過紀錄每個點在 DFS 中的狀態 (還未開始 DFS、已經開始 DFS 但還沒結束、已經結束 DFS)來判斷一條 edge 是否為第一次被看過。我們用 color[u] = 0,1,2 來表示 \\( u \\) 這個點是在三種狀態中的哪一種。
-
-下面的 code 我們同樣想要統計一個點上接出幾條 back edge。我們會發現，當 \\( E \\) 看到 \\( (E,A) \\) 這條邊時，因為 \\( A \\) 點的 DFS 還沒結束，因此 \\( (E,A) \\) 是第一次被看到的 back edge，\\( E,A \\) 兩點都會 +1，然後 \\( E \\) 點的 DFS 就結束了。而當 \\( A \\) 看到 \\( (E,A) \\) 這條邊時，因為 \\( E \\) 點已經結束 DFS，代表 \\( E,A \\) 這條邊一定被 \\( E \\) 看過否則 \\( E \\) 的 DFS 不該結束。所以 \\( E,A \\) 兩點在這時不會 +1。最後得出來的答案就會是我們想要的 1。
+以下給出一個修改方法可以讓每條邊都只在第一次被看到的時候做事。簡單來說就是通過紀錄每個點在 DFS 中的狀態 (還未開始 DFS、已經開始 DFS 但還沒結束、已經結束 DFS)來判斷一條邊是否為第一次被看過。我們用 \\(color[u] = 0,1,2\\) 來表示 \\( u \\) 這個點是在三種狀態中的哪一種。
 
 ```cpp
 void DFS(int u, int parent) { //call(u,u) at first
@@ -89,9 +87,13 @@ void DFS(int u, int parent) { //call(u,u) at first
             dfs(v, u);
         } else if(color[v] == 1) {
             //第一次看到的back edge
+            //在這個例子中當 E 看到 (E,A) 這條邊時會進到這裡
             backedgeCounter[u]+=1;
             backedgeCounter[v]+=1;
         }
+        //在這個例子中，當 A 看到 (E,A) 這條邊時
+        //因為 E 的 DFS 已經結束， color[E] = 2
+        //因此 (E,A) 這條邊不會被算到第 2 次
     }
     color[u] = 2;
 }
@@ -169,28 +171,58 @@ Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
 ## code
 
 ``` cpp
-void dfs(int u, int parent, int dep) {
-    
-    depth[u] = low[u] = dep;
-    int child = 0;
-    bool isAP = false; 
-    
-    for(auto &v : G[u]) {
-        if(v == parent) continue;
-        if(depth[v] == 0) {
-            child++;
-            dfs(v, u, dep+1);
-            low[u] = min(low[v], low[u]);
-            if(low[v] >= depth[u]) isAP = true;
-            if(low[v] > depth[u]) Bridge.emplace_back(u,v);
-        } else {
-            low[u] = min(low[u], depth[v]);
-        }
+struct AP_bridge {
+    vector<int> low, depth;
+    vector<vector<int> > G;
+    vector<int> AP;
+    vector<pair<int, int> > Bridge;
+    void init(int n) {
+        depth.assign(n+1, 0);
+        low.assign(n+1, 0);
+        G.assign(n+1, vector<int>());
+        AP.clear();
+        Bridge.clear();
     }
-
-    if(u == parent && child < 2) isAP = false;
-    if(isAP) AP.emplace_back(u);
-}
+    
+    void add_edge(int u, int v) {
+        G[u].emplace_back(v);
+        G[v].emplace_back(u);
+    }
+    
+    void solve(int root) {
+        dfs(root, root, 1);
+    }
+    
+    void dfs(int u, int parent, int dep) {
+        depth[u] = low[u] = dep;
+        int child = 0;
+        bool isAP = false; 
+        
+        for(auto &v : G[u]) {
+            if(v == parent) continue;
+            if(depth[v] == 0) {
+                child++;
+                dfs(v, u, dep+1);
+                low[u] = min(low[v], low[u]);
+                if(low[v] >= depth[u]) isAP = true;
+                if(low[v] > depth[u]) Bridge.emplace_back(u,v);
+            } else {
+                low[u] = min(low[u], depth[v]);
+            }
+        }
+    
+        if(u == parent && child < 2) isAP = false;
+        if(isAP) AP.emplace_back(u);
+    }
+    
+    vector<int> get_AP() {
+        return AP;
+    }
+    
+    vector<pair<int, int> > get_bridge() {
+        return Bridge;
+    }
+};
 ```
 
 ## Using DFS tree for Bridge/AP
@@ -230,22 +262,47 @@ void dfs(int u, int parent, int dep) {
 ### Code
 
 ```cpp
-void dfs(int u, int parent) {
-    color[u] = 1;
-    for(auto &v : G[u]) {
-        if(v == parent) continue;
-        if(color[v] == 0) {
-            dfs(v, u);
-            if(sum[v] == 0) 
-                bridge.emplace_back(u, v);
-            sum[u]+=sum[v];
-        } else if(color[v] == 1) {
-            sum[u]+=1;
-            sum[v]-=1;
-        }
+struct bridge {
+    vector<int> color, sum;
+    vector<vector<int> > G;
+    vector<pair<int, int>> Bridge;
+    void init(int n) {
+        color.assign(n+1, 0);
+        sum.assign(n+1, 0);
+        G.assign(n+1, vector<int>());
+        Bridge.clear();
     }
-    color[u] = 2;
-}
+    
+    void add_edge(int u, int v) {
+        G[u].emplace_back(v);
+        G[v].emplace_back(u);
+    }
+    
+    void solve(int root) {
+        dfs(root, root);
+    }
+    
+    void dfs(int u, int parent) {
+        color[u] = 1;
+        for(auto &v : G[u]) {
+            if(v == parent) continue;
+            if(color[v] == 0) {
+                dfs(v, u);
+                if(sum[v] == 0) 
+                    Bridge.emplace_back(u, v);
+                sum[u]+=sum[v];
+            } else if(color[v] == 1) {
+                sum[u]+=1;
+                sum[v]-=1;
+            }
+        }
+        color[u] = 2;
+    }
+        
+    vector<pair<int, int> > get_bridge() {
+        return Bridge;
+    }
+};
 ```
 
 ### 如何找 AP
@@ -275,33 +332,59 @@ void dfs(int u, int parent) {
 ### Code
 
 ```cpp
-void dfs(int u, int parent) {
-    color[u] = 1;
-    bool isAP = false;
-    int child = 0;
-
-    for(auto &v : G[u]) {
-        if(v == parent) continue;
-        if(color[v] == 0) {
-            child++;
-            int backEdgeEndNum = backEdgeEnd[u];
-            dfs(v, u);
-            if(sum[v] - (backEdgeEnd[u] - backEdgeEndNum) == 0) {
-                isAP = true;;
-            }
-            sum[u]+=sum[v];
-        } else if(color[v] == 1) {
-            sum[u]+=1;
-            backEdgeEnd[v]+=1; 
-        }
+struct AP {
+    vector<int> color, sum, backEdgeEnd;
+    vector<vector<int> > G;
+    vector<int> AP;
+    void init(int n) {
+        color.assign(n+1, 0);
+        sum.assign(n+1, 0);
+        backEdgeEnd.assign(n+1, 0);
+        G.assign(n+1, vector<int>());
+        AP.clear();
     }
-    sum[u] -= backEdgeEnd[u];
-    color[u] = 2;
     
-    if(u == parent && child == 1) isAP = false;
-    if(isAP) AP.emplace_back(u);
-}
+    void add_edge(int u, int v) {
+        G[u].emplace_back(v);
+        G[v].emplace_back(u);
+    }
+    
+    void solve(int root) {
+        dfs(root, root);
+    }
+    
+    void dfs(int u, int parent) {
+        color[u] = 1;
+        bool isAP = false;
+        int child = 0;
+    
+        for(auto &v : G[u]) {
+            if(v == parent) continue;
+            if(color[v] == 0) {
+                child++;
+                int backEdgeEndNum = backEdgeEnd[u];
+                dfs(v, u);
+                if(sum[v] - (backEdgeEnd[u] - backEdgeEndNum) == 0) {
+                    isAP = true;;
+                }
+                sum[u]+=sum[v];
+            } else if(color[v] == 1) {
+                sum[u]+=1;
+                backEdgeEnd[v]+=1; 
+            }
+        }
+        sum[u] -= backEdgeEnd[u];
+        color[u] = 2;
+        
+        if(u == parent && child == 1) isAP = false;
+        if(isAP) AP.emplace_back(u);
+    }
+    
+    vector<int> get_AP() {
+        return AP;
+    }
 
+};
 ```
 
 ## Exercise
