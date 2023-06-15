@@ -8,11 +8,11 @@ Segment Tree Beats（簡稱 STB）是北京大學的吉如一提出的概念，�
 
 > 例題 1. [HDU - Gorgeous Sequence](http://acm.hdu.edu.cn/showproblem.php?pid=5306)
 >
-> 給一個長度為 \\( n \\) 的序列 \\( a \\)，並對其進行 \\( m \\) 筆操作。操作有三種：
+> 給一個長度為 \\( n \\) 的序列 \\( A \\)，並對其進行 \\( m \\) 筆操作。操作有三種：
 >
-> 1. 給定 \\( l, r, x \\)，對所有 \\( i, (l \leq i \leq r) \\)，將 \\( a_i \\) 修改成 \\( min(a_i, x) \\)。
-> 2. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出\\( a_i \\)的最大值。
-> 3. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出\\( \sum_{i = l}^{r} a_i \\)。
+> 1. 給定 \\( l, r, x \\)，對所有 \\( i, (l \leq i \leq r) \\)，將 \\( A_i \\) 修改成 \\( min(A_i, x) \\)。
+> 2. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出\\( A_i \\)的最大值。
+> 3. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出\\( \sum_{i = l}^{r} A_i \\)。
 >
 > - \\( n, m \leq 10^6 \\)
 
@@ -190,11 +190,11 @@ signed main() {
 
 > 例題 2. Picks loves segment tree
 >
-> 給一個長度為 \\( n \\) 的序列 \\( a \\)，並對其進行 \\( m \\) 筆操作。操作有三種：
+> 給一個長度為 \\( n \\) 的序列 \\( A \\)，並對其進行 \\( m \\) 筆操作。操作有三種：
 >
-> 1. 給定 \\( l, r, x \\)，對所有 \\( i, (l \leq i \leq r) \\)，將 \\( a_i \\) 修改成 \\( min(a_i, x) \\)。
-> 2. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，將\\( a_i \\) 加上 \\( x \\)（\\( x \\) 可能為負數）。
-> 3. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出\\( \sum_{i = l}^{r} a_i \\)。
+> 1. 給定 \\( l, r, x \\)，對所有 \\( i, (l \leq i \leq r) \\)，將 \\( A_i \\) 修改成 \\( min(A_i, x) \\)。
+> 2. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，將\\( A_i \\) 加上 \\( x \\)（\\( x \\) 可能為負數）。
+> 3. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出\\( \sum_{i = l}^{r} A_i \\)。
 >
 > - \\( n, m \leq 3 \times 10^5 \\)
 
@@ -340,17 +340,17 @@ int main() {
 
 > 例題 3. [BZOJ - 最假女選手](https://darkbzoj.tk/problem/4695)
 >
-> 給一個長度為 \\( n \\) 的序列 \\( a \\)，並對其進行 \\( m \\) 筆操作。操作有六種：
+> 給一個長度為 \\( n \\) 的序列 \\( A \\)，並對其進行 \\( m \\) 筆操作。操作有六種：
 >
-> 1. 給定 \\( l, r, k \\)，對所有 \\( i, (l \leq i \leq r) \\)，將\\( a_i \\)加上 \\( k \\)。
-> 2. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，將 \\( a_i \\) 修改成 \\( max(a_i, x) \\)。
-> 3. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，將 \\( a_i \\) 修改成 \\( min(a_i, x) \\)。
-> 4. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出\\( \sum_{i = l}^{r} a_i \\)。
-> 5. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出\\( a_i \\)的最大值。
-> 6. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出\\( a_i \\)的最小值。
+> 1. 給定 \\( l, r, k \\)，對所有 \\( i, (l \leq i \leq r) \\)，將\\( A_i \\)加上 \\( k \\)。
+> 2. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，將 \\( A_i \\) 修改成 \\( max(A_i, x) \\)。
+> 3. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，將 \\( A_i \\) 修改成 \\( min(A_i, x) \\)。
+> 4. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出 \\( \sum_{i = l}^{r} A_i \\)。
+> 5. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出 \\( A_i \\) 的最大值。
+> 6. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出 \\( A_i \\) 的最小值。
 >
 > - \\( n, m \leq 5 \times 10^5 \\)
-> - \\( | a_i | \leq 10^8 \\)
+> - \\( | A_i | \leq 10^8 \\)
 
 我們將一個區間的節點劃分為最大值、最小值和其他值三種。在每個節點維護區間和 \\( sum \\)、區間最大值 \\( mx1 \\)、次大值 \\( mx2 \\)、最大個數 \\( cmx \\)、最小值 \\( mn1 \\)、次小值 \\( mn2 \\)、最小個數 \\( cmn \\)。我們還需要維護區間 \\( max \\)、區間 \\( min \\)、區間加的標記。我們採用這樣的策略：
 
@@ -545,6 +545,483 @@ int main() {
 </details>
 
 ### 歷史最值問題
+
+在資料結構問題中，我們通常需要對一個給定的數組 \\( A \\) 進行多次操作，然後進行一些詢問。有一少部分問題需要對歷史版本進行詢問，這類特殊的有關歷史版本的問題我們把它稱作歷史最值問題。歷史最值問題中的詢問可以分成以下三類：
+
+#### 歷史最大值
+
+當前位置下曾經出現過的數的最大值。定義一個輔助數組 \\( B \\)，最開始 \\( B \\) 數組與 \\( A \\) 數組完全相同。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( B_i = max(B_i, A_i) \\)。這時，我們將 \\( B_i \\) 稱作 \\( i \\) 這個位置的歷史最大值。
+
+#### 歷史最小值
+
+當前位置下曾經出現過的數的最小值。定義一個輔助數組 \\( B \\)，最開始 \\( B \\) 數組與 \\( A \\) 數組完全相同。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( B_i = min(B_i, A_i) \\)。這時，我們將 \\( B_i \\) 稱作 \\( i \\) 這個位置的歷史最小值。
+
+#### 歷史版本和
+
+定義一個輔助數組 \\( B \\)，最開始 \\( B \\) 數組中的所有數都是 \\( 0 \\)。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( B_i \\) 加上 \\( A_i \\)。這時，我們將 \\( B_i \\) 稱作 \\( i \\) 這個位置的歷史版本和。
+
+接下來，我們將歷史最值問題按照難度從低到高分成四類進行討論。
+
+### 可以用懶標記處理的問題
+
+> 例題 4. [Tyvj - CPU 監控](http://www.tyvj.cn/p/1518)
+>
+> 給一個長度為 \\( n \\) 的序列 \\( A \\)，同時定義一個輔助數組 \\( B \\)，\\( B \\)開始與 \\( A \\) 完全相同。接下來對其進行 \\( m \\) 筆操作，操作有四種：
+>
+> 1. 給定 \\( l, r, x \\)，對所有 \\( i \in [l, r] \\)，將 \\( A_i \\) 修改成 \\( x \\)。
+> 2. 給定 \\( l, r, x \\)，對所有 \\( i \in [l, r] \\)，將 \\( A_i \\) 加上 \\( x \\)。
+> 3. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，輸出 \\( A_i \\) 的最大值。
+> 4. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，輸出 \\( B_i \\) 的最大值。
+>
+> - \\( n, m \leq 10^5 \\)
+
+剛接觸這個問題時，這個例題可能難度較高，所以我們先忽略第一種操作。
+
+考慮使用傳統的懶標記來解決，首先如果只是詢問區間最大值，只需要使用區間加減這一個懶標記（用 \\( Add \\) 表示）就能解決。
+
+現在考慮詢問區間歷史最大值的最大值。我們定義一種新的懶標記：歷史最大的加減標記（用 \\( Pre \\) 表示）。這個標記的定義是，從上一次把這個節點的標記下傳的時刻到當前時刻這一個時段中，這個節點中的 \\( Add \\) 標記值到達過的最大值。
+
+當第 \\( i \\) 個節點的標記下傳到他的子節點 \\( l \\)，不難發現標記是可以合併的：\\( Pre_l = max(Pre_l, Add_l + Pre_i), Add_l = Add_l + Add_i \\)。至於區間歷史最大值資訊的更新也與標記的合併類似，只需要將當前的區間最大值加上 \\( Pre_i \\) 然後與原來的歷史最大值進行比較即可。
+
+現在回到原題，我們觀察在修改操作過程中，被影響到的節點的變化：如果一個節點沒有發生標記下傳，那麼最開始它一直被區間加減操作所影響，這時我們可以用上面描述的 \\( Pre \\) 標記來記錄，直到某一時刻，這個節點被區間覆蓋標記影響了，瞭那麼這時這個節點中的所有數都變得完全相同，之後的所有區間加減修改，對這個節點而言，與區間覆蓋操作並沒有不同。
+
+因此每一個節點受到的標記可以分成兩個部分：第一個部分昰區間加減，第二個部分是區間覆蓋。因此我們可以用 \\( (x, y) \\) 來表示歷史最值標記，它的定義是當前區間在第一階段時最大的加減標記是 \\( x \\)，在第二階段時最大的覆蓋標記是 \\( y \\)。顯然這個標記昰可以進行合併與更新的。到此我們就使用最傳統的懶標記方法解決了這個問題，時間複雜度是 \\( O(mlogn) \\)。
+
+<details><summary> Solution Code </summary>
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+typedef long long ll;
+
+char nc() {
+    static char buf[1000000], *p = buf, *q = buf;
+    return p == q && (q = (p = buf) + fread(buf, 1, 1000000, stdin), p == q)
+               ? EOF
+               : *p++;
+}
+
+ll rd() {  // LLONG_MIN LMAX=9,223,372,036,854,775,807
+    ll s = 0, w = 1;
+    char ch = nc();
+    while (ch < '0' || ch > '9') {
+        if (ch == '-') w = -1;
+        ch = nc();
+    }
+    while (ch >= '0' && ch <= '9') s = s * 10 + ch - '0', ch = nc();
+    return s * w;
+}
+
+const int N = 1e5 + 7;
+
+struct Tree {
+    int mx, _mx;  // 區間最大值 區間歷史最大值
+    int ad, _ad;  // 區間加標記 區間階段歷史最大加標記
+    int st, _st;  // 區間修改值 區間階段歷史最大修改標記
+} g[N * 4];
+
+int a[N];
+int n, m;
+#define ls u * 2
+#define rs u * 2 + 1
+#define mid (l + r) / 2
+
+void pushup(int u) {
+    g[u].mx = max(g[ls].mx, g[rs].mx);
+    g[u]._mx = max(g[ls]._mx, g[rs]._mx);
+}
+
+void pushadd(int u, int v, int _v) {
+    g[u]._mx = max(g[u]._mx, g[u].mx + _v), g[u].mx += v;
+    if (g[u].st == INT_MIN)
+        g[u]._ad = max(g[u]._ad, g[u].ad + _v), g[u].ad += v;
+    else
+        g[u]._st = max(g[u]._st, g[u].st + _v), g[u].st += v;
+}
+
+void pushset(int u, int v, int _v) {
+    g[u]._mx = max(g[u]._mx, _v), g[u].mx = v;
+    g[u]._st = max(g[u]._st, _v), g[u].st = v;
+}
+
+void pushdown(int u, int l, int r) {
+    if (g[u].ad || g[u]._ad)
+        pushadd(ls, g[u].ad, g[u]._ad), pushadd(rs, g[u].ad, g[u]._ad),
+                g[u].ad = g[u]._ad = 0;
+    if (g[u].st != INT_MIN || g[u]._st != INT_MIN)
+        pushset(ls, g[u].st, g[u]._st), pushset(rs, g[u].st, g[u]._st),
+                g[u].st = g[u]._st = INT_MIN;
+}
+
+void build(int u = 1, int l = 1, int r = n) {
+    g[u]._st = g[u].st = INT_MIN;
+    if (l == r) {
+        g[u].mx = a[l];
+        g[u]._mx = a[l];
+        return;
+    }
+    build(ls, l, mid), build(rs, mid + 1, r);
+    pushup(u);
+}
+
+int L, R;
+
+void add(int v, int u = 1, int l = 1, int r = n) {
+    if (R < l || r < L) return;
+    if (L <= l && r <= R) return pushadd(u, v, max(v, 0));
+    pushdown(u, l, r);
+    add(v, ls, l, mid), add(v, rs, mid + 1, r);
+    pushup(u);
+}
+
+void tset(int v, int u = 1, int l = 1, int r = n) {
+    if (R < l || r < L) return;
+    if (L <= l && r <= R) return pushset(u, v, v);
+    pushdown(u, l, r);
+    tset(v, ls, l, mid), tset(v, rs, mid + 1, r);
+    pushup(u);
+}
+
+int qmax(int u = 1, int l = 1, int r = n) {
+    if (R < l || r < L) return INT_MIN;
+    if (L <= l && r <= R) return g[u].mx;
+    pushdown(u, l, r);
+    return max(qmax(ls, l, mid), qmax(rs, mid + 1, r));
+}
+
+int qmaxh(int u = 1, int l = 1, int r = n) {
+    if (R < l || r < L) return INT_MIN;
+    if (L <= l && r <= R) return g[u]._mx;
+    pushdown(u, l, r);
+    return max(qmaxh(ls, l, mid), qmaxh(rs, mid + 1, r));
+}
+
+int main() {
+    n = rd();
+    for (int i = 1; i <= n; ++i) a[i] = rd();
+    build();
+    int m = rd(), z;
+    for (int i = 1; i <= m; ++i) {
+        char op = nc();
+        while (op == ' ' || op == '\r' || op == '\n') op = nc();
+        L = rd(), R = rd();
+        if (op == 'Q')
+            printf("%d\n", qmax());
+        else if (op == 'A')
+            printf("%d\n", qmaxh());
+        else if (op == 'P')
+            add(rd());
+        else
+            tset(rd());
+    }
+    return 0;
+}
+```
+
+</details>
+
+> 例題 5. [UOJ -【清华集训 2015】V](http://uoj.ac/problem/164)
+>
+> 給一個長度為 \\( n \\) 的序列 \\( A \\)，同時定義一個輔助數組 \\( B \\)，\\( B \\)開始與 \\( A \\) 完全相同。接下來對其進行 \\( m \\) 筆操作，操作有五種：
+>
+> 1. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，將 \\( A_i \\) 修改成 \\( max(A_i - x, 0) \\)。
+> 2. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，將 \\( A_i \\) 加上 \\( x \\)。
+> 3. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，將 \\( A_i \\) 修改成 \\( x \\)。
+> 4. 給定 \\( i \\)，輸出 \\( A_i \\) 的值。
+> 5. 給定 \\( i \\)，輸出 \\( B_i \\) 的值。
+>
+> 每一次操作後，對所有 \\( i \\)，將 \\( B_i \\) 修改成 \\( max(B_i, A_i) \\)。
+>
+> - \\( n, m \leq 5 \times 10^5 \\)
+
+首先我們定義一種標記 \\( (a, b) \\)，表示給這個區間中的所有數先加上 \\( a \\)，然後再對 \\( b \\) 取 \\( max \\)。不難發現題目中涉及的三種操作都可以用這個標記來表示，分別為 \\( (-x, 0) \\)、\\( (x, -inf) \\)、\\( (-inf, x) \\)，\\( inf \\)是一個事先假設足夠大的數。
+
+考慮合併兩個標記 \\( (a, b) \\) 與 \\( (c, d) \\)，那麼顯然得到的就是 \\( (a + c, max(b+c, d)) \\)。因此對於詢問 \\( 4 \\)，我們只需要把詢問的葉節點到根路徑上的所有標記都下傳到葉節點，就能直接得到答案了。
+
+現在考慮歷史最大標記。我們可以把標記給看成一個函數，每一個數字對應的函數值表示這個數在作用了這個標記後的答案，在這個問題中，標記 \\( (a, b) \\) 相當於是一個分段函數，第一段是一條與 \\( x \\) 軸平行的直線，第二段是一條斜率為 \\( 1 \\) 的直線。
+
+在更新歷史最大標記時，我們相當於把兩個標記的圖像同時放到一個坐標系中，然後取出上方的那一段。下圖展示的是標記合併時可能出現的一種情況，藍色的部分是原來的兩個標記，紅色部分是更新後得到的標記。
+
+<img src="image/segment_tree_beats/merge_tag.png" width="700" style="display:block; margin: 0 auto;"/>
+
+因為在更新標記之後形式和原來相同，所以這個歷史最值標示是可以維護的。對於詢問 \\( 4 \\)，我們只需要把所有相關的標記給下傳下去，就能得到答案了。時間複雜度是 \\( O(mlogn) \\)。
+
+<details><summary> Solution Code </summary>
+
+```cpp
+#include<iostream>
+#include<stdio.h>
+#include<string.h>
+#include<algorithm>
+#include<math.h>
+#define fo(i,a,b) for(i=a;i<=b;i++)
+using namespace std;
+typedef long long ll;
+const ll maxn=5e5+7,inf=999999999999999;
+ll i,j,k,l,n,m,o,r,x,y;
+ll a[maxn];
+struct node{
+    ll a,b,da,db;
+    void operator +=(node &x){
+        da=max(da,a+x.da);db=max(db,max(b+x.da,x.db));
+        a=max(a+x.a,-inf);b=max(b+x.a,x.b);
+    }
+}t[maxn*4],now;
+void build(ll x,ll l,ll r){
+    t[x]=(node){0,-inf,0,-inf};
+    if(l==r){
+        t[x].a=a[l];
+        return;
+    }
+    ll mid=(l+r)/2;
+    build(x*2,l,mid);build(x*2+1,mid+1,r);
+}
+void down(ll x){
+    t[x*2]+=t[x];t[x*2+1]+=t[x];
+    t[x]=(node){0,-inf,0,-inf};
+}
+void change(ll x,ll l,ll r,ll y,ll z){
+    if(l==y&&r==z){t[x]+=now;return;}
+    ll mid=(l+r)/2;
+    down(x);
+    if(z<=mid)change(x*2,l,mid,y,z);
+    else if(y>mid)change(x*2+1,mid+1,r,y,z);
+    else change(x*2,l,mid,y,mid),change(x*2+1,mid+1,r,mid+1,z);
+}
+void find(ll x,ll l,ll r,ll y){
+    if(l==r){now=t[x];return;}
+    down(x);ll mid=(l+r)/2;
+    if(y<=mid)find(x*2,l,mid,y);else find(x*2+1,mid+1,r,y);
+}
+int main(){
+    scanf("%lld%lld",&n,&m);
+    fo(i,1,n)scanf("%lld",&a[i]);
+    build(1,1,n);
+    while(m--){
+        scanf("%lld",&o);
+        if(o<=3){
+            scanf("%lld%lld%lld",&l,&r,&x);
+            if(o==1)now=(node){x,-inf,x,-inf};
+            else if(o==3)now=(node){-inf,x,-inf,x};
+            else now=(node){-x,0,-x,0};
+            change(1,1,n,l,r);
+        }
+        else{
+            scanf("%lld",&x);
+            find(1,1,n,x);
+            if(o==4)printf("%lld\n",max(now.a,now.b));
+            else printf("%lld\n",max(now.da,now.db));
+        }
+    }
+}
+```
+
+</details>
+
+### 無法用懶標記處理的單點問題
+
+這裡的單點問題除了詢問單點的歷史最值之外，也包含區間詢問歷史最小值的最小值與區間詢問歷史最大值的最大值。因為這兩個區間詢問的處理方法與單點完全相同，所以把它們歸入單點問題之中。
+
+> 例題 6. [UOJ - 元旦老人与数列](http://uoj.ac/problem/169)
+>
+> 給一個長度為 \\( n \\) 的序列 \\( A \\)，同時定義一個輔助數組 \\( B \\)，\\( B \\)開始與 \\( A \\) 完全相同。接下來對其進行 \\( m \\) 筆操作，操作有四種：
+>
+> 1. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，將 \\( A_i \\) 修改成 \\( max(A_i, x) \\)。
+> 2. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，將 \\( A_i \\) 加上 \\( x \\)。
+> 3. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，輸出 \\( A_i \\) 的最小值。
+> 4. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，輸出 \\( B_i \\) 的最小值。
+>
+> 每一次操作後，對所有 \\( i \\)，將 \\( B_i \\) 修改成 \\( min(B_i, A_i) \\)。
+>
+> - \\( n, m \leq 3 \times 10^5 \\)
+
+這題涉及到區間最值操作，我們已經對區間最值操作進行了深入的研究。
+
+因為在這個問題中，區間最值操作的方向與歷史最值詢問的方向是相反的（一個是取 \\( max \\)，一個是歷史最小值），所以標記無法合併。如下圖所示，兩個紅色標記合併出來的部分是下方的藍色曲線，它的段數會隨著更新次數線性增長，這是不能被接受的，因此我們無法沿用例題 \\( 5 \\) 的懶標記做法。
+
+<img src="image/segment_tree_beats/merge_tag.png" width="700" style="display:block; margin: 0 auto;"/>
+
+我們可以沿用把先前把區間最值操作轉換為區間加減操作的方法。將線段樹中每一個節點所控制的位置分成最小值與非最小值兩部分，這樣要處理的就只有區間加減操作了：這時的歷史最值標記是可以輕鬆維護的。具體來說，維護下面幾個標記：
+
+1. 最小值加減標記
+2. 最小值歷史最小的加減標記
+3. 非最小值加減標記
+4. 非最小值歷史最小的加減標記
+
+前兩個標記是指修改最小值的，所以下傳時要判斷當前節點是否包含區間最小值。到此我們就解決了這個問題，時間複雜度是 \\( O(mlog^2n) \\)。
+
+<details><summary> Solution Code </summary>
+
+```cpp
+#include<iostream>
+#include<algorithm>
+#include<cstdio>
+#include<cstring>
+#define inf 2147483647
+using namespace std;
+const int Mx=1000010;
+int n,m,root,a[Mx],l[Mx],r[Mx];
+int tot,lson[Mx],rson[Mx],val[Mx],lazy[Mx],sum[Mx],Mnhis[Mx];
+int Val[Mx],Lazy[Mx],Sum[Mx];  //次小值 
+
+inline int read() {
+    int x=0,f=1;char ch=getchar();
+    while(ch<'0'||ch>'9') { if(ch=='-') f=-1; ch=getchar(); }
+    while(ch>='0'&&ch<='9') { x=x*10+ch-'0'; ch=getchar(); }
+    return x*f;
+}
+
+void pushup(int x) {
+    int L=lson[x],R=rson[x];
+    Mnhis[x]=min(Mnhis[L],Mnhis[R]);
+    val[x]=min(val[L],val[R]);
+    if(val[L]!=val[R])
+        Val[x]=min(max(val[L],val[R]),min(Val[L],Val[R]));
+    else
+        Val[x]=min(Val[L],Val[R]);
+}
+
+void build(int &x,int L,int R) {
+    x=++tot,l[x]=L,r[x]=R;
+    if(L==R)
+        val[x]=a[L],Val[x]=inf,Mnhis[x]=val[x];
+    else {
+        int mid=(L+R)/2;
+        build(lson[x],L,mid);
+        build(rson[x],mid+1,R);
+        pushup(x);
+    }
+}
+
+void Push(int x,int i,bool flag) {
+    int la=lazy[i],La=Lazy[i],su=sum[i],Su=Sum[i];
+    if(!flag) la=La,su=Su;
+    Mnhis[x]=min(Mnhis[x],val[x]+su);
+    val[x]+=la; if(Val[x]!=inf) Val[x]+=La;
+    sum[x]=min(sum[x],lazy[x]+su),Sum[x]=min(Sum[x],Lazy[x]+Su);
+    lazy[x]+=la,Lazy[x]+=La;
+}
+
+void pushdown(int x) {
+    if(!lazy[x]&&!Lazy[x]&&sum[x]>=0&&Sum[x]>=0) return ;
+    int L=lson[x],R=rson[x];
+    if(val[L]==val[R]) Push(L,x,1),Push(R,x,1);
+    if(val[L]<val[R]) Push(L,x,1),Push(R,x,0);
+    if(val[L]>val[R]) Push(L,x,0),Push(R,x,1);
+    lazy[x]=Lazy[x]=sum[x]=Sum[x]=0;
+}
+
+void Add(int x,int ll,int rr,int c) {
+    int L=l[x],R=r[x];
+    if(L>rr||R<ll) return ;
+    if(ll<=L&&rr>=R) {
+        val[x]+=c; if(Val[x]!=inf) Val[x]+=c;
+        lazy[x]+=c,Lazy[x]+=c;
+        sum[x]=min(sum[x],lazy[x]),Sum[x]=min(Sum[x],Lazy[x]);
+        Mnhis[x]=min(Mnhis[x],val[x]);
+    }
+    else {
+        pushdown(x);
+        Add(lson[x],ll,rr,c);
+        Add(rson[x],ll,rr,c);
+        pushup(x);
+    }
+}
+
+void Max(int x,int ll,int rr,int c) {
+    int L=l[x],R=r[x];
+    if(L>rr||R<ll) return ;
+    if(ll<=L&&rr>=R&&Val[x]>c) {
+        if(val[x]<c) {
+            lazy[x]+=c-val[x];
+            val[x]=c;
+        }
+    }
+    else {
+        pushdown(x);
+        Max(lson[x],ll,rr,c);
+        Max(rson[x],ll,rr,c);
+        pushup(x);
+    }
+}
+
+int Query(int x,int ll,int rr,bool flag) {
+    int L=l[x],R=r[x];
+    if(L>rr||R<ll) return inf;
+    if(ll<=L&&rr>=R) {
+        if(flag) return Mnhis[x];
+        else return val[x];
+    }
+    else {
+        pushdown(x);
+        int ans=min(Query(lson[x],ll,rr,flag),Query(rson[x],ll,rr,flag));
+        pushup(x);
+        return ans;
+    }
+}
+
+int main() {
+    scanf("%d%d",&n,&m);
+    for(int i=1;i<=n;i++) a[i]=read();;
+    build(root,1,n);
+    for(int i=1,num,x,y,z;i<=m;i++) {
+        scanf("%d%d%d",&num,&x,&y);
+        if(num==1) z=read(),Add(root,x,y,z);
+        if(num==2) z=read(),Max(root,x,y,z);
+        if(num==3) printf("%d\n",Query(root,x,y,0));
+        if(num==4) printf("%d\n",Query(root,x,y,1));
+    }
+    return 0;
+}
+```
+
+</details>
+
+### 無區間最值操作的區間問題
+
+這裡所指的問題主要是以下三個：區間加減，詢問區間歷史最小值的和；區間加減，詢問區間歷史最大值的和；區間加減，詢問區間歷史版本和的和。
+
+這三個問題都不能使用懶標記來進行維護，而且也不像區間最值操作一樣被我們所熟知。接下來將分別對這三個問題介紹轉換方法。
+
+#### 歷史最大值
+
+設 \\( A_i \\)為當前數組，\\( B_i \\) 為歷史最大值。定義一個輔助數組 \\( C_i \\)，每一個時刻都讓 \\( C_i = A_i - B_i \\)。我們對 \\( A_i \\) 加上數 \\( x \\) 時，如果 \\( B_i \\) 沒有發生變化，相當於給 \\( C_i \\) 加上了 \\( x \\)。具體來說，區間加減操作相當於將 \\( C_i \\) 變成了\\( max(C_i + x, 0) \\)，這是一個我們熟悉的操作。
+
+考慮區間和這個詢問，只要能夠求出 \\( A_i \\) 和 \\( C_i \\) 的區間和，直接相減便能得到答案。前者是基礎的線段樹問題，後者我們已經在先前研究過了。到此我們得到一種 \\( O(mlog^2n) \\) 的算法。
+
+#### 歷史最小值
+
+處理方法與歷史最大值類似。設 \\( A_i \\)為當前數組，\\( B_i \\) 為歷史最小值。同樣定義一個輔助數組 \\( C_i \\)，每一個時刻都讓 \\( C_i = A_i - B_i \\)。這時區間加減操作相當於將 \\( C_i \\) 變成\\( min(C_i + x, 0) \\)，直接求和即可。
+
+時間複雜度 \\( O(mlog^2n) \\)。
+
+#### 歷史版本和
+
+設 \\( A_i \\)為當前數組，\\( B_i \\) 為歷史版本和，同時我們讓 \\( t \\) 為當前結束的操作數（不包括當次操作）。定義一個輔助數組 \\( C_i \\)，每一個時刻都讓 \\( C_i = B_i - t \cdot A_i \\)。
+
+可以發現對於區間加減沒有影響到的位置，\\( B_i \\) 都不會發生變化。當我們給 \\( A_i \\) 加上 \\( x \\) 時，相當於給 \\( C_i \\) 減去了 \\( x \cdot t \\)。於是我們就把歷史版本和轉換成簡單的區間加減詢問區間和的問題，直接用懶標記即可。
+
+時間複雜度 \\( O(mlogn) \\)。
+
+### 有區間最值操作的區間問題
+
+經過上面的討論後，這最後一類算法已經有了雛型：只需要先把區間最值操作轉換成區間加減操作，再使用上一小節中的方法來進行求解就能得到答案了。
+
+> 例題 7. 賽格蒙特彼茨
+>
+> 給一個長度為 \\( n \\) 的序列 \\( A \\)，同時定義一個輔助數組 \\( B \\)，\\( B \\)開始與 \\( A \\) 完全相同。接下來對其進行 \\( m \\) 筆操作，操作有三種：
+>
+> 1. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，將 \\( A_i \\) 修改成 \\( max(A_i, x) \\)。
+> 2. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，將 \\( A_i \\) 加上 \\( x \\)。
+> 3. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，輸出 \\( B_i \\) 的和。
+>
+> 每一次操作後，對所有 \\( i \\)，將 \\( B_i \\) 修改成 \\( min(B_i, A_i) \\)。
+>
+> - \\( n, m \leq 10^5 \\)
+
+首先，我們使用上一小節中的方法，把詢問轉化成維護數組 \\( A \\) 和數組 \\( C \\) 的區間和。接著我們對數組 \\( A \\) 維護區間最小值和次小值，從而把區間取 \\( max \\) 操作轉換成對區間最小值的加減操作，這樣就能維護數組 \\( A \\) 的區間和了。
+
+然後，我們來考慮怎麼對 \\( C \\) 維護區間和，影響到 \\( C \\) 的操作有
 
 ## Exercises
 
