@@ -4,6 +4,8 @@
 
 ## 定義
 
+接下來，我們主要會聚焦在 \\([1,n]\\) 的 permutation 的逆序對數量以俾討論，同樣的想法容易推廣到普通的 sequence。
+
 正式來說，我們稱元素對 _(pair of elements)_ \\((\pi(i),\pi(j))\\) 或下標對 _(pair of indices)_ \\((i,j)\\) 是 permutation \\(\pi\\) 的一個逆序對，若且唯若 \\(i<j\land\pi(i)>\pi(j)\\)。對於序列 _(sequence)_ \\(S\\)，我們同樣可以定義 \\((S_i,S_j)\\) 或 \\((i,j)\\) 是 \\(S\\) 的一個逆序對，若且唯若 \\(i<j\land S_i>S_j\\)。
 
 比如說，\\((3,1),(3,2),(5,4),(5,2),(4,2)\\) 這五個 pairs of elements 是 permutation \\(\left(\begin{array}{ccccc}3&1&5&4&2\end{array}\right)\\) 的所有逆序對；若以 pairs of indices 表示則是 \\((1,2),(1,5),(3,4),(3,5),(4,5)\\) 這五個。
