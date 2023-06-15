@@ -84,16 +84,12 @@ Kendall's \\(\tau\\) distance 的一個重點是其代表兩個 permutations 需
 ```cpp
 int64_t merge_sort_inversions(vector<int>::iterator begin, vector<int>::iterator end)
 {
-    // 0. Boundary condition
     if (end - begin == 1)
         return 0;
-    // 1. Divide
-    auto mid = begin + ((end - begin) >> 1);       // mid := (begin + left) / 2 = begin + (end - begin) / 2
-    vector<int> left(begin, mid), right(mid, end); // out-of-place, O(n) extra space is used
-    // 2. Conquer
-    int64_t inversions = merge_sort_inversions(left.begin(), left.end())    // # inversions in left
-                       + merge_sort_inversions(right.begin(), right.end()); // # inversions in right
-    // 3. Merge
+    auto mid = begin + ((end - begin) >> 1);
+    vector<int> left(begin, mid), right(mid, end);
+    int64_t inversions = merge_sort_inversions(left.begin(), left.end())
+                       + merge_sort_inversions(right.begin(), right.end());
     for (auto itr = left.begin(), jtr = right.begin(); begin != end; begin++)
         if (itr != left.end() && jtr != right.end())
         {
@@ -101,8 +97,7 @@ int64_t merge_sort_inversions(vector<int>::iterator begin, vector<int>::iterator
                 *begin = *itr++;
             else
             {
-                inversions += left.end() - itr; // if *itr > *jtr, \
-                                                   then there would be (left.size() - i) inversions
+                inversions += left.end() - itr;
                 *begin = *jtr++;
             }
         }
@@ -141,15 +136,15 @@ struct bit
     int query(int x1, int x2) { return query(x2) - query(x1 - 1); }
 };
 
-int64_t inversions(const vector<int> &p) // Assume that `p` is a permutaion of size `n=p.size()`!!
+int64_t inversions(const vector<int> &p)
 {
     int n = p.size();
-    bit fenwick_tree(n); // We use Fenwick Tree to maintain whether an element is occured.
+    bit fenwick_tree(n);
     int64_t y = 0;
     for (int i = 0; i < n; i++)
     {
-        y += bit.query(p[i] + 1, n); // left inversion count to `p[i]`
-        bit.update(p[i]);            // Record the occurence of `p[i]`
+        y += bit.query(p[i] + 1, n);
+        bit.update(p[i]);
     }
     return y;
 }
@@ -166,17 +161,17 @@ int64_t inversions(const vector<int> &p) // Assume that `p` is a permutaion of s
 假若 OJ 還有你用的是 GNU 的 `g++`，那麼有個黑魔法：Policy-Based Data Structures _(PBDS)_ 就像是 GNU 擴充的 STL，其中的 `__gnu_pbds::tree<>` 原本跟普通 `std::set<>` (or `std::map<,>`) 沒什麼區別，但在套上 `tree_order_statistics_node_update` 這個 policy 之後 BST 每個 node 都會記錄 order statistic，搖身一變成為一棵貨真價實的 order statistic tree。但注意到 `__gnu_pbds::tree<>` 預設跟 `std::set<>` 一樣會忽略重複元素，我們需要將第三個 template argument `Cmp_Fn` 改為 `less_equal<>` 才能變成像 `std::multiset<>` 的行為。另外，根據筆者自身經驗，雖然 PBDS 很方便，但它的常數往往很大。
 
 ```cpp
-#include <bits/extc++.h> // One might include <ext/pb_ds/assoc_container.hpp> & <ext/pb_ds/tree_policy.hpp>` only
+#include <bits/extc++.h>
 
 using namespace __gnu_pbds;
 
 template <typename K, typename M = null_type, typename Cmp = less<K>, typename T = rb_tree_tag>
-using _tree = tree<K, M, Cmp, T, tree_order_statistics_node_update>; // The crucial key is the last template argument!!
+using _tree = tree<K, M, Cmp, T, tree_order_statistics_node_update>;
 
 int64_t inversions(const vector<int> &v)
 {
     int64_t y = 0;
-    _tree<int, null_type, less_equal<int>> t; // The rank tree provided by GNU Policy-Based Data Structures library
+    _tree<int, null_type, less_equal<int>> t;
     for (int i : v)
     {
         y += t.size() - t.order_of_key(i);
@@ -185,21 +180,6 @@ int64_t inversions(const vector<int> &v)
     return y;
 }
 ```
-
-<!-- ### Heap Sort + Binary Search
-
-```cpp
-int64_t inversions(const vector<int> &v)
-{
-    int n = p.size();
-    priority_queue<pair<int, int>> heap;
-    for (int i = 0; i < n; i++)
-        heap.emplace(v[i], i);
-    vector<int> 
-    int64_t y = 0;
-    return y;
-}
-``` -->
 
 ## 練習題
 
