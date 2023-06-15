@@ -186,4 +186,4 @@ void dfs(int u, int parent, int dep) {
 - [oi-wiki - BCC](https://oi-wiki.org/graph/bcc/)
 - [Hackerearth - BCC](https://www.hackerearth.com/practice/algorithms/graphs/biconnected-components/tutorial/)
 - [sylveon slides - BCC](https://slides.com/sylveon/graph-7#/4)
-- [培訓 - BCC](https://tioj.ck.tp.edu.tw/uploads/attachment/5/33/8.pdf)
+- [建中培訓講義 - BCC](https://tioj.ck.tp.edu.tw/uploads/attachment/5/33/8.pdf)

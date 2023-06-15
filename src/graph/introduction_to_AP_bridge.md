@@ -318,7 +318,7 @@ Bridge 模板題
 
 <details><summary> Solution </summary>
 
-still working
+如果 \\( a \\) 或 \\( b \\) 不為 AP 則答案為 0 (拔掉 \\( a \\) 或 \\( b \\) 後整張圖依然連通，代表不存在一定要經過  \\( a \\) 或 \\( b \\) 的 path)
 
 </details>
 
@@ -346,19 +346,20 @@ still working
 <details><summary> Hint </summary>
 
 考慮一張把原圖的 AP 全都拔掉的新圖 //( G' //)，會發現 //( G' //) 中每一個 component 最多只要塗黑 2 個點便能達成題目要求。
-因此可以將這些 component 都縮成一個點，接著去討論每個 component 應該要塗黑幾個點
 
-這個觀念與我們等下會講到的 Bi-connected Component
+因此可以在原圖上將這些 component 都縮成一個點，接著去討論每個 component 應該要塗黑幾個點。
 
 </details>
 
 >[Codeforces - Break Up](https://codeforces.com/problemset/problem/700/C)
 >
-> 給一張帶權無向圖與兩點 \\(S \\) , \\(T \\)，要你選至多兩條邊刪除後使 \\(S \\) , \\(T \\) 不連通。要求選的邊權重和最小。
+> 給一張 \\( N \\) 個點 \\( M \\) 條邊的帶權無向圖與兩點 \\(S \\),\\(T \\)，要你選至多兩條邊刪除後使 \\(S \\) , \\(T \\) 不連通。要求選的邊權重和最小。\\( N \leq 1000, M \leq 30000 \\)
 
-<details><summary> Solution </summary>
+<details><summary> Hint </summary>
 
-still working
+如果 \\(S \\),\\(T \\) 連通的話，那麼考慮這兩點在 DFS tree 上由 tree edge 構成的 path \\( P \\)，\\( P \\) 中至少有一條邊要被砍掉。
+
+注意到這題 \\(N = 1000\\),而 \\( P \\) 的長度又 \\( \leq N \\)，因此可以想想看要如何通過暴力枚舉被刪除的邊來求答案。
 
 </details>
 
