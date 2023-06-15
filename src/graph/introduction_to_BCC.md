@@ -14,14 +14,14 @@ BCC-Vertex 有以下幾個性質:
 - 不同的 BCC-Vertex 之間最多共用一個點，而該點必然是圖上的 AP
 - 一個至少有三個點的 BCC-Vertex，任兩點間至少會有兩條沒有共用邊的簡單路徑
 - 對於在同一個 BCC-Vertex 中的任意三個相異點 \\(a,b,c\\)，必存在一條簡單路徑依序經過 \\(a,b,c\\) 三點
-- 把每個 BCC-Vertex 縮成一個點，他周圍的點會是這個 BCC-Vertex 中的 AP。
+- 把每個 BCC-Vertex 跟 AP 都變成一個點，畫成一張新圖，那這張新圖會是一棵樹，且樹上的 AP 跟 BCC-Vertex 會交錯出現
 
 而要如何找出圖上所有的 BCC-Vertex 呢?我們發現:
 
 - 對於那些不是 AP 的點，可以通過 DFS 找出所有與他同屬一個 BCC-Vertex 的點(當我們遇到 AP 時就不要再 DFS 下去即可)
 - 對於 AP，只要檢查他周圍的點有沒有 AP，有的話這兩個 AP 就會形成一個 BCC-Vertex。
 
-例如下圖中，\\( A \\) 通過 DFS 可以找到 \\( B,C,D \\)，這四點恰為一個 BCC-Vertex。\\( A \\) 點不會找到 \\( E \\)，因為 \\( D \\) 點是 AP，不會繼續 DFS 下去。而 \\ (D \\) 點會檢查到 \\ (E \\) 是 AP，因此 \\(D,E\\) 會是一個 BCC-Vertex。
+例如下圖中，\\( A \\) 通過 DFS 可以找到 \\( B,C,D \\)，這四點恰為一個 BCC-Vertex。\\( A \\) 點不會找到 \\( E \\)，因為 \\( D \\) 點是 AP，不會繼續 DFS 下去。而 \\(D \\) 點會檢查到 \\(E \\) 是 AP，因此 \\(D,E\\) 會是一個 BCC-Vertex。
 
 <img src="image/BCC/simple BCC-Vertex example.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
@@ -143,7 +143,9 @@ BCC-Edge 有以下幾個性質
 
 而要如何找出圖上所有的 BCC-Edge?我們可以發現，如果我們拔掉原圖上所有的 bridge，那麼剩下來的每一個 component 就都會是一個 BCC-Edge。
 
-我們當然可以拔掉圖上所有的 bridge 後，DFS 找出那些點同屬一個 BCC-Edge。那有沒有其他方法呢?與 BCC-Vertex 相似，我們也可以通過修改找 bridge 的演算法，在找 bridge 的時候順便找出所有的 BCC-Edge。
+<img src="image/BCC/simple BCC-Edge example.JPG" width="300" style="display:block; margin: 0 auto;"/>
+
+因此我們可以拔掉圖上所有的 bridge 後，DFS 找出那些點同屬一個 BCC-Edge。那有沒有其他方法呢?與 BCC-Vertex 相似，我們可以通過修改找 bridge 的演算法，在找 bridge 的時候順便找出所有的 BCC-Edge。
 
 ### 如何修改
 
