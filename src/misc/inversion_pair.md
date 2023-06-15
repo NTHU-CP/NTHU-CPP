@@ -28,7 +28,7 @@
 1. 逆序對數最大為 \\(\binom{n}{2}\\)，其中 \\(n\\) 為 permutation 或 sequence 的長度，此時 permutation 或 sequence 恰好是完全反序的
 2. 由前兩點我們知道逆序對數量必定介於 \\(0\\) 至 \\(\binom{n}{2}\\) 之間，而且可以作為一種衡量排序程度的指標 **sortedness**
 
-此外，考慮一個 permutation 的[柯西表示法](https://en.wikipedia.org/wiki/Permutation#Two-line_notation)，如 \\(\left(\begin{array}{ccccc}1&2&3&4&5\\\\3&1&5&4&2\end{array}\right)\\), 則其對應的 _arrow diagram_ 的交點數量就是（最多；或是我們把 \\(n\\) 點共線算成 \\(n-1\\) 個交點）逆序對數量。（另外，選最多線而不相交則是 LIS 長度）
+此外，考慮一個 permutation 的[柯西表示法](https://en.wikipedia.org/wiki/Permutation#Two-line_notation)，如 \\(\left(\begin{array}{ccccc}1&2&3&4&5\\\\3&1&5&4&2\end{array}\right)\\), 則其對應的 _arrow diagram_ 的交點數量就是逆序對數量（此指儘可能多交點；或是我們把 \\(n\\) 點共線算成 \\(n-1\\) 個交點）。（另外，選最多線而不相交則是 LIS 長度）
 
 ![](perm.png)
 
