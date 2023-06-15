@@ -16,7 +16,7 @@
 
 ## 逆序對數量
 
-逆序對數量就是指一個 permutation (or sequence) 存在多少的逆序對，或者說是所有逆序對所構成的集合的勢 _(cardinality)_（這裡可以姑且視為其大小），\\(\\#\left\\{(i,j)|i<j\land\pi(i)>\pi(j)\forall i,j\in\pi\right\\}\\)。（注意 sequence 的 inversion pair of elements 可能並不唯一。）
+逆序對數量就是指一個 permutation (or sequence) 存在多少的逆序對，或者說是所有逆序對所構成的集合的大小，\\(\\#\left\\{(i,j)|i<j\land\pi(i)>\pi(j)\forall i,j\in\pi\right\\}\\)。（注意 sequence 的 inversion pair of elements 可能並不唯一。）
 
 舉例而言，排列 \\(\left(\begin{array}{ccccc}1&2&3&4&5\end{array}\right)\\) 沒有任何逆序對，因此其逆序對數為 \\(0\\)；而排列 \\(\left(\begin{array}{ccccc}5&4&3&2&1\end{array}\right)\\) 的所有 \\(\binom{5}{2}=10\\) 對全部都是逆序對，因此其逆序對數為 \\(10\\)。
 
