@@ -4,9 +4,9 @@
 
 ## 定義
 
-正式來說，我們稱元素對 _(pair of elements)_ \\((\pi(i),\pi(j))\\) 或下標對 _(pair of indexes)_ \\((i,j)\\) 是 permutation \\(\pi\\) 的一個逆序對，若且唯若 \\(i<j\land\pi(i)>\pi(j)\\)。對於序列 _(sequence)_ \\(S\\)，我們同樣可以定義 \\((S_i,S_j)\\) 或 \\((i,j)\\) 是 \\(S\\) 的一個逆序對，若且唯若 \\(i<j\land S_i>S_j\\)。
+正式來說，我們稱元素對 _(pair of elements)_ \\((\pi(i),\pi(j))\\) 或下標對 _(pair of indices)_ \\((i,j)\\) 是 permutation \\(\pi\\) 的一個逆序對，若且唯若 \\(i<j\land\pi(i)>\pi(j)\\)。對於序列 _(sequence)_ \\(S\\)，我們同樣可以定義 \\((S_i,S_j)\\) 或 \\((i,j)\\) 是 \\(S\\) 的一個逆序對，若且唯若 \\(i<j\land S_i>S_j\\)。
 
-比如說，\\((3,1),(3,2),(5,4),(5,2),(4,2)\\) 這五個 pairs of elements 是 permutation \\(\left(\begin{array}{ccccc}3&1&5&4&2\end{array}\right)\\) 的所有逆序對。
+比如說，\\((3,1),(3,2),(5,4),(5,2),(4,2)\\) 這五個 pairs of elements 是 permutation \\(\left(\begin{array}{ccccc}3&1&5&4&2\end{array}\right)\\) 的所有逆序對；若以 pairs of indices 表示則是 \\((1,2),(1,5),(3,4),(3,5),(4,5)\\) 這五個。
 
 ---
 
@@ -204,7 +204,7 @@ int64_t inversions(const vector<int> &v)
 ### 競賽實戰題
 
 - [2021 ICPC Asia TOPC C. A Sorting Problem](https://codeforces.com/gym/103373/problem/C)
-  - 題目給的是 permutation 中每個元素的 index，如果我們將元素們與 indexes 互換，則原本的操作就變為 swap 相鄰的元素。於是，題目所求的最小數量即相當於 bubble sort swap 數，也就是逆序對數量
+  - 題目給的是 permutation 中每個元素的 index，如果我們將元素們與 indices 互換，則原本的操作就變為 swap 相鄰的元素。於是，題目所求的最小數量即相當於 bubble sort swap 數，也就是逆序對數量
 - [2022 ICPC Asia Taoyuan Regional C. Distance Calculator](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/view.php?id=65292)
   > Wonder kingdom has \\(n!\\) cities. Each city is encoded with \\(n\\) number \\(d_1d_2\dots d_n\\) which is a permutation of \\(1 2\dots n\\). The castle of Wonder kingdom is located in the city encoded as \\(1 2\dots n\\). Let \\(a_1a_2\dots a_n\\) and \\(b_1b_2\dots b_n\\) be the codes of cities A and B, respectively. A road with distance one is built between cities A and B in the kingdom if and only if there exists an \\(i,1\leq i<n\\), such that the following two conditions are satisfied.
   >
