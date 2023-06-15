@@ -324,11 +324,16 @@ still working
 
 >[Codeforces - Bertown roads](https://codeforces.com/contest/118/problem/E)
 >
-> 給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，要你幫每一條邊定向後使整張圖上任兩點間都有 path
+> 給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，要你幫每一條邊定向後使整張圖上任兩點間都有 path，如果不可能輸出 0。
 
 <details><summary> Solution </summary>
 
-still working
+如果圖上有 bridge，那麼必不可能有解。如下圖。
+
+而如果圖上沒有 bridge 則必然有解，我們可以在圖上找出 DFS tree，然後讓 tree edge 向下走，back edge 向上走即可。以下證明這是一個合法的方法。
+
+首先，root 一定可以通過 tree edge 走到其他所有點。
+接著，其他所有點也一定可以通過 back edge 回到 root，否則我們在原圖上就會找到 bridge。()
 
 </details>
 
@@ -336,27 +341,20 @@ still working
 
 >[Uva - Mining Your Own Business](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=246&page=show_problem&problem=3549)
 >
->在一張無向圖上選擇盡可能少的點塗黑，使得刪除任一個點後，每個連通分量裡至少有一個黑點。
+>在一張無向圖上選擇盡可能少的點塗黑，使得刪除任一個點後，每個連通分量裡至少有一個黑點。問最少要塗黑幾個點以及有幾種塗法。
 
-<details><summary> Solution </summary>
+<details><summary> Hint </summary>
 
-still working
+考慮一張把原圖的 AP 全都拔掉的新圖 //( G' //)，會發現 //( G' //) 中每一個 component 最多只要塗黑 2 個點便能達成題目要求。
+因此可以將這些 component 都縮成一個點，接著去討論每個 component 應該要塗黑幾個點
+
+這個觀念與我們等下會講到的 Bi-connected Component
 
 </details>
 
 >[Codeforces - Break Up](https://codeforces.com/problemset/problem/700/C)
 >
 > 給一張帶權無向圖與兩點 \\(S \\) , \\(T \\)，要你選至多兩條邊刪除後使 \\(S \\) , \\(T \\) 不連通。要求選的邊權重和最小。
-
-<details><summary> Solution </summary>
-
-still working
-
-</details>
-
->[2015 ACM Amman Collegiate Programming Contest pH - Bridges](https://codeforces.com/gym/100712)
->
-> 請有興趣的讀者自行去連結查看題目敘述，以免暴雷未來打算模擬這場當作團練的人。
 
 <details><summary> Solution </summary>
 

@@ -79,6 +79,16 @@ void dfs(int u, int parent, int dep) {
 
 </details>
 
+>[Codeforce - Simple Cycles Edges](https://codeforces.com/problemset/problem/962/F)
+>
+>給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，問那些邊剛好位於一個簡單環上。
+
+<details><summary> Solution </summary>
+
+想想 BCC-Vertex 的性質，會發現
+
+</details>
+
 ## BCC-Edge(Bridge Connected Component)
 
 BCC-Edge 指的是沒有 Bridge 的 Connected Component，在中文常稱之為邊雙連通分量、橋連通分量。例如下圖我們能找到兩個 BCC-Edge
@@ -131,19 +141,23 @@ void dfs(int u, int parent, int dep) {
 
 ## Exercise
 
-> [POJ - Road Construction](http://poj.org/problem?id=3352)
+>[2015 ACM Amman Collegiate Programming Contest pH - Bridges](https://codeforces.com/gym/100712)
 >
-> 給一張圖，問最少要加幾條邊才能使得圖上沒有橋。
-
-## Problems
-
->[Codeforce - Simple Cycles Edges](https://codeforces.com/problemset/problem/962/F)
->
->給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，問那些邊剛好位於一個簡單環上。
+> 請有興趣的讀者自行去連結查看題目敘述，以免暴雷未來打算模擬這場當作團練的人。
 
 <details><summary> Solution </summary>
 
-still working
+</details>
+
+## Problems
+
+>[TIOJ - 圓桌武士](https://tioj.ck.tp.edu.tw/problems/1684)
+>
+>有 \\( N \\) 個武士和 \\( M \\) 個武士之間倆倆的仇恨關係，如果能選出奇數個武士(至少三個)坐在圓桌邊，且相鄰的兩人不互相仇恨，那他們就可以開會。問有多問有多少位武士永遠不可能開會。
+
+<details><summary> Hint </summary>
+
+反過來思考，我們改成找可以和別人開會的武士有誰。我們可以觀察原圖的補圖 (即武士之間的不仇恨關係)，想想看這張補圖上符合怎樣性質的點至少可以參與到一場會議中。
 
 </details>
 
@@ -151,9 +165,19 @@ still working
 >
 >給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，定義 \\(r_i \\) 為幫每條邊定向後，\\(i \\) 點可以走到的點數。要你給出一種定向方法使得 \\(min_i({r_i})\\) 最大
 
-<details><summary> Solution </summary>
+<details><summary> Hint </summary>
 
-still working
+找出所有的 BCC-Edge 後，想想看最大化的 \\(min_i({r_i})\\) 至少會等於什麼?
+
+</details>
+
+> [POJ - Road Construction](http://poj.org/problem?id=3352)
+>
+> 給一張無向圖，問最少要加幾條邊才能使得圖上沒有橋。
+
+<details><summary> Hint </summary>
+
+跟 BCC-Edge 的練習題很像，想想看 leaf 之間要怎樣加邊。
 
 </details>
 
@@ -162,3 +186,4 @@ still working
 - [oi-wiki - BCC](https://oi-wiki.org/graph/bcc/)
 - [Hackerearth - BCC](https://www.hackerearth.com/practice/algorithms/graphs/biconnected-components/tutorial/)
 - [sylveon slides - BCC](https://slides.com/sylveon/graph-7#/4)
+- [培訓 - BCC](https://tioj.ck.tp.edu.tw/uploads/attachment/5/33/8.pdf)
