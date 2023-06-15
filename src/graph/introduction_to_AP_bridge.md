@@ -11,7 +11,7 @@
 ### Connected(連通)
 
 我們說兩個點 A, B connected，表示 A, B 之間存在一條 path。如下圖例子中，A 跟 B connected，但 A 跟 C 不 connected
-<img src="image/Connected.JPG" width="500" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/Connected.JPG" width="500" style="display:block; margin: 0 auto;"/>
 
 ### Connected Component(連通分量)
 
@@ -22,7 +22,7 @@ Connected Component 是點的集合，滿足以下條件
 
 如下圖的例子，顏色相同的點表示他們屬於相同的 Connected Component，可以看到若是兩個點不同顏色，那他們一定不 connected。而我們不會說紅圈圈起來的那三個點是一個 Connected Component (因為紅圈外還有跟他們連通的點)。
 
-<img src="image/Connected_Component.JPG" width="500" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/Connected_Component.JPG" width="500" style="display:block; margin: 0 auto;"/>
 
 ## DFS tree on undirected graph
 
@@ -45,15 +45,15 @@ void DFS(int u) {
 
 我們可以看個例子。
 
-<img src="image/DFS Tree.gif" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/DFS Tree.gif" width="400" style="display:block; margin: 0 auto;"/>
 
 如果把上圖畫成 DFS tree 就會長成如下圖這樣。我們發現在 DFS tree 上，**一個點可以通過 back edge，回到他的祖先**。
 
-<img src="image/DFS Tree.JPG" width="200" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/DFS Tree.JPG" width="200" style="display:block; margin: 0 auto;"/>
 
 在無向圖上做 DFS tree 時要注意的是: 無向圖的 DFS 會讓一條邊被看到 2 次。例如下圖中，如果我們以 \\( A,B,C,D,E \\) 的順序進行 DFS，那 \\( (E,A) \\)這條邊會首先被 \\( E \\) 看到一次，接著再被 \\( A \\) 看到一次。
 
-<img src="image/DFS Tree note 1.JPG" width="200" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/DFS Tree note 1.JPG" width="200" style="display:block; margin: 0 auto;"/>
 
 所以如果你的 code 只有寫看到一條邊就根據它是 tree edge/back edge 做事，那你有可能會因為看到一條 edge 兩次而做了重複的操作，從而導致 WA。
 
@@ -104,10 +104,10 @@ void DFS(int u, int parent) { //call(u,u) at first
 ## AP & Bridge
 
 AP 指的是一張圖 \\(G \\) 移除一個點 \\(v \\) 以及與 \\(v \\) 相連的邊後 Connected Component 的數量變多，則點 \\(v \\) 為 AP。中文常稱之為關節點、割點。例如下圖的 A 點就是 AP  
-<img src="image/AP.JPG" width="500" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/AP.JPG" width="500" style="display:block; margin: 0 auto;"/>
 
 Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Component 的數量變多，則邊 \\(e \\) 為 Bridge。中文常稱之為橋。例如下圖的紅色邊就是 Bridge
-<img src="image/Bridge.JPG" width="500" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/Bridge.JPG" width="500" style="display:block; margin: 0 auto;"/>
 
 那我們要如何快速找到圖上所有的 AP 跟 Bridge 呢？很容易可以想到枚舉每個點或邊，把他拔掉之後看看圖上有沒有多出新的 Connected Component。但這樣做的時間複雜度會是 \\(O((V+E)^2) \\)。不過實際上，我們只要好好觀察圖上的性質就可以在 \\(O(V+E) \\) 的時間做完！以下介紹兩種不同的方法來找出圖上所有的 AP 跟 Bridge
 
@@ -117,24 +117,24 @@ Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Compon
 
 我們觀察下圖中 \\( C \\) 點的左子樹。你會發現這棵子樹一定要通過 \\( C \\) 點才能走到 \\( C \\) 點的祖先，所以理所當然的，當我們將 \\( C \\) 點移除，整張圖就會斷成兩個 Connected Component。而 \\( C \\) 點就會是 AP。
 
-<img src="image/Tarjan AP Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/Tarjan AP Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 更一般的說，對於一個點 \\(v \\)，如果 \\(v \\) 的某一棵子樹無法在不經過 \\(v \\) 的情況下走到 \\(v \\) 的祖先，那麼 \\(v \\) 一定是 AP。
 
-<img src="image/General AP.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/General AP.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 但 root 是沒有祖先的，因此 root 我們要拉出來特別判斷。很明顯，當 root 有至少兩棵子樹的時候，root 一定會是 AP，否則就不是。
-<img src="image/Root AP Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/Root AP Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 ### 觀察 Bridge 的性質
 
 與 AP 的觀察相似。我們觀察下圖中 \\( (C,D) \\) 這條邊，你會發現以 \\( D \\) 為根的子樹一定要通過這條邊才能回到 \\( C \\) 點。所以理所當然的，當我們將 \\( (C,D) \\) 移除，整張圖就會斷成兩個 Connected Component。而 \\( (C,D) \\) 就會是 bridge。
 
-<img src="image/Tarjan Bridge Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/Tarjan Bridge Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 更一般的說，令 \\(u \\) 是 \\( v \\) 的 parent，則對於一條邊 \\( (u,v) \\)，如果 \\( v \\) 的子樹都無法在不經過 \\( (u,v) \\) 的情況下走到 \\( u \\)，那麼 \\( (u,v) \\) 一定是 bridge。
 
-<img src="image/General Bridge.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/General Bridge.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 ### 演算法
 
@@ -143,26 +143,26 @@ Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Compon
 Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
 
 \\(depth(v) \\) 表示 \\( v \\) 這個點在 DFS tree 上的深度。
-<img src="image/Depth Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/Depth Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 \\( low(v) \\) 表示 \\(v \\) 子樹中所有的點和這些點的鄰點，以及 \\( v \\) 本身的最淺深度。
 
 例如下圖的 \\( C \\) 點，本身的深度是 \\(3\\)，子樹中所有的點深度都 \\(>3\\)，而子樹中最淺的鄰點為 \\( B \\)( \\( L \\) 的鄰點)，深度為 \\(2\\)，因此 \\(low(C) = 2\\)
-<img src="image/Low Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/Low Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 我們回想一下剛才的圖，發現對於一個點 \\(u \\)，如果他的某個子節點 \\(v \\) 滿足 \\(low(v) \geq depth(u) \\)，那麼 \\(u\\) 就會是 AP。
 
-<img src="image/General AP Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/General AP Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 而對於一條邊 \\((u,v)\\)，如果滿足 \\(low(v) > depth(u)\\)，那麼 \\((u,v) \\) 就會是 Bridge
 
-<img src="image/General Bridge Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/General Bridge Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 我們現在的問題只剩下如何求出 \\(low(v) \\)。
 
 可以發現，對於一個點 \\(v \\)，如果我們知道他所有子節點的 \\(low \\) 的答案，那麼我們就可以簡單推出 \\(low(v) \\) 的答案，如下圖所示。而要達成這件事情，我們只需在 DFS 的時候用 post order 的順序計算 \\(low \\) 的答案就可以了！
 
-<img src="image/Compute Low.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/Compute Low.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 ### Time Complexity
 
@@ -231,7 +231,7 @@ struct AP_bridge {
 
 我們觀察圖中那些邊絕對不可能是 bridge
 
-<img src="image/DFS Tree Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/DFS Tree Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 - back edge 絕對不會是 bridge。
 - **如果\\( (u,v) \\)是 back edge，那麼樹上 \\(u \\) 到 \\( v \\) 的路徑都不會是 bridge**。例如圖中因為有 \\( (F,C) \\) 這條 back edge，因此樹上 \\(F \\) 到 \\(C \\) 的路徑都不會是 bridge。
@@ -242,18 +242,18 @@ struct AP_bridge {
 
 這個問題我們可以用前綴和的想法來解決。當我們遇到一條 back edge \\( (u,v) \\) 時，就在 \\(u \\) 上 +1，在 \\( v \\) 上 -1。 **這代表說有一條 back edge 從 \\(u \\) 開始，在 \\( v \\) 結束**。
 
-<img src="image/prefix 1.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/prefix 1.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 這樣當我們由下而上計算前綴和時，\\(u \\) 到 \\( v \\) 的 path 就全部被標記好了!
 
-<img src="image/prefix 2.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/prefix 2.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 ### 前綴和 -> 子樹標記總和
 
 而實際上，對於一條 tree edge \\( (u,v) \\)，我們只要判斷以 \\( v \\) 為根的子樹標記總和是否為 0，若為 0 則 \\( (u,v) \\) 就會是 bridge。
 
 為甚麼？從下圖可以發現，如果一條 back edge 的開始跟結束都在以 \\( v \\) 為根的子樹內，那麼這條 back edge 對子樹總和的貢獻為 0，否則為 1。而當子樹總和不為 0 的時候，\\( (u,v) \\) 顯然不會是 bridge。
-<img src="image/subtree sum.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/subtree sum.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 ### Time Complexity
 
@@ -311,7 +311,7 @@ struct bridge {
 
 - 對於 root，如果他有至少兩棵子樹的時候，他就一定是 AP，否則就不是。
 - 對於一個點 \\(v \\)，如果 \\(v \\) 的某一棵子樹無法在不經過 \\(v \\) 的情況下走到 \\(v \\) 的祖先，那麼 \\(v \\) 一定是 AP。
-<img src="image/General AP.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/General AP.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 第一點很好解決。
 
@@ -323,7 +323,7 @@ struct bridge {
 
 為甚麼？因為子樹的標記總和相當於是：這棵子樹有多少條 back edge 還沒結束。像下圖的兩個例子中，子樹標記總和都為 1。而如果這些 back edge 都在 \\(v\\) 結束，那麼這棵子樹顯然一定要通過 \\(v\\) 才能回到 \\(v\\) 的祖先，如下圖左例，那麼 \\( v \\) 就一定會是 AP 了。
 
-<img src="image/AP subtree sum.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/AP subtree sum.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 ### Time Complexity
 
@@ -416,7 +416,7 @@ Bridge 模板題
 - 一定要先經過 \\( b \\) 點才能到 \\( a \\) 點(下圖的綠色圓圈，令其中有 \\( j \\) 個點)
 - 可以先到 \\( a \\) 點，也可以先到 \\( b \\) 點(下圖的藍色圓圈，令其中有 \\( k \\) 個點)
 
-<img src="image/Two Fair Solution 1.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/Two Fair Solution 1.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 那麼答案就會是 \\(i \times j \\)，現在的問題只剩下我們要如何求出 \\(i,j\\)。
 
@@ -432,7 +432,7 @@ Bridge 模板題
 
 如果圖上有 bridge，那麼必不可能有解。如下圖，假設 \\( (u,v) \\) 是 bridge，那麼給定方向後 \\(u\\) 走到 \\( v \\) 或 \\( v \\) 走到 \\( u \\) 一定有一個不符合。
 
-<img src="image/Bertown roads Solution 1.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/Bertown roads Solution 1.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 而如果圖上沒有 bridge 則必然有解，我們可以在圖上找出 DFS tree，然後讓 tree edge 向下走，back edge 向上走即可。以下證明這是一個合法的方法。
 
@@ -440,7 +440,7 @@ Bridge 模板題
 
 接著，我們證明所有的點都可以回到 root。我們考慮一個不為 root 的點 \\(v\\) 跟他的 parent \\( u \\)，因為圖中不存在 bridge，因此 \\( v \\) 一定能通過某條 back edge 回到 \\( u \\) 或 \\( u \\) 的祖先(如下圖左)，否則 \\( (u,v) \\) 就會是 bridge(如下圖右)。
 
-<img src="image/Bertown roads Solution 2.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP, Bridge/Bertown roads Solution 2.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 而對於 \\(v\\) 所回到的點 \\( v' \\)，我們發現這又是一個同樣的問題，我們還是可以通過某條 back edge 向上走，重複這個過程直到回到 root。
 

@@ -7,25 +7,33 @@
 ## BCC-Vertex(Bi-connected Component)
 
 BCC-Vertex 指的是沒有 AP 的 Connected Component，在中文常稱之為點雙連通分量。例如下圖中有三個 BCC-Vertex
-<img src="image/Biconnected Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/Biconnected Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
 BCC-Vertex 有以下幾個性質:
 
-- 不同的 BCC-Vertex 之間最多共用一個點(否則，這兩個 BCC-Vertex 就會同屬於一個 BCC-Vertex)
+- 不同的 BCC-Vertex 之間最多共用一個點，而該點必然是圖上的 AP
 - 一個至少有三個點的 BCC-Vertex，任兩點間至少會有兩條沒有共用邊的簡單路徑
 - 對於在同一個 BCC-Vertex 中的任意三個相異點 \\(a,b,c\\)，必存在一條簡單路徑依序經過 \\(a,b,c\\) 三點
-- 把每個 BCC-Vertex 中除了 AP 以外的點縮成一個點，那麼得到的新圖會是一棵樹或森林。
+- 把每個 BCC-Vertex 縮成一個點，他周圍的點會是這個 BCC-Vertex 中的 AP。
 
-不同的 BCC-Vertex 之間會共用點，共用的部分恰好會是圖上的 AP。
-而要找出圖上所有的 BCC-Vertex，我們可以通過修改找 AP 的演算法來達成。
+而要如何找出圖上所有的 BCC-Vertex 呢?我們發現:
+
+- 對於那些不是 AP 的點，可以通過 DFS 找出所有與他同屬一個 BCC-Vertex 的點(當我們遇到 AP 時就不要再 DFS 下去即可)
+- 對於 AP，只要檢查他周圍的點有沒有 AP，有的話這兩個 AP 就會形成一個 BCC-Vertex。
+
+例如下圖中，\\( A \\) 通過 DFS 可以找到 \\( B,C,D \\)，這四點恰為一個 BCC-Vertex。\\( A \\) 點不會找到 \\( E \\)，因為 \\( D \\) 點是 AP，不會繼續 DFS 下去。而 \\ (D \\) 點會檢查到 \\ (E \\) 是 AP，因此 \\(D,E\\) 會是一個 BCC-Vertex。
+
+<img src="image/BCC/simple BCC-Vertex example.JPG" width="300" style="display:block; margin: 0 auto;"/>
+
+事實上，我們也可以通過修改找 AP 的演算法，在找 AP 的時候順便找出所有的 BCC-Vertex。
 
 ### 如何修改
 
 我們可以用 stack 紀錄首次遇到的邊。這樣當我們發現 \\(low(v) \geq depth(u) \\) 時，stack 中 \\( (u,v) \\) 及它上面的邊就會位於同一個 BCC-Vertex 中。就像是下圖 \\( (C,D) \\) 這條邊。
-<img src="image/BCC Algo explain.PNG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC Algo explain.PNG" width="300" style="display:block; margin: 0 auto;"/>
 
 一個完整的例子如下
-<img src="image/BCC Algo example.gif" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC Algo example.gif" width="300" style="display:block; margin: 0 auto;"/>
 
 ### Time Complexity
 
@@ -92,29 +100,33 @@ void dfs(int u, int parent, int dep) {
 
 <details><summary> Solution </summary>
 
-想想 BCC-Vertex 的性質，會發現
+我們首先觀察到答案一定不會跨過兩個 BCC-Vertex。因此我們只要對每個 BCC-Vertex 分別檢查即可。
+
+而 BCC-Vertex 中所有的邊要剛好位於一個簡單環上，那代表說我們只要檢查 BCC-Vertex 中點數和邊數是否相等，就能知道一條邊是否恰位於一個簡單環上。
 
 </details>
 
 ## BCC-Edge(Bridge Connected Component)
 
 BCC-Edge 指的是沒有 Bridge 的 Connected Component，在中文常稱之為邊雙連通分量、橋連通分量。例如下圖我們能找到兩個 BCC-Edge
-<img src="image/Bridge Connected Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/Bridge Connected Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
 BCC-Edge 有以下幾個性質
 
 - 同一個 BCC-Edge 的任兩點間至少存在兩條沒有共用邊的簡單路徑
 - 如果把每個 BCC-Edge 縮成一個點，那麼新得到的圖會是一棵樹或者森林。
 
-不同的 BCC-Edge 沒有交集。而要找出圖上所有的 BCC-Edge，我們可以通過修改找 Bridge 的算法來達成
+而要如何找出圖上所有的 BCC-Edge?我們可以發現，如果我們拔掉原圖上所有的 bridge，那麼剩下來的每一個 component 就都會是一個 BCC-Edge。
+
+我們當然可以拔掉圖上所有的 bridge 後，DFS 找出那些點同屬一個 BCC-Edge。那有沒有其他方法呢?與 BCC-Vertex 相似，我們也可以通過修改找 bridge 的演算法，在找 bridge 的時候順便找出所有的 BCC-Edge。
 
 ### 如何修改
 
 跟找 BCC-Vertex 的想法很像。我們用 stack 紀錄走過的點，當我們發現 \\(low(u) == depth(u) \\) 時，我們就發現了橋的下端點。而 stack 中 \\(u \\) 和他上面的點就會位於同一個 BCC。就像下圖 \\( D \\) 這個點，他是 \\( (C,D) \\) 這條 bridge 的下端點。
-<img src="image/BCC Algo explain 2.PNG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC Algo explain 2.PNG" width="300" style="display:block; margin: 0 auto;"/>
 
 一個完整的例子如下
-<img src="image/BCC Algo example 2.gif" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC Algo example 2.gif" width="300" style="display:block; margin: 0 auto;"/>
 
 ### Time Complexity
 
@@ -193,7 +205,7 @@ void dfs(int u, int parent, int dep) {
 
 <details><summary> Hint </summary>
 
-跟 BCC-Edge 的練習題有點像，想想看 leaf 之間要怎樣加邊。
+跟 BCC-Edge 的練習題有點像，想想看縮點後的樹上 leaf 之間要怎樣加邊。
 
 </details>
 
@@ -201,5 +213,6 @@ void dfs(int u, int parent, int dep) {
 
 - [oi-wiki - BCC](https://oi-wiki.org/graph/bcc/)
 - [Hackerearth - BCC](https://www.hackerearth.com/practice/algorithms/graphs/biconnected-components/tutorial/)
+- [演算法筆記 - Connected Component](https://web.ntnu.edu.tw/~algo/ConnectedComponent.html#2)
 - [sylveon slides - BCC](https://slides.com/sylveon/graph-7#/4)
-- [建中培訓講義 - BCC](https://tioj.ck.tp.edu.tw/uploads/attachment/5/33/8.pdf)
+- [建中培訓講義 - 進階圖論](https://tioj.ck.tp.edu.tw/uploads/attachment/5/33/8.pdf)
