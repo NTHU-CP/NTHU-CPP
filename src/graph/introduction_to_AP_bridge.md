@@ -320,6 +320,18 @@ Bridge 模板題
 
 如果 \\( a \\) 或 \\( b \\) 不為 AP 則答案為 0 (拔掉 \\( a \\) 或 \\( b \\) 後整張圖依然連通，代表不存在一定要經過  \\( a \\) 或 \\( b \\) 的 path)
 
+而在 \\(a, b\\) 皆為 AP 的情況下，我們可以將圖上的點分成三個 group:
+
+- 一定要先經過 \\( a \\) 點才能到 \\( b \\) 點(下圖的紅色圓圈，令其中有 \\( i \\) 個點)
+- 一定要先經過 \\( b \\) 點才能到 \\( a \\) 點(下圖的綠色圓圈，令其中有 \\( j \\) 個點)
+- 可以先到 \\( a \\) 點，也可以先到 \\( b \\) 點(下圖的藍色圓圈，令其中有 \\( k \\) 個點)
+
+<img src="image/Two Fair Solution 1.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+那麼答案就會是 \\(i \times j \\)，現在的問題只剩下我們要如何求出 \\(i,j\\)。
+
+要求出 \\( i \\)，我們可以拔掉 \\( a \\) 點後從 \\( b \\) 點 DFS 出去，沒被走到的點數就會是 \\( i \\)。\\( j \\) 也能用相似的方法求出
+
 </details>
 
 >[Codeforces - Bertown roads](https://codeforces.com/contest/118/problem/E)
@@ -328,12 +340,21 @@ Bridge 模板題
 
 <details><summary> Solution </summary>
 
-如果圖上有 bridge，那麼必不可能有解。如下圖。
+如果圖上有 bridge，那麼必不可能有解。如下圖，假設 \\( (u,v) \\) 是 bridge，那麼給定方向後 \\(u\\) 走到 \\( v \\) 或 \\( v \\) 走到 \\( u \\) 一定有一個不符合。
+
+<img src="image/Bertown roads Solution 1.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 而如果圖上沒有 bridge 則必然有解，我們可以在圖上找出 DFS tree，然後讓 tree edge 向下走，back edge 向上走即可。以下證明這是一個合法的方法。
 
 首先，root 一定可以通過 tree edge 走到其他所有點。
-接著，其他所有點也一定可以通過 back edge 回到 root，否則我們在原圖上就會找到 bridge。()
+
+接著，我們證明所有的點都可以回到 root。我們考慮一個不為 root 的點 \\(v\\) 跟他的 parent \\( u \\)，因為圖中不存在 bridge，因此 \\( v \\) 一定能通過某條 back edge 回到 \\( u \\) 或 \\( u \\) 的祖先(如下圖左)，否則 \\( (u,v) \\) 就會是 bridge(如下圖右)。
+
+<img src="image/Bertown roads Solution 2.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+而對於 \\(v\\) 所回到的點 \\( v' \\)，我們發現這又是一個同樣的問題，我們還是可以通過某條 back edge 向上走，重複這個過程直到回到 root。
+
+因此，任意兩點都能通過回到 root 後再由 root 走到對方，得證。
 
 </details>
 
@@ -345,7 +366,7 @@ Bridge 模板題
 
 <details><summary> Hint </summary>
 
-考慮一張把原圖的 AP 全都拔掉的新圖 //( G' //)，會發現 //( G' //) 中每一個 component 最多只要塗黑 2 個點便能達成題目要求。
+考慮一張把原圖的 AP 全都拔掉的新圖 \\( G' \\)，會發現 \\( G' \\) 中每一個 component 最多只要塗黑 2 個點便能達成題目要求。
 
 因此可以在原圖上將這些 component 都縮成一個點，接著去討論每個 component 應該要塗黑幾個點。
 
@@ -353,13 +374,13 @@ Bridge 模板題
 
 >[Codeforces - Break Up](https://codeforces.com/problemset/problem/700/C)
 >
-> 給一張 \\( N \\) 個點 \\( M \\) 條邊的帶權無向圖與兩點 \\(S \\),\\(T \\)，要你選至多兩條邊刪除後使 \\(S \\) , \\(T \\) 不連通。要求選的邊權重和最小。\\( N \leq 1000, M \leq 30000 \\)
+> 給一張 \\( N \\) 個點 \\( M \\) 條邊的帶權無向圖與兩點 \\(S \\) , \\(T \\)，要你選至多兩條邊刪除後使 \\(S \\) , \\(T \\) 不連通。要求選的邊權重和最小。\\( N \leq 1000, M \leq 30000 \\)
 
 <details><summary> Hint </summary>
 
-如果 \\(S \\),\\(T \\) 連通的話，那麼考慮這兩點在 DFS tree 上由 tree edge 構成的 path \\( P \\)，\\( P \\) 中至少有一條邊要被砍掉。
+如果 \\(S \\) , \\(T \\) 連通的話，那麼考慮這兩點在 DFS tree 上由 tree edge 構成的 path \\( P \\)，\\( P \\) 中至少有一條邊要被砍掉。
 
-注意到這題 \\(N = 1000\\),而 \\( P \\) 的長度又 \\( \leq N \\)，因此可以想想看要如何通過暴力枚舉被刪除的邊來求答案。
+注意到這題 \\(N = 1000\\)，而 \\( P \\) 的長度又 \\( \leq N \\)，因此可以想想看要如何通過暴力枚舉被刪除的邊來求答案。
 
 </details>
 
