@@ -42,42 +42,67 @@ BCC-Vertex 有以下幾個性質:
 ### code
 
 ```cpp
-using edge = pair<int, int>;
-void dfs(int u, int parent, int dep) {
+struct BCC_Vertex {
+    vector<int> low, depth;
+    vector<vector<int> > G;
+    vector<vector<pair<int, int> > > bcc;
+    stack<pair<int, int>> stk;
     
-    depth[u] = low[u] = dep;
-
-    for(auto &v : G[u]) {
-        if(v == parent) continue;
-        if(depth[v] < depth[u]) stk.emplace(u,v);
-        if(depth[v] == 0) {
-            dfs(v, u, dep+1);
-            low[u] = min(low[v], low[u]);
-            if(low[v] >= depth[u]) {
-                edge x;
-                bcc.emplace_back({});
+    void init(int n) {
+        depth.assign(n+1, 0);
+        low.assign(n+1, 0);
+        G.assign(n+1, vector<int>());
+        bcc.clear();
+    }
+    
+    void add_edge(int u, int v) {
+        G[u].emplace_back(v);
+        G[v].emplace_back(u);
+    }
+    
+    void solve(int root) {
+        dfs(root, root, 1);
+    }
+    
+    void dfs(int u, int parent, int dep) {
+    
+        depth[u] = low[u] = dep;
+    
+        for(auto &v : G[u]) {
+            if(v == parent) continue;
+            if(depth[v] < depth[u]) stk.emplace(u,v);
+            if(depth[v] == 0) {
+                dfs(v, u, dep+1);
+                low[u] = min(low[v], low[u]);
+                if(low[v] >= depth[u]) {
+                    pair<int, int> x;
+                    bcc.emplace_back(vector<pair<int, int>>());
+                    do {
+                        x = stk.top(); stk.pop();
+                        bcc.back().emplace_back(x);
+                    } while(x != make_pair(u,v));
+                }
+            } else {
+                low[u] = min(low[u], depth[v]);
+            }
+        }
+        
+        if(u == parent) {
+            while(!stk.empty()) {
+                pair<int, int> x;
+                bcc.emplace_back(vector<pair<int, int>>());
                 do {
                     x = stk.top(); stk.pop();
                     bcc.back().emplace_back(x);
-                } while(x != edge(u,v));
+                } while(x.first != 1);
             }
-        } else {
-            low[u] = min(low[u], depth[v]);
         }
     }
     
-    if(u == parent) {
-        while(!stk.empty()) {
-            edge x;
-            bcc.emplace_back({});
-            do {
-                x = stk.top(); stk.pop();
-                bcc.emplace_back(x);
-            } while(x.first != 1)
-        }
+    auto get_BCC_Vertex() {
+        return bcc;
     }
-}
-
+};
 ```
 
 ## Exercise
@@ -135,32 +160,57 @@ BCC-Edge 有以下幾個性質
 ### code
 
 ```cpp
-
-void dfs(int u, int parent, int dep) {
+struct BCC_Edge {
+    vector<int> low, depth;
+    vector<vector<int> > G;
+    vector<vector<int> > bcc;
+    stack<int> stk;
     
-    depth[u] = low[u] = dep;
-    stk.emplace(u);
-
-    for(auto &v : G[u]) {
-        if(v == parent) continue;
-        if(depth[v] == 0) {
-            dfs(v, u, dep+1);
-            low[u] = min(low[v], low[u]);
-        } else {
-            low[u] = min(low[u], depth[v]);
+    void init(int n) {
+        depth.assign(n+1, 0);
+        low.assign(n+1, 0);
+        G.assign(n+1, vector<int>());
+        bcc.clear();
+        while(!stk.empty()) stk.pop();
+    }
+    
+    void add_edge(int u, int v) {
+        G[u].emplace_back(v);
+        G[v].emplace_back(u);
+    }
+    
+    void solve(int root) {
+        dfs(root, root, 1);
+    }
+    
+    void dfs(int u, int parent, int dep) {
+        depth[u] = low[u] = dep;
+        stk.emplace(u);
+    
+        for(auto &v : G[u]) {
+            if(v == parent) continue;
+            if(depth[v] == 0) {
+                dfs(v, u, dep+1);
+                low[u] = min(low[v], low[u]);
+            } else {
+                low[u] = min(low[u], depth[v]);
+            }
+        }
+        
+        if(low[u] == depth[u]) {
+            bcc.emplace_back(vector<int>());
+            int x;
+            do {
+                x = stk.top(); stk.pop();
+                bcc.back().emplace_back(x);
+            } while(x != u);
         }
     }
     
-    if(low[u] == depth[u]) {
-        bcc.emplace_back({});
-        int x;
-        do {
-            x = stk.top(); stk.pop();
-            bcc.back().emplace_back(x);
-        } while(x != u);
+    auto get_BCC_Edge() {
+        return bcc;
     }
-}
-
+};
 ```
 
 ## Exercise
