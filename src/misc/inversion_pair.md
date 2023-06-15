@@ -65,10 +65,6 @@ Kendall's \\(\tau\\) distance 的一個重點是其代表兩個 permutations 需
 
 此外，亦有一些近似的演算法，可以做到 \\(O(n\log\log n)\\) 甚至是 \\(O(n)\\)。
 
----
-
-實務上，大部分演算法題目通常都是跟逆序對的數量有關。
-
 ## 逆序對數量的實作
 
 終於到了實作時間。樸素的暴力枚舉法還是簡單提一下，而 \\(O(n\log n)\\) 作法除了最經典的合併排序法與 BIT 之外，另提供一些其他沒那麼常見的解法供參。
@@ -111,11 +107,9 @@ int64_t merge_sort_inversions(vector<int>::iterator begin, vector<int>::iterator
 }
 ```
 
-縱使我們使用 in-place merge, 但由於 merge sort 本身修改了陣列，因此若我們需要用到原始陣列，還是無可避免需要 \\(O(n)\\) 額外空間。
-
 ### Data Structure: Fenwick Tree (a.k.a. Binary Indexed Tree, BIT)
 
-接著來看一個可能更直觀（但沒那麼受教科書推崇）的想法。對於一個 permutation 中的每一元素，假若我們可以知道與它有關的逆序對數量分別為和，那們整個 permutaion 的逆序對數量也就呼之欲出、易如反掌。因此，我們想到前面提過 permutaions 的 inversion vectors。以 left inversion count 為例，我們只需要在依序維護 permutation 某元素 \\(i\\) 出現權重 \\(w_i\\) 的同時，找出有大於該元素的元素數，也就是 \\(\sum_{i=0}^nw_i\\)。因此，我們需要一個支援高校單點修改、區間查詢的資料結構，而簡單好寫的 Fenwick Tree (a.k.a. Binary Indexed Tree, BIT) 是我們的好朋友。
+接著來看一個可能更直觀的想法。對於一個 permutation 中的每一元素，假若我們可以知道與它有關的逆序對數量分別為和，那們整個 permutaion 的逆序對數量也就呼之欲出、易如反掌。因此，我們想到前面提過 permutaions 的 inversion vectors。以 left inversion count 為例，我們只需要在依序維護 permutation 某元素 \\(i\\) 出現權重 \\(w_i\\) 的同時，找出有大於該元素的元素數，也就是 \\(\sum_{i=0}^nw_i\\)。因此，我們需要一個支援高校單點修改、區間查詢的資料結構，而簡單好寫的 Fenwick Tree (a.k.a. Binary Indexed Tree, BIT) 是我們的好朋友。
 
 ```cpp
 struct bit
