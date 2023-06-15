@@ -414,7 +414,7 @@ void pushup(int u) {
 }
 
 void push_add(int u, int l, int r, int v) {
-    // 更新加法標記的同时，更新 \\( min \\) 和 \\( max \\) 標記
+    // 更新加法標記的同时，更新 min 和 max 標記
     t[u].sum += (r - l + 1ll) * v;
     t[u].mx += v, t[u].mn += v;
     if (t[u].mx2 != -INF) t[u].mx2 += v;
@@ -425,12 +425,12 @@ void push_add(int u, int l, int r, int v) {
 }
 
 void push_min(int u, int tg) {
-    // 注意比較 \\( max \\) 標記
+    // 注意比較 max 標記
     if (t[u].mx <= tg) return;
     t[u].sum += (tg * 1ll - t[u].mx) * t[u].cmx;
     if (t[u].mn2 == t[u].mx) t[u].mn2 = tg;
     if (t[u].mn == t[u].mx) t[u].mn = tg;
-    if (t[u].tmx > tg) t[u].tmx = tg;  // 更新取 \\( max \\) 標記
+    if (t[u].tmx > tg) t[u].tmx = tg;  // 更新取 max 標記
     t[u].mx = tg, t[u].tmn = tg;
 }
 
@@ -1052,13 +1052,91 @@ STB 可以達到下列兩個目標：
 
 ## Exercises
 
+以下我們來看一些題目。
+
+> [UOJ 515【UR #19】前进四](https://uoj.ac/problem/515)
+>
+> 給定一個序列 \\( a_i \\)，並對其進行 \\( m \\) 筆操作。操作有兩種：
+>
+> 1. 給定 \\( x, v \\)，將 \\( A_x \\) 修改成 \\( v \\)。
+> 2. 給定 \\( x \\)，輸出 \\( A_x, A_{x + 1},……, A_n \\) 的不同後綴最小值個數。
+>
+> - \\( n, m \leq 10^6 \\)
+
+<details><summary> Solution </summary>
+
+這題有一個 \\( O(mlog^2n) \\) 的在線做法，但由於這題數據範圍很大，且時限只有 \\( 1 \\) 秒，所以我們採用一個效率更高的離線做法。
+
+觀察到本題詢問的不是區間而是一個後綴，可以考慮從後往前掃描線，使用線段樹維護以時間為下標的後綴最小值。假設現在掃描到了位置 \\( i \\)，考慮這個位置的某個修改操作，它會影響到從該修改的時刻開始，到位置 \\( i \\) 的下一次修改的時刻為止的一個時間段，具體來說，是將這個時間段的後綴 \\( min \\) 都對 \\( v \\) 取最小值。而對於每筆詢問，則是求掃描到 \\( x \\) 時該詢問發生的時刻被取了多少次最小值。這個次數是可以在下傳標記的過程中順帶維護的。
+
+對比這種做法和兩個 \\( log \\) 的經典做法，優勢是時間複雜度低；劣勢則是不能在線且不好處理區間詢問（套分治會多一個 \\( log \\)）。這道題需要注意一下常數。
+
+```cpp
+#include<bits/stdc++.h>
+#define Cn const
+#define CI Cn int&
+#define N 1000000
+using namespace std;
+namespace FastIO {
+    #define FS 100000
+    #define Tp template<typename Ty>
+    #define Ts template<typename Ty,typename... Ar>
+    #define tc() (FA==FB&&(FB=(FA=FI)+fread(FI,1,FS,stdin),FA==FB)?EOF:*FA++)
+    #define pc(c) (FC==FE&&(clear(),0),*FC++=c)
+    int OT;char oc,FI[FS],FO[FS],OS[FS],*FA=FI,*FB=FI,*FC=FO,*FE=FO+FS;
+    void clear() {fwrite(FO,1,FC-FO,stdout),FC=FO;}struct IO_Cl {~IO_Cl() {clear();}}CL;
+    Tp void read(Ty& x) {x=0;while(!isdigit(oc=tc()));while(x=(x<<3)+(x<<1)+(oc&15),isdigit(oc=tc()));}
+    Ts void read(Ty& x,Ar&... y) {read(x),read(y...);}
+    Tp void writeln(Ty x) {while(OS[++OT]=x%10+48,x/=10);while(OT) pc(OS[OT--]);pc('\n');}
+}
+using namespace FastIO;
+int n,Qt,ct,a[N+5],ti[N+5],ans[N+5];
+struct Data {int x,v,l,r;bool operator < (Cn Data& o) Cn {return x>o.x;}}s[2*N+5];
+struct Qry {int p,x;bool operator < (Cn Qry& o) Cn {return x>o.x;}}q[N+5];
+class SegmentTree {  // Segment Tree Beats
+    private:
+        #define PT int l=1,int r=n,int o=1
+        #define LT l,u,o<<1
+        #define RT u+1,r,o<<1|1
+        #define PD(o) (F[o]!=1e9&&(T(o<<1,F[o],G[o]),T(o<<1|1,F[o],G[o]),F[o]=1e9,G[o]=0))
+        #define T(o,v,u) (Mx[o]>v&&(Mx[o]=v,F[o]=min(F[o],v),G[o]+=u))
+        int Mx[N<<2],Sx[N<<2],F[N<<2],G[N<<2];
+        void PU(int o) {
+            if(Mx[o<<1]==Mx[o<<1|1]) Mx[o]=Mx[o<<1],Sx[o]=max(Sx[o<<1],Sx[o<<1|1]);
+            else Mx[o<<1]>Mx[o<<1|1]?(Mx[o]=Mx[o<<1],Sx[o]=max(Sx[o<<1],Mx[o<<1|1])):(Mx[o]=Mx[o<<1|1],Sx[o]=max(Sx[o<<1|1],Mx[o<<1]));
+        }
+    public:
+        void Bd(PT) {if(Mx[o]=F[o]=1e9,l==r) return;int u=l+r>>1;Bd(LT),Bd(RT);}
+        void U(int L,int R,int v,PT) {  // 區間向 v 取 min
+            if(Mx[o]<=v) return;if(L<=l&&r<=R&&Sx[o]<v) return (void)T(o,v,1);
+            int u=l+r>>1;PD(o),L<=u&&(U(L,R,v,LT),0),R>u&&(U(L,R,v,RT),0),PU(o);
+        }
+        int Q(int x,PT) {  // 單點詢問被修改次數
+            if(l==r) return G[o];int u=l+r>>1;PD(o);return x<=u?Q(x,LT):Q(x,RT);
+        }
+}S;
+int main() {
+    int i;for(read(n,Qt),i=1;i<=n;++i) read(a[i]),ti[i]=1;
+    int op,x,y,nw=1;for(i=1;i<=Qt;++i) if(read(op),op==2) q[nw].p=nw,read(q[nw++].x);
+        else read(x),ti[x]^nw&&(s[++ct]=(Data){x,a[x],ti[x],nw-1},ti[x]=nw),read(a[x]);
+    for(i=1;i<=n;++i) ti[i]^nw&&(s[++ct]=(Data){i,a[i],ti[i],nw-1},0);
+    int p1=1,p2=1;for(sort(s+1,s+ct+1),sort(q+1,q+nw),S.Bd(),i=n;i;--i)  //從後往前加入每個位置上的元素
+    {while(p1<=ct&&s[p1].x==i) S.U(s[p1].l,s[p1].r,s[p1].v),++p1;while(p2^nw&&q[p2].x==i) ans[q[p2].p]=S.Q(q[p2].p),++p2;}
+    for(i=1;i^nw;++i) writeln(ans[i]);return 0;
+}
+```
+
+</details>
+
 > [Codeforces 438D The Child and Sequence](https://codeforces.com/contest/438/problem/D)
 >
 > 給定一個序列 \\( a_i \\)，並對其進行 \\( m \\) 筆操作。操作有三種：
 >
 > 1. 給定 \\( l, r \\)，請輸出區間總和 \\( a[l]+...+a[r] \\)
 > 2. 給定 \\( l, r \\)，對區間 \\( [l, r] \\) 的每一個數取模，即 \\( a_i = a_i mod x \\)
-> 3. 給定 \\( k, x \\)，將 \\( a[k] \\) 的值改為 \\( x \\)
+> 3. 給定 \\( k, x \\)，將 \\( a_k \\) 修改為 \\( x \\)
+
+<details><summary> Solution </summary>
 
 我們在這題只需要總和 \\( sum \\)、最大值\\( max \\)。`update_mod` 處理操作 \\( 2 \\)，`update_set` 處理操作 \\( 3 \\)。
 
@@ -1158,22 +1236,28 @@ int main() {
 }
 ```
 
+</details>
+
 > [洛谷 P6242【模板】線段樹 3](https://www.luogu.com.cn/problem/P6242)
 >
 > 給定一個序列 \\( A_i \\)、輔助序列 \\( B_i \\)，並對其進行 \\( m \\) 筆操作。操作有三種：
 >
-> 1. 給定 \\( l, r, k \\)，對區間\\( [l, r] \\)的每一個數加上 \\( k \\)，即 \\( A_i = A_i + k \\)
-> 2. 給定 \\( l, r, v \\)，對區間 \\( [l, r] \\) 的每一個數取最小值，即\\( A_i = min(A_i, v) \\)
-> 3. 給定 \\( l, r \\)，請輸出區間總和\\( a[l]+...+a[r] \\)
-> 4. 給定 \\( k, x \\)，對於區間 \\( [l, r] \\) 的每個 \\( i \\)，請輸出 \\( A_i \\) 的最大值
-> 5. 給定 \\( l, r \\)，對於區間 \\( [l, r] \\) 的每個 \\( i \\)，請輸出 \\( B_i \\) 的最大值
+> 1. 給定 \\( l, r, k \\)，對區間\\( [l, r] \\)的每一個數加上 \\( k \\)，即 \\( A_i = A_i + k \\)。
+> 2. 給定 \\( l, r, v \\)，對區間 \\( [l, r] \\) 的每一個數取最小值，即\\( A_i = min(A_i, v) \\)。
+> 3. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，輸出\\( \sum_{i = l}^{r} A_i \\)。
+> 4. 給定 \\( k, x \\)，對於區間 \\( [l, r] \\) 的每個 \\( i \\)，請輸出 \\( A_i \\) 的最大值。
+> 5. 給定 \\( l, r \\)，對於區間 \\( [l, r] \\) 的每個 \\( i \\)，請輸出 \\( B_i \\) 的最大值。
 >
-> 每次操作後，將 \\( B_i \\) 設為 \\( max($B_i$, $A_i$) \\)
+> 每次操作後，將 \\( B_i \\) 設為 \\( max(B_i, A_i) \\)
 >
 > - \\( 1 \leq n, m \leq 5 \times 10^5 \\)
 > - \\( -5 \times 10^8 \leq A_i \leq 5 \times 10^8 \\)
 > - \\( -2000 \leq k \leq 2000 \\)
 > - \\( -5 \times 10^8 \leq v \leq 5 \times 10^8 \\)
+
+<details><summary> Solution </summary>
+
+這題只是將例題 \\( 6 \\) 的 \\( min \\) 改成 \\( max \\)，並增加詢問區間和的操作而已。
 
 ```cpp
 #include <bits/stdc++.h>
@@ -1276,13 +1360,17 @@ int main() {
 }
 ```
 
+</details>
+
 > [Codeforces 1290E Cartesian Tree](https://codeforces.com/problemset/problem/1290/E)
 >
-> 給定一個長度為 \\( n \\) 的序列\\( a_i \\)，對於區間 \\( [1, n] \\) 的每個 \\( k \\)，用前\\( k \\) 小的值建造笛卡爾樹，求所有子樹大小的總和。
+> 給定一個長度為 \\( n \\) 的序列\\( a_i \\)，對於區間 \\( [1, n] \\) 的每個 \\( k \\)，用前 \\( k \\) 小的值建造笛卡爾樹，求所有子樹大小的總和。
 >
 > - \\( 1 \leq n \leq 150000 \\)
 
-\\( l_i, r_i \\) 分別為 \\( a_i \\) 左右最後一個比其小的數的位置，節點 \\( i \\) 的子樹大小為 \\( r_i - l_i + 1 \\)。分開維護 \\( l_i \\) 和 \\( r_i \\)，以 \\( r_i \\) 為例，當 \\( k \\) 增加 \\ ( 1 \\)，\\( k+1 \\) 插入序列時，\\( pos_{k+1} \\) 左側的 \\( r_i \\) 被更新成 \\( min(r_i, pos_{k+1}) \\)，右側的 \\( r_i \\) 被更新成 \\( r_i+1 \\)。可以使用 STB 維護區間總和。
+<details><summary> Solution </summary>
+
+\\( l_i, r_i \\) 分別為 \\( a_i \\) 左右最後一個比其小的數的位置，節點 \\( i \\) 的子樹大小為 \\( r_i - l_i + 1 \\)。分開維護 \\( l_i \\) 和 \\( r_i \\)，以 \\( r_i \\) 為例，當 \\( k \\) 增加 \\( 1 \\)，\\( k+1 \\) 插入序列時，\\( pos_{k+1} \\) 左側的 \\( r_i \\) 被更新成 \\( min(r_i, pos_{k+1}) \\)，右側的 \\( r_i \\) 被更新成 \\( r_i+1 \\)。可以使用 STB 維護區間總和。
 
 時間複雜度是\\( O(nlog^2n) \\)。
 
@@ -1411,16 +1499,20 @@ int main() {
 }
 ```
 
+</details>
+
 > [Codeforces 1572F Stations](https://codeforces.com/problemset/problem/1572/F)
 >
 > 給定 \\( n \\) 座城市，每座城市有 \\( 2 \\) 個屬性 \\( h_i, w_i \\)，第 \\( i \\) 座城市可以向第 \\( j \\) 座城市廣播，如果對於所有的 \\( k \\) 在區間 \\( [i, j] \\) 中，滿足 \\( max{h_k} < h_i\\)。一開始 \\( h_i = 0 \\) 且 \\( w_i = i \\)。
 >
-> 其發生 \\( q \\) 次事件，事件有 \\( 2 \\) 種：
+> 其發生 \\( q \\) 次事件，事件有兩種：
 >
 > 1. 給定 \\( c_i, g_i \\)，將城市 \\( c_i \\) 的 \\( h \\) 變成全局嚴格最大值，並修改其 \\( w \\) 為 \\( g_i \\)
 > 2. 給定 \\( l_i, r_i \\)，請輸出區間 \\( [l_i, r_i] \\) 的每座城市可以覆蓋到的城市數量 \\( b_i \\) 之總和
 >
 > - \\( 1 \leq n \leq 200000 \\)
+
+<details><summary> Solution </summary>
 
 每個城市覆蓋的區域是一個從 \\( i \\) 開始的區間，而維護區間右端點是一個單點修改，區間取 \\( min \\) 問題，另外用一棵線段樹維護區間覆蓋，因為 STB 裡可直接對值進行修改，所以修改時可以順帶在另一棵線段樹上進行區間修改，即打\\( tag \\) 時維護即可。詢問時直接在線段樹查詢區間和。
 
@@ -1530,6 +1622,8 @@ int main() {
 }
 ```
 
+</details>
+
 ## References
 
 底下的資源包含許多例題，同學可以去參考看看。
@@ -1539,5 +1633,9 @@ int main() {
 - [Segment Tree Beats 学习笔记](https://www.cnblogs.com/Neal-lee/p/15695984.html)
 - [Historic Information on Segment Trees](https://mzhang2021.github.io/cp-blog/historic-segtree)
 - [《区间最值操作与历史最值问题》- 国家集训队 2016 论文集](https://github.com/enkerewpo/OI-Public-Library/blob/master/IOI中国国家候选队论文/国家集训队2016论文集.pdf)
+- [区间最值操作 & 区间历史最值 - OI Wiki](https://oi-wiki.org/ds/seg-beats)
+- [区间最值操作与区间历史最值详解](https://www.luogu.com.cn/blog/Hakurei-Reimu/seg-beats)
+- [《区间最值操作与历史最值问题》- 学习笔记](https://www.cnblogs.com/p-b-p-b/p/14632059.html)
+- [Segment Tree Beats! 初步和其他](https://www.cnblogs.com/CDOI-24374/p/17246482.html)
 
 [^note-1]: [2016 集训队论文 - 吉如一《区间最值操作与历史最值问题》](http://www.doc88.com/p-6744902151779.html)
