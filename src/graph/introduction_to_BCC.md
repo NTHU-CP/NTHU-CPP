@@ -9,6 +9,13 @@
 BCC-Vertex 指的是沒有 AP 的 Connected Component，在中文常稱之為點雙連通分量。例如下圖中有三個 BCC-Vertex
 <img src="image/Biconnected Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
+BCC-Vertex 有以下幾個性質:
+
+- 不同的 BCC-Vertex 之間最多共用一個點(否則，這兩個 BCC-Vertex 就會同屬於一個 BCC-Vertex)
+- 一個至少有三個點的 BCC-Vertex，任兩點間至少會有兩條沒有共用邊的簡單路徑
+- 對於在同一個 BCC-Vertex 中的任意三個相異點 \\(a,b,c\\)，必存在一條簡單路徑依序經過 \\(a,b,c\\) 三點
+- 把每個 BCC-Vertex 中除了 AP 以外的點縮成一個點，那麼得到的新圖會是一棵樹或森林。
+
 不同的 BCC-Vertex 之間會共用點，共用的部分恰好會是圖上的 AP。
 而要找出圖上所有的 BCC-Vertex，我們可以通過修改找 AP 的演算法來達成。
 
@@ -94,6 +101,11 @@ void dfs(int u, int parent, int dep) {
 BCC-Edge 指的是沒有 Bridge 的 Connected Component，在中文常稱之為邊雙連通分量、橋連通分量。例如下圖我們能找到兩個 BCC-Edge
 <img src="image/Bridge Connected Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
+BCC-Edge 有以下幾個性質
+
+- 同一個 BCC-Edge 的任兩點間至少存在兩條沒有共用邊的簡單路徑
+- 如果把每個 BCC-Edge 縮成一個點，那麼新得到的圖會是一棵樹或者森林。
+
 不同的 BCC-Edge 沒有交集。而要找出圖上所有的 BCC-Edge，我們可以通過修改找 Bridge 的算法來達成
 
 ### 如何修改
@@ -143,9 +155,13 @@ void dfs(int u, int parent, int dep) {
 
 >[2015 ACM Amman Collegiate Programming Contest pH - Bridges](https://codeforces.com/gym/100712)
 >
-> 請有興趣的讀者自行去連結查看題目敘述，以免暴雷未來打算模擬這場當作團練的人。
+> 請有興趣的讀者自行去連結查看題目敘述，以免暴雷未來打算模擬這場比賽當作團練的人。
 
 <details><summary> Solution </summary>
+
+我們首先把所有的 BCC-Edge 縮點，根據 BCC-Edge 的性質我們會得到一棵樹，樹上的邊都是 bridge。
+
+我們思考如果在樹上 \\( u,v \\) 兩點間加上一條邊後，有哪些邊就不再是 bridge 了。可以發現樹上從 \\( u \\) 到 \\( v \\) path 上的所有邊都不再是 bridge。而我們想要讓最多的 bridge 消失，因此問題就轉換為了求樹的直徑。
 
 </details>
 
@@ -177,7 +193,7 @@ void dfs(int u, int parent, int dep) {
 
 <details><summary> Hint </summary>
 
-跟 BCC-Edge 的練習題很像，想想看 leaf 之間要怎樣加邊。
+跟 BCC-Edge 的練習題有點像，想想看 leaf 之間要怎樣加邊。
 
 </details>
 

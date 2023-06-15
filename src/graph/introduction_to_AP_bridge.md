@@ -26,7 +26,7 @@ Connected Component 是點的集合，滿足以下條件
 
 ## DFS tree on undirected graph
 
-DFS tree 就如同他的名字，是一棵根據 DFS 的過程長出的 tree，由於其良好的性質，在處理圖相關的問題時是很有用的工具。
+DFS tree 就如同他的名字，是一棵根據 DFS 的過程長出的 tree。由於其良好的性質，在處理圖相關的問題時是很有用的工具。
 
 考慮以下 DFS 的走訪，那些直接走訪的邊被稱為 tree edge，而其他的邊被稱為 back edge。
 
@@ -51,7 +51,13 @@ void DFS(int u) {
 
 <img src="image/DFS Tree.JPG" width="200" style="display:block; margin: 0 auto;"/>
 
-在無向圖上做 DFS tree 時要注意的是: 無向圖的 DFS 會讓一條邊被看到 2 次。如果你的 code 寫的是看到一條邊就根據它是 tree edge/back edge 做事，那你有可能做了重複的操作而導致 WA。
+在無向圖上做 DFS tree 時要注意的是: 無向圖的 DFS 會讓一條邊被看到 2 次。例如下圖中，如果我們以 \\( A,B,C,D,E \\) 的順序進行 DFS，那 \\( (E,A) \\)這條邊會首先被 \\( E \\) 看到一次，接著再被 \\( A \\) 看到一次。
+
+<img src="image/DFS Tree note 1.JPG" width="200" style="display:block; margin: 0 auto;"/>
+
+所以如果你的 code 只有寫看到一條邊就根據它是 tree edge/back edge 做事，那你有可能會因為做了重複的操作而導致 WA。
+
+例如下面的 code 我們想要統計一個點上接出幾條 back edge。當 \\( E \\) 看到 \\( (E,A) \\) 這條邊時，因為 \\( A \\) 點已經被看過，因此 \\( E,A \\) 兩點都會 +1；而當 \\( A \\) 看到 \\( (E,A) \\) 這條邊，因為 \\( E \\) 點已經被看過，因此 \\( E,A \\) 兩點都會 +1。所以最後 \\( A \\) 點跟 \\( E \\) 點都會算出 2 而不是正確答案的 1。
 
 ```cpp
 void DFS(int u) {
@@ -59,16 +65,19 @@ void DFS(int u) {
     for(int &v : G[u]) {
         if(!visited[v]) {
             DFS(v);
-            ...
         } else {
-            ...
-            //你可能會在這裡先看到 a->b，之後又看到 b->a
+            backedgeCounter[u]+=1;
+            backedgeCounter[v]+=1;
         }
     }
 }
 ```
 
-一個修改方法如下:
+因此，在無向圖上使用 DFS tree 時，要嘛想辦法處理掉因為重複操作帶來的影響(如上面的例子就是把每個點的答案除二)，要嘛讓每條 edge 都只在第一次被看到的時候做事。
+
+以下給出一個修改方法可以讓每條 edge 都只在第一次被看到的時候做事。簡單來說就是通過紀錄每個點在 DFS 中的狀態 (還未開始 DFS、已經開始 DFS 但還沒結束、已經結束 DFS)來判斷一條 edge 是否為第一次被看過。我們用 color[u] = 0,1,2 來表示 \\( u \\) 這個點是在三種狀態中的哪一種。
+
+下面的 code 我們同樣想要統計一個點上接出幾條 back edge。我們會發現，當 \\( E \\) 看到 \\( (E,A) \\) 這條邊時，因為 \\( A \\) 點的 DFS 還沒結束，因此 \\( (E,A) \\) 是第一次被看到的 back edge，\\( E,A \\) 兩點都會 +1，然後 \\( E \\) 點的 DFS 就結束了。而當 \\( A \\) 看到 \\( (E,A) \\) 這條邊時，因為 \\( E \\) 點已經結束 DFS，代表 \\( E,A \\) 這條邊一定被 \\( E \\) 看過否則 \\( E \\) 的 DFS 不該結束。所以 \\( E,A \\) 兩點在這時不會 +1。最後得出來的答案就會是我們想要的 1。
 
 ```cpp
 void DFS(int u, int parent) { //call(u,u) at first
@@ -78,13 +87,11 @@ void DFS(int u, int parent) { //call(u,u) at first
         if(color[v] == 0) {
             //tree edge
             dfs(v, u);
-            ...
         } else if(color[v] == 1) {
             //第一次看到的back edge
-            ...
+            backedgeCounter[u]+=1;
+            backedgeCounter[v]+=1;
         }
-        //如果color[v] == 2，代表 v 的 DFS 已經結束，因此 (u,v) 這條邊已經被 v 看過了
-        //如果還沒，那 v 的 DFS 就不應該結束。
     }
     color[u] = 2;
 }
@@ -297,7 +304,7 @@ void dfs(int u, int parent) {
 
 ```
 
-## Problems
+## Exercise
 
 > [CSES - Necessary Cities](https://cses.fi/problemset/task/2077)
 >
@@ -358,7 +365,7 @@ Bridge 模板題
 
 </details>
 
-## Exercise
+## Problems
 
 >[Uva - Mining Your Own Business](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=246&page=show_problem&problem=3549)
 >
