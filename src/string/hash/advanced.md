@@ -7,6 +7,82 @@ Rolling Hash 也許看似簡單，但是要靈活運用才能發揮他的完整�
 ### 字典序最小的 Cyclic Shift
 > 目標：在 \\(O(n\ \log n)\\) 的時間內找到長度為 \\(n\\) 的字串的字典序最小循環移位
 
+> 字串 \\(s\\) 的循環移位 (Cyclic Shift) 是指將字串 \\(s\\) 按照某個 \\(k, 0 \leq k < n\\)進行移位得到的字串 \\(s_{k+1}s_{k+2} ... s_n s_1 s_2 ... s_k\\)，其中 \\(n\\) 是字串 \\(s\\) 的長度。
+>
+> 對於給定的字串，找出其字典序最小的循環移位，即在所有可能的循環移位中，找到按字母順序排列的第一個。
+
+<details>
+  <summary>解答</summary>
+  
+In this problem we need to use compare by great / less in O(log(n)) time using binary search by length of equal subsequence. Duplicate string S and calculate polynomial hashes on prefixes. Each cyclic shift will be represented as a number (initial position). Add all the positions to the vector, and then apply a linear algorithm for finding the minimum in the array using the substring comparison operator. 
+
+Complexity Estimatation: O(n log(n)) time and O(n) memory.
+
+範例解法
+```C++
+#include <stdio.h>
+#include <cassert>
+#include <algorithm>
+#include <vector>
+#include <random>
+#include <chrono>
+#include <string>
+ 
+typedef unsigned long long ull;
+ 
+// Init static variables of PolyHash class:
+int PolyHash::base((int)1e9+7);    
+std::vector<int> PolyHash::pow1{1};
+std::vector<ull> PolyHash::pow2{1};
+ 
+int main() {
+    // Input:
+    char buf[1+100000];
+    scanf("%100000s", buf);
+    std::string a(buf);
+    a += a; // duplicate
+ 
+    // Len of string:
+    const int n = (int)a.size() / 2;
+ 
+    // Max needed power:
+    const int mxPow = 2 * n;
+ 
+    // Gen random base:
+    PolyHash::base = gen_base(256, PolyHash::mod);
+ 
+    // Create hashing object:
+    PolyHash hash(a);
+ 
+    // Put all start positions in vector:
+    std::vector<int> pos;
+    for (int i = 0; i < n; ++i) {
+        pos.push_back(i);
+    }
+ 
+    // Linear search of min algorithm:
+    auto p = *std::min_element(pos.begin(), pos.end(), [&](const int p1, const int p2) {
+        // Binary search by equal subsequences length:
+        int low = 0, high = n+1;
+        while (high - low > 1) {
+            int mid = (low + high) / 2;
+            if (hash(p1, mid, mxPow) == hash(p2, mid, mxPow)) {
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+        return low < n && a[p1+low] < a[p2+low];
+    });
+ 
+    // Output answer:
+    printf("%s", a.substr(p, n).c_str());
+    return 0;
+}
+```
+</details>
+
+
 
 ### 排序所有 Cyclic Shift
 > Sorting of all cyclic shifts of a string of length n in lexicographic order in O(n log^2 n) time
@@ -21,6 +97,66 @@ Rolling Hash 也許看似簡單，但是要靈活運用才能發揮他的完整�
 
 ### 問有幾個後綴滿足特定條件
 > The number of suffixes of a string of length n, the infinite extension of which coincides with the infinite extension of the given string for O(n log n) (extension is a duplicate string an infinite number of times)
+
+## Codebase
+```C++
+// Generate random base in (before, after) open interval:
+int gen_base(const int before, const int after) {
+    auto seed = std::chrono::high_resolution_clock::now().time_since_epoch().count();
+    std::mt19937 mt_rand(seed);
+    int base = std::uniform_int_distribution<int>(before+1, after)(mt_rand);
+    return base % 2 == 0 ? base-1 : base;
+}
+ 
+struct PolyHash {
+    // -------- Static variables --------
+    static const int mod = (int)1e9+123; // prime mod of polynomial hashing
+    static std::vector<int> pow1;        // powers of base modulo mod
+    static std::vector<ull> pow2;        // powers of base modulo 2^64
+    static int base;                     // base (point of hashing)
+ 
+    // --------- Static functons --------
+    static inline int diff(int a, int b) { 
+    	// Diff between `a` and `b` modulo mod (0 <= a < mod, 0 <= b < mod)
+        return (a -= b) < 0 ? a + mod : a;
+    }
+ 
+    // -------------- Variables of class -------------
+    std::vector<int> pref1; // Hash on prefix modulo mod
+    std::vector<ull> pref2; // Hash on prefix modulo 2^64
+ 
+    // Constructor from string:
+    PolyHash(const std::string& s)
+        : pref1(s.size()+1u, 0)
+        , pref2(s.size()+1u, 0)
+    {
+        assert(base < mod);
+        const int n = s.size(); // Firstly calculated needed power of base:
+        while ((int)pow1.size() <= n) {
+            pow1.push_back(1LL * pow1.back() * base % mod);
+            pow2.push_back(pow2.back() * base);
+        }
+        for (int i = 0; i < n; ++i) { // Fill arrays with polynomial hashes on prefix
+            assert(base > s[i]);
+            pref1[i+1] = (pref1[i] + 1LL * s[i] * pow1[i]) % mod;
+            pref2[i+1] = pref2[i] + s[i] * pow2[i];
+        }
+    }
+ 
+    // Polynomial hash of subsequence [pos, pos+len)
+    // If mxPow != 0, value automatically multiply on base in needed power. Finally base ^ mxPow
+    inline std::pair<int, ull> operator()(const int pos, const int len, const int mxPow = 0) const {
+        int hash1 = pref1[pos+len] - pref1[pos];
+        ull hash2 = pref2[pos+len] - pref2[pos];
+        if (hash1 < 0) hash1 += mod;
+        if (mxPow != 0) {
+            hash1 = 1LL * hash1 * pow1[mxPow-(pos+len-1)] % mod;
+            hash2 *= pow2[mxPow-(pos+len-1)];
+        }
+        return std::make_pair(hash1, hash2);
+    }
+};
+```
 
 ## 資源
 
