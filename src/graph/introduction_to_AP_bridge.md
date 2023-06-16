@@ -124,6 +124,7 @@ Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Compon
 <img src="image/AP, Bridge/General AP.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 但 root 是沒有祖先的，因此 root 我們要拉出來特別判斷。很明顯，當 root 有至少兩棵子樹的時候，root 一定會是 AP，否則就不是。
+
 <img src="image/AP, Bridge/Root AP Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 ### 觀察 Bridge 的性質
@@ -143,6 +144,7 @@ Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Compon
 Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
 
 \\(depth(v) \\) 表示 \\( v \\) 這個點在 DFS tree 上的深度。
+
 <img src="image/AP, Bridge/Depth Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 \\( low(v) \\) 表示 \\(v \\) 子樹中所有的點和這些點的鄰點，以及 \\( v \\) 本身的最淺深度。
@@ -166,7 +168,7 @@ Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
 
 ### Time Complexity
 
-同樣也是做完一次 DFS 之後就能得到答案，因此 Time Complexity 為 \\( O(V+E) \\)
+做完一次 DFS 之後就能得到答案，因此 Time Complexity 為 \\( O(V+E) \\)
 
 ## code
 
@@ -240,7 +242,7 @@ struct AP_bridge {
 
 ### 快速標記
 
-這個問題我們可以用前綴和的想法來解決。當我們遇到一條 back edge \\( (u,v) \\) 時，就在 \\(u \\) 上 +1，在 \\( v \\) 上 -1。 **這代表說有一條 back edge 從 \\(u \\) 開始，在 \\( v \\) 結束**。
+這個問題我們可以用前綴和的想法來解決。當我們遇到一條 back edge \\( (u,v) \\) 時，就在 \\(u \\) 上 +1，在 \\( v \\) 上 -1。**這代表說有一條 back edge 從 \\(u \\) 開始，在 \\( v \\) 結束**。
 
 <img src="image/AP, Bridge/prefix 1.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
@@ -253,6 +255,7 @@ struct AP_bridge {
 而實際上，對於一條 tree edge \\( (u,v) \\)，我們只要判斷以 \\( v \\) 為根的子樹標記總和是否為 0，若為 0 則 \\( (u,v) \\) 就會是 bridge。
 
 為甚麼？從下圖可以發現，如果一條 back edge 的開始跟結束都在以 \\( v \\) 為根的子樹內，那麼這條 back edge 對子樹總和的貢獻為 0，否則為 1。而當子樹總和不為 0 的時候，\\( (u,v) \\) 顯然不會是 bridge。
+
 <img src="image/AP, Bridge/subtree sum.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 ### Time Complexity
