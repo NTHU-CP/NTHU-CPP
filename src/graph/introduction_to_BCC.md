@@ -154,10 +154,10 @@ BCC-Edge 有以下幾個性質
 
 跟找 BCC-Vertex 的想法很像。我們用 stack 紀錄走過的點，當我們發現 \\(low(u) == depth(u) \\) 時，我們就發現了橋的下端點。而 stack 中 \\(u \\) 和他上面的點就會位於同一個 BCC。就像下圖 \\( D \\) 這個點，他是 \\( (C,D) \\) 這條 bridge 的下端點。
 
-<img src="image/BCC/BCC_Algo_explain 2.PNG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC_Algo_explain_2.PNG" width="300" style="display:block; margin: 0 auto;"/>
 
 一個完整的例子如下
-<img src="image/BCC/BCC_Algo_example 2.gif" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC_Algo_example_2.gif" width="300" style="display:block; margin: 0 auto;"/>
 
 ### Time Complexity
 
@@ -282,3 +282,4 @@ struct BCC_Edge {
 - [演算法筆記 - Connected Component](https://web.ntnu.edu.tw/~algo/ConnectedComponent.html#2)
 - [sylveon slides - BCC](https://slides.com/sylveon/graph-7#/4)
 - [建中培訓講義 - 進階圖論](https://tioj.ck.tp.edu.tw/uploads/attachment/5/33/8.pdf)
+- [清大競程上課講義]

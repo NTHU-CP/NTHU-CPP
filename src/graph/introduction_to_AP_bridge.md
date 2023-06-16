@@ -43,13 +43,19 @@ void DFS(int u) {
 }
 ```
 
+在定義上，back edge 指的是會回到當前點的祖先的邊。
+
 我們可以看個例子。
 
 <img src="image/AP_and_Bridge/DFS_Tree.gif" width="400" style="display:block; margin: 0 auto;"/>
 
-如果把上圖畫成 DFS tree 就會長成如下圖這樣。我們發現在 DFS tree 上，**一個點可以通過 back edge，回到他的祖先**。
+如果把上圖畫成 DFS tree 就會長成如下圖這樣。我們可以發現，正如 back edge 的定義，**一個點可以通過 back edge，回到他的祖先**。
 
 <img src="image/AP_and_Bridge/DFS_Tree.JPG" width="200" style="display:block; margin: 0 auto;"/>
+
+那可能會有讀者好奇：為什麼在無向圖上，所有不是 tree edge 的邊都會是 back edge?
+
+我們可以通過反證來證明這件事情。
 
 在無向圖上做 DFS tree 時要注意的是: 無向圖的 DFS 會讓一條邊被看到 2 次。例如下圖中，如果我們以 \\( A,B,C,D,E \\) 的順序進行 DFS，那 \\( (E,A) \\)這條邊會首先被 \\( E \\) 看到一次，接著再被 \\( A \\) 看到一次。
 
@@ -73,7 +79,7 @@ void DFS(int u) {
 }
 ```
 
-因此，在無向圖上使用 DFS tree 時，要嘛想辦法處理掉因為看到一條邊兩次帶來的影響(如上面的例子就是把每個點的答案除二)，要嘛讓每條邊都只在第一次被看到的時候做事。
+所以，在無向圖上使用 DFS tree 時，要嘛想辦法處理掉因為看到一條邊兩次帶來的影響(如上面的例子就是把每個點的答案除二)，要嘛讓每條邊都只在第一次被看到的時候做事。
 
 以下給出一個修改方法可以讓每條邊都只在第一次被看到的時候做事。簡單來說就是通過紀錄每個點在 DFS 中的狀態 (還未開始 DFS、已經開始 DFS 但還沒結束、已經結束 DFS)來判斷一條邊是否為第一次被看過。我們用 \\(color[u] = 0,1,2\\) 來表示 \\( u \\) 這個點是在三種狀態中的哪一種。
 
@@ -123,7 +129,7 @@ Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Compon
 
 <img src="image/AP_and_Bridge/General_AP.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
-但 root 是沒有祖先的，因此 root 我們要拉出來特別判斷。很明顯，當 root 有至少兩棵子樹的時候，root 一定會是 AP，否則就不是。
+但 root 是沒有祖先的，因此 root 我們要拉出來特別判斷。記得我們之前所提到的：無向圖上的 DFS tree 只會有 tree edge 跟 back edge，不會有橫跨子樹的邊。因此很明顯，當 root 有至少兩棵子樹的時候，root 一定會是 AP，否則就不是。
 
 <img src="image/AP_and_Bridge/Root_AP_Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
@@ -147,16 +153,16 @@ Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
 
 <img src="image/AP_and_Bridge/Depth_Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
-\\( low(v) \\) 表示 \\(v \\) 子樹中所有的點和這些點的鄰點，以及 \\( v \\) 本身的最淺深度。
+\\( low(v) \\) 表示 \\(v \\) 自己，以及子樹中的點連出去的點當中最小的深度
 
-例如下圖的 \\( C \\) 點，本身的深度是 \\(3\\)，子樹中所有的點深度都 \\(>3\\)，而子樹中最淺的鄰點為 \\( B \\)( \\( L \\) 的鄰點)，深度為 \\(2\\)，因此 \\(low(C) = 2\\)
+例如下圖的 \\( C \\) 點，本身的深度是 \\(3\\)，子樹中所有的點深度都 \\(>3\\)，而子樹中連出去的點最淺為 \\( B \\)( \\( L \\) 的鄰點)，深度為 \\(2\\)，因此 \\(low(C) = 2\\)
 <img src="image/AP_and_Bridge/Low_Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
-我們回想一下剛才的圖，發現對於一個點 \\(u \\)，如果他的某個子節點 \\(v \\) 滿足 \\(low(v) \geq depth(u) \\)，那麼 \\(u\\) 就會是 AP。
+我們回想一下剛才的圖，發現對於一個點 \\(u \\)，如果他的某個子節點 \\(v \\) 滿足 \\(low(v) \geq depth(u) \\)，那麼 \\(u\\) 就會是 AP。可以看下圖的例子，因為 \\( v \\) 點最多只能走到 \\( u \\) 點的深度，因此 \\( v \\) 點一定得通過 \\( u \\) 點才能走到 \\( u \\) 的祖先。那根據我們剛才的觀察，\\( u \\) 就會是 AP
 
 <img src="image/AP_and_Bridge/General_AP_Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
-而對於一條邊 \\((u,v)\\)，如果滿足 \\(low(v) > depth(u)\\)，那麼 \\((u,v) \\) 就會是 Bridge
+而對於一條邊 \\((u,v)\\)，如果滿足 \\(low(v) > depth(u)\\)，那麼 \\((u,v) \\) 就會是 Bridge。與 AP 相似，可以看下圖的例子，因為 \\( v \\) 點所能走到的點都比 \\( u \\) 點深，因此 \\( v \\) 點一定得經過 \\((u,v) \\) 這條邊才能回到 \\(u\\) 點。那根據我們剛才的觀察，\\((u,v) \\) 就會是 Bridge
 
 <img src="image/AP_and_Bridge/General_Bridge_Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
@@ -166,9 +172,14 @@ Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
 
 <img src="image/AP_and_Bridge/Compute_Low.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
+而我們整理一下後會發現，對於一條邊 \\( (v,w) \\)：
+
+- 若 \\( (v,w) \\) 為 tree edge，則 \\( low(v) = min(low(v),\ low(w))\\)
+- 若 \\( (v,w) \\) 為 back edge，則 \\( low(v) = min(low(v),\ depth(w))\\)
+
 ### Time Complexity
 
-做完一次 DFS 之後就能得到答案，因此 Time Complexity 為 \\( O(V+E) \\)
+在無向圖上隨意挑一個點當起點，做完一次 DFS 之後就能得到答案。因此 Time Complexity 為 \\( O(V+E) \\)
 
 ## code
 
@@ -428,7 +439,7 @@ Bridge 模板題
 - 一定要先經過 \\( b \\) 點才能到 \\( a \\) 點(下圖的綠色圓圈，令其中有 \\( j \\) 個點)
 - 可以先到 \\( a \\) 點，也可以先到 \\( b \\) 點(下圖的藍色圓圈，令其中有 \\( k \\) 個點)
 
-<img src="image/AP_and_Bridge/Two_Fair_Solution 1.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP_and_Bridge/Two_Fair_Solution_1.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 那麼答案就會是 \\(i \times j \\)，現在的問題只剩下我們要如何求出 \\(i,j\\)。
 
@@ -505,3 +516,5 @@ Bridge 模板題
 - [codeforce blog - AP & bridge](https://codeforces.com/blog/entry/71146)
 - [codeforce blog - DFS tree](https://codeforces.com/blog/entry/68138)
 - [sylveon slides - AP & Bridge](https://slides.com/sylveon/graph-7#/3)
+- [IONCAMP 講義]
+- [清大競程上課講義]
