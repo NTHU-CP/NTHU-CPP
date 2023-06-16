@@ -1,4 +1,4 @@
-# AP, Bridge
+# Articulation Point and Bridge
 
 ## 前言
 
@@ -173,9 +173,9 @@ Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
 ``` cpp
 struct AP_bridge {
     vector<int> low, depth;
-    vector<vector<int> > G;
+    vector<vector<int>> G;
     vector<int> AP;
-    vector<pair<int, int> > Bridge;
+    vector<pair<int, int>> Bridge;
     void init(int n) {
         depth.assign(n+1, 0);
         low.assign(n+1, 0);
@@ -219,13 +219,13 @@ struct AP_bridge {
         return AP;
     }
     
-    vector<pair<int, int> > get_bridge() {
+    vector<pair<int, int>> get_bridge() {
         return Bridge;
     }
 };
 ```
 
-## Using DFS tree for Bridge/AP
+## Get Bridge/AP by DFS tree
 
 ### 觀察 Bridge 的性質
 
@@ -264,7 +264,7 @@ struct AP_bridge {
 ```cpp
 struct bridge {
     vector<int> color, sum;
-    vector<vector<int> > G;
+    vector<vector<int>> G;
     vector<pair<int, int>> Bridge;
     void init(int n) {
         color.assign(n+1, 0);
@@ -299,7 +299,7 @@ struct bridge {
         color[u] = 2;
     }
         
-    vector<pair<int, int> > get_bridge() {
+    vector<pair<int, int>> get_bridge() {
         return Bridge;
     }
 };
@@ -334,7 +334,7 @@ struct bridge {
 ```cpp
 struct AP {
     vector<int> color, sum, backEdgeEnd;
-    vector<vector<int> > G;
+    vector<vector<int>> G;
     vector<int> AP;
     void init(int n) {
         color.assign(n+1, 0);
@@ -392,19 +392,28 @@ struct AP {
 > [CSES - Necessary Cities](https://cses.fi/problemset/task/2077)
 >
 > 給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，要你找出圖上所有的 AP
+>
+>\\(2 \leq N \leq 10^5,\ 1 \leq M \leq 2 \cdot 10^5\\)
 
 AP 模板題
 
 > [CSES - Necessary Roads](https://cses.fi/problemset/task/2076)
 >
 > 給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，要你找出圖上所有的 Bridge
+>
+>\\(2 \leq N \leq 10^5,\ 1 \leq M \leq 2 \cdot 10^5\\)
 
 Bridge 模板題
 
 >[Codeforce - Two Fairs](https://codeforces.com/contest/1259/problem/E)
 >
->給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖及兩個點 \\(a, b\\) ，問有幾對 \\( (x,y) \\) 滿足由 \\(x \\) 到 \\( y \\) 的路徑上一定會經過
->\\(a, b\\) 這兩個點。其中 \\( x \neq a,b\\) 且 \\(y \neq a,b \\)。
+>\\( t \\) 筆輸入，每筆輸入給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖及兩個點 \\(a, b\\) ，問有幾對 \\( (x,y) \\) 滿足由 \\(x \\) 到 \\( y \\) 的路徑上一定會經過 \\(a, b\\) 這兩個點。其中 \\( x \neq a,b\\) 且 \\(y \neq a,b \\)。
+>
+>\\(1 \leq t \leq 4 \cdot 10^4\\)
+>
+>\\(4 \leq N \leq 2 \cdot 10^5,\ N-1 \leq M \leq 5 \cdot 10^5\\)
+>
+>保證所有 test case 的 \\( N \\) 的總和不超過 \\(2 \cdot 10^5\\)，\\(M \\) 的總和不超過 \\(5 \cdot 10^5\\)
 
 <details><summary> Solution </summary>
 
@@ -427,6 +436,8 @@ Bridge 模板題
 >[Codeforces - Bertown roads](https://codeforces.com/contest/118/problem/E)
 >
 > 給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，要你幫每一條邊定向後使整張圖上任兩點間都有 path，如果不可能輸出 0。
+>
+>\\(2 \leq N \leq 10^5,\ N-1 \leq M \leq 3 \cdot 10^5 \\)
 
 <details><summary> Solution </summary>
 
@@ -452,7 +463,9 @@ Bridge 模板題
 
 >[Uva - Mining Your Own Business](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&category=246&page=show_problem&problem=3549)
 >
->在一張無向圖上選擇盡可能少的點塗黑，使得刪除任一個點後，每個連通分量裡至少有一個黑點。問最少要塗黑幾個點以及有幾種塗法。
+>多筆輸入，每筆輸入給一張有 \\( N \\) 條邊的無向圖，要你選擇盡可能少的點塗黑，使得刪除任一個點後，每個連通分量裡至少有一個黑點。問最少要塗黑幾個點以及有幾種塗法。
+>
+>\\( N \leq 5 \cdot 10^4 \\)
 
 <details><summary> Hint </summary>
 
@@ -464,7 +477,9 @@ Bridge 模板題
 
 >[Codeforces - Break Up](https://codeforces.com/problemset/problem/700/C)
 >
-> 給一張 \\( N \\) 個點 \\( M \\) 條邊的帶權無向圖與兩點 \\(S \\) , \\(T \\)，要你選至多兩條邊刪除後使 \\(S \\) , \\(T \\) 不連通。要求選的邊權重和最小。\\( N \leq 1000, M \leq 30000 \\)
+> 給一張 \\( N \\) 個點 \\( M \\) 條邊的帶權無向圖與兩點 \\(S \\) , \\(T \\)，要你選至多兩條邊刪除後使 \\(S \\) , \\(T \\) 不連通。要求選的邊權重和最小。
+>
+>\\( N \leq 1000,\ M \leq 30000 \\)
 
 <details><summary> Hint </summary>
 

@@ -1,4 +1,4 @@
-# BCC
+# BCC-Vertex and BCC-Edge
 
 ## 前言
 
@@ -122,6 +122,8 @@ struct BCC_Vertex {
 >[Codeforce - Simple Cycles Edges](https://codeforces.com/problemset/problem/962/F)
 >
 >給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，問那些邊剛好位於一個簡單環上。
+>
+>\\(1 \leq N \leq 10^5,\ 0 \leq M \leq min(n \cdot (n-1)/2,\ 2.1 \cdot 10^6)\\)
 
 <details><summary> Solution </summary>
 
@@ -219,7 +221,11 @@ struct BCC_Edge {
 
 >[2015 ACM Amman Collegiate Programming Contest pH - Bridges](https://codeforces.com/gym/100712)
 >
-> 請有興趣的讀者自行去連結查看題目敘述，以免暴雷未來打算模擬這場比賽當作團練的人。
+> \\( T \\) 筆測資，每筆測資會給你一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，問你在圖上加一條邊後，圖上的 bridge 數量最少為何。
+>
+> \\(1 \leq T \leq 64\\)
+>
+> \\(3 \leq N \leq 10^5,\ N-1 \leq M \leq 10^5\\)
 
 <details><summary> Solution </summary>
 
@@ -234,6 +240,8 @@ struct BCC_Edge {
 >[TIOJ - 圓桌武士](https://tioj.ck.tp.edu.tw/problems/1684)
 >
 >有 \\( N \\) 個武士和 \\( M \\) 個武士之間倆倆的仇恨關係，如果能選出奇數個武士(至少三個)坐在圓桌邊，且相鄰的兩人不互相仇恨，那他們就可以開會。問有多問有多少位武士永遠不可能開會。
+>
+>\\( 1 \leq N \leq 1000,\ 1 \leq M \leq 10^6 \\)
 
 <details><summary> Hint </summary>
 
@@ -244,6 +252,8 @@ struct BCC_Edge {
 >[Codeforces - Tourist Reform](https://codeforces.com/contest/732/problem/F)
 >
 >給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，定義 \\(r_i \\) 為幫每條邊定向後，\\(i \\) 點可以走到的點數。要你給出一種定向方法使得 \\(min_i({r_i})\\) 最大
+>
+>\\( 2 \leq N \leq 4 \cdot 10^5,\ 1 \leq M \leq 4 \cdot 10^5 \\)
 
 <details><summary> Hint </summary>
 
@@ -253,7 +263,9 @@ struct BCC_Edge {
 
 > [POJ - Road Construction](http://poj.org/problem?id=3352)
 >
-> 給一張無向圖，問最少要加幾條邊才能使得圖上沒有橋。
+> 給一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，保證整張圖連通，問最少要加幾條邊才能使得圖上沒有橋。
+>
+>\\( 3 \leq N \leq 1000,\ 2 \leq M \leq 1000 \\)
 
 <details><summary> Hint </summary>
 
