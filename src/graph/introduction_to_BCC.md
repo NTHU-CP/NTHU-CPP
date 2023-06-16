@@ -7,7 +7,7 @@
 ## BCC-Vertex(Bi-connected Component)
 
 BCC-Vertex 指的是沒有 AP 的 Connected Component，在中文常稱之為點雙連通分量。例如下圖中有三個 BCC-Vertex
-<img src="image/BCC/Biconnected Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/Biconnected_Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
 BCC-Vertex 有以下幾個性質:
 
@@ -23,7 +23,7 @@ BCC-Vertex 有以下幾個性質:
 
 例如下圖中，\\( A \\) 通過 DFS 可以找到 \\( B,C,D \\)，這四點恰為一個 BCC-Vertex。\\( A \\) 點不會找到 \\( E \\)，因為 \\( D \\) 點是 AP，不會繼續 DFS 下去。而 \\(D \\) 點會檢查到 \\(E \\) 是 AP，因此 \\(D,E\\) 會是一個 BCC-Vertex。
 
-<img src="image/BCC/simple BCC-Vertex example.JPG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/simple_BCC-Vertex_example.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
 事實上，我們也可以通過修改找 AP 的演算法，在找 AP 的時候順便找出所有的 BCC-Vertex。
 
@@ -31,10 +31,10 @@ BCC-Vertex 有以下幾個性質:
 
 我們可以用 stack 紀錄首次遇到的邊。這樣當我們發現 \\(low(v) \geq depth(u) \\) 時，stack 中 \\( (u,v) \\) 及它上面的邊就會位於同一個 BCC-Vertex 中。就像是下圖 \\( (C,D) \\) 這條邊。
 
-<img src="image/BCC/BCC Algo explain.PNG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC_Algo_explain.PNG" width="300" style="display:block; margin: 0 auto;"/>
 
 一個完整的例子如下
-<img src="image/BCC/BCC Algo example.gif" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC_Algo_example.gif" width="300" style="display:block; margin: 0 auto;"/>
 
 ### Time Complexity
 
@@ -137,7 +137,7 @@ struct BCC_Vertex {
 ## BCC-Edge(Bridge Connected Component)
 
 BCC-Edge 指的是沒有 Bridge 的 Connected Component，在中文常稱之為邊雙連通分量、橋連通分量。例如下圖我們能找到兩個 BCC-Edge
-<img src="image/BCC/Bridge Connected Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/Bridge_Connected_Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
 BCC-Edge 有以下幾個性質
 
@@ -146,7 +146,7 @@ BCC-Edge 有以下幾個性質
 
 而要如何找出圖上所有的 BCC-Edge?我們可以發現，如果我們拔掉原圖上所有的 bridge，那麼剩下來的每一個 component 就都會是一個 BCC-Edge。
 
-<img src="image/BCC/simple BCC-Edge example.JPG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/simple_BCC-Edge_example.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
 因此我們可以拔掉圖上所有的 bridge 後，DFS 找出那些點同屬一個 BCC-Edge。那有沒有其他方法呢?與 BCC-Vertex 相似，我們可以通過修改找 bridge 的演算法，在找 bridge 的時候順便找出所有的 BCC-Edge。
 
@@ -154,10 +154,10 @@ BCC-Edge 有以下幾個性質
 
 跟找 BCC-Vertex 的想法很像。我們用 stack 紀錄走過的點，當我們發現 \\(low(u) == depth(u) \\) 時，我們就發現了橋的下端點。而 stack 中 \\(u \\) 和他上面的點就會位於同一個 BCC。就像下圖 \\( D \\) 這個點，他是 \\( (C,D) \\) 這條 bridge 的下端點。
 
-<img src="image/BCC/BCC Algo explain 2.PNG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC_Algo_explain 2.PNG" width="300" style="display:block; margin: 0 auto;"/>
 
 一個完整的例子如下
-<img src="image/BCC/BCC Algo example 2.gif" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC_Algo_example 2.gif" width="300" style="display:block; margin: 0 auto;"/>
 
 ### Time Complexity
 
