@@ -53,9 +53,13 @@ void DFS(int u) {
 
 <img src="image/AP_and_Bridge/DFS_Tree.JPG" width="200" style="display:block; margin: 0 auto;"/>
 
-那可能會有讀者好奇：為什麼在無向圖上，所有不是 tree edge 的邊都會是 back edge?
+那可能會有讀者好奇：為什麼在無向圖上，所有不是 tree edge 的邊都會是 back edge，有沒有可能出現橫跨兩顆子樹的邊呢？例如下圖的紅色邊。
 
-我們可以通過反證來證明這件事情。
+<img src="image/AP_and_Bridge/DFS_Tree＿Cross_Edge_Example.JPG" width="200" style="display:block; margin: 0 auto;"/>
+
+答案是不可能。因為根據 DFS 的規則，我們走到一個點後，會遍歷它所有的邊才結束 DFS。因此如果有橫跨子樹的邊，那麼它會被歸類為 Tree edge。我們可以看下圖的例子，如果我們在 DFS 的時候先走到 \\( D \\)，那麼 \\( D \\) 在 DFS 的時候就會通過 \\( (D,K) \\) 這條紅色邊走到 \\( K \\)。\\( (D,K) \\) 就會被當成 tree edge。而先走到 \\( K \\) 的情況同理。
+
+<img src="image/AP_and_Bridge/DFS_Tree＿Cross_Edge_Proof.JPG" width="200" style="display:block; margin: 0 auto;"/>
 
 在無向圖上做 DFS tree 時要注意的是: 無向圖的 DFS 會讓一條邊被看到 2 次。例如下圖中，如果我們以 \\( A,B,C,D,E \\) 的順序進行 DFS，那 \\( (E,A) \\)這條邊會首先被 \\( E \\) 看到一次，接著再被 \\( A \\) 看到一次。
 
@@ -172,7 +176,7 @@ Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
 
 <img src="image/AP_and_Bridge/Compute_Low.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
-而我們整理一下後會發現，對於一條邊 \\( (v,w) \\)：
+我們整理一下後會發現，對於一條邊 \\( (v,w) \\)：
 
 - 若 \\( (v,w) \\) 為 tree edge，則 \\( low(v) = min(low(v),\ low(w))\\)
 - 若 \\( (v,w) \\) 為 back edge，則 \\( low(v) = min(low(v),\ depth(w))\\)
@@ -242,14 +246,18 @@ struct AP_bridge {
 
 ### 觀察 Bridge 的性質
 
-我們觀察圖中那些邊絕對不可能是 bridge
+我們觀察圖中哪些邊絕對不可能是 bridge
 
 <img src="image/AP_and_Bridge/DFS_Tree_Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 - back edge 絕對不會是 bridge。
 - **如果\\( (u,v) \\)是 back edge，那麼樹上 \\(u \\) 到 \\( v \\) 的路徑都不會是 bridge**。例如圖中因為有 \\( (F,C) \\) 這條 back edge，因此樹上 \\(F \\) 到 \\(C \\) 的路徑都不會是 bridge。
 
-所以，如果我們每遇到一條 back edge \\( (u,v) \\)，就把樹上 \\(u \\) 到 \\( v \\) 的路徑都標記成不是 bridge，那麼最後那些沒被標記到的邊就會是 bridge。問題是，**我們要如何快速標記一條路徑上所有的邊？**
+所以，如果我們每遇到一條 back edge \\( (u,v) \\)，就把樹上 \\(u \\) 到 \\( v \\) 的路徑都標記成不是 bridge，那麼最後那些沒被標記到的邊就會是 bridge。為何？可以看下圖的例子。若是一條邊沒被標記到，就代表沒有 back edge 跨過這條邊，如下圖 \\( (a,b) \\) 這條邊。可以發現，當我們想從 \\( b \\) 回到 \\( a \\) 時，必然只能通過 \\( (a,b) \\) 這條邊。這證明了如果一條邊沒被標記到，那麼它必然是 Bridge。
+
+<img src="image/AP_and_Bridge/Bridge_Mark_Example.JPG" width="150" style="display:block; margin: 0 auto;"/>
+
+因此問題只剩下：**我們要如何快速標記一條路徑上所有的邊？**
 
 ### 快速標記
 
@@ -257,13 +265,32 @@ struct AP_bridge {
 
 <img src="image/AP_and_Bridge/prefix_1.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
-這樣當我們由下而上計算前綴和時，\\(u \\) 到 \\( v \\) 的 path 就全部被標記好了!
+這樣當我們由下而上計算前綴和時，\\(u \\) 到 \\( v \\) 的 path 就全部被標記好了！邊上的前綴和　\\( x \\) 代表了有 \\( x \\) 條 back edge 跨過這條邊。
 
 <img src="image/AP_and_Bridge/prefix_2.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
+我們接著來看一個比較複雜的例子。如下圖，假設我們已經算出了三條黑色邊的前綴和，那麼想想看綠色邊的前綴和應該如何計算？
+
+<img src="image/AP_and_Bridge/prefix_3.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+我們觀察到跨過綠色邊的 back edge 只會有兩種：
+
+- 所有跨過黑色邊並且跨過 \\( v \\) 的 back edge
+- 從 \\( v \\) 出發的 back edge
+
+對於第一點，所有跨過黑色邊的 back edge 數量即為三條黑色邊上前綴和的加總(回想一下前綴和的意義)。而我們只要跨過 \\( v \\) 點的那些 back edge，因此我們要減掉在 \\( v \\) 點結束的 back edge。
+
+因此我們就有了綠色邊的式子：三條黑色邊上前綴和的加總 \\( - \\) 在 \\( v \\) 點結束的 back egde 數量 \\( + \\) 從 \\( v \\) 點出發的 back edge 數量。
+
+移項一下：三條黑色邊上前綴和的加總 \\( ＋ \\) 從 \\( v \\) 點出發的 back edge 數量 \\( － \\) 在 \\( v \\) 點結束的 back egde 數量。
+
+記得我們在遇到一條 back edge 時，會在它開頭的點 +1，結尾的點 -1。因此後面兩項實際上就是 \\( v \\) 點所記錄的值。
+
+所以綠色邊的前綴和會是：三條黑色邊上前綴和的加總 \\( + \\) \\( v \\) 點的值。
+
 ### 前綴和 -> 子樹標記總和
 
-而實際上，對於一條 tree edge \\( (u,v) \\)，我們只要判斷以 \\( v \\) 為根的子樹標記總和是否為 0，若為 0 則 \\( (u,v) \\) 就會是 bridge。
+實際上，對於一條 tree edge \\( (u,v) \\)，我們只要判斷以 \\( v \\) 為根的子樹標記總和是否為 0，若為 0 則 \\( (u,v) \\) 就會是 bridge。
 
 為甚麼？從下圖可以發現，如果一條 back edge 的開始跟結束都在以 \\( v \\) 為根的子樹內，那麼這條 back edge 對子樹總和的貢獻為 0，否則為 1。而當子樹總和不為 0 的時候，\\( (u,v) \\) 顯然不會是 bridge。
 
@@ -516,5 +543,4 @@ Bridge 模板題
 - [codeforce blog - AP & bridge](https://codeforces.com/blog/entry/71146)
 - [codeforce blog - DFS tree](https://codeforces.com/blog/entry/68138)
 - [sylveon slides - AP & Bridge](https://slides.com/sylveon/graph-7#/3)
-- [IONCAMP 講義]
-- [清大競程上課講義]
+- IONCAMP 講義
