@@ -122,7 +122,7 @@ int64_t merge_sort_inversions(vector<int>::iterator begin, vector<int>::iterator
 
 ### Data Structure: Fenwick Tree (a.k.a. Binary Indexed Tree, BIT[^BIT_cp_algo])
 
-接著來看一個可能更直觀的想法。對於一個 permutation 中的每一元素，假若我們可以知道與它有關的逆序對數量分別為和，那們整個 permutaion 的逆序對數量也就呼之欲出、易如反掌。因此，我們想到前面提過 permutaions 的 inversion vectors。以 left inversion count 為例，我們只需要在依序維護 permutation 某元素 \\(i\\) 出現權重 \\(w_i\\) 的同時，找出有大於該元素的元素數，也就是 \\(\sum_{i=0}^nw_i\\)。因此，我們需要一個支援高校單點修改、區間查詢的資料結構，而簡單好寫的 Fenwick Tree (a.k.a. Binary Indexed Tree, BIT[^BIT_oi_wiki]) 是我們的好朋友。
+接著來看一個可能更直觀的想法。對於一個 permutation 中的每一元素，假若我們可以知道與它有關的逆序對數量分別為和，那們整個 permutaion 的逆序對數量也就呼之欲出、易如反掌。因此，我們想到前面提過 permutaions 的 inversion vectors。以 left inversion count 為例，我們只需要在依序維護 permutation 某元素 \\(i\\) 出現權重 \\(w_i\\) 的同時，找出有大於該元素的元素數，也就是 \\(\sum_{i=0}^nw_i\\)。因此，我們需要一個支援高效單點修改、區間查詢的資料結構，而簡單好寫的 Fenwick Tree (a.k.a. Binary Indexed Tree, BIT[^BIT_oi_wiki]) 是我們的好朋友。
 
 ```cpp
 struct bit
