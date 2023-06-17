@@ -12,8 +12,14 @@ BCC-Vertex 指的是沒有 AP 的 Connected Component，在中文常稱之為點
 BCC-Vertex 有以下幾個性質:
 
 - 不同的 BCC-Vertex 之間最多共用一個點，而該點必然是圖上的 AP
-- 一個至少有三個點的 BCC-Vertex，任兩點間至少會有兩條沒有共用邊的簡單路徑
-- 對於在同一個 BCC-Vertex 中的任意三個相異點 \\(a,b,c\\)，必存在一條簡單路徑依序經過 \\(a,b,c\\) 三點
+
+- 一個至少有三個點的 BCC-Vertex，給定任意兩相異點 \\( a,b \\)，必存在一個同時包含 \\(a,b\\) 兩點的環
+  - 我們可以使用反證證明。假設不存在一個同時包含 \\( a,b \\) 的環，如果 \\(a, b\\) 間只有一條路徑，那麼必存在 AP，矛盾。而如果有多條路徑，若它們不在 \\(a, b\\) 以外的點相交，如下圖左，那一定可以找到一個同時包含 \\(a, b\\) 的環。而若是它們在
+- 一個至少有三個點的 BCC-Vertex，任兩點間至少會有兩條沒有共用邊的簡單路徑。(環上順時針或逆時針走)
+- 對於在同一個 BCC-Vertex 中的任意三個相異點 \\( a,b,c \\)，必存在一條簡單路徑依序經過 \\(a,b,c\\) 三點。因為 \\(a,b\\) 同在一個環上，\\(b,c \\) 同在一個環上，所以你可以枚舉兩個環跟三個點的各種位置關係就能得證。以下列舉幾種，紅色的邊代表 \\( a \\) 到 \\( b \\) 到 \\( c \\) 的簡單路徑
+
+<img src="image/BCC/BCC-Vertex_Cycle_Case.JPG" width="300" style="display:block; margin: 0 auto;"/>
+
 - 把每個 BCC-Vertex 跟 AP 都變成一個點，畫成一張新圖，那這張新圖會是一棵樹，且樹上的 AP 跟 BCC-Vertex 會交錯出現
 
 而要如何找出圖上所有的 BCC-Vertex 呢?我們發現:
@@ -141,8 +147,10 @@ BCC-Edge 指的是沒有 Bridge 的 Connected Component，在中文常稱之為�
 
 BCC-Edge 有以下幾個性質
 
-- 同一個 BCC-Edge 的任兩點間至少存在兩條沒有共用邊的簡單路徑
-- 如果把每個 BCC-Edge 縮成一個點，那麼新得到的圖會是一棵樹或者森林。
+- 同一個 BCC-Edge 的任兩點間至少存在兩條沒有共用邊的簡單路徑。因為 BCC-Edge 上的任兩點
+- 如果把每個 BCC-Edge 縮成一個點，那麼新得到的圖會是一棵樹或者森林。因為如果新的圖上有環的話，那個環上所有的點就應在在一開始被看成一個 BCC-Edge。如下圖所示，那三個 BCC-Edge 應該要同在一個 BCC-Edge 中。
+
+<img src="image/BCC/BCC-Edge_property_2.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
 而要如何找出圖上所有的 BCC-Edge?我們可以發現，如果我們拔掉原圖上所有的 bridge，那麼剩下來的每一個 component 就都會是一個 BCC-Edge。
 
@@ -281,5 +289,6 @@ struct BCC_Edge {
 - [Hackerearth - BCC](https://www.hackerearth.com/practice/algorithms/graphs/biconnected-components/tutorial/)
 - [演算法筆記 - Connected Component](https://web.ntnu.edu.tw/~algo/ConnectedComponent.html#2)
 - [sylveon slides - BCC](https://slides.com/sylveon/graph-7#/4)
+- [算法笔记 - BCC](https://www.cnblogs.com/IltzInstallBI/p/13113566.html)
 - [建中培訓講義 - 進階圖論](https://tioj.ck.tp.edu.tw/uploads/attachment/5/33/8.pdf)
-- [清大競程上課講義]
+- 清大競程上課講義

@@ -53,14 +53,6 @@ void DFS(int u) {
 
 <img src="image/AP_and_Bridge/DFS_Tree.JPG" width="200" style="display:block; margin: 0 auto;"/>
 
-那可能會有讀者好奇：為什麼在無向圖上，所有不是 tree edge 的邊都會是 back edge，有沒有可能出現橫跨兩顆子樹的邊呢？例如下圖的紅色邊。
-
-<img src="image/AP_and_Bridge/DFS_Tree＿Cross_Edge_Example.JPG" width="200" style="display:block; margin: 0 auto;"/>
-
-答案是不可能。因為根據 DFS 的規則，我們走到一個點後，會遍歷它所有的邊才結束 DFS。因此如果有橫跨子樹的邊，那麼它會被歸類為 Tree edge。我們可以看下圖的例子，如果我們在 DFS 的時候先走到 \\( D \\)，那麼 \\( D \\) 在 DFS 的時候就會通過 \\( (D,K) \\) 這條紅色邊走到 \\( K \\)。\\( (D,K) \\) 就會被當成 tree edge。而先走到 \\( K \\) 的情況同理。
-
-<img src="image/AP_and_Bridge/DFS_Tree＿Cross_Edge_Proof.JPG" width="200" style="display:block; margin: 0 auto;"/>
-
 在無向圖上做 DFS tree 時要注意的是: 無向圖的 DFS 會讓一條邊被看到 2 次。例如下圖中，如果我們以 \\( A,B,C,D,E \\) 的順序進行 DFS，那 \\( (E,A) \\)這條邊會首先被 \\( E \\) 看到一次，接著再被 \\( A \\) 看到一次。
 
 <img src="image/AP_and_Bridge/DFS_Tree_note 1.JPG" width="200" style="display:block; margin: 0 auto;"/>
@@ -133,9 +125,13 @@ Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Compon
 
 <img src="image/AP_and_Bridge/General_AP.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
-但 root 是沒有祖先的，因此 root 我們要拉出來特別判斷。記得我們之前所提到的：無向圖上的 DFS tree 只會有 tree edge 跟 back edge，不會有橫跨子樹的邊。因此很明顯，當 root 有至少兩棵子樹的時候，root 一定會是 AP，否則就不是。
+但 root 是沒有祖先的，因此 root 我們要拉出來特別判斷。很明顯，當 root 有至少兩棵子樹的時候，root 一定會是 AP，否則就不是。
 
 <img src="image/AP_and_Bridge/Root_AP_Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+
+那難道不會有如下圖一樣，橫跨兩個子樹的 edge 嗎？這樣的話 \\( C \\) 點就不會是 AP 了。答案是不會。這種橫跨兩個子樹的 edge 會在 DFS 的時候被看成 tree edge。讀者可以稍微思考一下為什麼。
+
+<img src="image/AP_and_Bridge/DFS_Tree_Cross_Edge_Question.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 ### 觀察 Bridge 的性質
 
@@ -265,7 +261,7 @@ struct AP_bridge {
 
 <img src="image/AP_and_Bridge/prefix_1.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
-這樣當我們由下而上計算前綴和時，\\(u \\) 到 \\( v \\) 的 path 就全部被標記好了！邊上的前綴和　\\( x \\) 代表了有 \\( x \\) 條 back edge 跨過這條邊。
+這樣當我們由下而上計算前綴和時，\\(u \\) 到 \\( v \\) 的 path 就全部被標記好了！邊上的前綴和 \\( x \\) 代表了有 \\( x \\) 條 back edge 跨過這條邊。
 
 <img src="image/AP_and_Bridge/prefix_2.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
@@ -278,19 +274,11 @@ struct AP_bridge {
 - 所有跨過黑色邊並且跨過 \\( v \\) 的 back edge
 - 從 \\( v \\) 出發的 back edge
 
-對於第一點，所有跨過黑色邊的 back edge 數量即為三條黑色邊上前綴和的加總(回想一下前綴和的意義)。而我們只要跨過 \\( v \\) 點的那些 back edge，因此我們要減掉在 \\( v \\) 點結束的 back edge。
-
-因此我們就有了綠色邊的式子：三條黑色邊上前綴和的加總 \\( - \\) 在 \\( v \\) 點結束的 back egde 數量 \\( + \\) 從 \\( v \\) 點出發的 back edge 數量。
-
-移項一下：三條黑色邊上前綴和的加總 \\( ＋ \\) 從 \\( v \\) 點出發的 back edge 數量 \\( － \\) 在 \\( v \\) 點結束的 back egde 數量。
-
-記得我們在遇到一條 back edge 時，會在它開頭的點 +1，結尾的點 -1。因此後面兩項實際上就是 \\( v \\) 點所記錄的值。
-
-所以綠色邊的前綴和會是：三條黑色邊上前綴和的加總 \\( + \\) \\( v \\) 點的值。
+當然，我們可以根據上面兩點列出式子後算出綠色邊的答案。但我們再觀察一下會發現，我們所要求的東西其實就是：以 \\( v \\) 為根的子樹中，有幾條 back edge 跨過了 \\( v \\)。而要求出這個東西，我們可以從子樹標記總和下手。
 
 ### 前綴和 -> 子樹標記總和
 
-實際上，對於一條 tree edge \\( (u,v) \\)，我們只要判斷以 \\( v \\) 為根的子樹標記總和是否為 0，若為 0 則 \\( (u,v) \\) 就會是 bridge。
+對於一條 tree edge \\( (u,v) \\)，我們只要判斷以 \\( v \\) 為根的子樹標記總和是否為 0，若為 0 則 \\( (u,v) \\) 就會是 bridge。
 
 為甚麼？從下圖可以發現，如果一條 back edge 的開始跟結束都在以 \\( v \\) 為根的子樹內，那麼這條 back edge 對子樹總和的貢獻為 0，否則為 1。而當子樹總和不為 0 的時候，\\( (u,v) \\) 顯然不會是 bridge。
 
