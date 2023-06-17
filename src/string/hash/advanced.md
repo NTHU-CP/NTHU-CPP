@@ -306,5 +306,7 @@ struct PolyHash {
 ## 資源
 
 [blog](https://codeforces.com/blog/entry/60445)
+
 [Suffix Array & Rolling Hash](https://www.luogu.com.cn/blog/blackfrog/sa-algorithm)
+
 [Minimum cyclic shift](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=43&id_problem=284&locale=en)
