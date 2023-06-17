@@ -12,17 +12,35 @@ BCC-Vertex 指的是沒有 AP 的 Connected Component，在中文常稱之為點
 BCC-Vertex 有以下幾個性質:
 
 - 不同的 BCC-Vertex 之間最多共用一個點，而該點必然是圖上的 AP
+  - 如果共用超過一個點的話，我們會發現這兩個 BCC-Vertex 實際上是同一個。如下圖，我們發現刪掉這兩個點中的任一個點，整張圖依然彼此連通；而如果刪掉的是某個 BCC-Vertex 內的點，根據 BCC-Vertex 的定義，整張圖也會保持連通。因此得證這兩個 BCC-Vertex 實際上是同一個
+  <img src="image/BCC/BCC-Vertex_property_1_proof1.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
-- 一個至少有三個點的 BCC-Vertex，給定任意兩相異點 \\( a,b \\)，必存在一個同時包含 \\(a,b\\) 兩點的環
-  - 我們可以使用反證證明。假設不存在一個同時包含 \\( a,b \\) 的環，如果 \\(a, b\\) 間只有一條路徑，那麼必存在 AP，矛盾。而如果有多條路徑，若它們不在 \\(a, b\\) 以外的點相交，如下圖左，那一定可以找到一個同時包含 \\(a, b\\) 的環。而若是它們在
+- 一個至少有三個點的 BCC-Vertex，給定任意兩相異點 \\( a,b \\)，必存在一個同時包含 \\(a,b\\) 兩點的簡單環
+  - 首先我們知道，\\( a \\) 點一定會位於某個簡單環中，否則拿掉 \\( a \\) 點後整張圖必不連通。\\( b \\) 點同理。
+  - 如果兩個簡單環至少交於兩點，那我們便可以找出一個同時包含 \\(a, b\\) 的簡單環，如下圖。
+  <img src="image/BCC/BCC-Vertex_simple_cycle_1.JPG" width="300" style="display:block; margin: 0 auto;"/>
+  - 如果兩個簡單環恰交於一點，即下圖的綠點。因為 \\(a, b\\) 位於同一個 BCC-Vertex，因此我們知道，\\( a \\) 的簡單環上一定會有一條不經過綠點的 path 通向 \\( b \\) 的簡單環，否則綠點就會是 AP。那我們便可以找出一個同時包含 \\(a, b\\) 的簡單環，如下圖。
+  <img src="image/BCC/BCC-Vertex_simple_cycle_2.JPG" width="300" style="display:block; margin: 0 auto;"/>
+  - 如果兩個簡單環沒有交集，根據 BCC-Vertex 的定義，我們知道 \\( a \\) 的簡單環上一定會有通向 \\( b \\) 的簡單環的 path，而且這些 path 至少會從兩個不同的點出發(如果只由一個點出發，那麼那個點就會是 AP，如下圖的紅點)。
+  <img src="image/BCC/BCC-Vertex_simple_cycle_3.JPG" width="300" style="display:block; margin: 0 auto;"/>
+  - 如果我們找到兩條沒有共用點的 path，那我們便可以找出一個同時包含 \\(a, b\\) 的簡單環，如下圖。
+  <img src="image/BCC/BCC-Vertex_simple_cycle_4.JPG" width="300" style="display:block; margin: 0 auto;"/>
+  - 否則，發現我們可以**擴大** \\( a \\) 的簡單環，如下圖。因為 \\( a \\) 的簡單環會不斷往 \\( b \\) 的方向長大，而圖的大小有限，因此我們知道有限回合後，兩個簡單環必定相交。
+  <img src="image/BCC/BCC-Vertex_simple_cycle_Enlarge.JPG" width="400" style="display:block; margin: 0 auto;"/>
 - 一個至少有三個點的 BCC-Vertex，任兩點間至少會有兩條沒有共用邊的簡單路徑。(環上順時針或逆時針走)
-- 對於在同一個 BCC-Vertex 中的任意三個相異點 \\( a,b,c \\)，必存在一條簡單路徑依序經過 \\(a,b,c\\) 三點。因為 \\(a,b\\) 同在一個環上，\\(b,c \\) 同在一個環上，所以你可以枚舉兩個環跟三個點的各種位置關係就能得證。以下列舉幾種，紅色的邊代表 \\( a \\) 到 \\( b \\) 到 \\( c \\) 的簡單路徑
+- 對於在同一個 BCC-Vertex 中的任意三個相異點 \\( a,b,c \\)，必存在一條簡單路徑依序經過 \\(a,b,c\\) 三點。
+  - 因為 \\(a,b\\) 同在一個環上，\\(b,c \\) 同在一個環上，所以我們枚舉兩個環跟三個點的各種位置關係就能得證。以下列舉幾種，紅色的邊代表 \\( a \\) 到 \\( b \\) 到 \\( c \\) 的簡單路徑
 
 <img src="image/BCC/BCC-Vertex_Cycle_Case.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
-- 把每個 BCC-Vertex 跟 AP 都變成一個點，畫成一張新圖，那這張新圖會是一棵樹，且樹上的 AP 跟 BCC-Vertex 會交錯出現
+- 把每個 BCC-Vertex 跟 AP 都縮成一個點，根據 BCC-Vertex 與 AP 的連接關係畫成一張新圖，那這張新圖會是一棵樹或森林，且樹上的 AP 跟 BCC-Vertex 會交錯出現
+  - 以下是一個縮點的例子
+  <img src="image/BCC/BCC-Vertex_property_4_example.JPG" width="400" style="display:block; margin: 0 auto;"/>
+  - 新的圖上不可能有環，否則圖上的 AP 就不會是 AP。
+  <img src="image/BCC/BCC-Vertex_property_4_proof.JPG" width="300" style="display:block; margin: 0 auto;"/>
+  - 而且樹上的 AP 跟 BCC-Vertex 會交錯出現這點我們可以從第一點推出。
 
-而要如何找出圖上所有的 BCC-Vertex 呢?我們發現:
+而要如何找出圖上所有的 BCC-Vertex 呢？我們發現:
 
 - 對於那些不是 AP 的點，可以通過 DFS 找出所有與他同屬一個 BCC-Vertex 的點(當我們遇到 AP 時就不要再 DFS 下去即可)
 - 對於 AP，只要檢查他周圍的點有沒有 AP，有的話這兩個 AP 就會形成一個 BCC-Vertex。
@@ -147,16 +165,18 @@ BCC-Edge 指的是沒有 Bridge 的 Connected Component，在中文常稱之為�
 
 BCC-Edge 有以下幾個性質
 
-- 同一個 BCC-Edge 的任兩點間至少存在兩條沒有共用邊的簡單路徑。因為 BCC-Edge 上的任兩點
-- 如果把每個 BCC-Edge 縮成一個點，那麼新得到的圖會是一棵樹或者森林。因為如果新的圖上有環的話，那個環上所有的點就應在在一開始被看成一個 BCC-Edge。如下圖所示，那三個 BCC-Edge 應該要同在一個 BCC-Edge 中。
+- 一個 BCC-Edge 中任一條邊都至少在一個簡單環上。
+  - 我們可以反證：如果一條邊 \\((u,v)\\) 不在任何簡單環上，那麼刪掉 \\((u,v)\\) 後 \\( u \\) 跟 \\( v \\) 就不會連通，違反 BCC-Edge 的規定。
+- 如果把每個 BCC-Edge 縮成一個點，那麼新得到的圖會是一棵樹或者森林。
+  - 因為如果新的圖上有環的話，那個環上所有的點就應在在一開始被看成一個 BCC-Edge。如下圖所示，那三個 BCC-Edge 應該要同在一個 BCC-Edge 中。
 
-<img src="image/BCC/BCC-Edge_property_2.JPG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC-Edge_property_2.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
-而要如何找出圖上所有的 BCC-Edge?我們可以發現，如果我們拔掉原圖上所有的 bridge，那麼剩下來的每一個 component 就都會是一個 BCC-Edge。
+而要如何找出圖上所有的 BCC-Edge？我們可以發現，如果我們拔掉原圖上所有的 bridge，那麼剩下來的每一個 component 就都會是一個 BCC-Edge。
 
 <img src="image/BCC/simple_BCC-Edge_example.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
-因此我們可以拔掉圖上所有的 bridge 後，DFS 找出那些點同屬一個 BCC-Edge。那有沒有其他方法呢?與 BCC-Vertex 相似，我們可以通過修改找 bridge 的演算法，在找 bridge 的時候順便找出所有的 BCC-Edge。
+因此我們可以拔掉圖上所有的 bridge 後，DFS 找出那些點同屬一個 BCC-Edge。那有沒有其他方法呢？與 BCC-Vertex 相似，我們可以通過修改找 bridge 的演算法，在找 bridge 的時候順便找出所有的 BCC-Edge。
 
 ### 如何修改
 
@@ -267,11 +287,11 @@ struct BCC_Edge {
 
 <details><summary> Hint </summary>
 
-找出所有的 BCC-Edge 後，想想看最大化的 \\(min_i({r_i})\\) 至少會等於什麼?
+找出所有的 BCC-Edge 後，想想看最大化的 \\(min_i({r_i})\\) 至少會等於什麼？
 
 </details>
 
-> [POJ - Road Construction](http://poj.org/problem?id=3352)
+> [POJ - Road Construction](http://poj.org/problem？id=3352)
 >
 > 給一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，保證整張圖連通，問最少要加幾條邊才能使得圖上沒有橋。
 >
