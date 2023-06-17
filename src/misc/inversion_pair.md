@@ -169,7 +169,7 @@ int64_t inversions(const vector<int> &p)
 
 ### Data Structure: Rank Tree (Query the Rank)
 
-事實上，經過上面的討論，假若我們把 inversion vectors 推廣至一般 sequence，則若我們有個支援動態名次查詢 _(rank query)_ 的資料結構，left inversion count 就可以利用一個元素的 rank 得知在其之前有多少元素大於它。通常，我們可以在二分搜尋樹 _(Binary Search Tree, BST)_ 上二分捜來回答 rank query (& \\(k^\text{th}\\) query)，這種 BST 又被稱為 rank tree 或 order statistic tree。
+事實上，經過上面的討論，假若我們把 inversion vectors 推廣至一般 sequence，則若我們有個支援動態名次查詢 _（rank query，查詢一個元素的排名，即他是第幾大）_ 的資料結構，left inversion count 就可以利用一個元素的 rank 得知在其之前有多少元素大於它。通常，我們可以在二分搜尋樹 _(Binary Search Tree, BST)_ 上二分捜來回答 rank query (& \\(k^\text{th}\\) query)，這種 BST 是一種 rank tree 或者說 order statistic tree。
 
 這種演算法沒那麼受歡迎的原因可能是 C++ STL 內建的二分搜尋樹並不支援 rank query，而自己刻一棵 self-balanced BST 像是 R-B tree、AVL tree、splay tree⋯⋯並不好玩。如果你是 treap 愛好者，在 treap 的每個 node 紀錄 size 就可以二分搜 rank，但記得留意 sequence 可能包含重複元素。
 
