@@ -226,6 +226,8 @@ int64_t inversions(const vector<int> &v)
 > 題目給的是 permutation 中每個元素的 index，如果我們將元素們與 indices 互換 (permutation 的 inverse)，則原本的操作就變為 swap 相鄰的元素。於是，題目所求的最小數量即相當前面所證明過的，每次 swap 相鄰元素，最少需要幾次才能完成排序，也就是逆序對數量。
 > </details>
 
+---
+
 > [2022 ICPC Asia Taoyuan Regional C. Distance Calculator](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/view.php?id=65292)
 >
 > Wonder kingdom has \\(n!\\) cities. Each city is encoded with \\(n\\) number \\(d_1d_2\dots d_n\\) which is a permutation of \\(1 2\dots n\\). The castle of Wonder kingdom is located in the city encoded as \\(1 2\dots n\\). Let \\(a_1a_2\dots a_n\\) and \\(b_1b_2\dots b_n\\) be the codes of cities A and B, respectively. A road with distance one is built between cities A and B in the kingdom if and only if there exists an \\(i,1\leq i<n\\), such that the following two conditions are satisfied.
