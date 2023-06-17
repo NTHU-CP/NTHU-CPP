@@ -1,6 +1,6 @@
 # 逆序對
 
-在離散數學或資訊科學中，所謂逆序對 _(inversion pair, inversion)_，即對於一個排列 _(permutation)_[^perm_oi_wiki]，兩個元素而前者大於後者所構成的對 _(pair)_。逆序對的諸多有趣性質使得其在演算法競賽中可以說是屢見不鮮，經常以各種不太一樣的面貌出現。然而，有鑒於當今網路上不論中文或英文，關於逆序對為主題的文章並不多，因此希望藉由本文做個簡單卻廣泛整理，以俾初學者能夠容易學習。
+在離散數學或資訊科學中，所謂逆序對 _(inversion pair, inversion)_[^CLRS][^TAOCP]，即對於一個排列 _(permutation)_[^perm_oi_wiki]，兩個元素而前者大於後者所構成的對 _(pair)_。逆序對的諸多有趣性質使得其在演算法競賽中可以說是屢見不鮮，經常以各種不太一樣的面貌出現。然而，有鑒於當今網路上不論中文或英文，關於逆序對為主題的文章並不多，因此希望藉由本文做個簡單卻廣泛整理，以俾初學者能夠容易學習。
 
 ## 定義
 
@@ -274,4 +274,4 @@ int64_t inversions(const vector<int> &v)
 
 [^perm_oi_wiki]:[置换和排列 - OI Wiki](https://oi-wiki.org/math/permulation/)
 
-[^dividing_oi_wiki]: [划分树 - OI Wiki](https://oi-wiki.org/ds/dividing/)
+<!-- [^dividing_oi_wiki]: [划分树 - OI Wiki](https://oi-wiki.org/ds/dividing/) -->
