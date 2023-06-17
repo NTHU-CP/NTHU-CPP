@@ -1,19 +1,22 @@
 # Centroid Decompostion
 
 ## Introduction
+
 此技巧也被稱作點分治、樹分治、重心分治、重心剖分
 
 重心剖分是一個不難的概念，但可以解決一些看起來很可怕的題目，先備知識只需要 Tree, DFS 就能弄懂重心剖分。  
 
 ## Centroid 重心
 
-#### 定義
+### 定義
+
 當以重心為根節點時，每個子樹的大小都不超過 \\( \frac{N}{2} \\)
 
-#### 性質
+### 性質
+
 每棵樹最多 2 個，最少 1 個重心
 
-#### 如何求重心?
+### 如何求重心?
 
 通常我們要先求出子樹大小才能找重心，所以我們可以任選一個點當根，先求出每個節點子樹大小。
 接著開始從根開始遞迴檢查，遍歷所有子節點，如果有一個子節點子樹大小 \\( \frac{N}{2} \\), 則重心一定在這個個子樹裡，所以就往這個子節點遞迴。反之如果所有子節點子樹大小都不超過一半，則現在所在的點即為重心。
@@ -26,43 +29,42 @@
 
 ```cpp
 void get_sz(int u, int p) {
-	sz[u] = 1;
-	for (int v : g[u]) {
-		if (v == p or del[v]) continue;
-		get_sz(v, u);
-		sz[u] += sz[v];	
-	}
+  sz[u] = 1;
+  for (int v : g[u]) {
+    if (v == p or del[v])
+      continue;
+    get_sz(v, u);
+    sz[u] += sz[v];
+  }
 }
- 
+
 int get_centroid(int u, int n, int p) {
-	for (int v : g[u]) {
-		if (v != p and sz[v] > n / 2) 
-			return get_centroid(v, n, u);
-	}
-	return u;
+  for (int v : g[u]) {
+    if (v != p and sz[v] > n / 2)
+      return get_centroid(v, n, u);
+  }
+  return u;
 }
 ```
 
 </details>
 
-#### 重心應用 (Additional)
+### 重心應用 (Additional)
 
 這邊分享一個還蠻有趣的題目
 
 > [BOI Village (Maximum)](https://codeforces.com/contest/1387/problem/B2)
 >
-> 有一座 N 個點的樹形成鎮，每一個點住著一位居民，編號從 1 ~ N，有一天，居民們突然想要搬家，每個居民都要搬到不同的節點，但一個節點只能有一位居民，一個居民的搬家距離為舊家到新家的樹上距離，請你求出所有居民的最大搬家距離總和，且輸出一組解。
-> 
-
+> 有一座 N 個點的樹形成鎮，每一個點住著一位居民，編號從 1 ~ N。
+> 有一天，居民們突然想要搬家，每個居民都要搬到不同的節點，但一個節點只能有一位居民，一個居民的搬家距離為舊家到新家的樹上距離。
+> 請你求出所有居民的最大搬家距離總和，且輸出一組解。
 
 <details><summary> Solution </summary>
 
 對於每一條邊 \\( e \\)，假設邊權為 \\( e_w \\)，我們將這條邊斷開後會把樹分成兩棵子樹，大小分別為 \\( SZ_x, SZ_y \\)。
-所以答案的上界會是 
-\\( \begin{equation*} 
-    \sum_{e} 2 w_e \min \\{SZ_x, SZ_y\\} 
-    \end{equation*} \\) 
-    ，因為每一條邊最多被經過 \\( \min \\{SZ_x, SZ_y\\} \\) 次。
+所以答案的上界會是
+\\(\begin{equation*} \sum_{e} 2 w_e \min \\{SZ_x, SZ_y\\} \end{equation*}\\)
+，因為每一條邊最多被經過 \\( \min \\{SZ_x, SZ_y\\} \\) 次。
 
 而其實這個上界，就是這一題的答案。我們先考慮用任意點當成根節點，則我們只要能讓根節點的子樹裡的節點，在交換後，都不在原本子樹中，這樣一來答案就會達到最大上界(證明可以自行嘗試)。
 但是大部分情況下，應該都找不到一組合法的交換方法，因為只要有任何一個子樹的大小大於節點數量的一半，很明顯的，就一定找不出一組解。
@@ -73,9 +75,9 @@ int get_centroid(int u, int n, int p) {
 
 </details>
 
-## Centroid Decompostion 
+## Centroid Decompostion
 
-我們來看看重心究竟有什麼用途？ 
+我們來看看重心究竟有什麼用途？
 
 ### 什麼是重心樹？
 
@@ -101,7 +103,6 @@ int get_centroid(int u, int n, int p) {
 </p>
 <p style="text-align: center;"> 重心樹 </p>
 
-
 最後原樹上所有節點都會被刪除，而且每一個原樹上的節點都會對應一個重心樹上的節點
 
 可以參考下面的 gif 來體會一下每次拔掉重心的過程
@@ -116,44 +117,46 @@ int get_centroid(int u, int n, int p) {
 接著來看看如何實作建出一棵重心樹。
 
 ```cpp
-vector<int> g[mxN], tree[mxN];// g存原本的樹 tree存重心樹
-bitset<mxN> del; // 紀錄已被刪除的點
-int pa[mxN]; // 紀錄重心樹上每個節點的父親節點
- 
+vector<int> g[mxN], tree[mxN]; // g存原本的樹 tree存重心樹
+bitset<mxN> del;               // 紀錄已被刪除的點
+int pa[mxN];                   // 紀錄重心樹上每個節點的父親節點
+
 void get_sz(int u, int p) {
-	sz[u] = 1;
-	for (int v : g[u]) {
-		if (v == p or del[v]) continue;
-		get_sz(v, u);
-		sz[u] += sz[v];	
-	}
+  sz[u] = 1;
+  for (int v : g[u]) {
+    if (v == p or del[v])
+      continue;
+    get_sz(v, u);
+    sz[u] += sz[v];
+  }
 }
- 
+
 int get_centroid(int u, int n, int p) {
-	for (int v : g[u]) {
-		if (v != p and !del[v] and sz[v] > n / 2) 
-			return get_centroid(v, n, u);
-	}
-	return u;
+  for (int v : g[u]) {
+    if (v != p and !del[v] and sz[v] > n / 2)
+      return get_centroid(v, n, u);
+  }
+  return u;
 }
- 
+
 int build(int u) {
-	get_sz(u, -1);	
-	int centroid = get_centroid(u, sz[u], -1);
-	del[centroid] = 1; // 刪除重心
-	
-    // 注意 u 不一定等於 centroid
-    /*******
-    根據題目進行某些計算
-    ********/
-	
-	for (int v : g[centroid]) {
-		if (del[v]) continue;
-		int t = build(v);
-		pa[t] = centroid;
-		tree[centroid].push_back(t);
-	}
-	return centroid;
+  get_sz(u, -1);
+  int centroid = get_centroid(u, sz[u], -1);
+  del[centroid] = 1; // 刪除重心
+
+  // 注意 u 不一定等於 centroid
+  /*******
+  根據題目進行某些計算
+  ********/
+
+  for (int v : g[centroid]) {
+    if (del[v])
+      continue;
+    int t = build(v);
+    pa[t] = centroid;
+    tree[centroid].push_back(t);
+  }
+  return centroid;
 }
 ```
 
@@ -169,7 +172,6 @@ int build(int u) {
 1. 重心樹的任一子樹，在原樹中都是連通的(但並不代表在重心樹中相連的兩個點，在原樹中b也會相連)
 1. 一條在原樹上的路徑 (a, b)，可以被拆成 a→lca(a,b)→b，lca(a,b) 是 a, b 在**重心樹**上的最低公共祖先
 1. \\( \sum SZ_u = O(N \log N) \\), \\( SZ_u \\) 是節點 \\( u \\) 在重心樹上的子樹大小
-
 
 #### 性質的說明以及證明
 
@@ -219,12 +221,12 @@ int build(int u) {
 > [Ciel the Commander](https://codeforces.com/contest/321/problem/C)
 >
 > 有一個 n 個節點的樹，你要為每個點填入 ‘A’ 到 ‘Z’ 其中一個字母並滿足以下條件：
-> 
+>
 > 任兩個有相同字母的節點 u, v，必須有一個節點 x 在 u 到 v 的路徑上，且 x 上的字母的字典序嚴格小於 u, v 上的字母，
 > 請輸出一組滿足條件的解
-> 
+>
 > - \\( 1 \le n \le 10^5 \\)
-> 
+>
 
 雖然題目沒說，但可以猜測一定有方法能只用26個大寫英文子母填完。
 回想重心樹的第三個性質，不難想到我們可以把重心樹的每一層都填上同一個英文字母。
@@ -233,10 +235,13 @@ int build(int u) {
 > [Xenia and Tree](https://codeforces.com/problemset/problem/342/E)
 >
 > 有一棵 \\( n \\) 個節點的樹，一 開始所有節點都是藍色，要執行 \\( m \\) 次以下兩種操作：
+>
 > 1. 將一個藍色節點塗成紅色
+>
 > 2. 查詢一個節點 \\( x \\) ，回答離 \\( x \\) 最近的紅色節點距離
-> -  \\( 1 \le n,m \le 10^5 \\)
-> 
+>
+> - \\( 1 \le n,m \le 10^5 \\)
+>
 
 這一題是非常經典的重心剖分應用，但是剛學完重心剖分實在很難想到要如何用在這題上面。
 
@@ -262,12 +267,73 @@ x 的祖先只有 \\( O(\log{N}) \\) 種可能。
 總而言之，我們可以透過在重心樹上向上更新，
 在 \\( O( N \log {N} ) \\) 或 \\(O( N \log^2{N}) \\) 的時間內通過此題。
 
+> [Fixed-Length Path I](https://cses.fi/problemset/task/2080)
+>
+> 給定一棵樹和一個整數 \\( k \\)，請問樹上長度為 \\( k \\) 的路徑有幾條？
+>
+> \\(1 \le k \le n \le 2 \times 10 ^ 5\\)
+
+這個題目有很多種作法，甚至有 \\(O(N) \\) 的樹上啟發式合併做法，但這邊只會講解重心剖分的做法。
+
+我們考慮一個樹 DP 的做法，從根節點開始，先計算出所有通過根節點的路徑且長度等於 \\( k \\) 的路徑，接下來把根節點拔掉，接著遞迴下去。
+而計算通過根節點且長度為 \\( k \\) 的路徑數量所需要花費的時間為 \\( O(M) \\)， \\( M \\) 是子樹大小。總時間複雜度就會是樹上所有子樹的大小之和。考慮最差的情況，樹是一條鏈，此做法的時間複雜度為 \\( O(N ^ 2) \\)。
+
+上面的做法雖然不能通過此題，但如果我們改變一下 DP 的順序，每次都拔掉樹的重心，其實也就是在重心樹上做 DP。
+根據上面的性質4，複雜度就會變成 \\( O(N \log{N}) \\)。
+
+在重心樹上 DP 的方式可能會和在原樹上 DP 稍有不同，可以參考以下部分程式碼。
+
+```cpp
+int cnt[200001], ans;
+vector<int> data;
+
+void dfs(int u, int p, int len) {
+  data.eb(len);
+  if (len <= k)
+    ans += cnt[k - len];
+  for (int v : g[u]) {
+    if (v == p or del[v])
+      continue;
+    dfs(v, u, len + 1);
+  }
+}
+
+int build(int u) {
+  get_sz(u, -1);
+  int centroid = get_centroid(u, sz[u], -1);
+  del[centroid] = 1;
+
+  int mx = 0;
+  cnt[0] = 1;
+  for (int v : g[centroid]) {
+    if (del[v])
+      continue;
+    dfs(v, centroid, 1);
+    for (int i : data) {
+      cnt[i]++;
+      mx = max(mx, i);
+    }
+    data.clear();
+  }
+  fill(cnt, cnt + mx + 1, 0);
+
+  for (int v : g[centroid]) {
+    if (del[v])
+      continue;
+    build(v);
+  }
+  return centroid;
+}
+```
+
 > [Black-White-Tree](https://csacademy.com/contest/archive/task/black-white-tree/)
 >
 > 一樣給一棵樹，每個節點可能是白色或黑色，要支援以下操作：
+>
 > 1. 改變一個節點的顏色
+>
 > 2. 查詢一個點 \\( x \\) 到其他所有相同顏色的點的距離和
-> 
+>
 
 這一題和上一題非常像，而且這兩題其實都有很好寫的根號作法，可以參考[這裡](../sqrt/sqrt_decomposition.html#操作分塊)。
 
@@ -281,175 +347,160 @@ x 的祖先只有 \\( O(\log{N}) \\) 種可能。
 <details><summary> Solution </summary>
 
 - Code
-    
+
     ```cpp
-    #define ll loli
-    #include<bits/stdc++.h>
-    #define pb push_back
-    #define eb emplace_back
-    #define push emplace
-    #define lb(x, v) lower_bound(all(x), v)
-    #define ub(x, v) upper_bound(all(x), v)
-    #define sz(x) (int)(x.size())
-    #define re(x) reverse(all(x))
-    #define uni(x) x.resize(unique(all(x)) - x.begin())
-    #define all(x) x.begin(), x.end()
-    #define mem(x, v) memset(x, v, sizeof x); 
-    #define int long long
-    #define pii pair<int, int>
-    #define inf 1e9
-    #define INF 1e18
-    #define mod 1000000007
-    #define F first
-    #define S second
-    #define IO ios_base::sync_with_stdio(0); cin.tie(0);
-    #define chmax(a, b) (a = (b > a ? b : a))
-    #define chmin(a, b) (a = (b < a ? b : a))
+    #include <bits/stdc++.h>
+    #define pb emplace_back
     using namespace std;
-    
-    void trace_() {cerr << "\n";}
-    template<typename T1, typename... T2> void trace_(T1 t1, T2... t2) {cerr << ' ' << t1; trace_(t2...); }
-    #define trace(...) cerr << "[" << #__VA_ARGS__ << "] :", trace_(__VA_ARGS__);
-    
+
     const int mxN = 5e4 + 5;
     int n, m, col[mxN];
-    
+
     int pa[mxN], sz[mxN], sub[mxN][2], cnt[mxN][2], sum[mxN][2];
     bitset<mxN> del;
-    
+
     // LCA euler sequence
     int st[mxN * 2][22], pos[mxN], dep[mxN], tp;
     vector<int> g[mxN];
-    
+
     inline void build_rmq() {
-    	for(int i = 0; (1<<i) < tp; i++) {
-    		for(int j = 0; j + (1<<i) - 1 < tp; j++) {
-    			st[j][i + 1] = min(st[j][i], st[j + (1<<i)][i]);
-    		}
-    	}
+      for (int i = 0; (1 << i) < tp; i++) {
+        for (int j = 0; j + (1 << i) - 1 < tp; j++) {
+          st[j][i + 1] = min(st[j][i], st[j + (1 << i)][i]);
+        }
+      }
     }
-    
+
     inline int query(int l, int r) {
-    	int k = __lg(r - l + 1);
-    	return min(st[l][k], st[r - (1<<k) + 1][k]);
+      int k = __lg(r - l + 1);
+      return min(st[l][k], st[r - (1 << k) + 1][k]);
     }
-    
+
     inline int dis(int u, int v) {
-    	if (pos[u] > pos[v]) swap(u, v);
-    	return dep[u] + dep[v] - 2 * query(pos[u], pos[v]);	
+      if (pos[u] > pos[v])
+        swap(u, v);
+      return dep[u] + dep[v] - 2 * query(pos[u], pos[v]);
     }
-    
+
     void euler_dfs(int u, int p) {
-    	pos[u] = tp;
-    	st[tp++][0] = dep[u];	
-    	for (int v : g[u]) {
-    		if (v == p) continue;
-    		dep[v] = dep[u] + 1;
-    		euler_dfs(v, u);
-    		st[tp++][0] = dep[u];
-    	}
+      pos[u] = tp;
+      st[tp++][0] = dep[u];
+      for (int v : g[u]) {
+        if (v == p)
+          continue;
+        dep[v] = dep[u] + 1;
+        euler_dfs(v, u);
+        st[tp++][0] = dep[u];
+      }
     }
-    
+
     // 正篇開始，上面都是 O(1) 求距離的程式碼
     void get_sz(int u, int p) {
-    	sz[u] = 1;
-    	for (int v : g[u]) {
-    		if (v == p or del[v]) continue;
-    		get_sz(v, u);
-    		sz[u] += sz[v];	
-    	}
+      sz[u] = 1;
+      for (int v : g[u]) {
+        if (v == p or del[v])
+          continue;
+        get_sz(v, u);
+        sz[u] += sz[v];
+      }
     }
-    
+
     int get_centroid(int u, int n, int p) {
-    	for (int v : g[u]) {
-    		if (v != p and !del[v] and sz[v] * 2 > n) 
-    			return get_centroid(v, n, u);
-    	}
-    	return u;
+      for (int v : g[u]) {
+        if (v != p and !del[v] and sz[v] * 2 > n)
+          return get_centroid(v, n, u);
+      }
+      return u;
     }
-    
+
     void dfs(int u, int p, int dis, int tp) {
-    	sum[tp][0] += dis;	
-    	cnt[tp][0]++;
-    	for (int v : g[u]) {
-    		if (del[v] or v == p) continue;
-    		dfs(v, u, dis + 1, tp);
-    	}
+      sum[tp][0] += dis;
+      cnt[tp][0]++;
+      for (int v : g[u]) {
+        if (del[v] or v == p)
+          continue;
+        dfs(v, u, dis + 1, tp);
+      }
     }
-    
+
     int build(int u) {
-    	get_sz(u, -1);	
-    	int centroid = get_centroid(u, sz[u], -1);
-    	del[centroid] = 1;
-    
-    	for (int v : g[centroid]) {
-    		if (del[v]) continue;
-    		int p = sum[centroid][0];
-    		dfs(v, -1, 1, centroid);
-    		int t = build(v);
-    		sub[t][0] = sum[centroid][0] - p;
-    		//trace(sub[t][0], sum[centroid][0]);
-    		pa[t] = centroid;
-    	}
-    	return centroid;
+      get_sz(u, -1);
+      int centroid = get_centroid(u, sz[u], -1);
+      del[centroid] = 1;
+
+      for (int v : g[centroid]) {
+        if (del[v])
+          continue;
+        int p = sum[centroid][0];
+        dfs(v, -1, 1, centroid);
+        int t = build(v);
+        sub[t][0] = sum[centroid][0] - p;
+        // trace(sub[t][0], sum[centroid][0]);
+        pa[t] = centroid;
+      }
+      return centroid;
     }
-    
+
     inline void update(int x) {
-    	int v = x;
-    	col[x] ^= 1;
-    	cnt[x][col[x]]++;
-    	cnt[x][col[x]^1]--;
-    	while (pa[v]) {
-    		int d = dis(pa[v], x), p = v;
-    		v = pa[v];
-    		sum[v][col[x]] += d; 
-    		cnt[v][col[x]]++;
-    		sum[v][(col[x]^1)] -= d; 
-    		cnt[v][(col[x]^1)]--;
-    
-    		sub[p][col[x]] += d;
-    		sub[p][(col[x]^1)] -= d;
-    	}
+      int v = x;
+      col[x] ^= 1;
+      cnt[x][col[x]]++;
+      cnt[x][col[x] ^ 1]--;
+      while (pa[v]) {
+        int d = dis(pa[v], x), p = v;
+        v = pa[v];
+        sum[v][col[x]] += d;
+        cnt[v][col[x]]++;
+        sum[v][(col[x] ^ 1)] -= d;
+        cnt[v][(col[x] ^ 1)]--;
+
+        sub[p][col[x]] += d;
+        sub[p][(col[x] ^ 1)] -= d;
+      }
     }
-    
+
     inline int query(int x) {
-    	int v = x, res = sum[x][col[x]];
-    	while (pa[v]) {
-    		int d = dis(pa[v], x);	
-    		res += d * (cnt[pa[v]][col[x]] - cnt[v][col[x]]) + sum[pa[v]][col[x]] - sub[v][col[x]]; 
-    		v = pa[v];
-    	}
-    	return res;
+      int v = x, res = sum[x][col[x]];
+      while (pa[v]) {
+        int d = dis(pa[v], x);
+        res += d * (cnt[pa[v]][col[x]] - cnt[v][col[x]]) + sum[pa[v]][col[x]] -
+               sub[v][col[x]];
+        v = pa[v];
+      }
+      return res;
     }
-    
+
     signed main() {
-    	IO;	
-    	cin >> n >> m;
-    	vector<int> t(n + 1);
-    	for (int i = 1; i <= n; i++) {
-    		cin >> t[i];
-    	}
-    	for (int i = 1; i < n; i++) {
-    		int a, b; cin >> a >> b;
-    		g[a].pb(b);
-    		g[b].pb(a);
-    	}
-    	euler_dfs(1, -1);
-    	build_rmq();
-    	build(1);
-    	for (int i = 1; i <= n; i++) if (t[i]) update(i);		
-    	
-    	while (m--) {
-    		int o, x;
-    		cin >> o >> x;
-    		if (o == 1) update(x);
-    		else cout << query(x) << '\n';
-    	}
+      cin >> n >> m;
+      vector<int> t(n + 1);
+      for (int i = 1; i <= n; i++) {
+        cin >> t[i];
+      }
+      for (int i = 1; i < n; i++) {
+        int a, b;
+        cin >> a >> b;
+        g[a].pb(b);
+        g[b].pb(a);
+      }
+      euler_dfs(1, -1);
+      build_rmq();
+      build(1);
+      for (int i = 1; i <= n; i++)
+        if (t[i])
+          update(i);
+
+      while (m--) {
+        int o, x;
+        cin >> o >> x;
+        if (o == 1)
+          update(x);
+        else
+          cout << query(x) << '\n';
+      }
     }
     ```
+
 </details>
-
-
 
 ### 實作補充
 
@@ -462,58 +513,84 @@ x 的祖先只有 \\( O(\log{N}) \\) 種可能。
 
 ```cpp
 void get_dis(int u, int p, int len) {
-	dis[u].push_back(len);
-	for (auto [v, w] : g[u]) {
-		if (v == p or del[v]) continue;	
-		get_dis(v, u, len + w);
-	}
+  dis[u].push_back(len);
+  for (auto [v, w] : g[u]) {
+    if (v == p or del[v])
+      continue;
+    get_dis(v, u, len + w);
+  }
 }
 
 int build(int u) {
-    get_sz(u, -1);	
-    int centroid = get_centroid(u, sz[u], -1);
-    del[centroid] = 1; // 刪除重心
+  get_sz(u, -1);
+  int centroid = get_centroid(u, sz[u], -1);
+  del[centroid] = 1; // 刪除重心
 
-    // 記得加入這一行
-    get_dis(centroid, -1, 0);
-    
-    for (int v : g[centroid]) {
-        if (del[v]) continue;
-        int t = build(v);
-        pa[t] = centroid;
-        tree[centroid].push_back(t);
-    }
-    return centroid;
+  // 記得加入這一行
+  get_dis(centroid, -1, 0);
+
+  for (int v : g[centroid]) {
+    if (del[v])
+      continue;
+    int t = build(v);
+    pa[t] = centroid;
+    tree[centroid].push_back(t);
+  }
+  return centroid;
 }
 
 // 使用方法
 // !!!!!! 使用之前要先全部 reverse
 void reverse_first() {
-    for (int i = 1; i <= n; i++) 
-        reverse(ALL(dis[u]));
+  for (int i = 1; i <= n; i++)
+    reverse(ALL(dis[u]));
 }
 
 void update(int x) {
-    // x 到 x 在重心樹上的第 i 個祖先的距離是 dis[x][i]
-    for (int u = x, j = 0; u != -1; j++, u = pa[u]) {
-        ans = min(ans, ans[u] + dis[x][j]);
-    }
+  // x 到 x 在重心樹上的第 i 個祖先的距離是 dis[x][i]
+  for (int u = x, j = 0; u != -1; j++, u = pa[u]) {
+    ans = min(ans, ans[u] + dis[x][j]);
+  }
 }
-
 ```
 
-
 ## Exercises
-    
+
+> [Fixed-Length Path II](https://cses.fi/problemset/task/2081)
+>
+> 給定一棵樹和兩個整數 \\( k_1, k_2 \\)，請問樹上長度介在 \\([k_1, k_2]\\) 的路徑有幾條？
+>
+> \\(1 \le k_1 \le k_2 \le n \le 2 \times 10 ^ 5\\)
+
+<details><summary> Hint </summary>
+
+這題和上面的 Fixed-Length Path I 一樣，有 \\( O(N) \\) 的做法。
+
+我們將 Fixed-Length Path 紀錄的 DP 資訊改成前綴和，並用資料結構(ex. BIT)來維護即可。
+
+</details>
+
 > [Close Vertices](https://codeforces.com/problemset/problem/293/E)
 >
 > 給定一棵有邊權的樹和兩個變數 \\( l, w \\)，
 > 問你樹上有多少點對 \\( (u, v) \\) 滿足以下條件：
+>
 > 1. \\( (u, v) \\) 路徑上的邊數量 \\( \le l \\)
+>
 > 2. \\( (u, v) \\) 路徑上的邊權和 \\( \le w \\)
-> 
+>
 
-> [[JOISC2020] 首都](https://www.luogu.com.cn/problem/P7215)
+<details><summary> Hint </summary>
+
+這題和上面的 Fixed-Length Path II 長得很像，但是又多了一個條件。
+
+所以其實只要再將前一題的資料結構換成二維資料結構就能通過此題了，但是不建議用這種做法。
+假設現在我們選定的根節點為 \\( u \\)，我們會對 \\( u \\) 的子樹(重心樹)，收集兩個資訊 \\((x, y)\\)， \\(x\\) 是到 \\(u \\) 的邊權和而 \\(y\\) 是到 \\(u \\) 的路徑長。
+接下來我們要找到所有兩兩組合中滿足限制的，這其實就是很經典的資料結構問題，可以先將一個維度排序後再搭配雙指針解決。
+
+</details>
+
+> [JOISC2020 首都](https://www.luogu.com.cn/problem/P7215)
 >
 > 給定一棵樹，每個點上有一個 \\(1 \\) ~ \\( K \\) 的編號，
 > 希望你能選則一個編號 \\( c \\)，使得編號為 \\( c \\) 的點都相連。
@@ -527,12 +604,9 @@ void update(int x) {
 重心剖分的題目通常會和樹的原型態較無關聯的路徑問題，而且大部分的題目可以轉換成重心樹去思考。
 概念本身不難，但各種題目和應用沒寫過類似題真的都不好想到，想真的學好重心剖分，建議去References找更多題目來練習。
 
-
 ## References
 
 - [USACO Guide](https://usaco.guide/plat/centroid?lang=cpp)
 - [Illustrated Intro to Centroid Decomposition](https://medium.com/carpanese/an-illustrated-introduction-to-centroid-decomposition-8c1989d53308)
 - [Centroid Decomposition CF blog](https://codeforces.com/blog/entry/81661)
 - [OI wiki 點分治](https://oi-wiki.org/graph/tree-divide/)
-
-
