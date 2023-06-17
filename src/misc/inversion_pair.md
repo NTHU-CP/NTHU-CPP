@@ -1,6 +1,6 @@
 # 逆序對
 
-在離散數學或資訊科學中，所謂逆序對 _(inversion pair, inversion)_，即對於一個排列 _(permutation)_，兩個元素而前者大於後者所構成的對 _(pair)_。逆序對的諸多有趣性質使得其在演算法競賽中可以說是屢見不鮮，經常以各種不太一樣的面貌出現。然而，有鑒於當今網路上不論中文或英文，關於逆序對為主題的文章並不多，因此希望藉由本文做個簡單卻廣泛整理，以俾初學者能夠容易學習。
+在離散數學或資訊科學中，所謂逆序對 _(inversion pair, inversion)_，即對於一個排列 _(permutation)_[^perm_oi_wiki]，兩個元素而前者大於後者所構成的對 _(pair)_。逆序對的諸多有趣性質使得其在演算法競賽中可以說是屢見不鮮，經常以各種不太一樣的面貌出現。然而，有鑒於當今網路上不論中文或英文，關於逆序對為主題的文章並不多，因此希望藉由本文做個簡單卻廣泛整理，以俾初學者能夠容易學習。
 
 ## 定義
 
@@ -36,7 +36,7 @@
 
 #### Kendall's \\(\tau\\) Distance
 
-事實上，Kendall 給出更一般性的定義；對於任兩個 permutations \\(\tau_1,\tau_2\\)，他們的 _Kendall's \\(\tau\\) distance_ 為 \\(K_d(\tau_1,\tau_2)=\\#\left\\{(i,j)|i<j\land(\tau_1(i)<\tau_1(j)\land\tau_2(i)>\tau_2(j)\lor\tau_1(i)>\tau_1(j)\land\tau_2(i)<\tau_2(j))\right\\}\\)。
+事實上，Kendall[^Kendall] 給出更一般性的定義；對於任兩個 permutations \\(\tau_1,\tau_2\\)，他們的 _Kendall's \\(\tau\\) distance_ 為 \\(K_d(\tau_1,\tau_2)=\\#\left\\{(i,j)|i<j\land(\tau_1(i)<\tau_1(j)\land\tau_2(i)>\tau_2(j)\lor\tau_1(i)>\tau_1(j)\land\tau_2(i)<\tau_2(j))\right\\}\\)。
 
 同理我們容易知道 \\(K_d(\tau_1,\tau_2)\in[0,\binom{n}{2}]\\)，而且極值成立時的條件是類似的。
 
@@ -44,7 +44,7 @@
 
 Kendall's \\(\tau\\) distance 的一個重點是其代表兩個 permutations 需要經過多少次 swaps 才能從其中一個 permutation 變為另一個。故逆序對數量同時也代表 bubble sort 需要多少次 swaps。
 
-#### Lehmer Code & Inversion Vectors
+#### Lehmer Code & Inversion Vectors[^Lehmer]
 
 由於逆序對數量的 upper bound 是 \\(O(n^2)\\) 實在不甚方便，數學家們往往想壓縮逆序對利用一個同樣 \\(O(n)\\) 的向量來描述。因此，對於一個 permutation \\(\pi\\) 我們有以下兩種 vectors：
 
@@ -61,7 +61,7 @@ Kendall's \\(\tau\\) distance 的一個重點是其代表兩個 permutations 需
 
 那麼，求逆序對數量的 lower bound 呢？如果我們考慮 comparison-based 的數法，而這與 comparison-based sorting 一樣，需要至少 \\(O(n\log n)\\) 次比較，證明是其 recursion tree 共有 \\(n!\\) leaves，平衡的樹高為 \\(O(\log n!)=O(n\log n)\\)，具體細節可以參考教科書。現在我們試著論證求逆序對的 recursion tree 也是類似的。注意到由於 comparison-based sorting 的 recursion tree 的每個葉節點都分別對應到兩個不同的 permutations 故其逆序對數量顯然不同，因此我們一定必須走訪到葉節點才能決定逆序對數量。
 
-一些 sub-linearithmic 的演算法可能存在。Dietz (1998) 在 word size 為 logarithmic 的 random-access machine 上能以 \\(O(\frac{\log n}{\log\log n})\\) 而非 \\(O(\log n)\\) 回答一個 rank query。在值域為 \\(O(n)\\) 的情況下，Chan and Pătraşcu (2010) 利用 radix sort 每輪位置改變的元素對數的總和即為逆序對數量，達到 \\(O(n\sqrt{\log n})\\) 的時間複雜度，但實作細節超過本文範圍過多且其實不甚實用。
+一些 sub-linearithmic 的演算法可能存在。Dietz (1998)[^Dietz] 在 word size 為 logarithmic 的 random-access machine 上能以 \\(O(\frac{\log n}{\log\log n})\\) 而非 \\(O(\log n)\\) 回答一個 rank query。在值域為 \\(O(n)\\) 的情況下，Chan and Pătraşcu (2010)[^Chan] 利用 radix sort 每輪位置改變的元素對數的總和即為逆序對數量，達到 \\(O(n\sqrt{\log n})\\) 的時間複雜度，但實作細節超過本文範圍過多且其實不甚實用。
 
 此外，亦有一些近似的演算法，可以做到 \\(O(n\log\log n)\\) 甚至是 \\(O(n)\\)。
 
@@ -75,7 +75,7 @@ Kendall's \\(\tau\\) distance 的一個重點是其代表兩個 permutations 需
 
 ### Divide and Conquer (via Merge Sort)
 
-如何高效地計算逆序對的數量呢？逆序對與排序的關係密不可分、千絲萬縷，因此我們想到分治法是個好策略。一個逆序對不是皆在序列的中點的同側，就是跨越中點。對於皆在中點左或右側的逆序對，我們可以遞迴求出該數量。至於跨越中點的逆序對，我們發現在 merge sort 合併的過程，如果左側有一元素 \\(l_i\\) 大於右側某一元素 \\(r_j\\)，則我們知道左側任何大於 \\(l_i\\) 的元素亦都可以對 \\(r_j\\) 形成逆序對；換句話說，\\(r_j\\) 將貢獻 \\(|l|-i+1\\) _(1-indexed)_ 個逆序對。據此，我們就可以在 \\(O(n\log n)\\) 的時間內計算逆序對的數量了。
+如何高效地計算逆序對的數量呢？逆序對與排序的關係密不可分、千絲萬縷，因此我們想到分治法是個好策略。一個逆序對不是皆在序列的中點的同側，就是跨越中點。對於皆在中點左或右側的逆序對，我們可以遞迴求出該數量。至於跨越中點的逆序對，我們發現在 merge sort[^merge_sort_oi_wiki] 合併的過程，如果左側有一元素 \\(l_i\\) 大於右側某一元素 \\(r_j\\)，則我們知道左側任何大於 \\(l_i\\) 的元素亦都可以對 \\(r_j\\) 形成逆序對；換句話說，\\(r_j\\) 將貢獻 \\(|l|-i+1\\) _(1-indexed)_ 個逆序對。據此，我們就可以在 \\(O(n\log n)\\) 的時間內計算逆序對的數量了。
 
 舉例來說，對於 permutation \\(\left(\begin{array}{ccccc}1&6&2&3&5&4\end{array}\right)\\)，假設我們已經將左右兩半 \\(\left(\begin{array}{ccc}1&6&2\end{array}\right),\left(\begin{array}{ccc}3&5&4\end{array}\right)\\) 分別排序得 \\(\left(\begin{array}{ccc}1&2&6\end{array}\right),\left(\begin{array}{ccc}3&4&5\end{array}\right)\\) 並計算出逆序對數量各有 \\(1\\)，最終合併時可以發現左側 \\(1,2\\) 不能造成任何逆序對而 \\(6\\) 可以形成 \\(3\\) 個，因此原 permutation 一共有 \\(5\\) 個逆序對。
 
@@ -107,9 +107,9 @@ int64_t merge_sort_inversions(vector<int>::iterator begin, vector<int>::iterator
 }
 ```
 
-### Data Structure: Fenwick Tree (a.k.a. Binary Indexed Tree, BIT)
+### Data Structure: Fenwick Tree (a.k.a. Binary Indexed Tree, BIT[^BIT_cp_algo])
 
-接著來看一個可能更直觀的想法。對於一個 permutation 中的每一元素，假若我們可以知道與它有關的逆序對數量分別為和，那們整個 permutaion 的逆序對數量也就呼之欲出、易如反掌。因此，我們想到前面提過 permutaions 的 inversion vectors。以 left inversion count 為例，我們只需要在依序維護 permutation 某元素 \\(i\\) 出現權重 \\(w_i\\) 的同時，找出有大於該元素的元素數，也就是 \\(\sum_{i=0}^nw_i\\)。因此，我們需要一個支援高校單點修改、區間查詢的資料結構，而簡單好寫的 Fenwick Tree (a.k.a. Binary Indexed Tree, BIT) 是我們的好朋友。
+接著來看一個可能更直觀的想法。對於一個 permutation 中的每一元素，假若我們可以知道與它有關的逆序對數量分別為和，那們整個 permutaion 的逆序對數量也就呼之欲出、易如反掌。因此，我們想到前面提過 permutaions 的 inversion vectors。以 left inversion count 為例，我們只需要在依序維護 permutation 某元素 \\(i\\) 出現權重 \\(w_i\\) 的同時，找出有大於該元素的元素數，也就是 \\(\sum_{i=0}^nw_i\\)。因此，我們需要一個支援高校單點修改、區間查詢的資料結構，而簡單好寫的 Fenwick Tree (a.k.a. Binary Indexed Tree, BIT[^BIT_oi_wiki]) 是我們的好朋友。
 
 ```cpp
 struct bit
@@ -227,14 +227,24 @@ int64_t inversions(const vector<int> &v)
 
 ## References
 
-- Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein. 2022. Introduction to Algorithms, Third Edition (4th. ed.). The MIT Press.
-- Donald E. Knuth. 1998. The art of computer programming, volume 3: (2nd ed.) sorting and searching. Addison Wesley Longman Publishing Co., Inc., USA.
-- Maurice G. Kendall. 1938. A new measure of rank correlation. Biometrika 30, 1–2, 81–93.
-- Derrick H. Lehmer. 1960. Teaching combinatorial tricks to a computer. Combinatorial Analysis, 179–193.
-- Paul F. Dietz. 1989. Optimal Algorithms for List Indexing and Subset Rank. In Proceedings of the Workshop on Algorithms and Data Structures (WADS '89). Springer-Verlag, Berlin, Heidelberg, 39–46.
-- Timothy M. Chan and Mihai Pătraşcu. 2010. Counting inversions, offline orthogonal range counting, and related problems. In Proceedings of the twenty-first annual ACM-SIAM symposium on Discrete algorithms (SODA '10). Society for Industrial and Applied Mathematics, USA, 161–173.
-- [Fenwick Tree - Algorithms for Competitive Programming](https://cp-algorithms.com/data_structures/fenwick.html)
-- [树状数组 - OI Wiki](https://oi-wiki.org/ds/fenwick/)
-- [归并排序 - OI Wik](https://oi-wiki.org/basic/merge-sort/)
-- [置换和排列 - OI Wiki](https://oi-wiki.org/math/permulation/)
-- [划分树 - OI Wiki](https://oi-wiki.org/ds/dividing/)
+[^CLRS]: Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein. 2022. Introduction to Algorithms, Third Edition (4th. ed.). The MIT Press.
+
+[^TAOCP]: Donald E. Knuth. 1998. The art of computer programming, volume 3: (2nd ed.) sorting and searching. Addison Wesley Longman Publishing Co., Inc., USA.
+
+[^Kendall]: Maurice G. Kendall. 1938. A new measure of rank correlation. Biometrika 30, 1–2, 81–93.
+
+[^Lehmer]: Derrick H. Lehmer. 1960. Teaching combinatorial tricks to a computer. Combinatorial Analysis, 179–193.
+
+[^Dietz]: Paul F. Dietz. 1989. Optimal Algorithms for List Indexing and Subset Rank. In Proceedings of the Workshop on Algorithms and Data Structures (WADS '89). Springer-Verlag, Berlin, Heidelberg, 39–46.
+
+[^Chan]: Timothy M. Chan and Mihai Pătraşcu. 2010. Counting inversions, offline orthogonal range counting, and related problems. In Proceedings of the twenty-first annual ACM-SIAM symposium on Discrete algorithms (SODA '10). Society for Industrial and Applied Mathematics, USA, 161–173.
+
+[^BIT_cp_algo]: [Fenwick Tree - Algorithms for Competitive Programming](https://cp-algorithms.com/data_structures/fenwick.html)
+
+[^BIT_oi_wiki]: [树状数组 - OI Wiki](https://oi-wiki.org/ds/fenwick/)
+
+[^merge_sort_oi_wiki]: [归并排序 - OI Wik](https://oi-wiki.org/basic/merge-sort/)
+
+[^perm_oi_wiki]:[置换和排列 - OI Wiki](https://oi-wiki.org/math/permulation/)
+
+[^dividing_oi_wiki]: [划分树 - OI Wiki](https://oi-wiki.org/ds/dividing/)
