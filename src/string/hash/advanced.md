@@ -162,9 +162,80 @@ int main() {
 </details>
 
 ### 算有幾個 substring 是回文字串
-> Finding the number of sub-palindromes of a string of length n in O(n log n) time
+> 目標：在 \\(O(n\ \log n)\\) 的時間內，算出有幾個 substring 是回文字串，且字串長度為 \\(n\\)
 
 先來一個 Key observation，如果 \\(T[i-j:i+j]\\) 是回文字串，那麼 \\(T[i-(j-1):i+(j-1)]\\) 也是回文字串。
+
+<details>
+  <summary>解答</summary>
+  
+In this problem we need to use compare by great / less in \\(O(log(n))\\) time using binary search by length of equal subsequence. Duplicate string S and calculate polynomial hashes on prefixes. Each cyclic shift will be represented as a number (initial position). Add all the positions to the vector, and then apply a linear algorithm for finding the minimum in the array using the substring comparison operator. 
+
+Complexity Estimatation: \\(O(n\ log(n))\\) time and \\(O(n)\\) memory.
+
+範例解法
+```C++
+#include <stdio.h>
+#include <cassert>
+#include <algorithm>
+#include <vector>
+#include <random>
+#include <chrono>
+#include <string>
+ 
+typedef unsigned long long ull;
+ 
+// Init static variables of PolyHash class:
+int PolyHash::base((int)1e9+7);    
+std::vector<int> PolyHash::pow1{1};
+std::vector<ull> PolyHash::pow2{1};
+ 
+int main() {
+    // Input:
+    char buf[1+100000];
+    scanf("%100000s", buf);
+    std::string a(buf);
+    a += a; // duplicate
+ 
+    // Len of string:
+    const int n = (int)a.size() / 2;
+ 
+    // Max needed power:
+    const int mxPow = 2 * n;
+ 
+    // Gen random base:
+    PolyHash::base = gen_base(256, PolyHash::mod);
+ 
+    // Create hashing object:
+    PolyHash hash(a);
+ 
+    // Put all start positions in vector:
+    std::vector<int> pos;
+    for (int i = 0; i < n; ++i) {
+        pos.push_back(i);
+    }
+ 
+    // Linear search of min algorithm:
+    auto p = *std::min_element(pos.begin(), pos.end(), [&](const int p1, const int p2) {
+        // Binary search by equal subsequences length:
+        int low = 0, high = n+1;
+        while (high - low > 1) {
+            int mid = (low + high) / 2;
+            if (hash(p1, mid, mxPow) == hash(p2, mid, mxPow)) {
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+        return low < n && a[p1+low] < a[p2+low];
+    });
+ 
+    // Output answer:
+    printf("%s", a.substr(p, n).c_str());
+    return 0;
+}
+```
+</details>
 
 ### 交換任意兩個字元一次，問最長的 LCP 有多長
 > Largest common prefix of two strings length n with swapping two chars in one of them in O(n log n) time
