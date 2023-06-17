@@ -44,17 +44,6 @@
 
 Kendall's \\(\tau\\) distance 的一個重點是其代表兩個 permutations 需要經過多少次 swaps 才能從其中一個 permutation 變為另一個。故逆序對數量同時也代表 bubble sort 需要多少次 swaps。
 
-#### Lehmer Code & Inversion Vectors[^Lehmer]
-
-由於逆序對數量的 upper bound 是 \\(O(n^2)\\) 實在不甚方便，數學家們往往想壓縮逆序對利用一個同樣 \\(O(n)\\) 的向量來描述。因此，對於一個 permutation \\(\pi\\) 我們有以下兩種 vectors：
-
-0. Left inversion count \\(l\\)
-    - 對於 \\(i\\) 在左邊的逆序對數量 \\[l(i)=\\#\left\\{j|j<i\land\pi(j)>\pi(i)\right\\}\\]
-1. Right inversion count \\(r\\) a.k.a. Lehmer Code \\(L\\)
-    - 對於 \\(i\\) 在右邊的逆序對數量 \\[r(i)=\\#\left\\{j|j>i\land\pi(j)<\pi(i)\right\\}\\]
-
-這些 vectors 有一些有趣而重要的性質，包括但不限於可以唯一決定一個排列、可以將排列視作以階乘為底的進位制下的表示法⋯⋯等。其中，在演算法競賽最實用的，莫過於我們容易推得其和即為逆序對數量。
-
 ### 演算法意義
 
 經由前述討論，我們可以知道逆序對數量至多有 \\(\binom{n}{2}=O(n^2)\\)，故枚舉所有 pairs \\((i,j)\\) 我們容易得到 \\(O(n^2)\\) 的演算法。
@@ -122,7 +111,22 @@ int64_t merge_sort_inversions(vector<int>::iterator begin, vector<int>::iterator
 
 ### Data Structure: Fenwick Tree (a.k.a. Binary Indexed Tree, BIT[^BIT_cp_algo])
 
-接著來看一個可能更直觀的想法。對於一個 permutation 中的每一元素，假若我們可以知道與它有關的逆序對數量分別為和，那們整個 permutaion 的逆序對數量也就呼之欲出、易如反掌。因此，我們想到前面提過 permutaions 的 inversion vectors。以 left inversion count 為例，我們只需要在依序維護 permutation 某元素 \\(i\\) 出現權重 \\(w_i\\) 的同時，找出有大於該元素的元素數，也就是 \\(\sum_{i=0}^nw_i\\)。因此，我們需要一個支援高效單點修改、區間查詢的資料結構，而簡單好寫的 Fenwick Tree (a.k.a. Binary Indexed Tree, BIT[^BIT_oi_wiki]) 是我們的好朋友。
+再進入下一個做法之前，先來看看等等將會用到的相關數學概念。
+
+#### Lehmer Code & Inversion Vectors[^Lehmer]
+
+由於逆序對數量的 upper bound 是 \\(O(n^2)\\) 實在不甚方便，數學家們往往想壓縮逆序對利用一個同樣 \\(O(n)\\) 的向量來描述。因此，對於一個 permutation \\(\pi\\) 我們有以下兩種 vectors：
+
+0. Left inversion count \\(l\\)
+    - 對於 \\(i\\) 在左邊的逆序對數量 \\[l(i)=\\#\left\\{j|j<i\land\pi(j)>\pi(i)\right\\}\\]
+1. Right inversion count \\(r\\) a.k.a. Lehmer Code \\(L\\)
+    - 對於 \\(i\\) 在右邊的逆序對數量 \\[r(i)=\\#\left\\{j|j>i\land\pi(j)<\pi(i)\right\\}\\]
+
+這些 vectors 有一些有趣而重要的性質，包括但不限於可以唯一決定一個排列、可以將排列視作以階乘為底的進位制下的表示法⋯⋯等。其中，在演算法競賽最實用的，莫過於我們容易推得其和即為逆序對數量。
+
+---
+
+接著回到一個可能更直觀的想法。對於一個 permutation 中的每一元素，假若我們可以知道與它有關的逆序對數量分別為和，那們整個 permutaion 的逆序對數量也就呼之欲出、易如反掌。因此，我們想到前面提過 permutaions 的 inversion vectors。以 left inversion count 為例，我們只需要在依序維護 permutation 某元素 \\(i\\) 出現權重 \\(w_i\\) 的同時，找出有大於該元素的元素數，也就是 \\(\sum_{i=0}^nw_i\\)。因此，我們需要一個支援高效單點修改、區間查詢的資料結構，而簡單好寫的 Fenwick Tree (a.k.a. Binary Indexed Tree, BIT[^BIT_oi_wiki]) 是我們的好朋友。
 
 ```cpp
 struct BIT
