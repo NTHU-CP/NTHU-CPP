@@ -196,9 +196,7 @@ int64_t inversions(const vector<int> &v)
 
 注意由於逆序對數量的 upper bound 是 \\(O(n^2)\\)，當 \\(n\geq2^{16}=65536\\) 時必須使用諸如 `int64_t` 等 64-bit 整數型別。
 
-- [UVa 13212 How many inversions?](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=5135)
-- [UVa 10810 Ultra-QuickSort](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=1751)
-- [UVa 11858 Frosh Week](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=2958)
+- [UVa 13212 How many inversions?](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=5135)\
 
 ---
 
@@ -233,10 +231,6 @@ int64_t inversions(const vector<int> &v)
   - 對於一個 permutation，在每次 rotatation 之後計算出逆序對數量
   - 如果真的每次都重新計算的話，時間複雜度會是 \\(O(n\times n\log n)=O(n^2\log n)\\)
   - 轉念一想，我們其實可以在 \\(O(1)\\) 常數時間內知道一次 rotatation 所造成逆序對數量的變化：將這個元素自首端移除會減少多少？Append 至尾端又會增加多少呢？
-- [盧錦隆計算方法設計 2021 Midterm Exam 2 Problem 4](https://drive.google.com/file/d/1UAQ8hliRH6dZk74q78cQzRWOM2Cb6i_G)
-  - 有些教科書稱為 **significant inversion pair**. 簡單說就是將原本 inversion 限制為更嚴格的 \\(i<j\land S_i>2S_j\\)
-  - 事實上，對我們而言，\\(S_i\\) 要是 \\(S_j\\) 的幾倍都無所謂
-  - 不論採用哪種作法都可以，惟注意 merge 的過程可能需要另外抽出來
 
 ## References
 
