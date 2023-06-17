@@ -14,9 +14,9 @@ Rolling Hash 也許看似簡單，但是要靈活運用才能發揮他的完整�
 <details>
   <summary>解答</summary>
   
-In this problem we need to use compare by great / less in O(log(n)) time using binary search by length of equal subsequence. Duplicate string S and calculate polynomial hashes on prefixes. Each cyclic shift will be represented as a number (initial position). Add all the positions to the vector, and then apply a linear algorithm for finding the minimum in the array using the substring comparison operator. 
+In this problem we need to use compare by great / less in \\(O(log(n))\\) time using binary search by length of equal subsequence. Duplicate string S and calculate polynomial hashes on prefixes. Each cyclic shift will be represented as a number (initial position). Add all the positions to the vector, and then apply a linear algorithm for finding the minimum in the array using the substring comparison operator. 
 
-Complexity Estimatation: O(n log(n)) time and O(n) memory.
+Complexity Estimatation: \\(O(n\ log(n))\\) time and \\(O(n)\\) memory.
 
 範例解法
 ```C++
