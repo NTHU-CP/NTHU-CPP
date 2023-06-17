@@ -57,7 +57,7 @@ Kendall's \\(\tau\\) distance 的一個重點是其代表兩個 permutations 需
 
 ### 演算法意義
 
-由前述 Kendall's \\(\tau\\) distance 的討論，我們可以知道 bubble sort 所需的 swaps 數量就是逆序對數量，故其 worst case time complexity 即為逆序對數量的 upper bound，i.e., \\(\binom{n}{2}=\frac{n(n-1)}{2}=O(n^2)\\)
+經由前述討論，我們可以知道逆序對數量至多有 \\(\binom{n}{2}=O(n^2)\\)，故枚舉所有 pairs \\((i,j)\\) 我們容易得到 \\(O(n^2)\\) 的演算法。
 
 那麼，求逆序對數量的 lower bound 呢？如果我們考慮 comparison-based 的數法，而這與 comparison-based sorting 一樣，需要至少 \\(O(n\log n)\\) 次比較，證明是其 recursion tree 共有 \\(n!\\) leaves，平衡的樹高為 \\(O(\log n!)=O(n\log n)\\)，具體細節可以參考教科書。現在我們試著論證求逆序對的 recursion tree 也是類似的。注意到由於 comparison-based sorting 的 recursion tree 的每個葉節點都分別對應到兩個不同的 permutations 故其逆序對數量顯然不同，因此我們一定必須走訪到葉節點才能決定逆序對數量。
 
