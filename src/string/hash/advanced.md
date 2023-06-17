@@ -82,10 +82,84 @@ int main() {
 ```
 </details>
 
-
-
 ### 排序所有 Cyclic Shift
-> Sorting of all cyclic shifts of a string of length n in lexicographic order in O(n log^2 n) time
+> 目標：在 \\(O(n\ log^2 n)\\) 的時間內，按字典序對長度為 \\(n\\) 的字串的所有循環移位進行排序
+
+> 字串 \\(s\\) 的循環移位 (Cyclic Shift) 是指將字串 \\(s\\) 按照某個 \\(k, 0 \leq k < n\\)進行移位得到的字串 \\(s_{k+1}s_{k+2} ... s_n s_1 s_2 ... s_k\\)，其中 \\(n\\) 是字串 \\(s\\) 的長度。
+>
+> 對於給定的字串，請構造所有的循環移位，並將每個循環移位排序。接著，輸出每個排序後字串的最後一個字元，以及給定的字串位於排序後列表的第幾名。
+
+> 是可以建 Suffix Array 去解決這個問題沒錯，但是這樣太複雜了。你能不能粗暴 (但是很簡單) 的用 Rolling Hash 解決它呢？
+
+<details>
+  <summary>解答</summary>
+
+We'll duplicate the string \\(S\\) and count the polynomial hash on the prefix. Each cyclic shift will be represented as a number (initial position). Add all the positions to the vector, and then apply a stable merge sort using the substring comparison operator. 
+
+Complexity Estimatation: \\(O (n\ log(n)^2)\\) in time and \\(O(n)\\) from memory.
+
+```C++
+#include <stdio.h>
+#include <cassert>
+#include <algorithm>
+#include <vector>
+#include <random>
+#include <chrono>
+#include <string>
+ 
+typedef unsigned long long ull;
+
+// Init static variables of PolyHash class:
+int PolyHash::base((int)1e9+7);    
+std::vector<int> PolyHash::pow1{1};
+std::vector<ull> PolyHash::pow2{1};
+ 
+int main() {
+    // Input:
+    char buf[1+100000];
+    scanf("%100000s", buf);
+    std::string a(buf);
+    a += a; // duplicate
+ 
+    // Len of string:
+    const int n = (int)a.size() / 2;
+ 
+    // Max needed power:
+    const int mxPow = 2 * n;
+ 
+    // Gen random base:
+    PolyHash::base = gen_base(256, PolyHash::mod);
+ 
+    // Create hashing object:
+    PolyHash hash(a);
+ 
+    // Put all start positions in vector:
+    std::vector<int> pos;
+    for (int i = 0; i < n; ++i) {
+        pos.push_back(i);
+    }
+ 
+    // Linear search of min algorithm:
+    auto p = *std::min_element(pos.begin(), pos.end(), [&](const int p1, const int p2) {
+        // Binary search by equal subsequences length:
+        int low = 0, high = n+1;
+        while (high - low > 1) {
+            int mid = (low + high) / 2;
+            if (hash(p1, mid, mxPow) == hash(p2, mid, mxPow)) {
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+        return low < n && a[p1+low] < a[p2+low];
+    });
+ 
+    // Output answer:
+    printf("%s", a.substr(p, n).c_str());
+    return 0;
+}
+```
+</details>
 
 ### 算有幾個 substring 是回文字串
 > Finding the number of sub-palindromes of a string of length n in O(n log n) time
