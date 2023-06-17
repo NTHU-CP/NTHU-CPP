@@ -71,7 +71,20 @@ Kendall's \\(\tau\\) distance 的一個重點是其代表兩個 permutations 需
 
 ### Brute Force
 
-可以在 bubble sort 的同時紀錄 swap 的數量；一個 sequence \\(S\\) 至多有 \\(\binom{|S|}{2}\\) 個 pair，同時也是逆序對數量的 upper bound，因此只需要枚舉所有 \\((i,j),i<j\\) 並檢查也可以 in-place 算出。
+可以在 bubble sort 的同時紀錄 swap 的數量；更簡單地，我們只需要枚舉所有 \\((i,j),i<j\\) 並逐一檢查是否為 inversion 即是 \\(O(n^2)\\) 的演算法。
+
+```cpp
+int64_t inversions(const vector<int> &s)
+{
+    int n = s.size();
+    int64_t y = 0;
+    for (int i = 0; i < n; i++)
+        for (int j = i + 1; j < n; j++)
+            if (s[i] > s[j])
+                ++y;
+    return y;
+}
+```
 
 ### Divide and Conquer (via Merge Sort)
 
