@@ -2,7 +2,7 @@
 
 ## 前言
 
-在此章節中，我們將介紹無向圖上的 AP (Articulation point) 和 Bridge，包括他們的定義、相關的演算法和題目。
+在此章節中，我們將介紹無向圖上的 AP (Articulation point) 和 bridge，包括他們的定義、相關的演算法和題目。
 
 ## Connected & Connected Component
 
@@ -10,7 +10,7 @@
 
 ### Connected(連通)
 
-我們說兩個點 A, B connected，表示 A, B 之間存在一條 path。如下圖例子中，A 跟 B connected，但 A 跟 C 不 connected
+我們說兩個點 \\(A, B\\) connected，表示 \\(A, B\\) 之間存在一條 path。如下圖例子中，\\(A\\) 跟 \\(B\\) connected，但 \\(A\\) 跟 \\(C\\) 不 connected
 <img src="image/AP_and_Bridge/Connected.JPG" width="500" style="display:block; margin: 0 auto;"/>
 
 ### Connected Component(連通分量)
@@ -108,10 +108,10 @@ void DFS(int u, int parent) { //call(u,u) at first
 AP 指的是一張圖 \\(G \\) 移除一個點 \\(v \\) 以及與 \\(v \\) 相連的邊後 Connected Component 的數量變多，則點 \\(v \\) 為 AP。中文常稱之為關節點、割點。例如下圖的 A 點就是 AP  
 <img src="image/AP_and_Bridge/AP.JPG" width="500" style="display:block; margin: 0 auto;"/>
 
-Bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Component 的數量變多，則邊 \\(e \\) 為 Bridge。中文常稱之為橋。例如下圖的紅色邊就是 Bridge
+bridge 指的是一張圖 \\(G \\) 移除一條邊 \\(e \\) 後 Connected Component 的數量變多，則邊 \\(e \\) 為 bridge。中文常稱之為橋。例如下圖的紅色邊就是 bridge
 <img src="image/AP_and_Bridge/Bridge.JPG" width="500" style="display:block; margin: 0 auto;"/>
 
-那我們要如何快速找到圖上所有的 AP 跟 Bridge 呢？很容易可以想到枚舉每個點或邊，把他拔掉之後看看圖上有沒有多出新的 Connected Component。但這樣做的時間複雜度會是 \\(O((V+E)^2) \\)。不過實際上，我們只要好好觀察圖上的性質就可以在 \\(O(V+E) \\) 的時間做完！以下介紹兩種不同的方法來找出圖上所有的 AP 跟 Bridge
+那我們要如何快速找到圖上所有的 AP 跟 bridge 呢？很容易可以想到枚舉每個點或邊，把他拔掉之後看看圖上有沒有多出新的 Connected Component。但這樣做的時間複雜度會是 \\(O((V+E)^2) \\)。不過實際上，我們只要好好觀察圖上的性質就可以在 \\(O(V+E) \\) 的時間做完！以下介紹兩種不同的方法來找出圖上所有的 AP 跟 bridge
 
 ## Tarjan's Algorithm to find AP/Bridge
 
@@ -162,7 +162,7 @@ Tarjan 首先定義了兩個函數 \\(depth \\) 跟 \\(low \\)。
 
 <img src="image/AP_and_Bridge/General_AP_Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
-而對於一條邊 \\((u,v)\\)，如果滿足 \\(low(v) > depth(u)\\)，那麼 \\((u,v) \\) 就會是 Bridge。與 AP 相似，可以看下圖的例子，因為 \\( v \\) 點所能走到的點都比 \\( u \\) 點深，因此 \\( v \\) 點一定得經過 \\((u,v) \\) 這條邊才能回到 \\(u\\) 點。那根據我們剛才的觀察，\\((u,v) \\) 就會是 Bridge
+而對於一條邊 \\((u,v)\\)，如果滿足 \\(low(v) > depth(u)\\)，那麼 \\((u,v) \\) 就會是 bridge。與 AP 相似，可以看下圖的例子，因為 \\( v \\) 點所能走到的點都比 \\( u \\) 點深，因此 \\( v \\) 點一定得經過 \\((u,v) \\) 這條邊才能回到 \\(u\\) 點。那根據我們剛才的觀察，\\((u,v) \\) 就會是 bridge
 
 <img src="image/AP_and_Bridge/General_Bridge_Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
@@ -348,7 +348,7 @@ struct bridge {
 
 而這個東西要計算的其實就是：
 
-- \\(v \\) 的子樹標記總和減去這顆子樹在 \\( v \\) 結束的 back edge 數量。
+- \\((v\ 的子樹標記總和)\\) \\(-\\) \\((\\)這顆子樹在 \\( v \\) 結束的 back edge 數量\\()\\)。
 
 為甚麼？因為子樹的標記總和相當於是：這棵子樹有多少條 back edge 還沒結束。像下圖的兩個例子中，子樹標記總和都為 1。而如果這些 back edge 都在 \\(v\\) 結束，那麼這棵子樹顯然一定要通過 \\(v\\) 才能回到 \\(v\\) 的祖先，如下圖左例，那麼 \\( v \\) 就一定會是 AP 了。
 
@@ -428,11 +428,11 @@ AP 模板題
 
 > [CSES - Necessary Roads](https://cses.fi/problemset/task/2076)
 >
-> 給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，要你找出圖上所有的 Bridge
+> 給定一張 \\( N \\) 個點 \\( M \\) 條邊的無向圖，要你找出圖上所有的 bridge
 >
 >\\(2 \leq N \leq 10^5,\ 1 \leq M \leq 2 \cdot 10^5\\)
 
-Bridge 模板題
+bridge 模板題
 
 >[Codeforce - Two Fairs](https://codeforces.com/contest/1259/problem/E)
 >
