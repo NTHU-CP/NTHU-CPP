@@ -212,31 +212,45 @@ int64_t inversions(const vector<int> &v)
 
 - [2021 TOI 1! 入營考 C. 粉刷護欄](https://tioj.ck.tp.edu.tw/problems/2195)
 
-其實 NCPC 2021 Final 也有一題 [LIS](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/view.php?id=60575).
+其實 NCPC 2021 Final 也有一題 [LIS](https://ncpc.ntnu.edu.tw/file/110/決賽-110.pdf)([OJ](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/view.php?id=60575)).
 
 ### 競賽實戰題
 
-- [2021 ICPC Asia TOPC C. A Sorting Problem](https://codeforces.com/gym/103373/problem/C)
-  - 題目給的是 permutation 中每個元素的 index，如果我們將元素們與 indices 互換 (permutation 的 inverse)，則原本的操作就變為 swap 相鄰的元素。於是，題目所求的最小數量即相當前面所證明過的，每次 swap 相鄰元素，最少需要幾次才能完成排序，也就是逆序對數量
-- [2022 ICPC Asia Taoyuan Regional C. Distance Calculator](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/view.php?id=65292)
-  > Wonder kingdom has \\(n!\\) cities. Each city is encoded with \\(n\\) number \\(d_1d_2\dots d_n\\) which is a permutation of \\(1 2\dots n\\). The castle of Wonder kingdom is located in the city encoded as \\(1 2\dots n\\). Let \\(a_1a_2\dots a_n\\) and \\(b_1b_2\dots b_n\\) be the codes of cities A and B, respectively. A road with distance one is built between cities A and B in the kingdom if and only if there exists an \\(i,1\leq i<n\\), such that the following two conditions are satisfied.
-  >
-  > 1. \\(a_i=b_i+1\\) and \\(b_i=a_i+1\\);
-  > 2. \\(a_j=b_j\forall j\in\\{1,2,\dots,n\\}\setminus\\{i,i+1\\}\\).
-  >
-  > One day the king invites all mayors for a meeting in the castle. Please help mayors calculate their travel distance to the castle. Notice that the city of the castle is encoded with \\(1 2 3\dots n\\).
-  >
-  > #### Constraints
-  >
-  > - \\(1\leq m\leq50\\)
-  > - \\(1\leq n\leq100\\)
+> [2021 ICPC Asia TOPC C. A Sorting Problem](https://codeforces.com/gym/103373/problem/C)
+>
+> 對於一個 permutation，每次操作我們可以 swap 值相差恰為一的兩個元素，求使該 permutation 完成排序的最小操作數。
+>
+> - \\(1\leq n\leq2\times10^5\\)
+>
+> <details><summary>Hint</summary>
+> 題目給的是 permutation 中每個元素的 index，如果我們將元素們與 indices 互換 (permutation 的 inverse)，則原本的操作就變為 swap 相鄰的元素。於是，題目所求的最小數量即相當前面所證明過的，每次 swap 相鄰元素，最少需要幾次才能完成排序，也就是逆序對數量。
+> </details>
+
+> [2022 ICPC Asia Taoyuan Regional C. Distance Calculator](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/view.php?id=65292)
+>
+> Wonder kingdom has \\(n!\\) cities. Each city is encoded with \\(n\\) number \\(d_1d_2\dots d_n\\) which is a permutation of \\(1 2\dots n\\). The castle of Wonder kingdom is located in the city encoded as \\(1 2\dots n\\). Let \\(a_1a_2\dots a_n\\) and \\(b_1b_2\dots b_n\\) be the codes of cities A and B, respectively. A road with distance one is built between cities A and B in the kingdom if and only if there exists an \\(i,1\leq i<n\\), such that the following two conditions are satisfied.
+>
+> 1. \\(a_i=b_i+1\\) and \\(b_i=a_i+1\\);
+> 2. \\(a_j=b_j\forall j\in\\{1,2,\dots,n\\}\setminus\\{i,i+1\\}\\).
+>
+> One day the king invites all mayors for a meeting in the castle. Please help mayors calculate their travel distance to the castle. Notice that the city of the castle is encoded with \\(1 2 3\dots n\\).
+>
+> - \\(1\leq m\leq50\\)
+> - \\(1\leq n\leq100\\)
 
 ### 其他有趣題
 
-- [AtCoder Beginner Contest 190 F - Shift and Inversions](https://atcoder.jp/contests/abc190/tasks/abc190_f)
-  - 對於一個 permutation，在每次 rotatation 之後計算出逆序對數量
-  - 如果真的每次都重新計算的話，時間複雜度會是 \\(O(n\times n\log n)=O(n^2\log n)\\)
-  - 轉念一想，我們其實可以在 \\(O(1)\\) 常數時間內知道一次 rotatation 所造成逆序對數量的變化：將這個元素自首端移除會減少多少？Append 至尾端又會增加多少呢？
+> [AtCoder Beginner Contest 190 F - Shift and Inversions](https://atcoder.jp/contests/abc190/tasks/abc190_f)
+>
+> 對於一個 permutation，在每次 rotatation 之後計算出逆序對數量。
+>
+> - \\(2\leq n\leq3\times10^5\\)
+>
+> <details><summary>Hint</summary>
+> 如果真的每次都重新計算的話，時間複雜度會是 \\(O(n\times n\log n)=O(n^2\log n)\\)。
+>
+> 轉念一想，我們其實可以在 \\(O(1)\\) 常數時間內知道一次 rotatation 所造成逆序對數量的變化：將這個元素自首端移除會減少多少？Append 至尾端又會增加多少呢？
+> </details>
 
 ## References
 
