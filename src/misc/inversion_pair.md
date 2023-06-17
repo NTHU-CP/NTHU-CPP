@@ -126,7 +126,9 @@ int64_t merge_sort_inversions(vector<int>::iterator begin, vector<int>::iterator
 
 ---
 
-接著回到一個可能更直觀的想法。對於一個 permutation 中的每一元素，假若我們可以知道與它有關的逆序對數量分別為和，那們整個 permutaion 的逆序對數量也就呼之欲出、易如反掌。因此，我們想到前面提過 permutaions 的 inversion vectors。以 left inversion count 為例，我們只需要在依序維護 permutation 某元素 \\(i\\) 出現權重 \\(w_i\\) 的同時，找出有大於該元素的元素數，也就是 \\(\sum_{i=0}^nw_i\\)。因此，我們需要一個支援高效單點修改、區間查詢的資料結構，而簡單好寫的 Fenwick Tree (a.k.a. Binary Indexed Tree, BIT[^BIT_oi_wiki]) 是我們的好朋友。
+接著回到一個可能更直觀的想法。對於一個 permutation 中的每一元素，假若我們可以知道與它有關的逆序對數量分別為何，那們整個 permutaion 的逆序對數量也就呼之欲出。因此，我們想到前面提過 permutaions 的 inversion vectors。以 left inversion count 為例，在依序遍歷 permutation 時，我們只需要維護每一元素是否曾經出現 \\(w_i\in\\{0,1\\}\\)，則對於一元素 \\(i\\)，大於該元素且在其左側（已經遍歷過）的元素數即為 \\(\sum_{j=i+1}^nw_j\\)。因此，我們需要一個支援高效單點修改、區間查詢的資料結構，而簡單好寫的 Fenwick Tree (a.k.a. Binary Indexed Tree, BIT[^BIT_oi_wiki]) 是我們的好朋友。
+
+底下的範例 codes 是採用 left inversion count，當然 right inversion count 也大有人在，不過遍歷的順序就需要反過來，這裡就留給讀者自行練習。
 
 ```cpp
 struct BIT
