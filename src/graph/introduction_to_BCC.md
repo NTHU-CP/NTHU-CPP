@@ -69,8 +69,8 @@ BCC-Vertex 有以下幾個性質:
 ```cpp
 struct BCC_Vertex {
     vector<int> low, depth;
-    vector<vector<int> > G;
-    vector<vector<pair<int, int> > > bcc;
+    vector<vector<int>> G;
+    vector<vector<pair<int, int>>> bcc;
     stack<pair<int, int>> stk;
     
     void init(int n) {
@@ -138,7 +138,7 @@ struct BCC_Vertex {
 
 <details><summary> Solution </summary>
 
-題目要找 AP, Bridge, BCC-Vertex 的數量，以及擁有最多邊的 BCC-Vertex 的邊數。
+題目要找 AP, bridge, BCC-Vertex 的數量，以及擁有最多邊的 BCC-Vertex 的邊數。
 
 其實就是模板題
 
@@ -160,7 +160,7 @@ struct BCC_Vertex {
 
 ## BCC-Edge(Bridge Connected Component)
 
-BCC-Edge 指的是沒有 Bridge 的 Connected Component，在中文常稱之為邊雙連通分量、橋連通分量。例如下圖我們能找到兩個 BCC-Edge
+BCC-Edge 指的是沒有 bridge 的 Connected Component，在中文常稱之為邊雙連通分量、橋連通分量。例如下圖我們能找到兩個 BCC-Edge
 <img src="image/BCC/Bridge_Connected_Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
 BCC-Edge 有以下幾個性質
@@ -180,7 +180,7 @@ BCC-Edge 有以下幾個性質
 
 ### 如何修改
 
-跟找 BCC-Vertex 的想法很像。我們用 stack 紀錄走過的點，當我們發現 \\(low(u) == depth(u) \\) 時，我們就發現了橋的下端點。而 stack 中 \\(u \\) 和他上面的點就會位於同一個 BCC。就像下圖 \\( D \\) 這個點，他是 \\( (C,D) \\) 這條 bridge 的下端點。
+跟找 BCC-Vertex 的想法很像。我們用 stack 紀錄走過的點，當我們發現 \\(low(u) == depth(u) \\) 時，我們就發現了橋的下端點。而 stack 中 \\(u \\) 和他上面的點就會位於同一個 BCC-Edge。就像下圖 \\( D \\) 這個點，他是 \\( (C,D) \\) 這條 bridge 的下端點。
 
 <img src="image/BCC/BCC_Algo_explain_2.PNG" width="300" style="display:block; margin: 0 auto;"/>
 
@@ -196,8 +196,8 @@ BCC-Edge 有以下幾個性質
 ```cpp
 struct BCC_Edge {
     vector<int> low, depth;
-    vector<vector<int> > G;
-    vector<vector<int> > bcc;
+    vector<vector<int>> G;
+    vector<vector<int>> bcc;
     stack<int> stk;
     
     void init(int n) {
