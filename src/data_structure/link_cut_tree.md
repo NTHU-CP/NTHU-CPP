@@ -25,13 +25,15 @@ Link Cut Tree 是以 Splay Tree 為基礎實作，因此尚未了解 Splay Tree 
 
 ### Auxiliary Tree  
 
-**以下用輔助樹來稱呼Auxiliary Tree**  
+以下使用輔助樹來稱呼Auxiliary Tree。  
+
 輔助樹的作用是用來維護訊息，在進行 LCT 操作時同時維護輔助樹的訊息，因此輔助樹能維護的訊息，就決定了 LCT 可以維護的訊息。  
 LCT 利用 Splay Tree 作為輔助樹，在基本 LCT 的 Splay Tree 節點會維護以下訊息：  
 
-1. 父節點及左右小孩
-2. 在 Splay Tree node 左邊的節點深度比自己小，右邊的節點深度比自己大
-3. 區間反轉的懶惰標記，讓翻轉區間能夠有好的時間複雜度
+1. 父節點 (子節點有邊指向父節點，但父節點不一定有邊指向子節點)
+2. 左右小孩 (實作時用右小孩代表 preferred edge)
+3. 在 Splay Tree node 左邊的節點深度比自己小，右邊的節點深度比自己大
+4. 區間反轉的懶惰標記，讓翻轉區間能夠有好的時間複雜度
 
 以下是一個簡單的 Splay Tree node：
 
@@ -47,6 +49,10 @@ struct splay_node
 - ``child[0]`` 代表左小孩、 ``child[1]`` 代表右小孩
 - ``parent`` 代表父親
 - ``rev`` 代表區間反轉的懶惰標記
+
+以下是一個原樹與輔助樹的對應關係：
+<img src="image/LCT/Auxiliary_Tree_Demo.png" style="display:block; margin: 0 auto;"/>
+圖解：左為原樹，原樹的粗邊代表 preferred edge。右為原樹所對應的輔助樹，輔助樹的表示法不唯一，粗邊代表 splay_node 的左右小孩，而帶有箭號的邊代表指向父節點的邊。
 
 接下來就是這棵輔助樹的基本操作。
 
@@ -142,7 +148,7 @@ void down(int x)
 操作方法：
 
 1. 把當前節點 splay 到目前輔助樹的根
-2. 把當前節點的小孩設定為上一次走到的節點
+2. 把當前節點的 preferred edge 設定為上一次走到的節點
 3. 維護節點訊息
 4. 對父節點進行 ``Access()``  
 重複執行1~4，直到抵達 LCT 的根結點回傳。
@@ -162,6 +168,18 @@ int access(int x)
 ```
 
 操作完成後 ``x`` 節點會與根結點存在同一棵輔助樹中。  
+
+以下用一個例子來展示 ``access()`` ：
+<img src="image/LCT/access_demo_1.png" height="400px" style="display:block; margin: 0 auto;"/>
+假設原樹如上圖表示，接下來要執行的操作是 ``access(F)``，一開始要先 ``splay(F)``，讓 F 節點變成當前輔助樹的根。
+<img src="image/LCT/access_demo_2.png" height="400px" style="display:block; margin: 0 auto;"/>
+``splay(F)`` 後，要把節點的 preferred edge 設定為上次走到的節點，因為 F 是第一個節點，因此不需要動作，接下來繼續往上層更新，對父節點進行 ``access()``，因此接下來要 ``access(C)``。
+<img src="image/LCT/access_demo_3.png" height="400px" style="display:block; margin: 0 auto;"/>
+先 ``splay(C)`` ，讓C變成輔助樹的根節點。
+<img src="image/LCT/access_demo_4.png" height="400px" style="display:block; margin: 0 auto;"/>
+把 C 的 preferred edge 設為 F (這裡為了展示所以將新的 preferred edge 變成粗邊)，所以 C 節點拋棄其中一個小孩，這裡展示的是拋棄 B 小孩。
+<img src="image/LCT/access_demo_5.png" height="400px" style="display:block; margin: 0 auto;"/>
+最終 ``access(A)``，到達整棵樹的根結點，因此停止操作，最終 F 與根節點 A 的路徑為 preferred path，且 F 與 A 在同一棵輔助樹中。
 
 - ``make_root()``  
 將當前節點變為整棵樹的 root。
