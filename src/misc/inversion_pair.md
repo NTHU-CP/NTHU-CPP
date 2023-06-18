@@ -255,9 +255,9 @@ int64_t inversions(const vector<int> &v)
 > - \\(2\leq n\leq3\times10^5\\)
 >
 > <details><summary>Hint</summary>
-> 如果真的每次都重新計算的話，時間複雜度會是 \\(O(n\times n\log n)=O(n^2\log n)\\)。
+> 如果真的每次都重新計算的話，時間複雜度會是 \(O(n\times n\log n)=O(n^2\log n)\)。
 >
-> 轉念一想，我們其實可以在 \\(O(1)\\) 常數時間內知道一次 rotatation 所造成逆序對數量的變化：將這個元素自首端移除會減少多少？Append 至尾端又會增加多少呢？
+> 轉念一想，我們其實可以在 \(O(1)\) 常數時間內知道一次 rotatation 所造成逆序對數量的變化：將這個元素自首端移除會減少多少？Append 至尾端又會增加多少呢？
 > </details>
 
 ## References
