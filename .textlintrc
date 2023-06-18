@@ -1,7 +1,7 @@
 {
   "rules" : {
     "preset-zh-technical-writing" : {
-      "terminology" : { "exclude" : ["ID", "PDF"] }
+      "terminology" : { "exclude" : ["ID", "PDF", "Node.js"] }
     }
   }
 }
