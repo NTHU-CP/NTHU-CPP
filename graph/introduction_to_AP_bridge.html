@@ -1,0 +1,593 @@
+<!DOCTYPE HTML>
+<html lang="zh-TW" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Articulation Point and Bridge - NTHU CPP</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="spacer"></li><li class="chapter-item "><div>Fundemantal</div></li><li class="chapter-item "><a href="../greedy/intro.html">Greedy</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../greedy/basic.html">Basic Greedy</a></li></ol></li><li class="chapter-item "><div>Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div>Basic DP</div></li></ol></li><li class="chapter-item expanded "><div>Graph</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../graph/introduction_to_AP_bridge.html" class="active">Articulation Point and Bridge</a></li><li class="chapter-item "><a href="../graph/introduction_to_BCC.html">BCC-Vertex and BCC-Edge</a></li></ol></li><li class="chapter-item "><div>Flow</div></li><li class="chapter-item "><a href="../sqrt/intro.html">Sqrt Technique</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../sqrt/sqrt_decomposition.html">Square Root Decomposition</a></li><li class="chapter-item "><div>Sqrt-Related Observation</div></li><li class="chapter-item "><div>Mo's Algorithm</div></li></ol></li><li class="chapter-item "><a href="../math/intro.html">Mathematics</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/introduction_to_arithmetic_function.html">Arithmetic Function</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/linear_sieve.html">Linear Sieve</a></li><li class="chapter-item "><a href="../math/sqrt_decomposition.html">數論分塊</a></li><li class="chapter-item "><a href="../math/du_sieve.html">杜教篩</a></li><li class="chapter-item "><a href="../math/revisit_arithmetic_function.html">Arithmetic Function Revisit</a></li></ol></li></ol></li><li class="chapter-item "><div>Miscellaneous</div></li><li class="chapter-item "><div>C++ Programming Tips</div></li><li class="spacer"></li><li class="chapter-item "><a href="../others/codebook.html">Make a Codebook</a></li><li class="chapter-item "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item "><div>CSES Problem Tag</div></li><li class="chapter-item "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">NTHU CPP</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/NTHU-CP/NTHU-CPP" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="articulation-point-and-bridge"><a class="header" href="#articulation-point-and-bridge">Articulation Point and Bridge</a></h1>
+<h2 id="前言"><a class="header" href="#前言">前言</a></h2>
+<p>在此章節中，我們將介紹無向圖上的 AP (Articulation point) 和 bridge，包括他們的定義、相關的演算法和題目。</p>
+<h2 id="connected--connected-component"><a class="header" href="#connected--connected-component">Connected &amp; Connected Component</a></h2>
+<p>在正式開始我們的主題之前，我們先介紹一些之後會用到的東西。</p>
+<h3 id="connected連通"><a class="header" href="#connected連通">Connected(連通)</a></h3>
+<p>我們說兩個點 \(A, B\) connected，表示 \(A, B\) 之間存在一條 path。如下圖例子中，\(A\) 跟 \(B\) connected，但 \(A\) 跟 \(C\) 不 connected
+<img src="image/AP_and_Bridge/Connected.JPG" width="500" style="display:block; margin: 0 auto;"/></p>
+<h3 id="connected-component連通分量"><a class="header" href="#connected-component連通分量">Connected Component(連通分量)</a></h3>
+<p>Connected Component 是點的集合，滿足以下條件</p>
+<ul>
+<li>集合中任兩點都是 connected 的</li>
+<li>如果兩個點位於不同的 Connected Component，則這兩點必不 connected。</li>
+</ul>
+<p>如下圖的例子，顏色相同的點表示他們屬於相同的 Connected Component，可以看到若是兩個點不同顏色，那他們一定不 connected。而我們不會說紅圈圈起來的那三個點是一個 Connected Component (因為紅圈外還有跟他們連通的點)。</p>
+<img src="image/AP_and_Bridge/Connected_Component.JPG" width="500" style="display:block; margin: 0 auto;"/>
+<h2 id="dfs-tree-on-undirected-graph"><a class="header" href="#dfs-tree-on-undirected-graph">DFS tree on undirected graph</a></h2>
+<p>DFS tree 就如同他的名字，是一棵根據 DFS 的過程長出的 tree。由於其良好的性質，在處理圖相關的問題時是很有用的工具。</p>
+<p>考慮以下 DFS 的走訪，那些直接走訪的邊被稱為 tree edge，而其他的邊被稱為 back edge。</p>
+<pre><code class="language-cpp">void DFS(int u) {
+    visited[u] = true;
+    for(int &amp;v : G[u]) {
+        if(!visited[v]) {
+            // u-&gt;v 為 tree edge
+            DFS(v);
+        } else {
+            // u-&gt;v為 back edge
+        }
+    }
+}
+</code></pre>
+<p>在定義上，back edge 指的是會回到當前點的祖先的邊。</p>
+<p>我們可以看個例子。</p>
+<img src="image/AP_and_Bridge/DFS_Tree.gif" width="400" style="display:block; margin: 0 auto;"/>
+<p>如果把上圖畫成 DFS tree 就會長成如下圖這樣。我們可以發現，正如 back edge 的定義，<strong>一個點可以通過 back edge，回到他的祖先</strong>。</p>
+<img src="image/AP_and_Bridge/DFS_Tree.JPG" width="200" style="display:block; margin: 0 auto;"/>
+<p>在無向圖上做 DFS tree 時要注意的是: 無向圖的 DFS 會讓一條邊被看到 2 次。例如下圖中，如果我們以 \( A,B,C,D,E \) 的順序進行 DFS，那 \( (E,A) \)這條邊會首先被 \( E \) 看到一次，接著再被 \( A \) 看到一次。</p>
+<img src="image/AP_and_Bridge/DFS_Tree_note 1.JPG" width="200" style="display:block; margin: 0 auto;"/>
+<p>所以如果你的 code 只有寫看到一條邊就根據它是 tree edge/back edge 做事，那你有可能會因為看到一條 edge 兩次而做了重複的操作，從而導致 WA。</p>
+<p>例如下面的 code 我們想要統計一個點上接出幾條 back edge。當 \( E \) 看到 \( (E,A) \) 這條邊時，因為 \( A \) 點已經被看過，因此 \( E,A \) 兩點都會 +1；而當 \( A \) 看到 \( (E,A) \) 這條邊，因為 \( E \) 點已經被看過，因此 \( E,A \) 兩點都會 +1。所以最後 \( A \) 點跟 \( E \) 點都會算出 2 而不是正確答案的 1。</p>
+<pre><code class="language-cpp">void DFS(int u) {
+    visited[u] = true;
+    for(int &amp;v : G[u]) {
+        if(!visited[v]) {
+            DFS(v);
+        } else {
+            backedgeCounter[u]+=1;
+            backedgeCounter[v]+=1;
+        }
+    }
+}
+</code></pre>
+<p>所以，在無向圖上使用 DFS tree 時，要嘛想辦法處理掉因為看到一條邊兩次帶來的影響(如上面的例子就是把每個點的答案除二)，要嘛讓每條邊都只在第一次被看到的時候做事。</p>
+<p>以下給出一個修改方法可以讓每條邊都只在第一次被看到的時候做事。簡單來說就是通過紀錄每個點在 DFS 中的狀態 (還未開始 DFS、已經開始 DFS 但還沒結束、已經結束 DFS)來判斷一條邊是否為第一次被看過。我們用 \(color[u] = 0,1,2\) 來表示 \( u \) 這個點是在三種狀態中的哪一種。</p>
+<pre><code class="language-cpp">void DFS(int u, int parent) { // call(u,u) at first
+    color[u] = 1;
+    for(auto &amp;v : G[u]) {
+        if(v == parent) continue;// 已經是 tree edge
+        if(color[v] == 0) {
+            // tree edge
+            dfs(v, u);
+        } else if(color[v] == 1) {
+            // 第一次看到的back edge
+            // 在這個例子中當 E 看到 (E,A) 這條邊時會進到這裡
+            backedgeCounter[u]+=1;
+            backedgeCounter[v]+=1;
+        }
+        // 在這個例子中，當 A 看到 (E,A) 這條邊時
+        // 因為 E 的 DFS 已經結束， color[E] = 2
+        // 因此 (E,A) 這條邊不會被算到第 2 次
+    }
+    color[u] = 2;
+}
+</code></pre>
+<p>而如果你在 DFS 的過程中有紀錄一個點在 DFS tree 上的深度，那你也可以根據兩點間的深度關係來判斷一條邊是不是第一次被看到。</p>
+<h2 id="ap--bridge"><a class="header" href="#ap--bridge">AP &amp; Bridge</a></h2>
+<p>AP 指的是一張圖 \(G \) 移除一個點 \(v \) 以及與 \(v \) 相連的邊後 Connected Component 的數量變多，則點 \(v \) 為 AP。中文常稱之為關節點、割點。例如下圖的 A 點就是 AP<br />
+<img src="image/AP_and_Bridge/AP.JPG" width="500" style="display:block; margin: 0 auto;"/></p>
+<p>bridge 指的是一張圖 \(G \) 移除一條邊 \(e \) 後 Connected Component 的數量變多，則邊 \(e \) 為 bridge。中文常稱之為橋。例如下圖的紅色邊就是 bridge
+<img src="image/AP_and_Bridge/Bridge.JPG" width="500" style="display:block; margin: 0 auto;"/></p>
+<p>那我們要如何快速找到圖上所有的 AP 跟 bridge 呢？很容易可以想到枚舉每個點或邊，把他拔掉之後看看圖上有沒有多出新的 Connected Component。但這樣做的時間複雜度會是 \(O((V+E)^2) \)。不過實際上，我們只要好好觀察圖上的性質就可以在 \(O(V+E) \) 的時間做完！以下介紹兩種不同的方法來找出圖上所有的 AP 跟 bridge</p>
+<h2 id="tarjans-algorithm-to-find-apbridge"><a class="header" href="#tarjans-algorithm-to-find-apbridge">Tarjan's Algorithm to find AP/Bridge</a></h2>
+<h3 id="觀察-ap-的性質"><a class="header" href="#觀察-ap-的性質">觀察 AP 的性質</a></h3>
+<p>我們觀察下圖中 \( C \) 點的左子樹。你會發現這棵子樹一定要通過 \( C \) 點才能走到 \( C \) 點的祖先，所以理所當然的，當我們將 \( C \) 點移除，整張圖就會斷成兩個 Connected Component。而 \( C \) 點就會是 AP。</p>
+<img src="image/AP_and_Bridge/Tarjan_AP_observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>更一般的說，對於一個點 \(v \)，如果 \(v \) 的某一棵子樹無法在不經過 \(v \) 的情況下走到 \(v \) 的祖先，那麼 \(v \) 一定是 AP。</p>
+<img src="image/AP_and_Bridge/General_AP.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>但 root 是沒有祖先的，因此 root 我們要拉出來特別判斷。很明顯，當 root 有至少兩棵子樹的時候，root 一定會是 AP，否則就不是。</p>
+<img src="image/AP_and_Bridge/Root_AP_Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>那難道不會有如下圖一樣，橫跨兩個子樹的 edge 嗎？這樣的話 \( C \) 點就不會是 AP 了。答案是不會。這種橫跨兩個子樹的 edge 會在 DFS 的時候被看成 tree edge。讀者可以稍微思考一下為什麼。</p>
+<img src="image/AP_and_Bridge/DFS_Tree_Cross_Edge_Question.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<h3 id="觀察-bridge-的性質"><a class="header" href="#觀察-bridge-的性質">觀察 Bridge 的性質</a></h3>
+<p>與 AP 的觀察相似。我們觀察下圖中 \( (C,D) \) 這條邊，你會發現以 \( D \) 為根的子樹一定要通過這條邊才能回到 \( C \) 點。所以理所當然的，當我們將 \( (C,D) \) 移除，整張圖就會斷成兩個 Connected Component。而 \( (C,D) \) 就會是 bridge。</p>
+<img src="image/AP_and_Bridge/Tarjan_Bridge_Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>更一般的說，令 \(u \) 是 \( v \) 的 parent，則對於一條邊 \( (u,v) \)，如果 \( v \) 的子樹都無法在不經過 \( (u,v) \) 的情況下走到 \( u \)，那麼 \( (u,v) \) 一定是 bridge。</p>
+<img src="image/AP_and_Bridge/General_Bridge.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<h3 id="演算法"><a class="header" href="#演算法">演算法</a></h3>
+<p>現在我們來看看 Tarjan 是怎麼把這個東西做出來的。</p>
+<p>Tarjan 首先定義了兩個函數 \(depth \) 跟 \(low \)。</p>
+<p>\(depth(v) \) 表示 \( v \) 這個點在 DFS tree 上的深度。</p>
+<img src="image/AP_and_Bridge/Depth_Example.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>\( low(v) \) 表示 \(v \) 自己，以及子樹中的點連出去的點當中最小的深度</p>
+<p>例如下圖的 \( C \) 點，本身的深度是 \(3\)，子樹中所有的點深度都 \(&gt;3\)，而子樹中連出去的點最淺為 \( B \)( \( L \) 的鄰點)，深度為 \(2\)，因此 \(low(C) = 2\)
+<img src="image/AP_and_Bridge/Low_Example.JPG" width="400" style="display:block; margin: 0 auto;"/></p>
+<p>我們回想一下剛才的圖，發現對於一個點 \(u \)，如果他的某個子節點 \(v \) 滿足 \(low(v) \geq depth(u) \)，那麼 \(u\) 就會是 AP。可以看下圖的例子，因為 \( v \) 點最多只能走到 \( u \) 點的深度，因此 \( v \) 點一定得通過 \( u \) 點才能走到 \( u \) 的祖先。那根據我們剛才的觀察，\( u \) 就會是 AP</p>
+<img src="image/AP_and_Bridge/General_AP_Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>而對於一條邊 \((u,v)\)，如果滿足 \(low(v) &gt; depth(u)\)，那麼 \((u,v) \) 就會是 bridge。與 AP 相似，可以看下圖的例子，因為 \( v \) 點所能走到的點都比 \( u \) 點深，因此 \( v \) 點一定得經過 \((u,v) \) 這條邊才能回到 \(u\) 點。那根據我們剛才的觀察，\((u,v) \) 就會是 bridge</p>
+<img src="image/AP_and_Bridge/General_Bridge_Algo.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>我們現在的問題只剩下如何求出 \(low(v) \)。</p>
+<p>可以發現，對於一個點 \(v \)，如果我們知道他所有子節點的 \(low \) 的答案，那麼我們就可以簡單推出 \(low(v) \) 的答案，如下圖所示。而要達成這件事情，我們只需在 DFS 的時候用 post order 的順序計算 \(low \) 的答案就可以了！</p>
+<img src="image/AP_and_Bridge/Compute_Low.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>我們整理一下後會發現，對於一條邊 \( (v,w) \)：</p>
+<ul>
+<li>若 \( (v,w) \) 為 tree edge，則 \( low(v) = min(low(v),\ low(w))\)</li>
+<li>若 \( (v,w) \) 為 back edge，則 \( low(v) = min(low(v),\ depth(w))\)</li>
+</ul>
+<h3 id="time-complexity"><a class="header" href="#time-complexity">Time Complexity</a></h3>
+<p>在無向圖上隨意挑一個點當起點，做完一次 DFS 之後就能得到答案。因此 Time Complexity 為 \( O(V+E) \)</p>
+<h2 id="code"><a class="header" href="#code">code</a></h2>
+<pre><code class="language-cpp">struct AP_bridge {
+    vector&lt;int&gt; low, depth;
+    vector&lt;vector&lt;int&gt;&gt; G;
+    vector&lt;int&gt; AP;
+    vector&lt;pair&lt;int, int&gt;&gt; Bridge;
+    void init(int n) {
+        depth.assign(n+1, 0);
+        low.assign(n+1, 0);
+        G.assign(n+1, vector&lt;int&gt;());
+        AP.clear();
+        Bridge.clear();
+    }
+    
+    void add_edge(int u, int v) {
+        G[u].emplace_back(v);
+        G[v].emplace_back(u);
+    }
+    
+    void solve(int root) {
+        dfs(root, root, 1);
+    }
+    
+    void dfs(int u, int parent, int dep) {
+        depth[u] = low[u] = dep;
+        int child = 0;
+        bool isAP = false; 
+        
+        for(auto &amp;v : G[u]) {
+            if(v == parent) continue;
+            if(depth[v] == 0) {
+                child++;
+                dfs(v, u, dep+1);
+                low[u] = min(low[v], low[u]);
+                if(low[v] &gt;= depth[u]) isAP = true;
+                if(low[v] &gt; depth[u]) Bridge.emplace_back(u,v);
+            } else {
+                low[u] = min(low[u], depth[v]);
+            }
+        }
+    
+        if(u == parent &amp;&amp; child &lt; 2) isAP = false;
+        if(isAP) AP.emplace_back(u);
+    }
+    
+    vector&lt;int&gt; get_AP() {
+        return AP;
+    }
+    
+    vector&lt;pair&lt;int, int&gt;&gt; get_bridge() {
+        return Bridge;
+    }
+};
+</code></pre>
+<h2 id="get-bridgeap-by-dfs-tree"><a class="header" href="#get-bridgeap-by-dfs-tree">Get Bridge/AP by DFS tree</a></h2>
+<h3 id="觀察-bridge-的性質-1"><a class="header" href="#觀察-bridge-的性質-1">觀察 Bridge 的性質</a></h3>
+<p>我們觀察圖中哪些邊絕對不可能是 bridge</p>
+<img src="image/AP_and_Bridge/DFS_Tree_Observation.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<ul>
+<li>back edge 絕對不會是 bridge。</li>
+<li><strong>如果\( (u,v) \)是 back edge，那麼樹上 \(u \) 到 \( v \) 的路徑都不會是 bridge</strong>。例如圖中因為有 \( (F,C) \) 這條 back edge，因此樹上 \(F \) 到 \(C \) 的路徑都不會是 bridge。</li>
+</ul>
+<p>所以，如果我們每遇到一條 back edge \( (u,v) \)，就把樹上 \(u \) 到 \( v \) 的路徑都標記成不是 bridge，那麼最後那些沒被標記到的邊就會是 bridge。為何？可以看下圖的例子。若是一條邊沒被標記到，就代表沒有 back edge 跨過這條邊，如下圖 \( (a,b) \) 這條邊。可以發現，當我們想從 \( b \) 回到 \( a \) 時，必然只能通過 \( (a,b) \) 這條邊。這證明了如果一條邊沒被標記到，那麼它必然是 Bridge。</p>
+<img src="image/AP_and_Bridge/Bridge_Mark_Example.JPG" width="150" style="display:block; margin: 0 auto;"/>
+<p>因此問題只剩下：<strong>我們要如何快速標記一條路徑上所有的邊？</strong></p>
+<h3 id="快速標記"><a class="header" href="#快速標記">快速標記</a></h3>
+<p>這個問題我們可以用前綴和的想法來解決。當我們遇到一條 back edge \( (u,v) \) 時，就在 \(u \) 上 +1，在 \( v \) 上 -1。<strong>這代表說有一條 back edge 從 \(u \) 開始，在 \( v \) 結束</strong>。</p>
+<img src="image/AP_and_Bridge/prefix_1.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>這樣當我們由下而上計算前綴和時，\(u \) 到 \( v \) 的 path 就全部被標記好了！邊上的前綴和 \( x \) 代表了有 \( x \) 條 back edge 跨過這條邊。</p>
+<img src="image/AP_and_Bridge/prefix_2.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>我們接著來看一個比較複雜的例子。如下圖，假設我們已經算出了三條黑色邊的前綴和，那麼想想看綠色邊的前綴和應該如何計算？</p>
+<img src="image/AP_and_Bridge/prefix_3.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>我們觀察到跨過綠色邊的 back edge 只會有兩種：</p>
+<ul>
+<li>所有跨過黑色邊並且跨過 \( v \) 的 back edge</li>
+<li>從 \( v \) 出發的 back edge</li>
+</ul>
+<p>當然，我們可以根據上面兩點列出式子後算出綠色邊的答案。但我們再觀察一下會發現，我們所要求的東西其實就是：以 \( v \) 為根的子樹中，有幾條 back edge 跨過了 \( v \)。而要求出這個東西，我們可以從子樹標記總和下手。</p>
+<h3 id="前綴和---子樹標記總和"><a class="header" href="#前綴和---子樹標記總和">前綴和 -&gt; 子樹標記總和</a></h3>
+<p>對於一條 tree edge \( (u,v) \)，我們只要判斷以 \( v \) 為根的子樹標記總和是否為 0，若為 0 則 \( (u,v) \) 就會是 bridge。</p>
+<p>為甚麼？從下圖可以發現，如果一條 back edge 的開始跟結束都在以 \( v \) 為根的子樹內，那麼這條 back edge 對子樹總和的貢獻為 0，否則為 1。而當子樹總和不為 0 的時候，\( (u,v) \) 顯然不會是 bridge。</p>
+<img src="image/AP_and_Bridge/subtree_sum.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<h3 id="time-complexity-1"><a class="header" href="#time-complexity-1">Time Complexity</a></h3>
+<p>我們做完一次 DFS 之後就能得到答案，因此 Time Complexity 為 \( O(V+E) \)</p>
+<h3 id="code-1"><a class="header" href="#code-1">Code</a></h3>
+<pre><code class="language-cpp">struct bridge {
+    vector&lt;int&gt; color, sum;
+    vector&lt;vector&lt;int&gt;&gt; G;
+    vector&lt;pair&lt;int, int&gt;&gt; Bridge;
+    void init(int n) {
+        color.assign(n+1, 0);
+        sum.assign(n+1, 0);
+        G.assign(n+1, vector&lt;int&gt;());
+        Bridge.clear();
+    }
+    
+    void add_edge(int u, int v) {
+        G[u].emplace_back(v);
+        G[v].emplace_back(u);
+    }
+    
+    void solve(int root) {
+        dfs(root, root);
+    }
+    
+    void dfs(int u, int parent) {
+        color[u] = 1;
+        for(auto &amp;v : G[u]) {
+            if(v == parent) continue;
+            if(color[v] == 0) {
+                dfs(v, u);
+                if(sum[v] == 0) 
+                    Bridge.emplace_back(u, v);
+                sum[u]+=sum[v];
+            } else if(color[v] == 1) {
+                sum[u]+=1;
+                sum[v]-=1;
+            }
+        }
+        color[u] = 2;
+    }
+        
+    vector&lt;pair&lt;int, int&gt;&gt; get_bridge() {
+        return Bridge;
+    }
+};
+</code></pre>
+<h3 id="如何找-ap"><a class="header" href="#如何找-ap">如何找 AP</a></h3>
+<p>我們首先回想一下 Tarjan 對 AP 的觀察：</p>
+<ul>
+<li>對於 root，如果他有至少兩棵子樹的時候，他就一定是 AP，否則就不是。</li>
+<li>對於一個點 \(v \)，如果 \(v \) 的某一棵子樹無法在不經過 \(v \) 的情況下走到 \(v \) 的祖先，那麼 \(v \) 一定是 AP。
+<img src="image/AP_and_Bridge/General_AP.JPG" width="400" style="display:block; margin: 0 auto;"/></li>
+</ul>
+<p>第一點很好解決。</p>
+<p>對於第二點，我們要檢查的其實就是<strong>對於一棵子樹，有沒有 back edge 跨過 \( v \)</strong>，如果沒有那 \( v \) 就會是 AP。</p>
+<p>而這個東西要計算的其實就是：</p>
+<ul>
+<li>\((v\) 的子樹標記總和\()\) \(-\) \((\)這顆子樹在 \( v \) 結束的 back edge 數量\()\)。</li>
+</ul>
+<p>為甚麼？因為子樹的標記總和相當於是：這棵子樹有多少條 back edge 還沒結束。像下圖的兩個例子中，子樹標記總和都為 1。而如果這些 back edge 都在 \(v\) 結束，那麼這棵子樹顯然一定要通過 \(v\) 才能回到 \(v\) 的祖先，如下圖左例，那麼 \( v \) 就一定會是 AP 了。</p>
+<img src="image/AP_and_Bridge/AP_subtree_sum.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<h3 id="time-complexity-2"><a class="header" href="#time-complexity-2">Time Complexity</a></h3>
+<p>我們做完一次 DFS 之後就能得到答案，因此 Time Complexity 為 \( O(V+E) \)</p>
+<h3 id="code-2"><a class="header" href="#code-2">Code</a></h3>
+<pre><code class="language-cpp">struct AP {
+    vector&lt;int&gt; color, sum, backEdgeEnd;
+    vector&lt;vector&lt;int&gt;&gt; G;
+    vector&lt;int&gt; AP;
+    void init(int n) {
+        color.assign(n+1, 0);
+        sum.assign(n+1, 0);
+        backEdgeEnd.assign(n+1, 0);
+        G.assign(n+1, vector&lt;int&gt;());
+        AP.clear();
+    }
+    
+    void add_edge(int u, int v) {
+        G[u].emplace_back(v);
+        G[v].emplace_back(u);
+    }
+    
+    void solve(int root) {
+        dfs(root, root);
+    }
+    
+    void dfs(int u, int parent) {
+        color[u] = 1;
+        bool isAP = false;
+        int child = 0;
+    
+        for(auto &amp;v : G[u]) {
+            if(v == parent) continue;
+            if(color[v] == 0) {
+                child++;
+                int backEdgeEndNum = backEdgeEnd[u];
+                dfs(v, u);
+                if(sum[v] - (backEdgeEnd[u] - backEdgeEndNum) == 0) {
+                    isAP = true;;
+                }
+                sum[u]+=sum[v];
+            } else if(color[v] == 1) {
+                sum[u]+=1;
+                backEdgeEnd[v]+=1; 
+            }
+        }
+        sum[u] -= backEdgeEnd[u];
+        color[u] = 2;
+        
+        if(u == parent &amp;&amp; child == 1) isAP = false;
+        if(isAP) AP.emplace_back(u);
+    }
+    
+    vector&lt;int&gt; get_AP() {
+        return AP;
+    }
+
+};
+</code></pre>
+<h2 id="exercise"><a class="header" href="#exercise">Exercise</a></h2>
+<blockquote>
+<p><a href="https://cses.fi/problemset/task/2077">CSES - Necessary Cities</a></p>
+<p>給定一張 \( N \) 個點 \( M \) 條邊的無向圖，要你找出圖上所有的 AP</p>
+<p>\(2 \leq N \leq 10^5,\ 1 \leq M \leq 2 \cdot 10^5\)</p>
+</blockquote>
+<p>AP 模板題</p>
+<blockquote>
+<p><a href="https://cses.fi/problemset/task/2076">CSES - Necessary Roads</a></p>
+<p>給定一張 \( N \) 個點 \( M \) 條邊的無向圖，要你找出圖上所有的 bridge</p>
+<p>\(2 \leq N \leq 10^5,\ 1 \leq M \leq 2 \cdot 10^5\)</p>
+</blockquote>
+<p>bridge 模板題</p>
+<blockquote>
+<p><a href="https://codeforces.com/contest/1259/problem/E">Codeforce - Two Fairs</a></p>
+<p>\( t \) 筆輸入，每筆輸入給定一張 \( N \) 個點 \( M \) 條邊的無向圖及兩個點 \(a, b\)，問有幾對 \( (x,y) \) 滿足由 \(x \) 到 \( y \) 的路徑上一定會經過 \(a, b\) 這兩個點。其中 \( x \neq a,b\) 且 \(y \neq a,b \)。</p>
+<p>\(1 \leq t \leq 4 \cdot 10^4\)</p>
+<p>\(4 \leq N \leq 2 \cdot 10^5,\ N-1 \leq M \leq 5 \cdot 10^5\)</p>
+<p>保證所有 test case 的 \( N \) 的總和不超過 \(2 \cdot 10^5\)，\(M \) 的總和不超過 \(5 \cdot 10^5\)</p>
+</blockquote>
+<details><summary> Solution </summary>
+<p>如果 \( a \) 或 \( b \) 不為 AP 則答案為 0 (拔掉 \( a \) 或 \( b \) 後整張圖依然連通，代表不存在一定要經過 \( a \) 或 \( b \) 的 path)</p>
+<p>而在 \(a, b\) 皆為 AP 的情況下，我們可以將圖上的點分成三個 group:</p>
+<ul>
+<li>一定要先經過 \( a \) 點才能到 \( b \) 點(下圖的紅色圓圈，令其中有 \( i \) 個點)</li>
+<li>一定要先經過 \( b \) 點才能到 \( a \) 點(下圖的綠色圓圈，令其中有 \( j \) 個點)</li>
+<li>可以先到 \( a \) 點，也可以先到 \( b \) 點(下圖的藍色圓圈，令其中有 \( k \) 個點)</li>
+</ul>
+<img src="image/AP_and_Bridge/Two_Fair_Solution_1.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>那麼答案就會是 \(i \times j \)，現在的問題只剩下我們要如何求出 \(i,j\)。</p>
+<p>要求出 \( i \)，我們可以拔掉 \( a \) 點後從 \( b \) 點 DFS 出去，沒被走到的點數就會是 \( i \)。\( j \) 也能用相似的方法求出</p>
+</details>
+<blockquote>
+<p><a href="https://codeforces.com/contest/118/problem/E">Codeforces - Bertown roads</a></p>
+<p>給定一張 \( N \) 個點 \( M \) 條邊的無向圖，要你幫每一條邊定向後使整張圖上任兩點間都有 path，如果不可能輸出 0。</p>
+<p>\(2 \leq N \leq 10^5,\ N-1 \leq M \leq 3 \cdot 10^5 \)</p>
+</blockquote>
+<details><summary> Solution </summary>
+<p>如果圖上有 bridge，那麼必不可能有解。如下圖，假設 \( (u,v) \) 是 bridge，那麼給定方向後 \(u\) 走到 \( v \) 或 \( v \) 走到 \( u \) 一定有一個不符合。</p>
+<img src="image/AP_and_Bridge/Bertown_roads_Solution_1.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>而如果圖上沒有 bridge 則必然有解，我們可以在圖上找出 DFS tree，然後讓 tree edge 向下走，back edge 向上走即可。以下證明這是一個合法的方法。</p>
+<p>首先，root 一定可以通過 tree edge 走到其他所有點。</p>
+<p>接著，我們證明所有的點都可以回到 root。我們考慮一個不為 root 的點 \(v\) 跟他的 parent \( u \)，因為圖中不存在 bridge，因此 \( v \) 一定能通過某條 back edge 回到 \( u \) 或 \( u \) 的祖先(如下圖左)，否則 \( (u,v) \) 就會是 bridge(如下圖右)。</p>
+<img src="image/AP_and_Bridge/Bertown_roads_Solution_2.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<p>而對於 \(v\) 所回到的點 \( v' \)，我們發現這又是一個同樣的問題，我們還是可以通過某條 back edge 向上走，重複這個過程直到回到 root。</p>
+<p>因此，任意兩點都能通過回到 root 後再由 root 走到對方，得證。</p>
+</details>
+<h2 id="problems"><a class="header" href="#problems">Problems</a></h2>
+<blockquote>
+<p><a href="https://onlinejudge.org/index.php?option=com_onlinejudge&amp;Itemid=8&amp;category=246&amp;page=show_problem&amp;problem=3549">Uva - Mining Your Own Business</a></p>
+<p>多筆輸入，每筆輸入給一張有 \( N \) 條邊的無向圖，要你選擇盡可能少的點塗黑，使得刪除任一個點後，每個連通分量裡至少有一個黑點。問最少要塗黑幾個點以及有幾種塗法。</p>
+<p>\( N \leq 5 \cdot 10^4 \)</p>
+</blockquote>
+<details><summary> Hint </summary>
+<p>考慮一張把原圖的 AP 全都拔掉的新圖 \( G' \)，會發現 \( G' \) 中每一個 component 最多只要塗黑 2 個點便能達成題目要求。</p>
+<p>因此可以在原圖上將這些 component 都縮成一個點，接著去討論每個 component 應該要塗黑幾個點。</p>
+</details>
+<blockquote>
+<p><a href="https://codeforces.com/problemset/problem/700/C">Codeforces - Break Up</a></p>
+<p>給一張 \( N \) 個點 \( M \) 條邊的帶權無向圖與兩點 \(S \) , \(T \)，要你選至多兩條邊刪除後使 \(S \) , \(T \) 不連通。要求選的邊權重和最小。</p>
+<p>\( N \leq 1000,\ M \leq 30000 \)</p>
+</blockquote>
+<details><summary> Hint </summary>
+<p>如果 \(S \) , \(T \) 連通的話，那麼考慮這兩點在 DFS tree 上由 tree edge 構成的 path \( P \)，\( P \) 中至少有一條邊要被砍掉。</p>
+<p>注意到這題 \(N = 1000\)，而 \( P \) 的長度又 \( \leq N \)，因此可以想想看要如何通過暴力枚舉被刪除的邊來求答案。</p>
+</details>
+<h2 id="reference"><a class="header" href="#reference">Reference</a></h2>
+<ul>
+<li><a href="https://cp-algorithms.com/graph/search-for-connected-components.html">CP Algorithm - Connected components</a></li>
+<li><a href="https://web.ntnu.edu.tw/~algo/ConnectedComponent.html">演算法筆記 - Connected components</a></li>
+<li><a href="https://cp-algorithms.com/graph/cutpoints.html">CP Algorithm - cutpoints</a></li>
+<li><a href="https://cp-algorithms.com/graph/bridge-searching.html">CP Algorithm - bridge</a></li>
+<li><a href="https://oi-wiki.org/graph/cut/">oi-wiki - cut &amp; bridge</a></li>
+<li><a href="https://web.ntnu.edu.tw/~algo/ConnectedGraph.html#3">演算法筆記 - AP &amp; bridge</a></li>
+<li><a href="https://www.hackerearth.com/practice/algorithms/graphs/articulation-points-and-bridges/tutorial/">Hackerearth - AP &amp; bridge</a></li>
+<li><a href="https://www.facebook.com/algo.seacow/posts/pfbid0PMMPJEWmh3XgFtstTh8pptxjnJKK5jwpeVCQWEmfWVyRKT66LqccAv5DiSZ22zDhl">演算法海牛 - bridge</a></li>
+<li><a href="https://codeforces.com/blog/entry/71146">codeforce blog - AP &amp; bridge</a></li>
+<li><a href="https://codeforces.com/blog/entry/68138">codeforce blog - DFS tree</a></li>
+<li><a href="https://slides.com/sylveon/graph-7#/3">sylveon slides - AP &amp; Bridge</a></li>
+<li>IONCAMP 講義</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../greedy/basic.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../graph/introduction_to_BCC.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../greedy/basic.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../graph/introduction_to_BCC.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
