@@ -23,6 +23,8 @@
     - [Arithmetic Function Revisit](math/revisit_arithmetic_function.md)
 - [Miscellaneous]()
 - [C++ Programming Tips]()
+- [String]()
+  - [KMP](KMP/kmp.md)
 
 ---
 
