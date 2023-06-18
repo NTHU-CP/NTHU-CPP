@@ -65,6 +65,7 @@ int main() {
 
 不偏賽局(impartial game)是賽局中一種常見的類型。
 該賽局包含了以下性質:
+
 - 是一種回合制的雙人遊戲
 - 平等 - 雙方在遊戲中的唯一差別只有先後手
 - 雙方都能看到完整的遊戲局勢
@@ -81,17 +82,19 @@ int main() {
 
 ### Strategy
 
-將每堆的石頭個數進行 \\( bitwise\ XOR \\) 運算，得到的答案若為0，代表當前的局勢為 losing state，答案不為0則為 winning state。玩家若發現目前局勢為 winning state 時，保證會有一種取法，使得輪到對手時，所有堆的石頭個數 \\( XOR \\) 後為0，也就是 losing state。而按照該策略持續下去，不論對手如何應對，都無法挽回局勢。
+將每堆的石頭個數進行 \\( bitwise\ XOR \\) 運算，得到的答案若為 \\( 0 \\) ，代表當前的局勢為 losing state，答案不為 \\( 0 \\) 則為 winning state。玩家若發現目前局勢為 winning state 時，保證會有一種取法，使得輪到對手時，所有堆的石頭個數 \\( XOR \\) 後為 \\( 0 \\) ，也就是 losing state。而按照該策略持續下去，不論對手如何應對，都無法挽回局勢。
 
 ### Proof
 
 這邊提出一個數學歸納法的證明。為了方便後續說明，將 \\( XOR \\) 得出的結果命名為 \\( s \\) 。
 
-#### Base Case: 
-若沒有任何石頭，則 \\( s\\) 為 \\( 0 \\) ，玩家無法採取行動，為一個 losing state。 
+#### Base Case 
 
-#### Inductive Case:
-若當前為 losing state，亦即 \\( s=0 \\) 。因為遊戲規定每回合都必須取石頭。若從有 \\( x \\) 塊的石頭堆取石頭，設取完剩 \\( y \\) 塊 \\( (x>y) \\) ，那麼取完後的 \\( XOR \\) 答案為 \\( (s \oplus x \oplus y) = (x \oplus y)\neq 0 \\) ，一定會使局勢變為 winning state。 
+若沒有任何石頭，則 \\( s\\) 為 \\( 0 \\)，玩家無法採取行動，為一個 losing state。
+
+#### Inductive Case
+
+若當前為 losing state，亦即 \\( s=0 \\) 。因為遊戲規定每回合都必須取石頭。若從有 \\( x \\) 塊的石頭堆取石頭，設取完剩 \\( y \\) 塊 \\( (x>y) \\) ，那麼取完後的 \\( XOR \\) 答案為 \\( (s \oplus x \oplus y) = (x \oplus y)\neq 0 \\) ，一定會使局勢變為 winning state。
 
 若當前為 winning state，即 \\( s \neq 0 \\) 。考慮 \\( s \\) 的 most significant bit (假設從右到左為第 \\( k \\) 個bit)，那麼至少存在某一堆石頭的個數(設為 \\( x \\) )，且該 \\( x \\) 從右到左的第 \\( k \\) 個 bit 也同樣為 \\( 1 \\) (否則 \\( s \\) 的該bit就不會是 \\( 1 \\) )。那麼從該堆石頭中取石頭，取到剩下 \\( (s \oplus x ) \\) 個，那麼取完之後 \\( XOR \\) 的值就會變成 \\( (s \oplus x \oplus (s \oplus x)) = 0 \\)，是一個losing state。而該堆取完後剩 \\( (s \oplus x) \\) 個，該數的第 \\( k \\) 個bit變為 \\( 0 \\) ，由此得知 \\( (s \oplus x) < x \\) ，因此該取法沒有違反規則。
 
@@ -354,22 +357,22 @@ int main() {
     
 > [Atcoder Beginner Contest 297 G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
 >
-> 給 \\( N,L,R \\) 三個整數。玩家 \\( A, B \\) 玩Nim Game ( \\( N \\) 堆石頭，每堆有 \\( 1 \sim 10^9 \\) 個)，但每回合只能從其中一堆取 \\( L \sim R \\) 個石頭。問若雙方都採取最佳化策略，誰將獲勝。  
+> 給 \\( N,L,R \\) 三個整數。玩家 \\( A, B \\) 玩Nim Game ( \\( N \\) 堆石頭，每堆有 \\( 1 \sim 10^9 \\) 個)，但每回合只能從其中一堆取 \\( L \sim R \\) 個石頭。問若雙方都採取最佳化策略，誰將獲勝。
 - \\( N \leq 2*10^5 \\)
-- \\( 1 \leq L \leq R \leq 10^9 \\)  
+- \\( 1 \leq L \leq R \leq 10^9 \\)
 
 <details><summary>Solution</summary>
     
 打表找規律後可以發現每堆的 SG-value 為 \\( (x\ mod\ (L + R)) / L \\) ， \\( x \\) 為該堆石頭個數。而根據上述的定理，可以由 \\( XOR \\) 進行合併，得到最後的 SG-value。
     
 證明的話可以使用數學歸納法。
-分成: 
+分成:
     
-* \\( 0 \leq x < L + R \\)。
-在滿足上述不等式的前提下，這個case又可以分成 \\( 0 \leq x < L ,\ \ \  L \leq x < 2L,\ \ \ 2L \leq x < 3L... \\) 。
-* \\( L + R \leq x < 2(L + R) \\)。
+- \\( 0 \leq x < L + R \\)。
+在滿足上述不等式的前提下，這個case又可以分成 \\( 0 \leq x < L ,\ \ \  L \leq x < 2L,\ \ \ 2L \leq x < 3L... \\)。
+- \\( L + R \leq x < 2(L + R) \\)。
                         而這個case可以分成 \\( L+R \leq x < L+R+L, \ \ \ L+R+L \leq x < L+R+2L... \\)。
-* 接著再討論 \\( x \geq 2(L+R) \\) 的case。
+- 接著再討論 \\( x \geq 2(L+R) \\) 的case。
 
 </details>
     
@@ -405,7 +408,7 @@ int main() {
 > [Codeforces Round 868 E - Removing Graph](https://codeforces.com/contest/1823/problem/E)
 >
 > 給一張由數個環(每個點的 degree 皆為2)組成的圖。玩家 \\( A \\) , \\( B \\) 輪流行動。已知 \\( l, r \\) 的值，每回合可以移除 \\( l \sim r \\) 個連通的點(相鄰的邊一同移除)。若輪到某玩家且該玩家沒有合法的移除方式，則玩家落敗。問若雙方都採取最佳化策略，那麼誰將獲勝。
-- \\( l < r \leq 2e5 \\)
+- \\( l < r \leq 2*10^5 \\)
 
 <details><summary>Solution</summary>
 
@@ -488,6 +491,7 @@ int main() {
 而在題目範圍太大或是想不到解法時，打表找規律也是一個不錯的辦法。
 
 ## References
+
 - [The Intuition Behind NIM and Grundy Numbers in Combinatorial Game Theory](https://codeforces.com/blog/entry/66040)
 - [Sprague-Grundy theorem. Nim - Algorithms for Competitive Programming](https://cp-algorithms.com/game_theory/sprague-grundy-nim.html)
 - [公平组合游戏 - OI wiki](https://oi-wiki.org/math/game-theory/impartial-game/)
