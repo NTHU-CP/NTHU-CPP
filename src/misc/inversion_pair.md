@@ -239,6 +239,12 @@ int64_t inversions(const vector<int> &v)
 >
 > - \\(1\leq m\leq50\\)
 > - \\(1\leq n\leq100\\)
+>
+> <details><summary>Hint</summary>
+> 這題乍看之下似乎像是圖論題，然而若我們真的實際著手建一個有 \(n!\) 個節點的 \((n-1)\)-正則圖並在其上 BFS 搜尋最短路，則不論時間或空間複雜度都會遠遠超過上限。
+>
+> 事實上，題目的操作即是 swap 相鄰兩元素，而我們的終點就是排序好的 permutation。因此，所求的最短距離即為起點 permutation 的逆序對數量。
+> </details>
 
 ### 其他有趣題
 
