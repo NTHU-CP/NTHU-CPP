@@ -124,13 +124,7 @@ int main() {
 
 根據這個想法，我們可以列出下列遞迴關係式：
 
-$$
-ancestor(u,\ i) = 
-\begin{cases}
-  parent(u) & \text {if $i = 0$} \newline
-  ancestor(ancestor(u,\ i-1),\ i-1) & \text{if $i > 0$} 
-\end{cases}
-$$
+$$ancestor(u,\ i) = \begin{cases} parent(u) & \text {if $i = 0$} \newline ancestor(ancestor(u,\ i-1),\ i-1) & \text{if $i > 0$} \end{cases}$$
 
 這邊 \\( ancestor(u,\ i) \\) 代表點 \\( u \\) 的第 \\( 2^i \\) 個祖先。
 
@@ -775,13 +769,7 @@ int main() {
 
 而針對如何找到點 \\( u \\) 到 點 \\( v \\) 最短路徑上權重最大的邊，我們可以利用 \\( LCA(u,\ v) \\) 將最短路徑拆分成兩條路徑，所求即為兩條路徑上權重最大值的最大值。搭配上 binary lifting 的想法，在預處理點 \\( u \\) 的第 \\( 2^i \\) 個祖先是誰的同時，我們可以多預處理從點 \\( u \\) 到點 \\( u \\) 的第 \\( 2^i \\) 個祖先路徑上最大的權重，遞迴關係式如下：
 
-$$
-maxWeight(u,\ i) = 
-\begin{cases}
-  w(u,\ parent(u)) & \text {if $i = 0$} \newline
-  maxWeight(maxWeight(u,\ i-1),\ i-1) & \text{if $i > 0$} 
-\end{cases}
-$$
+$$maxWeight(u,\ i) = \begin{cases} w(u,\ parent(u)) & \text {if $i = 0$} \newline maxWeight(maxWeight(u,\ i-1),\ i-1) & \text{if $i > 0$} \end{cases}$$
 
 這邊 \\( maxWeight(u,\ i) \\) 代表點 \\( u \\) 到點 \\( u \\) 的第 \\( 2^i \\) 個祖先路徑上最大的權重，\\( w(u,\ parent(u)) \\) 則代表點 \\( u \\) 和其父節點連邊的權重。
 
