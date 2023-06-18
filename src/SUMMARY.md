@@ -23,6 +23,7 @@
     - [Arithmetic Function Revisit](math/revisit_arithmetic_function.md)
 - [Graph]()
     - [Tree]()
+      - [Centroid](graph/tree/centroid.md)
       - [Centroid Decomposition](graph/tree/centroid_decomposition.md)
 - [Miscellaneous]()
 - [C++ Programming Tips]()
