@@ -56,7 +56,7 @@ void DFS(int u) {
 
 在無向圖上做 DFS tree 時要注意的是: 無向圖的 DFS 會讓一條邊被看到 2 次。例如下圖中，如果我們以 \\( A,B,C,D,E \\) 的順序進行 DFS，那 \\( (E,A) \\)這條邊會首先被 \\( E \\) 看到一次，接著再被 \\( A \\) 看到一次。
 
-<img src="image/AP_and_Bridge/DFS_Tree_note 1.JPG" width="200" style="display:block; margin: 0 auto;"/>
+<img src="image/AP_and_Bridge/DFS_Tree_note_1.JPG" width="200" style="display:block; margin: 0 auto;"/>
 
 所以如果你的 code 只有寫看到一條邊就根據它是 tree edge/back edge 做事，那你有可能會因為看到一條 edge 兩次而做了重複的操作，從而導致 WA。
 
