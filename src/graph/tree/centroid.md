@@ -130,7 +130,7 @@ int get_centroid(int u, int n, int p) {
 > [CF 685B Kay and Snowflake](https://codeforces.com/problemset/problem/685/B)
 >
 > 給你一棵 \\(N\\) 節點的有根樹，求每個子樹的重心。
-> 
+>
 > \\(1 \le N \le 3 \times 10^5\\)
 
 <details><summary> Hint </summary>
