@@ -168,7 +168,7 @@ BCC-Edge 有以下幾個性質
 - 一個 BCC-Edge 中任一條邊都至少在一個簡單環上。
   - 我們可以反證：如果一條邊 \\((u,v)\\) 不在任何簡單環上，那麼刪掉 \\((u,v)\\) 後 \\( u \\) 跟 \\( v \\) 就不會連通，違反 BCC-Edge 的規定。
 - 如果把每個 BCC-Edge 縮成一個點，那麼新得到的圖會是一棵樹或者森林。
-  - 因為如果新的圖上有環的話，那個環上所有的點就應在在一開始被看成一個 BCC-Edge。如下圖所示，那三個 BCC-Edge 應該要同在一個 BCC-Edge 中。
+  - 因為如果新的圖上有環的話，那個環上所有的點就應在一開始被看成一個 BCC-Edge。如下圖所示，那三個 BCC-Edge 應該要同在一個 BCC-Edge 中。
 
 <img src="image/BCC/BCC-Edge_property_2.JPG" width="400" style="display:block; margin: 0 auto;"/>
 

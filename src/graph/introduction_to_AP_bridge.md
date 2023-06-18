@@ -35,9 +35,10 @@ void DFS(int u) {
     visited[u] = true;
     for(int &v : G[u]) {
         if(!visited[v]) {
-            DFS(v);//u->v 為 tree edge
+            // u->v 為 tree edge
+            DFS(v);
         } else {
-            //u->v為 back edge
+            // u->v為 back edge
         }
     }
 }
@@ -80,22 +81,22 @@ void DFS(int u) {
 以下給出一個修改方法可以讓每條邊都只在第一次被看到的時候做事。簡單來說就是通過紀錄每個點在 DFS 中的狀態 (還未開始 DFS、已經開始 DFS 但還沒結束、已經結束 DFS)來判斷一條邊是否為第一次被看過。我們用 \\(color[u] = 0,1,2\\) 來表示 \\( u \\) 這個點是在三種狀態中的哪一種。
 
 ```cpp
-void DFS(int u, int parent) { //call(u,u) at first
+void DFS(int u, int parent) { // call(u,u) at first
     color[u] = 1;
     for(auto &v : G[u]) {
-        if(v == parent) continue;//已經是 tree edge
+        if(v == parent) continue;// 已經是 tree edge
         if(color[v] == 0) {
-            //tree edge
+            // tree edge
             dfs(v, u);
         } else if(color[v] == 1) {
-            //第一次看到的back edge
-            //在這個例子中當 E 看到 (E,A) 這條邊時會進到這裡
+            // 第一次看到的back edge
+            // 在這個例子中當 E 看到 (E,A) 這條邊時會進到這裡
             backedgeCounter[u]+=1;
             backedgeCounter[v]+=1;
         }
-        //在這個例子中，當 A 看到 (E,A) 這條邊時
-        //因為 E 的 DFS 已經結束， color[E] = 2
-        //因此 (E,A) 這條邊不會被算到第 2 次
+        // 在這個例子中，當 A 看到 (E,A) 這條邊時
+        // 因為 E 的 DFS 已經結束， color[E] = 2
+        // 因此 (E,A) 這條邊不會被算到第 2 次
     }
     color[u] = 2;
 }
@@ -340,7 +341,7 @@ struct bridge {
 
 - 對於 root，如果他有至少兩棵子樹的時候，他就一定是 AP，否則就不是。
 - 對於一個點 \\(v \\)，如果 \\(v \\) 的某一棵子樹無法在不經過 \\(v \\) 的情況下走到 \\(v \\) 的祖先，那麼 \\(v \\) 一定是 AP。
-<img src="image/AP_and_Bridge/General AP.JPG" width="400" style="display:block; margin: 0 auto;"/>
+<img src="image/AP_and_Bridge/General_AP.JPG" width="400" style="display:block; margin: 0 auto;"/>
 
 第一點很好解決。
 
@@ -348,7 +349,7 @@ struct bridge {
 
 而這個東西要計算的其實就是：
 
-- \\((v\ 的子樹標記總和)\\) \\(-\\) \\((\\)這顆子樹在 \\( v \\) 結束的 back edge 數量\\()\\)。
+- \\((v\\) 的子樹標記總和\\()\\) \\(-\\) \\((\\)這顆子樹在 \\( v \\) 結束的 back edge 數量\\()\\)。
 
 為甚麼？因為子樹的標記總和相當於是：這棵子樹有多少條 back edge 還沒結束。像下圖的兩個例子中，子樹標記總和都為 1。而如果這些 back edge 都在 \\(v\\) 結束，那麼這棵子樹顯然一定要通過 \\(v\\) 才能回到 \\(v\\) 的祖先，如下圖左例，那麼 \\( v \\) 就一定會是 AP 了。
 
