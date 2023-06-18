@@ -149,7 +149,7 @@ int build(int u) {
 
 ## Examples
 
-> [Ciel the Commander](https://codeforces.com/contest/321/problem/C)
+> [CF 321C Ciel the Commander](https://codeforces.com/contest/321/problem/C)
 >
 > 有一個 n 個節點的樹，你要為每個點填入 ‘A’ 到 ‘Z’ 其中一個字母並滿足以下條件：
 >
@@ -198,7 +198,7 @@ x 的祖先只有 \\( O(\log{N}) \\) 種可能。
 總而言之，我們可以透過在重心樹上向上更新，
 在 \\( O( N \log {N} ) \\) 或 \\(O( N \log^2{N}) \\) 的時間內通過此題。
 
-> [Fixed-Length Path I](https://cses.fi/problemset/task/2080)
+> [CSES Fixed-Length Path I](https://cses.fi/problemset/task/2080)
 >
 > 給定一棵樹和一個整數 \\( k \\)，請問樹上長度為 \\( k \\) 的路徑有幾條？
 >
@@ -487,7 +487,7 @@ void update(int x) {
 
 ## Exercises
 
-> [Fixed-Length Path II](https://cses.fi/problemset/task/2081)
+> [CSES Fixed-Length Path II](https://cses.fi/problemset/task/2081)
 >
 > 給定一棵樹和兩個整數 \\( k_1, k_2 \\)，請問樹上長度介在 \\([k_1, k_2]\\) 的路徑有幾條？
 >
@@ -501,7 +501,7 @@ void update(int x) {
 
 </details>
 
-> [Close Vertices](https://codeforces.com/problemset/problem/293/E)
+> [CF 293E Close Vertices](https://codeforces.com/problemset/problem/293/E)
 >
 > 給定一棵有邊權的樹和兩個變數 \\( l, w \\)，
 > 問你樹上有多少點對 \\( (u, v) \\) 滿足以下條件：
@@ -521,6 +521,22 @@ void update(int x) {
 
 </details>
 
+> [Uscao New Barns](https://www.luogu.com.cn/problem/P4271)
+> 一開始沒有節點的圖上。需要支援 \\(q\\) 次以下操作：
+>
+> 1. 將一個節點接在另一個已存在的節點上，或是新增一個獨立的節點
+> 2. 查詢一個節點 \\(x\\) 在他所在的連通塊中，離他最遠的點的距離
+>
+> 任何時後這張圖都會是一個森林
+>
+> \\(1 \le q \le 10 ^ 5\\)
+
+<details><summary> Hint </summary>
+
+先對最後做完所有操作完的森林建出重心樹，然後每次加點操作其實就類似於例題 Xenia and Tree 的將點上色。
+
+</details>
+
 > [JOISC2020 首都](https://www.luogu.com.cn/problem/P7215)
 >
 > 給定一棵樹，每個點上有一個 \\(1 \\) ~ \\( K \\) 的編號，
@@ -529,15 +545,28 @@ void update(int x) {
 > 你能進行合併操作，每次操作可以將一個編號的點全部改為另一個編號，
 > 請問最少需要進行幾次操作才能找到滿足條件的編號?
 >
+> \\(1 \le K \le N \le 2 \times 10 ^ 5\\)
+
+<details><summary> Hint </summary>
+
+先考慮以下作法，我們嘗試以每個點為根，並計算最少要多少次合併才能將和根節點編號一樣的點全部聯通。
+
+現在把這個作法搬到重心樹上，神奇的是，在重心樹上我們只需要考慮對於所有節點 \\(u\\)，計算以 \\(u\\) 為根的子樹內的答案即可，當然有可能會出現編號和 \\(u\\) 節點一樣的節點不全在 \\(u\\) 子樹的情況，這時候我們就不去計算子樹 \\(u\\) 的答案。
+
+可以證明這樣計算仍能包含到最優解。
+
+</details>
 
 ## Summary
 
 重心剖分的題目通常會和樹的原型態較無關聯的路徑問題，而且大部分的題目可以轉換成重心樹去思考。
-概念本身不難，但各種題目和應用沒寫過類似題真的都不好想到，想真的學好重心剖分，建議去References找更多題目來練習。
+常見的題目有兩種，第一種是在重心樹上做類似 DP 的事情，另一種是在重心樹上做動態修改。
+
+重心剖分概念本身不難，但各種題目和應用沒寫過類似題真的都不好想到，如果真的學好重心剖分，建議去把 References 裡 USACO Guide 中的題目都練習過一遍。
 
 ## References
 
-- [USACO Guide](https://usaco.guide/plat/centroid?lang=cpp)
-- [Illustrated Intro to Centroid Decomposition](https://medium.com/carpanese/an-illustrated-introduction-to-centroid-decomposition-8c1989d53308)
-- [Centroid Decomposition CF blog](https://codeforces.com/blog/entry/81661)
+- [USACO Guide - Centroid Decomposition](https://usaco.guide/plat/centroid?lang=cpp)
+- [A Visual Introduction to Centroid Decomposition](https://medium.com/carpanese/an-illustrated-introduction-to-centroid-decomposition-8c1989d53308)
+- [Hybrid Tutorial: Centroid Decomposition](https://codeforces.com/blog/entry/81661)
 - [OI wiki 點分治](https://oi-wiki.org/graph/tree-divide/)

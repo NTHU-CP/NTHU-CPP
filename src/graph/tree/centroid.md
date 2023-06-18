@@ -100,8 +100,6 @@ int get_centroid(int u, int n, int p) {
 > 有一天，居民們突然想要搬家，每個居民都要搬到不同的節點，但一個節點只能有一位居民，一個居民的搬家距離為舊家到新家的樹上距離。
 > 請你求出所有居民的最大搬家距離總和，且輸出一組解。
 
-<details><summary> Solution </summary>
-
 對於每一條邊 \\( e \\)，假設邊權為 \\( e_w \\)，我們將這條邊斷開後會把樹分成兩棵子樹，大小分別為 \\( SZ_x, SZ_y \\)。
 所以答案的上界會是
 \\(\begin{equation*} \sum_{e} 2 w_e \min \\{SZ_x, SZ_y\\} \end{equation*}\\)
@@ -113,8 +111,6 @@ int get_centroid(int u, int n, int p) {
 所以我們考慮以重心當根，則根節點的所有子樹大小都會 \\( < \frac{n}{2} \\)，有很多種方式可以構造出解答，這邊講一個實作起來最簡單的。
 
 我們將以重心為根的樹先進行一次DFS，然後把節點按照DFS序向右循環平移 \\( \frac{n}{2} \\)，這樣就得到一組解了。
-
-</details>
 
 ## Exercises
 
@@ -128,6 +124,21 @@ int get_centroid(int u, int n, int p) {
 <details><summary> Hint </summary>
 
 回想上面的性質2，兩個重心會發生在什麼情況？
+
+</details>
+
+> [CF 685B Kay and Snowflake](https://codeforces.com/problemset/problem/685/B)
+>
+> 給你一棵 \\(N\\) 節點的有根樹，求每個子樹的重心。
+> 
+> \\(1 \le N \le 3 \times 10^5\\)
+
+<details><summary> Hint </summary>
+
+在上面找重心的程式碼中，我們每次只會往子樹大小 \\( > \frac{N}{2} \\) 的節點走。
+
+那我們試著將這個做法反過來，從葉子節點開始，假設現在所在節點為 \\(u\\)， \\(u\\) 的父節點為 \\(p\\)。
+如果 \\(size(u) * 2 \ge size(p)\\) 的話就繼續往上爬，並把經過的點的重心都設為向上爬的起始點。
 
 </details>
 
