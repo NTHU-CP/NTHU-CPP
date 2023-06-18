@@ -23,10 +23,10 @@
     - [杜教篩](math/du_sieve.md)
     - [Arithmetic Function Revisit](math/revisit_arithmetic_function.md)
 - [Miscellaneous]()
+- [C++ Programming Tips]()
 
 ---
 
-- [C++ Programming Tips]()
 - [Make a Codebook](others/codebook.md)
 - [Useful Resources](others/useful_resources.md)
 - [CSES Problem Tag]()
