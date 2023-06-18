@@ -62,21 +62,21 @@ EGF 的定義與 OGF 類似，只是每一項多除以 \\( i! \\)，也就是 \\
 ### 平移 (\\( c_n = a_{n \pm k} \\))
 
 - \\( c_n = a_{n + k} \\)：把 \\( a \\) 的前面 \\( k \\) 項移除。
-	- OGF：\begin{aligned}
-	C(x) &= a_k x^0 + a_{k + 1} x^1 + \dots \\\\
-	\Longleftrightarrow x^k C(x) &= a_k x^k + a_{k + 1} x^{k + 1} & \text{等號兩邊同時乘以 \\( x^k \\)} \\\\
-	&= \sum\limits_{i = k}^{\infty} a_i x^i \\\\
-	&= A(x) - \sum\limits_{i = 0}^{k - 1} a_i x^i & \text{相當於 A(x) 缺少最前面的 \\( k \\) 項} \\\\
-	\Longleftrightarrow C(x) &= \frac{A(x) - \sum\limits_{i = 0}^{k - 1} a_i x^i}{x^k} \\\\
-	\end{aligned}
+  - OGF：\begin{aligned}
+C(x) &= a_k x^0 + a_{k + 1} x^1 + \dots \\\\
+\Longleftrightarrow x^k C(x) &= a_k x^k + a_{k + 1} x^{k + 1} & \text{等號兩邊同時乘以 \\( x^k \\)} \\\\
+&= \sum\limits_{i = k}^{\infty} a_i x^i \\\\
+&= A(x) - \sum\limits_{i = 0}^{k - 1} a_i x^i & \text{相當於 A(x) 缺少最前面的 \\( k \\) 項} \\\\
+\Longleftrightarrow C(x) &= \frac{A(x) - \sum\limits_{i = 0}^{k - 1} a_i x^i}{x^k} \\\\
+\end{aligned}
 
-	- EGF：\begin{aligned}
-	A(x) &= \sum\limits_{i = 0}^{\infty} a_i \frac{x^i}{i!} \\\\
-	\Longleftrightarrow A^{\prime}(x) &= a_0 \cdot 0 \cdot \frac{x^{0 - 1}}{0!} + a_1 \cdot 1 \cdot \frac{x^{1 - 1}}{1!} + a_2 \cdot 2 \cdot \frac{x^{2 - 1}}{2!} + \dots & \text{微分的定義} \\\\
-	&= a_1 \frac{x^0}{0!} + a_2 \frac{x^1}{1!} + a_3 \frac{x^2}{2!} \\\\
-	&= \sum\limits_{i = 0}^{\infty} a_{i + 1} \frac{x^i}{i!} & \text{微分 \\( 1 \\) 次後數列向左平移 \\( 1 \\) 項} \\\\
-	\Longleftrightarrow A^{(k)}(x) &= \sum\limits_{i = 0}^{\infty} a_{i + k} \frac{x^i}{i!} = C(x) & \text{微分 \\( k \\) 次就會是數列向左平移 \\( k \\) 項} \\\\
-	\end{aligned}
+  - EGF：\begin{aligned}
+A(x) &= \sum\limits_{i = 0}^{\infty} a_i \frac{x^i}{i!} \\\\
+\Longleftrightarrow A^{\prime}(x) &= a_0 \cdot 0 \cdot \frac{x^{0 - 1}}{0!} + a_1 \cdot 1 \cdot \frac{x^{1 - 1}}{1!} + a_2 \cdot 2 \cdot \frac{x^{2 - 1}}{2!} + \dots & \text{微分的定義} \\\\
+&= a_1 \frac{x^0}{0!} + a_2 \frac{x^1}{1!} + a_3 \frac{x^2}{2!} \\\\
+&= \sum\limits_{i = 0}^{\infty} a_{i + 1} \frac{x^i}{i!} & \text{微分 \\( 1 \\) 次後數列向左平移 \\( 1 \\) 項} \\\\
+\Longleftrightarrow A^{(k)}(x) &= \sum\limits_{i = 0}^{\infty} a_{i + k} \frac{x^i}{i!} = C(x) & \text{微分 \\( k \\) 次就會是數列向左平移 \\( k \\) 項} \\\\
+\end{aligned}
 
 - \\( c_n = a_{n - k} \\)：把 \\( a \\) 往後移動 \\( k \\) 項，前面用 \\( 0 \\) 補齊。對於 OGF 來說 \\( C(x) = x^k A(x) \\)，EGF 則是透過積分 \\( k \\) 次來對齊階乘的係數，過程與上述的微分大同小異。
 
@@ -405,9 +405,9 @@ f_k(n) &= [y^k]F(x, y) \\\\
 
 - [Tutorial] Generating Functions in Competitive Programming [Part 1](https://codeforces.com/blog/entry/77468) [Part 2](https://codeforces.com/blog/entry/77551)
 - FPS 相關運算，有興趣可以自行研究
-	- [CF - Operations on Formal Power Series](https://codeforces.com/blog/entry/56422)
-	- [CP algorithms - Operations on polynomials and series](https://cp-algorithms.com/algebra/polynomial.html)
-	- [生成函数的数学基础](https://www.luogu.com.cn/blog/MoYuFang/sheng-cheng-han-shuo-di-shuo-xue-ji-chu)
+  - [CF - Operations on Formal Power Series](https://codeforces.com/blog/entry/56422)
+  - [CP algorithms - Operations on polynomials and series](https://cp-algorithms.com/algebra/polynomial.html)
+  - [生成函数的数学基础](https://www.luogu.com.cn/blog/MoYuFang/sheng-cheng-han-shuo-di-shuo-xue-ji-chu)
 - [generatingfunctionology](https://www2.math.upenn.edu/~wilf/gfologyLinked2.pdf)
 - [non-linear-recursion-generating-functions](https://math.stackexchange.com/questions/1262413/non-linear-recursion-generating-functions)
 - [等比級數](https://web.math.sinica.edu.tw/math_media/d222/22209.pdf)
