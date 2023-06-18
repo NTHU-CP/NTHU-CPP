@@ -21,8 +21,9 @@
     - [數論分塊](math/sqrt_decomposition.md)
     - [杜教篩](math/du_sieve.md)
     - [Arithmetic Function Revisit](math/revisit_arithmetic_function.md)
-- [Tree]()
-  - [Centroid Decomposition](tree/centroid_decomposition.md)
+- [Graph]()
+    - [Tree]()
+      - [Centroid Decomposition](graph/tree/centroid_decomposition.md)
 - [Miscellaneous]()
 - [C++ Programming Tips]()
 
