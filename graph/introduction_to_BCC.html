@@ -146,8 +146,8 @@
 <h2 id="前言"><a class="header" href="#前言">前言</a></h2>
 <p>在此章節中，我們將介紹無向圖上的 BCC-Vertex(Bi-connected Component) 和 BCC-Edge(Bridge Connected Component)，包括他們的定義、相關的演算法和題目。</p>
 <h2 id="bcc-vertexbi-connected-component"><a class="header" href="#bcc-vertexbi-connected-component">BCC-Vertex(Bi-connected Component)</a></h2>
-<p>BCC-Vertex 指的是沒有 AP 的 Connected Component，在中文常稱之為點雙連通分量。例如下圖中有三個 BCC-Vertex
-<img src="image/BCC/Biconnected_Component.JPG" width="300" style="display:block; margin: 0 auto;"/></p>
+<p>BCC-Vertex 指的是沒有 AP 的 Connected Component，在中文常稱之為點雙連通分量。例如下圖中有三個 BCC-Vertex</p>
+<img src="image/BCC/BiConnected_Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
 <p>BCC-Vertex 有以下幾個性質:</p>
 <ul>
 <li>
@@ -205,7 +205,7 @@
 <p>事實上，我們也可以通過修改找 AP 的演算法，在找 AP 的時候順便找出所有的 BCC-Vertex。</p>
 <h3 id="如何修改"><a class="header" href="#如何修改">如何修改</a></h3>
 <p>我們可以用 stack 紀錄首次遇到的邊。這樣當我們發現 \(low(v) \geq depth(u) \) 時，stack 中 \( (u,v) \) 及它上面的邊就會位於同一個 BCC-Vertex 中。就像是下圖 \( (C,D) \) 這條邊。</p>
-<img src="image/BCC/BCC_Algo_explain.PNG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC_Algo_explain.png" width="300" style="display:block; margin: 0 auto;"/>
 <p>一個完整的例子如下
 <img src="image/BCC/BCC_Algo_example.gif" width="300" style="display:block; margin: 0 auto;"/></p>
 <h3 id="time-complexity"><a class="header" href="#time-complexity">Time Complexity</a></h3>
@@ -313,7 +313,7 @@
 <p>因此我們可以拔掉圖上所有的 bridge 後，DFS 找出那些點同屬一個 BCC-Edge。那有沒有其他方法呢？與 BCC-Vertex 相似，我們可以通過修改找 bridge 的演算法，在找 bridge 的時候順便找出所有的 BCC-Edge。</p>
 <h3 id="如何修改-1"><a class="header" href="#如何修改-1">如何修改</a></h3>
 <p>跟找 BCC-Vertex 的想法很像。我們用 stack 紀錄走過的點，當我們發現 \(low(u) == depth(u) \) 時，我們就發現了橋的下端點。而 stack 中 \(u \) 和他上面的點就會位於同一個 BCC-Edge。就像下圖 \( D \) 這個點，他是 \( (C,D) \) 這條 bridge 的下端點。</p>
-<img src="image/BCC/BCC_Algo_explain_2.PNG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC_Algo_explain_2.png" width="300" style="display:block; margin: 0 auto;"/>
 <p>一個完整的例子如下
 <img src="image/BCC/BCC_Algo_example_2.gif" width="300" style="display:block; margin: 0 auto;"/></p>
 <h3 id="time-complexity-1"><a class="header" href="#time-complexity-1">Time Complexity</a></h3>
