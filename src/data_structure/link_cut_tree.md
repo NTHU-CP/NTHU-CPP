@@ -1,4 +1,4 @@
-# Link Cut Tree
+# Link-Cut Tree
 
 ## 介紹
 
@@ -8,11 +8,21 @@ Link Cut Tree 是一種樹狀的資料結構，主要用來解決 Dynamic connec
 - 在兩個點之間斷開一條邊
 - 查詢兩點之間是否存連通
   
-Link Cut Tree 是以 Splay Tree 為基礎實作，因此尚未了解 Splay Tree 可以先回去參考 Splay Tree，本篇著重於介紹 Link cut tree。  
+Link Cut Tree 是以 Splay Tree 為基礎實作，因此尚未了解 Splay Tree 可以先回去參考 Splay Tree，本篇著重於介紹 Link cut tree。
   
 以下文章將用 LCT 簡稱 Link Cut Tree。  
 
 ## LCT 實作
+
+### 先備知識
+
+#### Splay Tree
+
+Splay Tree 是一種自平衡的二元搜尋樹，主要通過 Splay 操作讓最近被訪問的節點移動至樹的根部，並且 Splay 操作的時間複雜度為均攤 \\(O(\log n)\\)。
+
+#### 輕重鏈剖分
+
+輕重鏈剖分用來處理樹上的動態查詢，它的精髓在於將樹拆分成很多條鏈，使得樹上的操作可以有好的時間複雜度，LCT 也有使用到類似的技巧，因此建議先理解輕重鏈剖分後再回來看 LCT。
 
 ### 名詞定義
 
@@ -32,8 +42,8 @@ LCT 利用 Splay Tree 作為輔助樹，在基本 LCT 的 Splay Tree 節點會�
 
 1. 父節點 (子節點有邊指向父節點，但父節點不一定有邊指向子節點)
 2. 左右小孩 (實作時用右小孩代表 preferred edge)
-3. 在 Splay Tree Node.js 左邊的節點深度比自己小，右邊的節點深度比自己大
-4. 區間反轉的懶惰標記，讓翻轉區間能夠有好的時間複雜度
+3. 在 Splay Tree Node 左邊的節點深度比自己小，右邊的節點深度比自己大
+4. 因為 LCT 操作中要維護左右節點深度的性質，所以在某些特定的操作中需要將區間反轉，因此使用懶惰標記，讓翻轉區間能夠有好的時間複雜度
 
 以下是一個簡單的 Splay Tree node：
 
@@ -292,7 +302,6 @@ LCT 的操作中，都是基於 ``access()`` 操作而完成的，因此只要�
 <details><summary> Template Code </summary>
 
 ```cpp
-using namespace std;
 struct LCT
 {
     struct splay_node
@@ -301,7 +310,7 @@ struct LCT
         bool rev;
         splay_node() : parent(0), rev(0), child() {}
     };
-    std::vector<splay_node> node;
+    vector<splay_node> node;
     LCT(int _size) { node.resize(_size + 1); }
     bool isroot(int x)
     {
@@ -478,7 +487,7 @@ int main()
 
 ```cpp
 void up(int x)
-{ /*可以把子節點的內容向上更新*/
+{
     node[x].mx = max(max(node[node[x].child[0]].mx, node[node[x].child[1]].mx), node[x].val);
 }
 ```
@@ -510,7 +519,7 @@ struct splay_tree
 struct LCT
 {
     void up(int x)
-    { /*可以把子節點的內容向上更新*/
+    {
         node[x].mx = max(max(node[node[x].child[0]].mx, node[node[x].child[1]].mx), node[x].val);
     }
     /* other LCT template */

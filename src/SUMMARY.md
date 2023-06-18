@@ -11,7 +11,7 @@
 - [Dynamic Programming]()
   - [Basic DP]()
 - [Data Structure]()
-  - [Link Cut Tree](data_structure/link_cut_tree.md)
+  - [Link-Cut Tree](data_structure/link_cut_tree.md)
 - [Flow]()
 - [Sqrt Technique](sqrt/intro.md)
   - [Square Root Decomposition](sqrt/sqrt_decomposition.md)
