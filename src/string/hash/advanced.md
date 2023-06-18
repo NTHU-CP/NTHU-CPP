@@ -248,6 +248,85 @@ int main() {
 
 ### 交換任意兩個字元一次，問最長的 LCP 有多長
 [題目連結](https://www.hackerrank.com/contests/ab-yeh-kar-ke-dikhao/challenges/jitu-and-strings/problem)
+> 目標：給定兩個字串 \\(s, t\\)，長度都是為 \\(n\\)，你能對任一個字串交換任意兩個字元一次，問最長的 [LCP](https://leetcode.com/problems/longest-common-prefix/) (Longest Common Prefix) 有多長。
+
+> 舉例而言，字串分別是 `ABCDEEEE` 與 `ABZDEEEC`。
+>
+> 此時，我們選擇 `ABZDEEEC` 來交換字元，並將 `ABZDEEEC` 的 `Z` 跟 `C` 交換，成為 `ABCDEEEZ`，最終使得兩個字串的 LCP 等於 `ABCDEEE`，長度為 \\(7\\)。
+
+<details>
+  <summary>解答</summary>
+
+  Key observation: 兩個字串中，第一個不同的字元必須要被交換。
+
+  假設兩個字串第一個不同的字元是 \\(i\\)，那只要枚舉 \\(j, i < j < n\\) 並判斷 \\(s[i]\\) 與 \\(s[j]\\) 交換後是否會更好，以及 \\(k, i < kj < n\\) 並判斷 \\(t[i]\\) 與 \\(t[k]\\) 交換後是否會更好即可。
+
+  怎麼判斷是否會更好呢？可以用二分搜來計算兩個字串的 LCP 長度，假設 LCP 的長度是 \\(L\\)，倘若 \\(Hash(s[:L]) \neq Hash(t[:L])\\)，那麼就猜 \\(L\\) 可能更小，反之猜 \\(L\\) 可能更大。
+
+  ```C++
+#include <stdio.h>
+#include <cassert>
+#include <algorithm>
+#include <vector>
+#include <random>
+#include <chrono>
+#include <string>
+#include <iostream>
+ 
+typedef unsigned long long ull;
+
+// Init static variables of PolyHash class:
+int PolyHash::base((int)1e9+7);    
+std::vector<int> PolyHash::pow1{1};
+std::vector<ull> PolyHash::pow2{1};
+ 
+int solve(const int n, const std::string& s, const std::string& t) {
+    // Gen random base of hashing:
+    PolyHash::base = gen_base(256, PolyHash::MOD);
+ 
+    // Construct polynomial hashes on prefixes of strings s and t:
+    PolyHash hash_s(s), hash_t(t);
+ 
+    // Find first not-equal symbol:
+    int pos1 = 0;
+    while (pos1 < n && s[pos1] == t[pos1]) ++pos1;
+ 
+    // Try to swap pos1 with everything symbol after and use binary search for finding LCP:
+    int answ = pos1;
+    for (int pos2 = pos1+1; pos2 < n; ++pos2) {
+        // Binary search:
+        int low = 0, high = n+1;
+        while (high-low > 1) {
+            const int mid = (low + high) / 2;
+            const auto hs = hash_s.prefix_after_swap(mid, pos1, pos2, s[pos1], s[pos2]);
+            if (hs == hash_t(0, mid)) {
+                low = mid;
+            } else {
+                high = mid;
+            }
+        }
+        // Update answer:
+        answ = std::max(answ, low);
+    }
+    return answ;
+}
+ 
+int main() {
+    // Input:
+    int n;
+    scanf("%d", &n);
+    char buf[1+200000];
+    scanf("%200000s", buf);
+    std::string s(buf);
+    scanf("%200000s", buf);
+    std::string t(buf);
+    // Solve and output:
+    printf("%d", solve(n,s,t));
+    return 0;
+}
+  ```
+</details>
+
 ## Codebase
 ```C++
 // Generate random base in (before, after) open interval:
