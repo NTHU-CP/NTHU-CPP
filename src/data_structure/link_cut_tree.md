@@ -180,11 +180,8 @@ int access(int x)
 
 以下用一個例子來展示 ``access()``：  
 <img src="image/LCT/access_demo_1.png" height="400px" style="display:block; margin: 0 auto;"/>
-假設原樹的輔助樹是上圖左側的樹，假設要執行的操作是 ``access(F)``，一開始要先 ``splay(F)``，讓 F 節點變成當前輔助樹的根。
-``splay(F)`` 後，要把節點的 preferred edge 設定為上次走到的節點，因為 F 是第一個節點，因此不需要動作，接下來繼續往上層更新，對父節點進行 ``access()``，因此接下來要 ``access(C)``。
-<img src="image/LCT/access_demo_2.png" height="400px" style="display:block; margin: 0 auto;"/>
-先 ``splay(C)``，讓 C 變成輔助樹的根節點。把 C 的 preferred edge 設為 F (這裡為了展示所以將新的 preferred edge 變成粗邊)，所以 C 節點拋棄其中一個小孩，這裡展示的是拋棄 B 小孩。
-<img src="image/LCT/access_demo_3.png" height="400px" style="display:block; margin: 0 auto;"/>
+假設原樹的輔助樹是上圖左側的樹，假設要執行的操作是 ``access(F)``，一開始要先 ``splay(F)``，讓 F 節點變成當前輔助樹的根。``splay(F)`` 後，要把節點的 preferred edge 設定為上次走到的節點，因為 F 是第一個節點，因此不需要動作，接下來繼續往上層更新，對父節點進行 ``access()``，因此接下來要 ``access(C)``。<img src="image/LCT/access_demo_2.png" height="400px" style="display:block; margin: 0 auto;"/>
+先 ``splay(C)``，讓 C 變成輔助樹的根節點。把 C 的 preferred edge 設為 F (這裡為了展示所以將新的 preferred edge 變成粗邊)，所以 C 節點拋棄其中一個小孩，這裡展示的是拋棄 B 小孩。<img src="image/LCT/access_demo_3.png" height="400px" style="display:block; margin: 0 auto;"/>
 最終 ``access(A)``，到達整棵樹的根結點，因此停止操作，最終 F 與根節點 A 的路徑為 preferred path，且 F 與 A 在同一棵輔助樹中。
 
 - ``make_root()``  
