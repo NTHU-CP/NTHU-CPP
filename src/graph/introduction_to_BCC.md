@@ -7,7 +7,7 @@
 ## BCC-Vertex(Bi-connected Component)
 
 BCC-Vertex 指的是沒有 AP 的 Connected Component，在中文常稱之為點雙連通分量。例如下圖中有三個 BCC-Vertex
-<img src="image/BCC/Biconnected_Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BiConnected_Component.JPG" width="300" style="display:block; margin: 0 auto;"/>
 
 BCC-Vertex 有以下幾個性質:
 
@@ -55,7 +55,7 @@ BCC-Vertex 有以下幾個性質:
 
 我們可以用 stack 紀錄首次遇到的邊。這樣當我們發現 \\(low(v) \geq depth(u) \\) 時，stack 中 \\( (u,v) \\) 及它上面的邊就會位於同一個 BCC-Vertex 中。就像是下圖 \\( (C,D) \\) 這條邊。
 
-<img src="image/BCC/BCC_Algo_explain.PNG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC_Algo_explain.png" width="300" style="display:block; margin: 0 auto;"/>
 
 一個完整的例子如下
 <img src="image/BCC/BCC_Algo_example.gif" width="300" style="display:block; margin: 0 auto;"/>
@@ -182,7 +182,7 @@ BCC-Edge 有以下幾個性質
 
 跟找 BCC-Vertex 的想法很像。我們用 stack 紀錄走過的點，當我們發現 \\(low(u) == depth(u) \\) 時，我們就發現了橋的下端點。而 stack 中 \\(u \\) 和他上面的點就會位於同一個 BCC-Edge。就像下圖 \\( D \\) 這個點，他是 \\( (C,D) \\) 這條 bridge 的下端點。
 
-<img src="image/BCC/BCC_Algo_explain_2.PNG" width="300" style="display:block; margin: 0 auto;"/>
+<img src="image/BCC/BCC_Algo_explain_2.png" width="300" style="display:block; margin: 0 auto;"/>
 
 一個完整的例子如下
 <img src="image/BCC/BCC_Algo_example_2.gif" width="300" style="display:block; margin: 0 auto;"/>
