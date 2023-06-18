@@ -24,7 +24,6 @@ EGF 的定義與 OGF 類似，只是每一項多除以 \\( i! \\)，也就是 \\
 
 在計算時，我們會希望能夠化簡為容易觀察係數的多項式。常見的生成函數有：
 
-
 1. \\( \frac{1}{1 - x} = \sum\limits_{k = 0}^{\infty} x^k \\)，在 OGF 中 \\( a_k = 1 \\)，等比級數的公式
 2. \\( (1 + x)^n = \sum\limits_{k = 0}^n \binom{n}{k} x^k \\)，在 OGF 中 \\( a_k = \binom{n}{k} \\)，固定 \\( n \\) 的二項式係數
 3. \\( \frac{1}{(1 - x)^{k + 1}} = \sum\limits_{n = 0}^{\infty} \binom{n + k}{k} x^n \\)，\\( a_n = \binom{n + k}{k} \\)，固定 \\( k \\) 的二項式係數
@@ -64,20 +63,20 @@ EGF 的定義與 OGF 類似，只是每一項多除以 \\( i! \\)，也就是 \\
 
 - \\( c_n = a_{n + k} \\)：把 \\( a \\) 的前面 \\( k \\) 項移除。
 	- OGF：\begin{aligned}
-C(x) &= a_k x^0 + a_{k + 1} x^1 + \dots \\\\
-\Longleftrightarrow x^k C(x) &= a_k x^k + a_{k + 1} x^{k + 1} & \text{等號兩邊同時乘以 \\( x^k \\)} \\\\
-&= \sum\limits_{i = k}^{\infty} a_i x^i \\\\
-&= A(x) - \sum\limits_{i = 0}^{k - 1} a_i x^i & \text{相當於 A(x) 缺少最前面的 \\( k \\) 項} \\\\
-\Longleftrightarrow C(x) &= \frac{A(x) - \sum\limits_{i = 0}^{k - 1} a_i x^i}{x^k} \\\\
-\end{aligned}
+	C(x) &= a_k x^0 + a_{k + 1} x^1 + \dots \\\\
+	\Longleftrightarrow x^k C(x) &= a_k x^k + a_{k + 1} x^{k + 1} & \text{等號兩邊同時乘以 \\( x^k \\)} \\\\
+	&= \sum\limits_{i = k}^{\infty} a_i x^i \\\\
+	&= A(x) - \sum\limits_{i = 0}^{k - 1} a_i x^i & \text{相當於 A(x) 缺少最前面的 \\( k \\) 項} \\\\
+	\Longleftrightarrow C(x) &= \frac{A(x) - \sum\limits_{i = 0}^{k - 1} a_i x^i}{x^k} \\\\
+	\end{aligned}
 
 	- EGF：\begin{aligned}
-A(x) &= \sum\limits_{i = 0}^{\infty} a_i \frac{x^i}{i!} \\\\
-\Longleftrightarrow A^{\prime}(x) &= a_0 \cdot 0 \cdot \frac{x^{0 - 1}}{0!} + a_1 \cdot 1 \cdot \frac{x^{1 - 1}}{1!} + a_2 \cdot 2 \cdot \frac{x^{2 - 1}}{2!} + \dots & \text{微分的定義} \\\\
-&= a_1 \frac{x^0}{0!} + a_2 \frac{x^1}{1!} + a_3 \frac{x^2}{2!} \\\\
-&= \sum\limits_{i = 0}^{\infty} a_{i + 1} \frac{x^i}{i!} & \text{微分 \\( 1 \\) 次後數列向左平移 \\( 1 \\) 項} \\\\
-\Longleftrightarrow A^{(k)}(x) &= \sum\limits_{i = 0}^{\infty} a_{i + k} \frac{x^i}{i!} = C(x) & \text{微分 \\( k \\) 次就會是數列向左平移 \\( k \\) 項} \\\\
-\end{aligned}
+	A(x) &= \sum\limits_{i = 0}^{\infty} a_i \frac{x^i}{i!} \\\\
+	\Longleftrightarrow A^{\prime}(x) &= a_0 \cdot 0 \cdot \frac{x^{0 - 1}}{0!} + a_1 \cdot 1 \cdot \frac{x^{1 - 1}}{1!} + a_2 \cdot 2 \cdot \frac{x^{2 - 1}}{2!} + \dots & \text{微分的定義} \\\\
+	&= a_1 \frac{x^0}{0!} + a_2 \frac{x^1}{1!} + a_3 \frac{x^2}{2!} \\\\
+	&= \sum\limits_{i = 0}^{\infty} a_{i + 1} \frac{x^i}{i!} & \text{微分 \\( 1 \\) 次後數列向左平移 \\( 1 \\) 項} \\\\
+	\Longleftrightarrow A^{(k)}(x) &= \sum\limits_{i = 0}^{\infty} a_{i + k} \frac{x^i}{i!} = C(x) & \text{微分 \\( k \\) 次就會是數列向左平移 \\( k \\) 項} \\\\
+	\end{aligned}
 
 - \\( c_n = a_{n - k} \\)：把 \\( a \\) 往後移動 \\( k \\) 項，前面用 \\( 0 \\) 補齊。對於 OGF 來說 \\( C(x) = x^k A(x) \\)，EGF 則是透過積分 \\( k \\) 次來對齊階乘的係數，過程與上述的微分大同小異。
 
@@ -264,6 +263,7 @@ g &= \sum\limits_{n \geq 0} \frac{(n + 1)!}{(n + 1 - k)!} x^n \\\\
 > [CF 438E - The Child and Binary Tree](https://codeforces.com/problemset/problem/438/E)
 >
 > 給定集合 \\( C \\)。令 \\( a_i \\) 為節點 \\( i \\) 的點權。對於 \\( S = 1, \dots, m \\)，求點權和為 \\( S \\)，且 \\(a_i \in C \\) 的二元樹數量 \\( \bmod 998244353 \\)。
+>
 > - \\( 1 \leq m \leq 10^5 \\)
 > - \\( 1 \leq c_i \leq 10^5 \\)
 
@@ -318,6 +318,7 @@ F(x) &= (1 + x + x^2 + \cdots)(1 + x^5 + x^{10} + \cdots)(1 + x^{10} + x^{20} + 
 > [ABC303 Ex - Constrained Tree Degree](https://atcoder.jp/contests/abc303/tasks/abc303_h)
 >
 > 給定正整數 \\( N \\) 和集合 \\( S \\)，求 \\( N \\) 個節點且每個節點的 degree \\( \in S \\) 的樹數量 \\( \bmod 998244353 \\)。
+>
 > - \\( 2 \leq N \leq 2 \cdot 10^5 \\)
 > - \\( 1 \leq s_1 < s_2 < \dots < s_{p} < N - 1 \\)
 
