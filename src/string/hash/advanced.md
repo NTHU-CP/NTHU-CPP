@@ -1,13 +1,17 @@
 # Advanced applications of Rolling Hash
+
 Rolling Hash 也許看似簡單，但是要靈活運用才能發揮他的完整威力，下面給大家一些習題，靈活使用工具才能解出來喔。
 
 ## Problems
+
 總共有五題，不會說哪題要先寫出來，後面的題目才知道要怎麼寫。筆者有幫各位把題目由簡單排到難了。
 
 ### 字典序最小的 Cyclic Shift
+
 [題目連結](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=43&id_problem=284&locale=en)
 
 > 目標：在 \\(O(n\ \log n)\\) 的時間內找到長度為 \\(n\\) 的字串的字典序最小循環移位
+
 
 > 字串 \\(s\\) 的循環移位 (Cyclic Shift) 是指將字串 \\(s\\) 按照某個 \\(k, 0 \leq k < n\\)進行移位得到的字串 \\(s_{k+1}s_{k+2} ... s_n s_1 s_2 ... s_k\\)，其中 \\(n\\) 是字串 \\(s\\) 的長度。
 >
@@ -15,12 +19,12 @@ Rolling Hash 也許看似簡單，但是要靈活運用才能發揮他的完整�
 
 <details>
   <summary>解答</summary>
-  
-In this problem we need to use compare by great / less in \\(O(log(n))\\) time using binary search by length of equal subsequence. Duplicate string S and calculate polynomial hashes on prefixes. Each cyclic shift will be represented as a number (initial position). Add all the positions to the vector, and then apply a linear algorithm for finding the minimum in the array using the substring comparison operator. 
+In this problem we need to use compare by great / less in \\(O(log(n))\\) time using binary search by length of equal subsequence. Duplicate string S and calculate polynomial hashes on prefixes. Each cyclic shift will be represented as a number (initial position). Add all the positions to the vector, and then apply a linear algorithm for finding the minimum in the array using the substring comparison operator.
 
 Complexity Estimatation: \\(O(n\ log(n))\\) time and \\(O(n)\\) memory.
 
 範例解法
+
 ```C++
 #include <stdio.h>
 #include <cassert>
@@ -82,10 +86,13 @@ int main() {
     return 0;
 }
 ```
+
 </details>
 
 ### 排序所有 Cyclic Shift
+
 [題目連結](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=43&id_problem=286&locale=en)
+
 > 目標：在 \\(O(n\ log^2 n)\\) 的時間內，按字典序對長度為 \\(n\\) 的字串的所有循環移位進行排序
 
 > 字串 \\(s\\) 的循環移位 (Cyclic Shift) 是指將字串 \\(s\\) 按照某個 \\(k, 0 \leq k < n\\)進行移位得到的字串 \\(s_{k+1}s_{k+2} ... s_n s_1 s_2 ... s_k\\)，其中 \\(n\\) 是字串 \\(s\\) 的長度。
@@ -97,7 +104,7 @@ int main() {
 <details>
   <summary>解答</summary>
 
-We'll duplicate the string \\(S\\) and count the polynomial hash on the prefix. Each cyclic shift will be represented as a number (initial position). Add all the positions to the vector, and then apply a stable merge sort using the substring comparison operator. 
+We'll duplicate the string \\(S\\) and count the polynomial hash on the prefix. Each cyclic shift will be represented as a number (initial position). Add all the positions to the vector, and then apply a stable merge sort using the substring comparison operator.
 
 Complexity Estimatation: \\(O (n\ log(n)^2)\\) in time and \\(O(n)\\) from memory.
 
@@ -162,9 +169,11 @@ int main() {
     return 0;
 }
 ```
+
 </details>
 
 ### 算有幾個 substring 是回文字串
+
 [題目連結](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=43&id_problem=285&locale=en)
 > 目標：在 \\(O(n\ \log n)\\) 的時間內，算出有幾個 substring 是回文字串，且字串長度為 \\(n\\)
 
@@ -172,12 +181,12 @@ int main() {
 
 <details>
   <summary>解答</summary>
-  
-In this problem we need to use compare by great / less in \\(O(log(n))\\) time using binary search by length of equal subsequence. Duplicate string S and calculate polynomial hashes on prefixes. Each cyclic shift will be represented as a number (initial position). Add all the positions to the vector, and then apply a linear algorithm for finding the minimum in the array using the substring comparison operator. 
+In this problem we need to use compare by great / less in \\(O(log(n))\\) time using binary search by length of equal subsequence. Duplicate string S and calculate polynomial hashes on prefixes. Each cyclic shift will be represented as a number (initial position). Add all the positions to the vector, and then apply a linear algorithm for finding the minimum in the array using the substring comparison operator.
 
 Complexity Estimatation: \\(O(n\ log(n))\\) time and \\(O(n)\\) memory.
 
 範例解法
+
 ```C++
 #include <stdio.h>
 #include <cassert>
@@ -239,28 +248,30 @@ int main() {
     return 0;
 }
 ```
+
 </details>
 
 ### 問有幾個後綴滿足特定條件
+
 [題目連結](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=42&id_problem=264&locale=en)
 > 目標：對於一個長度為 \\(n\\) 的字串，問有幾個後綴滿足「後綴的 Infinite Extension 跟原本字串的 Infinite Extension 相同」
 > Infinite Extension: 將原先字串頭尾相接後重複拼貼，也就是說 \\(s[i] = S[i \mod N]\\)，其中 \\(S\\) 是 \\(s\\) 的 Infinite Exntesion 且 \\(|S|=N\\)。
 
 <details>
   <summary>解答</summary>
+Key observations:
 
-Key observations: 
 1. 如果 \\(S\\) 跟 \\(T\\) 的 Infinite Extension 相同，那麼「\\(S\\) 頭尾相接後重複拼貼 \\(|T|\\) 次」必然相等「\\(T\\) 頭尾相接後重複拼貼 \\(|S|\\) 次」。
 2. 令\\(S\\) 為 \\(s\\) 頭尾相接後重複拼貼 \\(N\\) 次，\\(m = |S|\\)
 $$ Hash(S) = Hash(s) \cdot (1 + p^m + p^{2m} + p^{3m} + ... + p^{(N-1)m}) $$
-
 3. \\( (1 + p^m + p^{2m} + p^{3m} + ... + p^{(N-1)m}) \cdot (p - 1) = p^k - 1 \\)
-    
+
 枚舉每個後綴，並且利用模逆元去計算 \\( (1 + p^m + p^{2m} + p^{3m} + ... + p^{(N-1)m}) \\)，即可判斷該後綴的 Infinite Extension 是否與原字串的 Infinite Extension 相同。
-    
+
 在此之外，在無法取得模逆元的狀況下，作者給出了另外一種方法計算 \\( (1 + p^m + p^{2m} + p^{3m} + ... + p^{(N-1)m}) \\)，詳細可見範例解法。
 
 範例解法
+
 ```C++
 #include <stdio.h>
 #include <cassert>
@@ -335,9 +346,11 @@ int main() {
     return 0;
 }
 ```
+
 </details>
 
 ### 交換任意兩個字元一次，問最長的 LCP 有多長
+
 [題目連結](https://www.hackerrank.com/contests/ab-yeh-kar-ke-dikhao/challenges/jitu-and-strings/problem)
 > 目標：給定兩個字串 \\(s, t\\)，長度都是為 \\(n\\)，你能對任一個字串交換任意兩個字元一次，問最長的 [LCP](https://leetcode.com/problems/longest-common-prefix/) (Longest Common Prefix) 有多長。
 
@@ -354,7 +367,7 @@ int main() {
 
   怎麼判斷是否會更好呢？可以用二分搜來計算兩個字串的 LCP 長度，假設 LCP 的長度是 \\(L\\)，倘若 \\(Hash(s[:L]) \neq Hash(t[:L])\\)，那麼就猜 \\(L\\) 可能更小，反之猜 \\(L\\) 可能更大。
 
-  ```C++
+```C++
 #include <stdio.h>
 #include <cassert>
 #include <algorithm>
@@ -415,10 +428,12 @@ int main() {
     printf("%d", solve(n,s,t));
     return 0;
 }
-  ```
+```
+
 </details>
 
 ## Codebase
+
 ```C++
 // Generate random base in (before, after) open interval:
 int gen_base(const int before, const int after) {
@@ -437,7 +452,7 @@ struct PolyHash {
  
     // --------- Static functons --------
     static inline int diff(int a, int b) { 
-    	// Diff between `a` and `b` modulo mod (0 <= a < mod, 0 <= b < mod)
+        // Diff between `a` and `b` modulo mod (0 <= a < mod, 0 <= b < mod)
         return (a -= b) < 0 ? a + mod : a;
     }
  
@@ -485,3 +500,7 @@ struct PolyHash {
 [Suffix Array & Rolling Hash](https://www.luogu.com.cn/blog/blackfrog/sa-algorithm)
 
 [Minimum cyclic shift](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=43&id_problem=284&locale=en)
+
+[Modulo inverse](https://medium.com/algorithm-solving/modular-multiplicative-inverse-333ab622d886)
+
+[Binary Search](https://oi-wiki.org/basic/binary/)
