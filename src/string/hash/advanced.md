@@ -243,8 +243,99 @@ int main() {
 
 ### 問有幾個後綴滿足特定條件
 [題目連結](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=42&id_problem=264&locale=en)
-> The number of suffixes of a string of length n, the infinite extension of which coincides with the infinite extension of the given string for O(n log n) (extension is a duplicate string an infinite number of times)
+> 目標：對於一個長度為 \\(n\\) 的字串，問有幾個後綴滿足「後綴的 Infinite Extension 跟原本字串的 Infinite Extension 相同」
+> Infinite Extension: 將原先字串頭尾相接後重複拼貼，也就是說 \\(s[i] = S[i \mod N]\\)，其中 \\(S\\) 是 \\(s\\) 的 Infinite Exntesion 且 \\(|S|=N\\)。
 
+<details>
+  <summary>解答</summary>
+
+Key observations: 
+1. 如果 \\(S\\) 跟 \\(T\\) 的 Infinite Extension 相同，那麼「\\(S\\) 頭尾相接後重複拼貼 \\(|T|\\) 次」必然相等「\\(T\\) 頭尾相接後重複拼貼 \\(|S|\\) 次」。
+2. 令\\(S\\) 為 \\(s\\) 頭尾相接後重複拼貼 \\(N\\) 次，\\(m = |S|\\)
+$$ Hash(S) = Hash(s) \cdot (1 + p^m + p^{2m} + p^{3m} + ... + p^{(N-1)m}) $$
+
+3. \\( (1 + p^m + p^{2m} + p^{3m} + ... + p^{(N-1)m}) \cdot (p - 1) = p^k - 1 \\)
+    
+枚舉每個後綴，並且利用模逆元去計算 \\( (1 + p^m + p^{2m} + p^{3m} + ... + p^{(N-1)m}) \\)，即可判斷該後綴的 Infinite Extension 是否與原字串的 Infinite Extension 相同。
+    
+在此之外，在無法取得模逆元的狀況下，作者給出了另外一種方法計算 \\( (1 + p^m + p^{2m} + p^{3m} + ... + p^{(N-1)m}) \\)，詳細可見範例解法。
+
+範例解法
+```C++
+#include <stdio.h>
+#include <cassert>
+#include <algorithm>
+#include <vector>
+#include <random>
+#include <chrono>
+#include <string>
+
+// Init static variables of PolyHash class:
+int PolyHash::base((int)1e9+7);    
+std::vector<int> PolyHash::pow1{1};
+std::vector<ull> PolyHash::pow2{1};
+ 
+// Functions for calculating this sum: 1 + a + a^2 + ... + a^(k-1) by modulo
+// mod and 2^64 in O(log(k))
+int sum_int(int a, int k) {
+    if (k == 1) {
+        return 1;
+    } else if (k % 2 == 0) {
+        return (1LL + a) * sum_int(1LL * a * a % PolyHash::mod, k / 2) % PolyHash::mod;
+    } else {
+        return 1 + (a+1LL) * a % PolyHash::mod * sum_int(1LL * a * a % PolyHash::mod, k / 2) % PolyHash::mod;
+    }
+}
+ 
+ull sum_ull(ull a, int k) {
+    if (k == 1) {
+        return 1;
+    } else if (k % 2 == 0) {
+        return (1 + a) * sum_ull(a * a, k / 2);
+    } else {
+        return 1 + a * sum_ull(a, k - 1);
+    }
+}
+ 
+int main() {    
+    static char buf[1+100000];
+    scanf("%100000s", buf);
+    std::string a(buf);
+ 
+    std::reverse(a.begin(), a.end()); // reverse
+ 
+    // Gen random point of hashing:
+    PolyHash::base = gen_base(256, PolyHash::mod);
+ 
+    // Construct hashes on prefixes of substring a:
+    PolyHash hash(a);
+ 
+    // Length of string:
+    const int n = (int)a.size();
+ 
+    int answ = 0;    
+    for (int len = 1; len <= n; ++len) {
+        // Get polynomial hash:
+        auto hash1 = hash(0, len); // on prefix a[0...len)
+        auto hash2 = hash(0, n);   // on prefix a[0...n)
+ 
+        // Multiply on sum of geometry progression hash modulo mod:
+        hash1.first = 1LL * hash1.first * sum_int(PolyHash::pow1[len], n) % PolyHash::mod;
+        hash2.first = 1LL * hash2.first * sum_int(PolyHash::pow1[n], len) % PolyHash::mod;
+ 
+        // Multiply on sum of geometry progression hash modulo 2^64:
+        hash1.second *= sum_ull(PolyHash::pow2[len], n);
+        hash2.second *= sum_ull(PolyHash::pow2[n], len);       
+ 
+        // Compare hashes:
+        answ += (hash1 == hash2);
+    }
+    printf("%d", answ);
+ 
+    return 0;
+}
+```
+</details>
 
 ### 交換任意兩個字元一次，問最長的 LCP 有多長
 [題目連結](https://www.hackerrank.com/contests/ab-yeh-kar-ke-dikhao/challenges/jitu-and-strings/problem)
