@@ -10,8 +10,7 @@ Rolling Hash 也許看似簡單，但是要靈活運用才能發揮他的完整�
 
 [題目連結](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=43&id_problem=284&locale=en)
 
-> 目標：在 \\(O(n\ \log n)\\) 的時間內找到長度為 \\(n\\) 的字串的字典序最小循環移位
-
+目標：在 \\(O(n\ \log n)\\) 的時間內找到長度為 \\(n\\) 的字串的字典序最小循環移位
 
 > 字串 \\(s\\) 的循環移位 (Cyclic Shift) 是指將字串 \\(s\\) 按照某個 \\(k, 0 \leq k < n\\)進行移位得到的字串 \\(s_{k+1}s_{k+2} ... s_n s_1 s_2 ... s_k\\)，其中 \\(n\\) 是字串 \\(s\\) 的長度。
 >
@@ -93,13 +92,13 @@ int main() {
 
 [題目連結](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=43&id_problem=286&locale=en)
 
-> 目標：在 \\(O(n\ log^2 n)\\) 的時間內，按字典序對長度為 \\(n\\) 的字串的所有循環移位進行排序
+目標：在 \\(O(n\ log^2 n)\\) 的時間內，按字典序對長度為 \\(n\\) 的字串的所有循環移位進行排序
 
 > 字串 \\(s\\) 的循環移位 (Cyclic Shift) 是指將字串 \\(s\\) 按照某個 \\(k, 0 \leq k < n\\)進行移位得到的字串 \\(s_{k+1}s_{k+2} ... s_n s_1 s_2 ... s_k\\)，其中 \\(n\\) 是字串 \\(s\\) 的長度。
 >
 > 對於給定的字串，請構造所有的循環移位，並將每個循環移位排序。接著，輸出每個排序後字串的最後一個字元，以及給定的字串位於排序後列表的第幾名。
 
-> 是可以建 Suffix Array 去解決這個問題沒錯，但是這樣太複雜了。你能不能粗暴 (但是很簡單) 的用 Rolling Hash 解決它呢？
+是可以建 Suffix Array 去解決這個問題沒錯，但是這樣太複雜了。你能不能粗暴 (但是很簡單) 的用 Rolling Hash 解決它呢？
 
 <details>
   <summary>解答</summary>
@@ -175,7 +174,7 @@ int main() {
 ### 算有幾個 substring 是回文字串
 
 [題目連結](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=43&id_problem=285&locale=en)
-> 目標：在 \\(O(n\ \log n)\\) 的時間內，算出有幾個 substring 是回文字串，且字串長度為 \\(n\\)
+目標：在 \\(O(n\ \log n)\\) 的時間內，算出有幾個 substring 是回文字串，且字串長度為 \\(n\\)
 
 先來一個 Key observation，如果 \\(T[i-j:i+j]\\) 是回文字串，那麼 \\(T[i-(j-1):i+(j-1)]\\) 也是回文字串。
 
@@ -254,8 +253,9 @@ int main() {
 ### 問有幾個後綴滿足特定條件
 
 [題目連結](https://acmp.ru/asp/do/index.asp?main=task&id_course=2&id_section=18&id_topic=42&id_problem=264&locale=en)
-> 目標：對於一個長度為 \\(n\\) 的字串，問有幾個後綴滿足「後綴的 Infinite Extension 跟原本字串的 Infinite Extension 相同」
-> Infinite Extension: 將原先字串頭尾相接後重複拼貼，也就是說 \\(s[i] = S[i \mod N]\\)，其中 \\(S\\) 是 \\(s\\) 的 Infinite Exntesion 且 \\(|S|=N\\)。
+目標：對於一個長度為 \\(n\\) 的字串，問有幾個後綴滿足「後綴的 Infinite Extension 跟原本字串的 Infinite Extension 相同」
+
+Infinite Extension: 將原先字串頭尾相接後重複拼貼，也就是說 \\(s[i] = S[i \mod N]\\)，其中 \\(S\\) 是 \\(s\\) 的 Infinite Exntesion 且 \\(|S|=N\\)。
 
 <details>
   <summary>解答</summary>
@@ -352,7 +352,7 @@ int main() {
 ### 交換任意兩個字元一次，問最長的 LCP 有多長
 
 [題目連結](https://www.hackerrank.com/contests/ab-yeh-kar-ke-dikhao/challenges/jitu-and-strings/problem)
-> 目標：給定兩個字串 \\(s, t\\)，長度都是為 \\(n\\)，你能對任一個字串交換任意兩個字元一次，問最長的 [LCP](https://leetcode.com/problems/longest-common-prefix/) (Longest Common Prefix) 有多長。
+目標：給定兩個字串 \\(s, t\\)，長度都是為 \\(n\\)，你能對任一個字串交換任意兩個字元一次，問最長的 [LCP](https://leetcode.com/problems/longest-common-prefix/) (Longest Common Prefix) 有多長。
 
 > 舉例而言，字串分別是 `ABCDEEEE` 與 `ABZDEEEC`。
 >
