@@ -6,7 +6,7 @@
 
 而一個有關賽局的題目，我們會想知道在某個狀態，當前玩家能不能採用一個最佳化的策略，使得對手不論如何應對，都無法阻止該玩家獲勝。這種狀態稱為 **winning state**。反之，若玩家在某狀態，不論採取何種行動，都無法阻止對手以某個策略取勝的話，就稱為 **losing state**。換句話說，winning state 至少存在一種行動，使得遊戲局勢落入 losing state。而 losing state 不論採取什麼行動，都會使局勢落入 winning state。
 
-### Example
+### Examples
 
 > [CSES 1729 - Stick Game](https://cses.fi/problemset/task/1729)
 >
@@ -59,6 +59,68 @@ int main() {
 
 </details>
 
+
+接著再看另外一題。
+
+
+> [ZEROJUDGE b902 - 肉墊遊戲](https://zerojudge.tw/ShowProblem?problemid=b902)
+
+> 有兩疊墊子，數量各為 \\( x \\) 塊與 \\( y \\) 塊。玩家 A，B 輪流進行行動。每回合可以選擇一疊非空的墊子，並移除 1 塊墊子，或是在這疊墊子的數量不少於另一疊的前提下，將這疊移除和另一疊數量一樣多的墊子(不能為0)。玩到最後，取走最後一塊墊子的即為勝者。若雙方都採取最佳化策略，那麼誰將獲勝。
+- \\( x, y \leq 10^{18} \\)
+
+題目的範圍達到 \\( 10^{18} \\) ，一一判斷每種狀態是否為 winning state 顯然不是一種實際的做法。但我們可以先試一些數字較小的例子，看能不能從中獲得一些啟發。
+
+不妨先討論其中一疊的數量為 \\( 0 \\) 或 \\( 1 \\) 的情況。因為第二種行動取出的墊子數為兩疊中較少的數量。由此得知之後的回合最多只能取一個墊子。那麼判斷兩疊總和的奇偶，即能判斷誰獲勝。對於當前的玩家，是否數量總和為偶數則會落敗，而總和為奇數則會獲勝呢 ? 其實不然。兩疊數量為 {2, 2} 即為一個反例，玩家可以採取第二種行動，從其中一疊取出 2 塊，將數量變為 {2, 0}，使得對手落入 losing state。但是若總合為奇數，兩疊的數量一定是一奇一偶，那麼我們可以選擇從偶數疊中取出一塊，使數量變為 {奇數，奇數}。而不論對手採取甚麼行動，都一定是取出奇數塊的數量，也就會使得場上變為一奇一偶。於是我們可以將數量一奇一偶定義為 winning state，兩疊皆為奇數定義成 losing state。
+
+剩下的只有兩疊皆為偶數的情況了。若當前玩家採取第一種行動，會取出奇數個墊子，使局勢變為一奇一偶，也就是 winning state。但這麼做無疑是一個錯誤的策略，因此雙方玩家只會採取第二種行動，也就是從數量較多的那疊取出較少那疊的數量。於是在雙方的策略都被確定的情況，我們可以開始探討給定兩疊的數量，誰會獲勝。若兩疊的數量為 \\( x, y\\) ，假設 \\( x \geq y \\) ，那麼在之後的 \\( x / y \\) 回合都會從數量為 \\( x \\) 那疊中取出墊子。而數量則會變為 \\( x\ mod\ y \\) 與 \\( y \\) 。接著再從數量為 \\( y \\) 的那疊開始取，以此類推。可以發現過程和求最大公因數時使用的輾轉相除法極為相似，因此若暴力將行動模擬完，複雜度也只會是 \\( log(max\lbrace x, y \rbrace) \\) 。而取到最後，會有其中一疊數量歸零，若另一疊數量還沒歸零，就可以用奇偶來判斷剩餘回合數。綜上所述，在數量為兩偶時，只要求出遊戲過幾個回合後會分出勝負，且該回合數若是奇數，則當前玩家勝利，反之則落敗。
+
+
+
+
+
+<details><summary> Solution Code </summary>
+
+
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+
+void solve() {
+    ll x, y; cin >> x >> y; 
+    bool win = false;
+    if (x % 2 + y % 2 == 1) win = true; // one odd, one even 
+    else if (x % 2 + y % 2 == 2) win = false; // two odds
+    else {
+        ll cnt_round = 0;
+        while (x > 0 && y > 0) {
+            if (x < y) swap(x, y);
+            cnt_round += x / y;
+            x = x % y;
+        }
+        cnt_round += x + y;
+        if (cnt_round % 2 == 1) win = true;
+        else win = false;
+    }
+    if (win) cout << ">//<\n"; // first player wins
+    else cout << ">\\\\<\n"; // second player wins
+}
+
+int main(){
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    ll TestCases = 1;
+    cin >> TestCases;
+ 
+    while (TestCases--) {
+        solve();
+    }
+}
+    
+```
+
+</details>
 
 
 ## Impartial Game
