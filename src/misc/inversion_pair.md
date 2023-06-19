@@ -42,7 +42,11 @@
 
 因此，逆序對數量又可以被當作一個 permutation 與 identity permutation 的 Kendall's \\(\tau\\) distance；反過來說，計算兩個 permutations 的 Kendall's \\(\tau\\) distance，也可以藉由逆序對數量的求法。
 
-Kendall's \\(\tau\\) distance 的一個重點是其代表兩個 permutations 需要經過多少次 swaps 才能從其中一個 permutation 變為另一個。故逆序對數量同時也代表 bubble sort 需要多少次 swaps。
+Kendall's \\(\tau\\) distance 又被稱為 bubble sort distance，因為其代表兩個 permutations 需要 swap 相鄰元素多少次才能從其中一個 permutation 變為另一個。故逆序對數量同時也暗示 bubble sort 需要多少次 swaps。
+
+我們試著證明 bubble sort 的 swap 數量即為逆序對數量。我們知道 bubble sort 在第 \\(i\\) round 會將第 \\(i\\) 大的元素 "bubble-up"，整個過程中一元素所經歷的向右 swap 數量顯然就是該元素所貢獻的逆序對數量 (right inversion count)。因此，全部加總起來即為逆序對數量。
+
+類似的想法容易推廣到 Kendall's \\(\tau\\) distance，將兩個 permutations 排成兩 rows，經過一些 column 的 swap 使得某一 row 為 identity permutation，可以知道 Kendall's \\(\tau\\) distance 並不會改變。如果我們需要高效地計算兩 permutations 的 Kendall's \\(\tau\\) distance，也可以利用同樣思路，將其中一者以另一者**離散化**後計算逆序對數量。
 
 ### 演算法意義
 
