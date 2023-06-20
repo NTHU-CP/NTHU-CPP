@@ -22,6 +22,7 @@
   - [杜教篩](math/du_sieve.md)
   - [Revisit Arithmetic Function](math/revisit_arithmetic_function.md)
   - [Game Theory](math/game_theory.md)
+  - [Nim and Sprague-Grundy Theorem](math/nim_and_sg_value.md)
 - [Miscellaneous]()
 
 ---
