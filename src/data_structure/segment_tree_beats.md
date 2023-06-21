@@ -10,9 +10,9 @@ Segment Tree Beats（簡稱 STB）是北京大學的吉如一提出的概念，�
 >
 > 給一個長度為 \\( n \\) 的序列 \\( A \\)，並對其進行 \\( m \\) 筆操作。操作有三種：
 >
-> 1. 給定 \\( l, r, x \\)，對所有 \\( i, (l \leq i \leq r) \\)，將 \\( A_i \\) 修改成 \\( min(A_i, x) \\)。
-> 2. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出\\( A_i \\)的最大值。
-> 3. 給定 \\( l, r \\)，對所有 \\( i, (l \leq i \leq r) \\)，輸出\\( \sum_{i = l}^{r} A_i \\)。
+> 1. 給定 \\( L, R, x \\)，對所有 \\( i, (L \leq i \leq R) \\)，將 \\( A_i \\) 修改成 \\( min(A_i, x) \\)。
+> 2. 給定 \\( L, R \\)，對所有 \\( i, (L \leq i \leq R) \\)，輸出\\( A_i \\)的最大值。
+> 3. 給定 \\( L, R \\)，對所有 \\( i, (L \leq i \leq R) \\)，輸出\\( \sum_{i = L}^{R} A_i \\)。
 >
 > - \\( n, m \leq 10^6 \\)
 
@@ -27,14 +27,30 @@ Segment Tree Beats（簡稱 STB）是北京大學的吉如一提出的概念，�
 讓區間 \\( [L, R] \\) 對 \\( x \\) 取 \\( min \\)，我們先在線段樹中定位這個區間，對定位的每一個節點，我們開始暴力搜尋。搜尋到每一個節點時，我們分三種情況討論：
 
 1. 當 \\( mx1 \leq x \\) 時，區間每個元素對 \\( x \\) 取 \\( min \\) 還是元素本身，不會對這個節點產生影響，直接退出。
-2. 當 \\( mx2 < x < mx1 \\) 時，這一次修改只會影響到所有最大值，所以我們把區間和 \\( sum \\) 加上 \\( t \cdot (x - mx) \\)，將 \\( mx \\) 更新為 \\( x \\)，接著打上標記然後退出。
+2. 當 \\( mx2 < x < mx1 \\) 時，這一次修改只會影響到所有最大值，所以我們把區間和 \\( sum \\) 加上 \\( t \cdot (x - mx) \\)，將 \\( mx \\) 更新為 \\( x \\)，接著打上標記然後退出（只有發生第二種狀況才會打標記）。
 3. 當 \\( mx2 \geq x \\) 時，我們無法直接更新這一個節點的資訊，所以在此時，我們對當前節點的左子節點與右子節點進行遞迴搜尋。
 
 如下圖所示，左圖是一棵建立在 \\( [1, 4] \\) 上的線段樹，每一個節點紀錄的資訊的左側是區間最大值，右側是嚴格次大值。現在我們要讓區間 \\( [1, 4] \\) 對 \\( 2 \\) 取 \\( min \\)。那麼左圖中紅色邊表示搜尋時經過的邊，紅色字體的節點表示搜索終止的節點，右圖為更新後的線段樹。
 
 <img src="image/segment_tree_beats/update_min.gif" width="700" style="display:block; margin: 0 auto;"/>
 
-現在我們來證明這個算法的時間複雜度是 \\( O(mlogn) \\)。
+我們從根節點 \\( 4 | 3 \\) 出發向下走，遇到左子節點 \\( 2 | 1 \\)，由於 \\( mx1 \leq 2 \\)，屬於第一種狀況，直接退出；遇到右子節點 \\( 4 | 3 \\)，由於 \\( mx2 \geq 2 \\)，屬於第三種狀況，對子節點進行遞迴搜尋。
+
+<img src="image/segment_tree_beats/1-1.jpg" width="700" style="display:block; margin: 0 auto;"/>
+
+繼續從右子節點 \\( 4 | 3 \\) 向下遞迴搜尋，遇到左子節點 \\( 4 | -1 \\)，由於 \\( mx2 < 2 < mx1 \\)，屬於第二種狀況，區間和被改為 \\( 4 + 1 \cdot (2 - 4) = 2 \\)，最大值被更新為 \\( 2 \\)，標記也被設為 \\( 2 \\)；遇到右子節點 \\( 4 | -1 \\) 同理。
+
+<img src="image/segment_tree_beats/1-2.gif" width="700" style="display:block; margin: 0 auto;"/>
+
+接著向上更新標記，節點 \\( 4 | 3 \\) 的區間和更新為 \\( 2 + 2 = 4 \\)，最大值更新為 \\( 2 \\)，最小值更新為 \\( -1 \\)。
+
+<img src="image/segment_tree_beats/1-3.gif" width="700" style="display:block; margin: 0 auto;"/>
+
+最後向上更新標記，根節點 \\( 4 | 3 \\) 的區間和更新為 \\( 2 + 2 = 4 \\)，最大值更新為 \\( 2 \\)，最小值更新為 \\( max(1, -1) = 1 \\)。
+
+<img src="image/segment_tree_beats/1-4.gif" width="700" style="display:block; margin: 0 auto;"/>
+
+現在我們來證明這個算法的時間複雜度是 \\( O((n + m)logn) \\)。
 
 首先我們把最大值看作標記，對線段樹每一個節點，記錄一個標記值，它的值等於它所包含的區間中的最大值。接著如果一個點的標記值與父節點的標記值相同，就把此點的標記刪除，大致轉換如下圖所示（左圖紀錄的是線段樹中的最大值，右圖為轉換後的線段樹）：
 
@@ -67,123 +83,95 @@ Segment Tree Beats（簡稱 STB）是北京大學的吉如一提出的概念，�
 <details><summary> Solution Code </summary>
 
 ```cpp
-#include <algorithm>
-#include <cctype>
-#include <cstdio>
-using namespace std;
-const int N = 1e6 + 6;
+struct STB {
+    #define ls (u << 1)
+    #define rs (u << 1 | 1)
 
-char nc() {
-    static char buf[1000000], *p = buf, *q = buf;
-    return p == q && (q = (p = buf) + fread(buf, 1, 1000000, stdin), p == q)
-               ? EOF
-               : *p++;
-}
+    struct Node {
+        ll sum;
+        int l, r, mx1, mx2, cmx, tag;
+    } T[N << 2];
 
-int rd() {
-    int res = 0;
-    char c = nc();
-    while (!isdigit(c)) c = nc();
-    while (isdigit(c)) res = res * 10 + c - '0', c = nc();
-    return res;
-}
-
-int t, n, m;
-int a[N];
-int mx[N << 2], se[N << 2], cn[N << 2], tag[N << 2];
-long long sum[N << 2];
-
-void pushup(int u) {  // 向上更新標記
-    const int ls = u << 1, rs = u << 1 | 1;
-    sum[u] = sum[ls] + sum[rs];
-    if (mx[ls] == mx[rs]) {
-        mx[u] = mx[rs];
-        se[u] = max(se[ls], se[rs]);
-        cn[u] = cn[ls] + cn[rs];
-    } else if (mx[ls] > mx[rs]) {
-        mx[u] = mx[ls];
-        se[u] = max(se[ls], mx[rs]);
-        cn[u] = cn[ls];
-    } else {
-        mx[u] = mx[rs];
-        se[u] = max(mx[ls], se[rs]);
-        cn[u] = cn[rs];
+    void pushup(int u) { // 向上更新標記
+        T[u].sum = T[ls].sum + T[rs].sum;
+        if (T[ls].mx1 == T[rs].mx1){
+            T[u].mx1 = T[ls].mx1;
+            T[u].cmx = T[ls].cmx + T[rs].cmx;
+            T[u].mx2 = max(T[ls].mx2, T[rs].mx2);
+        } else if (T[ls].mx1 > T[rs].mx1) {
+            T[u].mx1 = T[ls].mx1;
+            T[u].cmx = T[ls].cmx;
+            T[u].mx2 = max(T[ls].mx2, T[rs].mx1);
+        } else {
+            T[u].mx1 = T[rs].mx1;
+            T[u].cmx = T[rs].cmx;
+            T[u].mx2 = max(T[ls].mx1, T[rs].mx2);
+        }
     }
-}
 
-void pushtag(int u, int tg) {  // 單純打標記，不暴搜
-    if (mx[u] <= tg) return;
-    sum[u] += (1ll * tg - mx[u]) * cn[u];
-    mx[u] = tag[u] = tg;
-}
-
-void pushdown(int u) {  // 下傳標記
-    if (tag[u] == -1) return;
-    pushtag(u << 1, tag[u]), pushtag(u << 1 | 1, tag[u]);
-    tag[u] = -1;
-}
-
-void build(int u = 1, int l = 1, int r = n) {  // 建樹
-    tag[u] = -1;
-    if (l == r) {
-        sum[u] = mx[u] = a[l], se[u] = -1, cn[u] = 1;
-        return;
+    void pushdown(int u) { // 下傳標記
+        if (T[u].tag == -1) return;
+        if (T[ls].mx1 > T[u].tag) {
+            T[ls].sum += 1LL * T[ls].cmx * (T[u].tag - T[ls].mx1);
+            T[ls].mx1 = T[ls].tag = T[u].tag;
+        }
+        if (T[rs].mx1 > T[u].tag) {
+            T[rs].sum += 1LL * T[rs].cmx * (T[u].tag - T[rs].mx1);
+            T[rs].mx1 = T[rs].tag = T[u].tag;
+        }
+        T[u].tag = -1;
     }
-    int mid = (l + r) >> 1;
-    build(u << 1, l, mid), build(u << 1 | 1, mid + 1, r);
-    pushup(u);
-}
 
-void modify_min(int L, int R, int v, int u = 1, int l = 1, int r = n) {
-    if (mx[u] <= v) return;
-    if (L <= l && r <= R && se[u] < v) return pushtag(u, v);
-    int mid = (l + r) >> 1;
-    pushdown(u);
-    if (L <= mid) modify_min(L, R, v, u << 1, l, mid);
-    if (mid < R) modify_min(L, R, v, u << 1 | 1, mid + 1, r);
-    pushup(u);
-}
-
-int query_max(int L, int R, int u = 1, int l = 1, int r = n) {  // 查詢最值
-    if (L <= l && r <= R) return mx[u];
-    int mid = (l + r) >> 1, r1 = -1, r2 = -1;
-    pushdown(u);
-    if (L <= mid) r1 = query_max(L, R, u << 1, l, mid);
-    if (mid < R) r2 = query_max(L, R, u << 1 | 1, mid + 1, r);
-    return max(r1, r2);
-}
-
-long long query_sum(int L, int R, int u = 1, int l = 1, int r = n) {  // 數值
-    if (L <= l && r <= R) return sum[u];
-    int mid = (l + r) >> 1;
-    long long res = 0;
-    pushdown(u);
-    if (L <= mid) res += query_sum(L, R, u << 1, l, mid);
-    if (mid < R) res += query_sum(L, R, u << 1 | 1, mid + 1, r);
-    return res;
-}
-
-void go() {  // 根據題意
-    n = rd(), m = rd();
-    for (int i = 1; i <= n; i++) a[i] = rd();
-    build();
-    for (int i = 1; i <= m; i++) {
-        int op, x, y, z;
-        op = rd(), x = rd(), y = rd();
-        if (op == 0)
-            z = rd(), modify_min(x, y, z);
-        else if (op == 1)
-            printf("%d\n", query_max(x, y));
-        else
-            printf("%lld\n", query_sum(x, y));
+    void build(int u = 1, int l = 1, int r = N) { // 建樹
+        T[u].tag = -1;
+        T[u].l = l, T[u].r = r;
+        if (l == r) {
+            T[u].sum = T[u].mx1 = A[l];
+            T[u].mx2 = -1;
+            T[u].cmx = 1;
+            return;
+        }
+        int mid = (l+r) >> 1;
+        build(ls, l, mid);
+        build(rs, mid+1, r);
+        pushup(u);
     }
-}
 
-signed main() {
-    t = rd();
-    while (t--) go();
-    return 0;
-}
+    void chmin(int L, int R, int x, int u = 1) {
+        if (T[u].mx1 <= x) return; // 第1種狀況
+        int l = T[u].l, r = T[u].r;
+        if (L <= l && r <= R && T[u].mx2 < x) { // 第2種狀況
+            T[u].sum += 1LL * T[u].cmx * (x - T[u].mx1);
+            T[u].mx1 = T[u].tag = x;
+            return;
+        }
+        pushdown(u);
+        int mid = (l+r) >> 1;
+        if (L <= mid) chmin(L, R, x, ls);
+        if (R > mid) chmin(L, R, x, rs);
+        pushup(u);
+    }
+
+    pair<ll, int> query(int L, int R, int u = 1) {
+        int l = T[u].l, r = T[u].r;
+        if (L <= l && r <= R)
+            return make_pair(T[u].sum, T[u].mx1);
+        pushdown(u);
+        ll sum = 0; int mx1 = 0;
+        int mid = (l+r) >> 1;
+        if (L <= mid) {
+            auto r1 = query(L, R, ls);
+            sum += r1.first;
+            mx1 = max(mx1, r1.second);
+        }
+        if (mid < R) {
+            auto r2 = query(L, R, rs);
+            sum += r2.first;
+            mx1 = max(mx1, r2.second);
+        }
+        return make_pair(sum, mx1);
+    }
+};
 ```
 
 </details>
