@@ -221,6 +221,61 @@ int main() {
 
 以 \\( x = 5 \\) 為例，因為 \\( f(5) > 0 \\)，代表當前的狀態是 winning state。同時也代表著玩家可以採取某個行動，使遊戲狀態的 Grundy Number 變為 \\( 0 \\)，也就是 losing state。在這個局勢，玩家只要把這堆棍子分成 \\( 1 \\) 根與 \\( 4 \\) 根，則 Grundy Number 會變成 \\( f(1) \oplus f(4) = 0 \\)。
 
+## Hackenbush
+
+> [AtCoder Grand Contest 017 D - Game on Tree](https://atcoder.jp/contests/agc017/tasks/agc017_d)
+>
+> 給一棵含有 \\( N \\)個節點的樹。玩家 A, B 輪流採取行動。每次可以選擇一條邊，並把整棵樹切成兩個部分。不含有編號 \\( 1 \\) 節點的聯通塊會被移除。若某方無法採取合法的行動，則落敗。問若從 A 開始，且兩人都採取最佳化策略，那麼誰將獲勝。
+
+在一次行動後，不與 \\( 1 \\) 號節點的聯通塊會被移除。因此把根定在 \\( 1 \\) 號節點似乎是個合理的想法。接著要思考的是狀態如何定義。樹具有可以遞迴的特性。如果我們有子樹的狀態，有沒有辦法把那些答案合併，並求出父節點的答案呢? 基於上述的推論，我們可能會聯想到 Grundy Number。若一個子樹的根結點編號為 \\( x \\)，我們定義在這棵子樹上玩相同的遊戲時，Grundy Number 為 \\( f_x \\)。那麼對於一個父節點 \\( u \\)，對於他所有的子節點 \\( v_i \\)，如果我們有所有 \\( f_{v_i} \\) 的值，那麼我們能否求出 \\( f_u \\)。
+
+先考慮樹的結構是一條鏈的情況。若只有一個節點，那麼 SG value 為 \\( 0 \\)，因為玩家無法刪除任何一條邊。接著考慮兩個點的情況。因為只有一條邊可以切，而且切完對手就無法採取任何行動了。因此該狀態的 SG value 為 \\( MEX \lbrace 0 \rbrace = 1 \\)。若鏈由三個點構成，那麼在切完邊後，與根相連的聯通塊有可能還剩 \\( 1 \\) 或 \\( 2 \\) 個節點。因此該狀態的 SG value 為 \\( MEX \lbrace 0, 1 \rbrace = 2 \\)。經由觀察或是數學歸納法可以證明，一條含有 \\( n \\) 個點的鏈的 SG value 為 \\( n - 1 \\)。也就是新加入一個點在鏈上時，SG value 會增加一。
+
+另一種情況是父節點連接至若干棵子樹。根據 Colon Principle，我們可以用 Nim sum 將該結構合併成一條鍊。因此若 \\( u \\) 為 \\( v \\) 的父節點，那麼以 \\( v \\) 為根的子樹可以被替換成含有 \\( f_v + 1 \\) 個節點的鏈。再考慮 \\( u - v \\) 這條邊，得到的 SG value 為 \\( f_v + 1 \\)。由此，我們得到了 \\( v \\) 這個子節點的貢獻。那麼考慮所有的子節點 \\( v_i \\)，並根據 Colon Principle。以 \\( u \\) 為根的子樹可以被替換成含有 \\( ( (f_{v_1} + 1) \oplus (f_{v_2} + 1) …… \oplus (f_{v_n} + 1) ) + 1 \\) 個點的鏈，因此以 \\( u \\)為根的子樹的 SG value 即為 \\( ( (f_{v_1} + 1) \oplus (f_{v_2} + 1) …… \oplus (f_{v_n} + 1) ) \\)。有了以上的算式，在遞迴時由葉節點開始求 SG value，並合併至父節點，我們便可以求出以 \\( 1 \\) 號節點為根的樹的 SG value，由此判斷開局的狀態是不是 winning state，便能得知先手的玩家是否存在一個必勝策略了。
+
+<details><summary> Solution Code </summary>
+
+- Time complexity: \\( O(N) \\)
+
+```cpp
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void solve() {
+    int N; cin >> N;
+    vector<vector<int>> adj(N, vector<int>());
+    for (int i = 0; i < N - 1; i++) {
+        int u, v; cin >> u >> v;
+        u--, v--;
+        adj[u].emplace_back(v);
+        adj[v].emplace_back(u);
+    }
+    auto dfs = [&](auto self, int u, int par = -1) -> int {
+        int x = 0;
+        for (auto v: adj[u]) {
+            if (v == par) continue;
+            x ^= (self(self, v, u) + 1);
+        }
+        return x;
+    };
+    int sg_value = dfs(dfs, 0);
+    cout << (sg_value != 0 ? "Alice\n" : "Bob\n");
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    solve(); 
+}
+    
+```
+
+</details>
+
+這個例題是經典遊戲 Green Hackenbush 的子集。除了 Green Hackenbush，Hackenbush 還有許多變形，像是 Blue-Red Hackenbush，Blue-Red-Green Hackenbush 等等。有興趣的讀者可以在網路上搜尋相關資訊。
+
 ## Exercises
 
 > [Atcoder Beginner Contest 206 F - Interval Game 2](https://atcoder.jp/contests/abc206/tasks/abc206_f)
