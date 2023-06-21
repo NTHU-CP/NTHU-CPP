@@ -1,10 +1,8 @@
 # Nim and Sprague-Grundy Theorem
 
-
 ## Introduction
 
 在此章節中，我們會討論不偏賽局的定義以及其中一個經典的例子: Nim Game。接著，我們將介紹 SG-value 與 Nim Game 之間的關聯性，以及在賽局相關的題目中如何應用它們。
-
 
 ## Impartial Game
 
@@ -17,7 +15,6 @@
 - 無隨機成分
 - 賽局會在某方玩家無法採取任何行動時結束
 - 在**有限**的回何數內會結束
-
 
 對於一個不偏賽局，我們可以將其轉化成 Nim Game 的形式。因此下面會介紹 Nim Game 的規則，性質以及一些延伸內容。
 
@@ -43,7 +40,7 @@
 
 這邊提出一個數學歸納法的證明。為了方便後續說明，將 \\( XOR \\) 得出的結果命名為 \\( s \\) 。
 
-#### Base Case 
+#### Base Case
 
 若沒有任何石頭，則 \\( s\\) 為 \\( 0 \\)，玩家無法採取行動，為一個 losing state。
 
@@ -60,6 +57,7 @@
 > [CSES 1730 - Nim Game I](https://cses.fi/problemset/task/1730)
 >
 > 有 \\( N \\) 堆棍子，每堆有 \\( x_i \\) 根棍子。玩家 A, B 輪流採取行動。每次行動可以選擇其中一堆棍子，並從中拿走任意正整數根棍子。沒有棍子可以取的一方落敗。問若從 A 開始，且雙方都採取最佳化策略，那麼誰將獲勝。
+
 - \\( 1 \leq N \leq 2*10^5 \\)
 - \\( 1 \leq x_i \leq 10^9 \\)
 
@@ -68,7 +66,7 @@
 <details><summary> Solution Code </summary>
 
 - Time complexity: \\( O(N) \\)
-    
+
 ```cpp
 
 #include <bits/stdc++.h>
@@ -110,15 +108,15 @@ int main() {
 > [CSES 1099 - Stair Game](https://cses.fi/problemset/task/1099)
 >
 > 有 \\( N \\) 階的階梯，編號為第 \\( 1 \sim N \\) 階，每階上都放有非負整數顆球。玩家 \\( A\, B \\) 輪流採取行動，由 \\( A \\) 開始。每回合可以選擇一個整數 \\( x \\) \\( (x > 1) \\)，並從第 \\( x \\) 階取任意正整數顆球並移到第 \\( x - 1 \\) 階。到最後，沒有任何方法移動球的一方落敗。題目則問若雙方都採取最佳化策略時，誰會獲勝。
-    
+
 經由打表和一些觀察可以發現，若將**偶數階階梯**的球數進行 \\( XOR \\) 運算，若為 \\( 0 \\) 代表該 state 為 losing state，若不為 \\( 0 \\) 則為 winning state。
-    
+
 該如何驗證這個策略的正確性呢?這邊提供一個與 Nim Game 有關的想法。將偶數階階梯的球數視為 Nim Game 每堆的石頭數，且每回合的行動是可以任取一堆並增加該堆石頭數的。而對於一個偶數 \\( K\ (K  \geq  2) \\)，若當時第 \\( K + 1 \\) 階有 \\( x \\) 顆球，則代表第 \\( K \\) 階的石頭堆在當時的回合最多可以新增 \\( x \\) 塊石頭。而因為能新增的石頭數量是**有限**的，因此可以採用同上個章節"Nim Game Extension"的策略。
-    
+
 <details><summary> Solution Code </summary>
 
 - Time complexity: \\( O(N) \\)
-    
+
 ```cpp
 #include <bits/stdc++.h>
 using ll = long long;
@@ -148,7 +146,7 @@ int main() {
 ```
 
 </details>
-    
+
 ## Sprague-Grundy Theorem
 
 在介紹此定理以前，先引入一個符號 \\( MEX \\) 。對於一個集合 \\( s \\) ， \\( MEX \lbrace s \rbrace \\) 的定義為不屬於 \\(s \\) 的數字中最小的非負整數。例如 \\( MEX \lbrace 0, 1, 3, 5 \rbrace = 2 \\) ， \\( MEX \lbrace 1, 2, 3 \rbrace = 0 \\) 。
@@ -160,7 +158,7 @@ int main() {
 Nim Game 每回合的行動可以從數量為 \\( x(x>0) \\) 的石頭堆取出任意數量，在取後的剩餘石頭數有可能為 \\( 0 \sim x-1 \\) 的任意一個。相似地，Grundy Number 的性質確保，一個 SG value 為 x 的 state，對於任意一個 \\( i\ (x-1\ge i\ge0, \ i \in Z) \\) ，都至少存在一種轉移方法，使玩家在一回合內轉移到SG value為 \\( i \\) 的 state。與 Nim Game 不同之處在於，某些不偏賽局在轉移後，有可能會使 SG value 變大。那麼這時可以用"Nim Game Extension"的策略，把對手上一回合的行動消除，即可維持在 winning state。
 
 ### Example
-    
+
 > [CSES 1098 - Nim Game II](https://cses.fi/problemset/task/1098)
 >
 > 有 \\( N \\) 堆石頭。兩名玩家輪流採取行動，每回合可以選擇其中一堆石頭並移除 \\( 1 \sim 3 \\) 個石頭。若玩家無法移除則落敗。題目問若雙方都採取最佳化策略的話，誰將獲勝。
@@ -174,7 +172,7 @@ Nim Game 每回合的行動可以從數量為 \\( x(x>0) \\) 的石頭堆取出�
 <details><summary> Solution Code </summary>
 
 - Time complexity: \\( O(N) \\)
-    
+
 ```cpp
 #include <bits/stdc++.h>
 using ll = long long;
@@ -204,11 +202,10 @@ int main() {
 ```
 
 </details>
-    
+
 ## Grundy's Game
 
 除了可以用 \\( XOR \\) 合併多個子遊戲的 Grundy Number 以外，若一個行動將遊戲分裂成若干個子遊戲，那麼同樣也可以利用 \\( XOR \\) 將分裂的子遊戲合併，並以 \\( MEX \\) 函數得到該狀態的 Grundy Number。光看文字敘述可能不好理解，我們直接藉由 Grundy's Game 這個例子來說明。
-
 
 > 一開始有 \\( x \\) 根棍子放在同一堆。玩家 A, B 輪流採取行動。每次行動可以選擇其中一堆並將其分成兩堆，而且這兩堆的大小不能相同。沒有合法的行動者落敗。問雙方都採取最佳化策略，那麼誰將獲勝。
 
@@ -229,17 +226,15 @@ int main() {
 
 ## Exercises
 
-
-
-
 > [Atcoder Beginner Contest 206 F - Interval Game 2](https://atcoder.jp/contests/abc206/tasks/abc206_f)
 >
-> 給 \\( N \\) 個左閉右開的區間，每個區間的範圍是 \\( [L_i  , R_i ) \\)。玩家 \\( A \\) 與 \\( B \\) 輪流選擇區間，每次可以選擇 \\( N \\) 個區間的其中一個，但不能與先前兩人已選擇的任何一個區間重疊。若輪到某個玩家並且他沒有合法選擇區間的方法，那麼該玩家落敗。若由 \\( A \\) 開始，且雙方都採取最佳化策略，那麼問誰將獲勝。   
+> 給 \\( N \\) 個左閉右開的區間，每個區間的範圍是 \\( [L_i  , R_i ) \\)。玩家 \\( A \\) 與 \\( B \\) 輪流選擇區間，每次可以選擇 \\( N \\) 個區間的其中一個，但不能與先前兩人已選擇的任何一個區間重疊。若輪到某個玩家並且他沒有合法選擇區間的方法，那麼該玩家落敗。若由 \\( A \\) 開始，且雙方都採取最佳化策略，那麼問誰將獲勝。
+
 - \\( 1 \leq N, L_i, R_i \leq 100 \\)
 
 <details><summary>Solution</summary>
 
-第一眼看到題目可能會覺得狀態不太容易定義。但再想想會發現若把遊戲狀態定義成目前可選擇的範圍是 \\( x \sim y \\)。那麼取完一個區間後，會得到另外兩個可以選的小區間，也就是兩個同類型的子遊戲。這與前面 Grundy Number 章節的概念頗為相似。考慮將狀態定義為 \\( dp[x][y] \\)，代表當現在可選的範圍是 \\( x \sim y \\) 時，狀態的 Grundy Number 會是多少。那麼採用 top-down DP 的方式來填表，就能得到整個遊戲的 SG-value， 也就能得到最後的答案。    
+第一眼看到題目可能會覺得狀態不太容易定義。但再想想會發現若把遊戲狀態定義成目前可選擇的範圍是 \\( x \sim y \\)。那麼取完一個區間後，會得到另外兩個可以選的小區間，也就是兩個同類型的子遊戲。這與前面 Grundy Number 章節的概念頗為相似。考慮將狀態定義為 \\( dp[x][y] \\)，代表當現在可選的範圍是 \\( x \sim y \\) 時，狀態的 Grundy Number 會是多少。那麼採用 top-down DP 的方式來填表，就能得到整個遊戲的 SG-value， 也就能得到最後的答案。
 
 正確性的部分已經沒問題了，那麼時間複雜度呢 ? 狀態總共有 \\( max \lbrace R_i \rbrace ^2  \leq 10^4 \\) 個。每次轉移需要將 \\( N \\) 個可選的區間枚舉一遍，並利用 \\( MEX \\) 函數求出該狀態的 SG-value。總共需要 \\( O(N) \\) 的時間。\\( MEX \\) 函數也只要花 \\( O(N) \\) 是因為每個狀態最多只會轉移到 \\( N \\) 個不同的狀態，由此得知一個狀態的 SG-value 不會大於 \\( N \\)，求值時只要從 \\( 0 \\) 到 \\( N \\) 檢查哪個最小的非負整數不會被轉移到，即為該狀態的 SG-value。綜上所述，整個演算法只需要約 \\( 10^6 \\) 個運算即可完成，能夠在時限內跑完。
 
@@ -298,21 +293,23 @@ int main() {
 }
     
 ```
+
 </details>
-    
+
 > [Atcoder Beginner Contest 297 G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
 >
 > 給 \\( N,L,R \\) 三個整數。玩家 \\( A, B \\) 玩Nim Game ( \\( N \\) 堆石頭，每堆有 \\( 1 \sim 10^9 \\) 個)，但每回合只能從其中一堆取 \\( L \sim R \\) 個石頭。問若雙方都採取最佳化策略，誰將獲勝。
+
 - \\( N \leq 2*10^5 \\)
 - \\( 1 \leq L \leq R \leq 10^9 \\)
 
 <details><summary>Solution</summary>
-    
+
 打表找規律後可以發現每堆的 SG-value 為 \\( (x\ mod\ (L + R)) / L \\) ， \\( x \\) 為該堆石頭個數。而根據上述的定理，可以由 \\( XOR \\) 進行合併，得到最後的 SG-value。
-    
+
 證明的話可以使用數學歸納法。
 分成:
-    
+
 - \\( 0 \leq x < L + R \\)。
 在滿足上述不等式的前提下，這個case又可以分成 \\( 0 \leq x < L ,\ \ \  L \leq x < 2L,\ \ \ 2L \leq x < 3L... \\)。
 - \\( L + R \leq x < 2(L + R) \\)。
@@ -320,11 +317,11 @@ int main() {
 - 接著再討論 \\( x \geq 2(L+R) \\) 的case。
 
 </details>
-    
+
 <details><summary> Solution Code </summary>
 
 - Time complexity: \\( O(N) \\)
-    
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -346,24 +343,25 @@ int main() {
     
 ```
 
-
-    
 </details>
 
 > [Codeforces Round 868 E - Removing Graph](https://codeforces.com/contest/1823/problem/E)
 >
 > 給一張由數個環(每個點的 degree 皆為2)組成的圖。玩家 \\( A \\) , \\( B \\) 輪流行動。已知 \\( l, r \\) 的值，每回合可以移除 \\( l \sim r \\) 個連通的點(相鄰的邊一同移除)。若輪到某玩家且該玩家沒有合法的移除方式，則玩家落敗。問若雙方都採取最佳化策略，那麼誰將獲勝。
+
 - \\( 1 \leq l < r \leq 2*10^5 \\)
 
 <details><summary>Solution</summary>
 
 圖的每個環都是獨立的。若能求出一個環的 SG value，那麼整個遊戲的 SG value 就是所有環的 SG value \\( XOR \\) 出來的結果。
 
-經由一些觀察後發現，從一個環移除一些點後，會形成一條鏈。一條鏈在移除一些點後，會形成 \\( 1 \sim 2 \\) 條鏈。而一個狀態的 SG value 等同於 \\( MEX \lbrace 轉移到的\ state\ 的\ SG\ value  \rbrace \\) 。方便後續的說明，令 \\( cycle[x] \\) 為 \\( x \\) 個點構成的環的 SG value，\\( chain[x] \\) 為 \\( x \\) 個點構成的鏈的 SG value。那麼綜合以上的資訊可以列出以下方程式 
+經由一些觀察後發現，從一個環移除一些點後，會形成一條鏈。一條鏈在移除一些點後，會形成 \\( 1 \sim 2 \\) 條鏈。而一個狀態的 SG value 等同於 \\( MEX \lbrace 轉移到的\ state\ 的\ SG\ value  \rbrace \\) 。方便後續的說明，令 \\( cycle[x] \\) 為 \\( x \\) 個點構成的環的 SG value，\\( chain[x] \\) 為 \\( x \\) 個點構成的鏈的 SG value。那麼綜合以上的資訊可以列出以下方程式
+
 - \\( cycle[x] = MEX \lbrace chain[x-r], chain[x-r+1], ... chain[x-l] \rbrace \\)
 - \\( chain[x] = MEX \lbrace chain[a] \oplus chain[b],\ \forall\ a, b \geq 0,\ x-r \leq a+b \leq x-l \rbrace \\)
 
 根據題目的範圍，若以常規的方式求 \\( cycle[x], chain[x] \\) 是會超時的。但藉由打表觀察或是一些證明可以得出一些性質:
+
 - \\( chain[x] = 0, \ \ 0 \leq x \leq l-1 \\)
 - \\( chain[x] = x / l, \ \ 0 \leq x \leq r + l - 1 \\)
 - \\( cycle[x] = chain[x], \ \ 0 \leq x \leq r + l - 1 \\)
@@ -378,7 +376,7 @@ int main() {
 <details><summary> Solution Code </summary>
 
 - Time complexity: \\( O(N) \\)
-    
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -420,15 +418,12 @@ int main() {
     
 ```
 
-
-    
 </details>
-
-
 
 ## Summary
 
 在解決一個賽局相關的題目時，步驟可以總結為以下幾點
+
 1. 將遊戲局勢轉換成狀態 (或是某個數值 ex: SG value)
 2. 理解各個狀態之間如何轉移
 3. 判斷獲勝或落敗條件
