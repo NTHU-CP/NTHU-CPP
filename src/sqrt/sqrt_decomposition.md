@@ -188,7 +188,7 @@ int main() {
 我們接著再看一題。
 
 > [CF 445D - Serega and Fun](https://codeforces.com/contest/455/problem/D)  
-> 給一個長度為 \\( N  \\) 的陣列 \\( A \\)，\\( Q \\) 筆操作，強制在線，有兩種操作：
+> 給一個長度為 \\( N \\) 的陣列 \\( A \\)，\\( Q \\) 筆操作，強制在線，有兩種操作：
 >
 > 1. 給定 \\( l, r \\)，將 \\( l \\) 到 \\( r \\) 的元素向右循環移位，也就是說 \\( a_l, a_{l + 1}, ..., a_{r - 1}, a_{r} \\) 會變成 \\( a_{r}, a_{l}, a_{l - 1}, ..., a_{r - 1} \\)。
 > 2. 給定 \\( l, r, k \\)，輸出 \\( l \\) 到 \\( r \\) 之間有幾個元素數值等於 \\( k \\)。
@@ -558,7 +558,7 @@ int main() {
 
 樹上給定兩點求距離是一個非常經典的問題，請讀者參考其他章節，或自行研究。總而言之，這裡你可以透過將查詢距離的問題轉換成 LCA 問題後再轉換成 RMQ 問題，然後搭配 Sparse Table 來達到 \\( O(N\log N) \\) 預處理、\\( O(1) \\) 查詢兩點距離的算法。
 
-事實上此處就算是使用倍增法來求 LCA ，也就是查詢時會是 \\( O(\log N) \\)，仍然能通過此題。
+事實上此處就算是使用倍增法來求 LCA，也就是查詢時會是 \\( O(\log N) \\)，仍然能通過此題。
 
 3. 如何快速的重建維護的資訊
 
@@ -617,7 +617,7 @@ int main() {
 
 這題在當年台北站算是有難度的題目，僅有 14 隊做出來。官解做法複雜度為 \\( O(M\log N) \\)，但是在賽中有隊伍直接使用分塊算法解出這題。
 
-首先因為 \\( n \leq 10^6 \\)，而 \\( e \leq 2 \times 10^5 \\)，所以可以先 relabel ，讓序列的大小變成 \\( 2 \times 10^5 \\)。
+首先因為 \\( n \leq 10^6 \\)，而 \\( e \leq 2 \times 10^5 \\)，所以可以先 relabel，讓序列的大小變成 \\( 2 \times 10^5 \\)。
 
 接著對序列分塊，每一塊需要維護兩種 stack，完整覆蓋到的 stack，稱作 \\(whole\\)，以及部分覆蓋的 stack，稱做 \\(part\\)。每一個元素也要自己維護一個 stack。
 
@@ -652,10 +652,10 @@ int main() {
 - [Sqrt Decomposition - Algorithms for Competitive Programming](https://cp-algorithms.com/data_structures/sqrt_decomposition.html)
 - [SQRT decomposition for beginners](https://codeforces.com/blog/entry/54133)
 - [分块算法总结&专题训练](https://blog.csdn.net/BWzhuzehao/article/details/111057797)
-- [「分块」数列分块入门1 – 9 by hzwer](http://hzwer.com/8053.html)
+- [「分块」数列分块入门 1 – 9 by hzwer](http://hzwer.com/8053.html)
 - [SQRT decomposition](https://codeforces.com/blog/entry/23005)
-- [<<非常规大小分块算法初探>> - 国家集训队2017论文集](https://github.com/enkerewpo/OI-Public-Library/blob/master/IOI中国国家候选队论文/国家集训队2017论文集.pdf)
+- [<<非常规大小分块算法初探>> - 国家集训队 2017 论文集](https://github.com/enkerewpo/OI-Public-Library/blob/master/IOI中国国家候选队论文/国家集训队2017论文集.pdf)
 
 [^note-1]: 經驗上，多數題目的分塊大小都是 \\( \sqrt{N} \\) 為最佳，所以在想解法時很自然會直接將塊的大小設為根號，但對於一些特殊的算法可能需要取不同的分塊大小。
 
-[^note-2]: [线段树模板?VS分块【POJ3264】](https://blog.csdn.net/KIKO_caoyue/article/details/83413687)
+[^note-2]: [线段树模板?VS 分块【POJ3264】](https://blog.csdn.net/KIKO_caoyue/article/details/83413687)
