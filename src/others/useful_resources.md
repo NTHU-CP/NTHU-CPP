@@ -4,7 +4,7 @@
 
 - [Algorithms for Competitive Programming](https://cp-algorithms.com)
 - [OI Wiki](https://oi-wiki.org)
-- [Competitive Programmer’s Handbook](https://cses.fi/book/book.pdf)
+- [Competitive Programmer's Handbook](https://cses.fi/book/book.pdf)
 
 ## Interesting Articles
 
