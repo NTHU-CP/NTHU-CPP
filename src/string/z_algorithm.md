@@ -87,6 +87,8 @@ $R-i+1$ 表示 $S[i:R]$ 共有幾個字元。
 
 **Case 2**: $L \le i \le R$ and $Z[i-L] \lt R-i+1$
 
+![螢幕快照 2023-06-22 23-13-11](https://github.com/williamlin0208/NTHU-CPP/assets/122626646/de19d0de-4a04-4e56-8efa-30658bd8bc2d)
+
 >因為 $Z[i-L]$ 表示 $S[i-L:n-1]$ 與 $S[0:n-1]$ 連續最長共同前綴的長度。
 故如果 $Z[i-L] \lt R-i+1$ ， 則必定 $S[0+Z[i-L]] \not= S[i+Z[i-L]]$ 。
 
@@ -99,7 +101,11 @@ if (L <= L && i <= R && (Z[i-L] < R-i+1)) { //在範圍內且滿足(i+Z[i-L]-1 <
 }
 ```
 
-**Case 3**: $L \le i \le R$ and $Z[i-L] \ge R-i+1$
+**Case 3**: $L \le i \le 
+
+![螢幕快照 2023-06-22 23-14-00](https://github.com/williamlin0208/NTHU-CPP/assets/122626646/dda3a9bd-7a25-485a-b4bc-58ce90dcd50b)
+
+R$ and $Z[i-L] \ge R-i+1$
 
 >$Z[i-L] \ge R-i+1$ 代表 $S[i:R]$ 完全等於 $S[i-L:R-L]$ ，因為我們只保證 $S[L:R]$ 和 $S[0:R-L]$ 內所有元素皆相等，我們無法確定之後的元素是否相等，故需要往後找直到兩元素不相等。
 
