@@ -37,7 +37,7 @@ STB 可以滿足下列兩項性質：
 
 如下圖所示，左圖是一棵建立在 \\( [1, 4] \\) 上的線段樹，每一個節點紀錄的資訊的左側是區間最大值，右側是嚴格次大值。現在我們要讓區間 \\( [1, 4] \\) 對 \\( 2 \\) 取 \\( min \\)。那麼左圖中紅色邊表示搜尋時經過的邊，紅色字體的節點表示正在拜訪的節點，右圖為更新後的線段樹。
 
-<img src="image/segment_tree_beats/1-1.gif" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/1-1.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 ### 觀察性質
 
@@ -50,7 +50,7 @@ STB 可以滿足下列兩項性質：
 
 我們把最大值當作標記。接著如果一個點的標記值與父節點的標記值相同，就把此點的標記刪除，大致轉換如下圖所示（左圖紀錄的是線段樹中的最大值，右圖為轉換後的線段樹）：
 
-<img src="image/segment_tree_beats/2-1.gif" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/2-1.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 在轉換之後，我們可以發現每一個位置實際的值等於從它對應的線段樹葉節點出發，向上走遇到的第一個標記值。這些標記滿足：每個點的標記值都嚴格大於子樹中的所有標記值。
 
@@ -68,7 +68,7 @@ STB 可以滿足下列兩項性質：
 
 依次分析三項對勢能產生影響的操作：添加新標記類、標記下傳、標記回收
 
-1. 考慮一次區間取 \\( min \\) 操作，只會添加一個新的標記類 \\( T \\)，它的權值等於我們打標記時經過的節點數。線段樹深度是 \\( O( \lceil \log (n) \rceil + 1 ) = O( \log n) \\)，打標記時經過的節點數最多也是 \\( O( \log n) \\)，所以 \\( w(T) \\) 是 \\( O( \log n) \\)。
+1. 考慮一次區間取 \\( min \\) 操作，只會添加一個新的標記類 \\( T \\)，它的權值等於我們打標記時經過的節點數。線段樹深度是 \\( O( \lceil \log n \rceil + 1 ) = O( \log n) \\)，打標記時經過的節點數最多也是 \\( O( \log n) \\)，所以 \\( w(T) \\) 是 \\( O( \log n) \\)。
 
 <img src="image/segment_tree_beats/2-3.jpg" width="600" style="display:block; margin: 0 auto;"/>
 
@@ -77,7 +77,7 @@ STB 可以滿足下列兩項性質：
 
 <img src="image/segment_tree_beats/2-4.gif" width="600" style="display:block; margin: 0 auto;"/>
 
-### 勢能計算
+### 透過勢能得到時間複雜度
 
 線段樹中最多存在 \\( n \\) 個標記，每個標記的權值 \\( w(T) \\) 是 \\( O( \log n) \\)。因為 \\( \Phi(x) \\) 是 \\( n \\) 個標記權值總和，所以 \\( \Phi(x) \\) 的初始值是 \\( O(n \log n) \\)。
 
