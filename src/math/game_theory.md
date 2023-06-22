@@ -355,7 +355,7 @@ int main() {
 
 > [Codeforces Beta Round 59 E - Sweets Game](https://codeforces.com/contest/63/problem/E)
 >
-> 將 \\( 19 \\) 塊巧克力放在一個正六邊形的盒子內。A，B 兩人輪流採取行動。每回合可以取若干個連在一起的巧克力並將其移除，且取出的巧克力必須要與正六邊形的其中一個邊平行。沒有巧克力可以移除的一方落敗。問若從 A 開始，且雙方都採取最佳化策略，那麼誰將獲勝。> <img src="image/sweets_game_problem.jpg" width="500" style="display:block; margin: 0 auto;"/>
+> 將 \\( 19 \\) 塊巧克力放在一個正六邊形的盒子內。A，B 兩人輪流採取行動。每回合可以取若干個連在一起的巧克力並將其移除，且取出的巧克力必須要與正六邊形的其中一個邊平行。沒有巧克力可以移除的一方落敗。問若從 A 開始，且雙方都採取最佳化策略，那麼誰將獲勝。> <img src="image/CF_59E_problem.jpg" width="500" style="display:block; margin: 0 auto;"/>
 
 <details><summary>Solution</summary>
 
