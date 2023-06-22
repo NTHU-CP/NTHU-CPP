@@ -10,6 +10,7 @@
   - [Basic Greedy](greedy/basic.md)
 - [Dynamic Programming]()
   - [Basic DP]()
+  - [Convex hull optimization](dp/convex_hull_optimization.md)
 - [Flow]()
 - [Sqrt Technique](sqrt/intro.md)
   - [Square Root Decomposition](sqrt/sqrt_decomposition.md)
