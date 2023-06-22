@@ -4,6 +4,11 @@
 
 Segment Tree Beats（簡稱 STB）是北京大學的吉如一提出的概念，發表在《区间最值操作与历史最值问题》[^note-1]中。
 
+STB 可以滿足下列兩項性質：
+
+1. 將區間最值操作轉換成區間加減操作，在 \\( O(logn) \\) 的時間複雜度內完成
+2. 將歷史最值問題轉換成區間最值操作，在 \\( O(1) \\) 的時間複雜度內完成（這裡的歷史最值問題是指區間加減，詢問區間歷史最值的和）
+
 考慮以下問題：
 
 > 例題 1. [HDU - Gorgeous Sequence](http://acm.hdu.edu.cn/showproblem.php?pid=5306)
@@ -27,32 +32,12 @@ Segment Tree Beats（簡稱 STB）是北京大學的吉如一提出的概念，�
 讓區間 \\( [L, R] \\) 對 \\( x \\) 取 \\( min \\)，我們先在線段樹中定位這個區間，對定位的每一個節點，我們開始暴力搜尋。搜尋到每一個節點時，我們分三種情況討論：
 
 1. 當 \\( mx1 \leq x \\) 時，區間每個元素對 \\( x \\) 取 \\( min \\) 還是元素本身，不會對這個節點產生影響，直接退出。
-2. 當 \\( mx2 < x < mx1 \\) 時，這一次修改只會影響到所有最大值，所以我們把區間和 \\( sum \\) 加上 \\( t \cdot (x - mx) \\)，將 \\( mx \\) 更新為 \\( x \\)，接著打上標記然後退出（只有發生狀況二才會打標記）。
+2. 當 \\( mx2 < x < mx1 \\) 時，這一次修改只會影響到所有最大值，所以我們把區間和 \\( sum \\) 加上 \\( t \cdot (x - mx1) \\)，將 \\( mx1 \\) 更新為 \\( x \\)，接著打上標記然後退出（只有發生狀況二才會打標記）。
 3. 當 \\( mx2 \geq x \\) 時，我們無法直接更新這一個節點的資訊，所以在此時，我們對當前節點的左子節點與右子節點進行遞迴搜尋。
 
-如下圖所示，左圖是一棵建立在 \\( [1, 4] \\) 上的線段樹，每一個節點紀錄的資訊的左側是區間最大值，右側是嚴格次大值。現在我們要讓區間 \\( [1, 4] \\) 對 \\( 2 \\) 取 \\( min \\)。那麼左圖中紅色邊表示搜尋時經過的邊，紅色字體的節點表示搜索終止的節點，右圖為更新後的線段樹。
+如下圖所示，左圖是一棵建立在 \\( [1, 4] \\) 上的線段樹，每一個節點紀錄的資訊的左側是區間最大值，右側是嚴格次大值。現在我們要讓區間 \\( [1, 4] \\) 對 \\( 2 \\) 取 \\( min \\)。那麼左圖中紅色邊表示搜尋時經過的邊，紅色字體的節點表示正在拜訪的節點，右圖為更新後的線段樹。
 
-<img src="image/segment_tree_beats/update_min.gif" width="600" style="display:block; margin: 0 auto;"/>
-
-從根結點 \\( 4 | 3 \\) 開始，由於 \\( mx2 \geq 2 \\)，屬於情況三，對子節點進行遞迴搜尋。
-
-<img src="image/segment_tree_beats/1-0.jpg" width="600" style="display:block; margin: 0 auto;"/>
-
-從根節點 \\( 4 | 3 \\) 出發向下走，遇到左子節點 \\( 2 | 1 \\)，由於 \\( mx1 \leq 2 \\)，屬於情況一，直接退出；遇到右子節點 \\( 4 | 3 \\)，由於 \\( mx2 \geq 2 \\)，屬於情況三，對子節點進行遞迴搜尋。
-
-<img src="image/segment_tree_beats/1-1.jpg" width="600" style="display:block; margin: 0 auto;"/>
-
-繼續從右子節點 \\( 4 | 3 \\) 向下遞迴搜尋，遇到左子節點 \\( 4 | -1 \\)，由於 \\( mx2 < 2 < mx1 \\)，屬於情況二，區間和被改為 \\( 4 + 1 \cdot (2 - 4) = 2 \\)，最大值被更新為 \\( 2 \\)，標記也被設為 \\( 2 \\)；遇到右子節點 \\( 4 | -1 \\)，由於 \\( mx2 < 2 < mx1 \\)，屬於情況二，同理。
-
-<img src="image/segment_tree_beats/1-2.gif" width="600" style="display:block; margin: 0 auto;"/>
-
-接著向上更新標記，節點 \\( 4 | 3 \\) 的區間和更新為 \\( 2 + 2 = 4 \\)，最大值更新為 \\( 2 \\)，最小值更新為 \\( -1 \\)。
-
-<img src="image/segment_tree_beats/1-3.gif" width="600" style="display:block; margin: 0 auto;"/>
-
-最後向上更新標記，根節點 \\( 4 | 3 \\) 的區間和更新為 \\( 2 + 2 = 4 \\)，最大值更新為 \\( 2 \\)，最小值更新為 \\( max(1, -1) = 1 \\)。
-
-<img src="image/segment_tree_beats/1-4.gif" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/1-1.gif" width="600" style="display:block; margin: 0 auto;"/>
 
 ### 觀察性質
 
@@ -61,7 +46,7 @@ Segment Tree Beats（簡稱 STB）是北京大學的吉如一提出的概念，�
 
 ### 時間複雜度
 
-現在我們來證明這個算法的時間複雜度是 \\( O((n + m)logn) \\)。
+現在我們來證明這個算法的時間複雜度是 \\( O((n + m) \log n) \\)。
 
 我們把最大值當作標記。接著如果一個點的標記值與父節點的標記值相同，就把此點的標記刪除，大致轉換如下圖所示（左圖紀錄的是線段樹中的最大值，右圖為轉換後的線段樹）：
 
@@ -83,7 +68,7 @@ Segment Tree Beats（簡稱 STB）是北京大學的吉如一提出的概念，�
 
 依次分析三項對勢能產生影響的操作：添加新標記類、標記下傳、標記回收
 
-1. 考慮一次區間取 \\( min \\) 操作，只會添加一個新的標記類 \\( T \\)，它的權值等於我們打標記時經過的節點數。線段樹深度是 \\( O( \lceil log(n + 1) \rceil ) = O(logn) \\)，打標記時經過的節點數最多也是 \\( O(logn) \\)，所以 \\( w(T) \\) 是 \\( O(logn) \\)。
+1. 考慮一次區間取 \\( min \\) 操作，只會添加一個新的標記類 \\( T \\)，它的權值等於我們打標記時經過的節點數。線段樹深度是 \\( O( \lceil \log (n) \rceil + 1 ) = O( \log n) \\)，打標記時經過的節點數最多也是 \\( O( \log n) \\)，所以 \\( w(T) \\) 是 \\( O( \log n) \\)。
 
 <img src="image/segment_tree_beats/2-3.jpg" width="600" style="display:block; margin: 0 auto;"/>
 
@@ -92,17 +77,19 @@ Segment Tree Beats（簡稱 STB）是北京大學的吉如一提出的概念，�
 
 <img src="image/segment_tree_beats/2-4.gif" width="600" style="display:block; margin: 0 auto;"/>
 
-線段樹中最多存在 \\( n \\) 個標記，每個標記的權值 \\( w(T) \\) 是 \\( O(logn) \\)。因為 \\( \Phi(x) \\) 是 \\( n \\) 個標記權值總和，所以 \\( \Phi(x) \\) 的初始值是 \\( O(nlogn) \\)。
+### 勢能計算
+
+線段樹中最多存在 \\( n \\) 個標記，每個標記的權值 \\( w(T) \\) 是 \\( O( \log n) \\)。因為 \\( \Phi(x) \\) 是 \\( n \\) 個標記權值總和，所以 \\( \Phi(x) \\) 的初始值是 \\( O(n \log n) \\)。
 
 現在來計算 \\( m \\) 次區間取 \\( min \\) 操作的勢能變化量：
 
-1. 添加 \\( m \\) 個新標記類，\\( \Phi(x) \\) 增加 \\( O(mlogn) \\)。
-2. 標記下傳在一次操作中會進行 \\( O(logn) \\) 次，每次讓\\( \Phi(x) \\) 增加 \\( O(1) \\)。因此 \\( m \\) 次操作讓 \\( \Phi(x) \\) 總共增加 \\( O(mlogn) \\)。
-3. 標記回收的時間複雜度不會超過打標記和標記下傳的時間複雜度之和，所以 \\( m \\) 次操作讓 \\( \Phi(x) \\) 總共減少 \\( O(mlogn) \\)。
+1. 添加 \\( m \\) 個新標記類，\\( \Phi(x) \\) 增加 \\( O(m \log n) \\)。
+2. 標記下傳在一次操作中會進行 \\( O( \log n) \\) 次，每次讓\\( \Phi(x) \\) 增加 \\( O(1) \\)。因此 \\( m \\) 次操作讓 \\( \Phi(x) \\) 總共增加 \\( O(m \log n) \\)。
+3. 標記回收的時間複雜度不會超過打標記和標記下傳的時間複雜度之和，所以 \\( m \\) 次操作讓 \\( \Phi(x) \\) 總共減少 \\( O(m \log n) \\)。
 
-勢能的總變化量為 \\( O(mlogn) \\)。
+勢能的總變化量為 \\( O(m \log n) \\)。
 
-將勢能的初始值 \\( O(nlogn) \\) 加上變化量 \\( O(mlogn) \\)，得到這個算法時間複雜度是 \\( O((n + m)logn) \\)。
+將勢能的初始值 \\( O(n \log n) \\) 加上變化量 \\( O(m \log n) \\)，得到這個算法時間複雜度是 \\( O((n + m) \log n) \\)。
 
 <details><summary> Solution Code </summary>
 
@@ -114,9 +101,9 @@ struct STB {
     struct Node {
         ll sum;
         int l, r, mx1, mx2, cmx, tag;
-    } T[N << 2];
+    } T[N << 4];
 
-    void pushup(int u) { // 向上更新標記
+    void pushup(int u) {
         T[u].sum = T[ls].sum + T[rs].sum;
         if (T[ls].mx1 == T[rs].mx1){
             T[u].mx1 = T[ls].mx1;
@@ -133,7 +120,7 @@ struct STB {
         }
     }
 
-    void pushdown(int u) { // 下傳標記
+    void pushdown(int u) {
         if (T[u].tag == -1) return;
         if (T[ls].mx1 > T[u].tag) {
             T[ls].sum += 1LL * T[ls].cmx * (T[u].tag - T[ls].mx1);
@@ -146,7 +133,7 @@ struct STB {
         T[u].tag = -1;
     }
 
-    void build(int u = 1, int l = 1, int r = N) { // 建樹
+    void build(int u = 1, int l = 1, int r = N) {
         T[u].tag = -1;
         T[u].l = l, T[u].r = r;
         if (l == r) {
@@ -162,16 +149,16 @@ struct STB {
     }
 
     void chmin(int L, int R, int x, int u = 1) {
-        if (T[u].mx1 <= x) return; // 第1種狀況
+        if (T[u].mx1 <= x) return;
         int l = T[u].l, r = T[u].r;
-        if (L <= l && r <= R && T[u].mx2 < x) { // 第2種狀況
+        if (L <= l && r <= R && T[u].mx2 < x) {
             T[u].sum += 1LL * T[u].cmx * (x - T[u].mx1);
             T[u].mx1 = T[u].tag = x;
             return;
         }
         pushdown(u);
         int mid = (l+r) >> 1;
-        if (L <= mid) chmin(L, R, x, ls); // 繼續在子樹裡搜尋
+        if (L <= mid) chmin(L, R, x, ls);
         if (R > mid) chmin(L, R, x, rs);
         pushup(u);
     }
@@ -218,7 +205,7 @@ struct STB {
 
 ### 可以用懶標記處理的問題
 
-> 例題 4. [Tyvj - CPU 監控](http://www.tyvj.cn/p/1518)
+> 例題 2. [Tyvj - CPU 監控](http://www.tyvj.cn/p/1518)
 >
 > 給一個長度為 \\( n \\) 的序列 \\( A \\)，同時定義一個輔助數組 \\( B \\)，\\( B \\)開始與 \\( A \\) 完全相同。接下來對其進行 \\( m \\) 筆操作，操作有四種：
 >
