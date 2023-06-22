@@ -101,11 +101,9 @@ if (L <= L && i <= R && (Z[i-L] < R-i+1)) { //在範圍內且滿足(i+Z[i-L]-1 <
 }
 ```
 
-**Case 3**: $L \le i \le 
+**Case 3**: $L \le i \le R$ and $Z[i-L] \ge R-i+1$
 
 ![螢幕快照 2023-06-22 23-14-00](https://github.com/williamlin0208/NTHU-CPP/assets/122626646/dda3a9bd-7a25-485a-b4bc-58ce90dcd50b)
-
-R$ and $Z[i-L] \ge R-i+1$
 
 >$Z[i-L] \ge R-i+1$ 代表 $S[i:R]$ 完全等於 $S[i-L:R-L]$ ，因為我們只保證 $S[L:R]$ 和 $S[0:R-L]$ 內所有元素皆相等，我們無法確定之後的元素是否相等，故需要往後找直到兩元素不相等。
 
