@@ -35,13 +35,13 @@ int query_kth(int l, int r, int rt, int k){
 仔細回想一下在線段樹的單點修改，會發現其實每次有改到的點只有根到葉子的那一條鏈，而其他點的值都不變。
 
 （修改第13個點的值）
-![](src\data_structures\image\persistable_segment_tree\persistable_segment_tree-1.png)
+<img src="image/persistable_segment_tree/persistable_segment_tree-1.png">
 
 
 所以我们只要新建一條鏈出來，並把沒有修改的部分連到上一個版本的樹就好了。
 
 
-![](src\data_structures\image\persistable_segment_tree\persistable_segment_tree-2.png)
+<img src="image/persistable_segment_tree/persistable_segment_tree-2.png">
 
 ## 回到題目
 
