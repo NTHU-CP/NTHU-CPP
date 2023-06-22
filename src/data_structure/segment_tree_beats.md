@@ -85,11 +85,11 @@ STB 可以滿足下列兩項性質：
 
 1. 添加 \\( m \\) 個新標記類，\\( \Phi(x) \\) 增加 \\( O(m \log n) \\)。
 2. 標記下傳在一次操作中會進行 \\( O( \log n) \\) 次，每次讓\\( \Phi(x) \\) 增加 \\( O(1) \\)。因此 \\( m \\) 次操作讓 \\( \Phi(x) \\) 總共增加 \\( O(m \log n) \\)。
-3. 標記回收的時間複雜度不會超過打標記和標記下傳的時間複雜度之和，所以 \\( m \\) 次操作讓 \\( \Phi(x) \\) 總共減少 \\( O(m \log n) \\)。
+3. 父節點對子節點進行標記回收，一定是父節點曾下傳標記給子節點，或曾打標記在子節點上。因此，的時間複雜度不會超過標記下傳和打標記的時間複雜度之和，所以 \\( m \\) 次操作讓 \\( \Phi(x) \\) 總共減少 \\( O(m \log n) \\)。
 
 勢能的總變化量為 \\( O(m \log n) \\)。
 
-將勢能的初始值 \\( O(n \log n) \\) 加上變化量 \\( O(m \log n) \\)，得到這個算法時間複雜度是 \\( O((n + m) \log n) \\)。
+將勢能初始值 \\( O(n \log n) \\) 加上變化量 \\( O(m \log n) \\)，得到這個算法時間複雜度是 \\( O((n + m) \log n) \\)。
 
 <details><summary> Solution Code </summary>
 
@@ -101,7 +101,7 @@ struct STB {
     struct Node {
         ll sum;
         int l, r, mx1, mx2, cmx, tag;
-    } T[N << 4];
+    } T[n << 4];
 
     void pushup(int u) {
         T[u].sum = T[ls].sum + T[rs].sum;
@@ -133,7 +133,7 @@ struct STB {
         T[u].tag = -1;
     }
 
-    void build(int u = 1, int l = 1, int r = N) {
+    void build(int u = 1, int l = 1, int r = n) {
         T[u].tag = -1;
         T[u].l = l, T[u].r = r;
         if (l == r) {
@@ -189,15 +189,19 @@ struct STB {
 
 ### 歷史最值問題
 
-在資料結構問題中，我們通常需要對一個給定的數組 \\( A \\) 進行多次操作，然後進行一些詢問。有一少部分問題需要對歷史版本進行詢問，這類特殊的有關歷史版本的問題我們把它稱作歷史最值問題。歷史最值問題中的詢問可以分成以下三類：
+我們通常需要對一個數組 \\( A \\) 進行多次操作，然後進行一些詢問。少部分問題需要對歷史版本進行詢問，稱為歷史最值問題。我們先來介紹三類歷史最值問題：
 
 #### 歷史最大值
 
 當前位置下曾經出現過的數的最大值。定義一個輔助數組 \\( B \\)，最開始 \\( B \\) 數組與 \\( A \\) 數組完全相同。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( B_i = max(B_i, A_i) \\)。這時，我們將 \\( B_i \\) 稱作 \\( i \\) 這個位置的歷史最大值。
 
+<img src="image/segment_tree_beats/6-1.jpg" width="600" style="display:block; margin: 0 auto;"/>
+
 #### 歷史最小值
 
 當前位置下曾經出現過的數的最小值。定義一個輔助數組 \\( B \\)，最開始 \\( B \\) 數組與 \\( A \\) 數組完全相同。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( B_i = min(B_i, A_i) \\)。這時，我們將 \\( B_i \\) 稱作 \\( i \\) 這個位置的歷史最小值。
+
+<img src="image/segment_tree_beats/6-2.jpg" width="600" style="display:block; margin: 0 auto;"/>
 
 #### 歷史版本和
 
@@ -209,18 +213,170 @@ struct STB {
 >
 > 給一個長度為 \\( n \\) 的序列 \\( A \\)，同時定義一個輔助數組 \\( B \\)，\\( B \\)開始與 \\( A \\) 完全相同。接下來對其進行 \\( m \\) 筆操作，操作有四種：
 >
-> 1. 給定 \\( l, r, x \\)，對所有 \\( i \in [l, r] \\)，將 \\( A_i \\) 修改成 \\( x \\)。
-> 2. 給定 \\( l, r, x \\)，對所有 \\( i \in [l, r] \\)，將 \\( A_i \\) 加上 \\( x \\)。
-> 3. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，輸出 \\( A_i \\) 的最大值。
-> 4. 給定 \\( l, r \\)，對所有 \\( i \in [l, r] \\)，輸出 \\( B_i \\) 的最大值。
+> 1. 給定 \\( L, R, x \\)，對所有 \\( i \in [L, R] \\)，將 \\( A_i \\) 修改成 \\( x \\)。
+> 2. 給定 \\( L, R, x \\)，對所有 \\( i \in [L, R] \\)，將 \\( A_i \\) 加上 \\( x \\)。
+> 3. 給定 \\( L, R \\)，對所有 \\( i \in [L, R] \\)，輸出 \\( A_i \\) 的最大值。
+> 4. 給定 \\( L, R \\)，對所有 \\( i \in [L, R] \\)，輸出 \\( B_i \\) 的最大值。
 >
 > - \\( n, m \leq 10^5 \\)
 
-剛接觸這個問題時，這個例題可能難度較高，所以我們先忽略第一種操作。
+我們先忽略操作一。
 
-考慮使用傳統的懶標記來解決，首先如果只是詢問區間最大值，只需要使用區間加減這一個懶標記（用 \\( Add \\) 表示）就能解決。
+在每個節點維護維護當前最大值 \\( mx \\) 之外，還要額外維護歷史最大值 \\( hmx \\)，區間加標記 \\( add \\) 以及歷史最大加標記 \\( hadd \\)。
 
-現在考慮詢問區間歷史最大值的最大值。我們定義一種新的懶標記：歷史最大的加減標記（用 \\( Pre \\) 表示）。這個標記的定義是，從上一次把這個節點的標記下傳的時刻到當前時刻這一個時段中，這個節點中的 \\( Add \\) 標記值到達過的最大值。
+如果只是詢問區間最大值，只需要維護區間加標記 \\( add \\) 就能解決。
+
+現在考慮歷史區間最大值。歷史最大加標記 \\( hadd \\) 代表在生存週期，也就是從上一次把這個節點的標記下傳的時刻到當前時刻的時段中，\\( add \\) 標記值到達過的最大值。
+
+### 觀察生存週期的性質
+
+- 在一個節點標記的生存週期內，因為沒有下傳標記，所以其子節點狀態都不會發生任何變化。
+
+### 標記下傳
+
+當節點 \\( u \\) 的標記下傳到他的子節點 \\( s \\) 時，更新子節點的標記：
+
+\\( hadd_s = max(hadd_s, add_s + hadd_u) \\)
+\\( add_s = add_u + add_s \\)
+
+至於區間歷史最大值資訊的更新也類似，只需要將當前的區間最大值加上 \\( hadd_u \\) 然後與原來的歷史最大值進行比較即可：
+
+\\( hmx_s = max(hmx_s, mx_s + hadd_u) \\)
+\\( mx_s = mx_s + add_s \\)
+
+### 加入區間覆蓋
+
+現在考慮操作一。
+
+如果一個節點沒有發生標記下傳，代表它一直被區間加減操作影響，可以用 \\( hadd \\) 標記來記錄。
+
+直到某一時刻，這個節點被區間覆蓋標記影響了，這時節點中的所有數變成完全相同，之後的區間加減修改，對節點而言與區間覆蓋操作是相同的。
+
+所以每一個節點受到的標記可以分成兩個部分：第一個部分是區間加減，第二個部分是區間覆蓋。
+
+我們將標記換成 \\( (add, cov) \\)，表示將當前節點先加上 \\( add \\) 再全部變成 \\( cov \\)。
+
+- 當一個區間已經被覆蓋，區間加操作可以直接加到 \\( cov \\) 上。
+
+我們還需要維護 \\( (hadd, hcov) \\)，表示當前區間在第一階段時的最大加標記是 \\( hadd \\)，在第二階段時的最大覆蓋標記是 \\( hcov \\)。這個標記也可以進行更新。
+
+### 時間複雜度
+
+這個算法的時間複雜度是 \\( m \log n \\)。
+
+<details><summary> Solution Code </summary>
+
+```cpp
+struct STB {
+    #define ls (u << 1)
+    #define rs (u << 1 | 1)
+    struct Node{
+        int l, r, mx, hmx, add, hadd, cov, hcov;
+    } T[n << 4];
+
+    void pushup(int u) {
+        T[u].mx = max(T[ls].mx, T[rs].mx);
+        T[u].hmx = max(T[ls].hmx, T[rs].hmx);
+    }
+
+    void pushcover(int u, int v, int hv) {        
+        T[u].hmx = max(T[u].hmx, hv);
+        T[u].mx = v;
+
+        T[u].hcov = max(T[u].hcov, hv);
+        T[u].cov = v;
+    }
+
+    void pushadd(int u, int v, int hv) {
+        if (T[u].cov != INT_MIN) {
+            pushcover(u, T[u].cov + v, T[u].cov + hv);
+            return;
+        }
+        T[u].hmx = max(T[u].hmx, T[u].mx + hv);
+        T[u].mx += v;
+
+        T[u].hadd = max(T[u].hadd, T[u].add + hv);
+        T[u].add += v;
+    }
+
+    void pushdown(int u) {
+        pushadd(ls, T[u].add, T[u].hadd);
+        pushadd(rs, T[u].add, T[u].hadd);
+        T[u].add = T[u].hadd = 0;
+        if (T[u].cov != INT_MIN) {
+            pushcover(ls, T[u].cov, T[u].hcov);
+            pushcover(rs, T[u].cov, T[u].hcov);
+            T[u].cov = T[u].hcov = INT_MIN;
+        }
+    }
+
+    void build(int u = 1, int l = 1, int r = n) {
+        T[u].l = l, T[u].r = r;
+        if (l == r) {
+            T[u].mx = T[u].hmx = A[l];
+            return;
+        }
+        int mid = (l+r) >> 1;
+        build(ls, l, mid);
+        build(rs, mid+1, r);
+        pushup(u);
+    }
+
+    void add(int L, int R, int x, int u = 1) {
+        int l = T[u].l, r = T[u].r;
+        if (L <= l && r <= R) {
+            pushadd(u, x, x);
+            return;
+        }
+        pushdown(u);
+        int mid = (l+r) >> 1;
+        if (L <= mid)
+            add(L, R, x, ls);
+        if (mid < R)
+            add(L, R, x, rs);
+        pushup(u);
+    }
+
+    void cover(int L, int R, int x, int u = 1) {
+        int l = T[u].l, r = T[u].r;
+        if (L <= l && r <= R) {
+            pushcover(u, x, x);
+            return;
+        }
+        pushdown(u);
+        int mid = (l+r) >> 1;
+        if (L <= mid)
+            cover(L, R, x, ls);
+        if (mid < R)
+            cover(L, R, x, rs);
+        pushup(u);
+    }
+
+    pair<int, int> query(int L, int R, int u = 1) {
+        int l = T[u].l, r = T[u].r;
+        if (L <= l && r <= R)
+            return make_pair(T[u].mx, T[u].hmx);
+        pushdown(u);
+        int mx = INT_MIN; int hmx = INT_MIN;
+        int mid = (l+r) >> 1;
+        if (L <= mid) {
+            auto r1 = query(L, R, ls);
+            mx = max(mx, r1.first);
+            hmx = max(hmx, r1.second);
+        }
+        if (mid < R) {
+            auto r2 = query(L, R, rs);
+            mx = max(mx, r2.first);
+            hmx = max(hmx, r2.second);
+        }
+        return make_pair(mx, hmx);
+    }
+};
+```
+
+</details>
+
+> 例題 5. [UOJ -【清华集训 2015】V](http://uoj.ac/problem/164)
 
 ## References
 
