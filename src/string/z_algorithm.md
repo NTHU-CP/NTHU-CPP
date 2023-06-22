@@ -75,6 +75,8 @@ if (R < i || i < L) { //不在範圍內
 
 #### 2. $i$ 在 $[L,R]$ 中
 
+![螢幕快照 2023-06-22 23-05-29](https://github.com/williamlin0208/NTHU-CPP/assets/122626646/467f1b1e-2086-4f6d-afd4-127ab4e7f737)
+
 依照定義， $S[L:R] = S[0:R-L]$。
 故 $S[0 : 0+Z[i-L]-1] = S[i : i+Z[i-L]-1]$ 。
 
