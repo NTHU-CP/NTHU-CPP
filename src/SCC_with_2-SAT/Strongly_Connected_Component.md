@@ -1,44 +1,44 @@
-# SCC and 2-SAT
+# Strongly Connected Component(強連通分量)
 
-## Introduction to Strongly Connected Component(強連通分量)
+## Introduction
+
 ### Definition
 
-在一張有向圖\\(G \\)中，假使兩個節點\\(u \\)跟\\(v \\)之前同時存在路徑\\(path(u,v) \\)和\\(path(v,u) \\)，則我們說\\(u \\)跟\\(v \\)屬於同一個強連通分量（簡稱SCC)中。換句話說，如果能從\\(u \\)走到\\(v \\)，也能從\\(v \\)走到\\(u \\)（相互連通），則\\(u \\)跟\\(v \\)處於同一個SCC中。
+在一張有向圖\\(G \\)中，假使兩個節點\\(u \\)跟\\(v \\)之前同時存在路徑\\(path(u,v) \\)和\\(path(v,u) \\)，則我們說\\(u \\)跟\\(v \\)兩者強連通(strongly connected)。
+
+### *放圖＆解釋*
+
+
+### Strongly Connected Component(強連通分量)
+根據以上定義(強連通)，我們可以得到強連通分量(Strongly Connected Component, 以下簡稱SCC)的正式定義：
+
+學術一點來說:
+對於一個有向圖\\(G \\)的強連通分量\\(C \\)：
+\\(C \\)是\\(G \\)的一個*極大子圖*，使得對於所有\\(C \\)內的節點，兩者互為強連通(\\(\forall u,v \in C, \exists path(u,v),path(v,u) \\))
+
+### *放圖&解釋*
+
 
 #### Property
 1. 若\\(u \\)跟\\(v \\)屬於強連通分量\\(C \\)，那麼在\\(path(u,v) \\)和\\(path(v,u) \\)上的所有點，都屬於強連通分量\\(C \\)
-<details><summary>Proof</summary>
 
-設有一點\\(w \\)處於\\(path(u,v) \\)上，則可從點\\(w \\)延路徑到達點\\(v \\)，同時，因為存在\\(path(v,u) \\)，可從點\\(v \\)走到點\\(u \\)再延著\\(path(u,v) \\)到達點\\(w \\)，故點\\(w,v \\)為相互連通（點\\(u,w \\)亦然）。因此，點\\(u,w,v \\)屬於同一強連通分量。
+設有一點\\(w \\)處於\\(path(u,v) \\)上，則可從點\\(w \\)延路徑到達點\\(v \\)，同時，因為存在\\(path(v,u) \\)，可從點\\(v \\)走到點\\(u \\)再延著\\(path(u,v) \\)到達點\\(w \\)，故點\\(w,v \\)互為強連通（點\\(u,w \\)亦然）。因此，點\\(u,w,v \\)屬於同一強連通分量。
     
-</details>
 
-2. 若\\(u \\)跟\\(v \\)互相連通，且\\(v \\)跟\\(w \\)也互相連通，則\\(u \\)跟\\(w \\)也相互連通，且\\( u, v, w \\)屬於同一強連通分量中
-<details><summary>Proof</summary>
+2. 若\\(u \\)跟\\(v \\)互為強連通，且\\(v \\)跟\\(w \\)也互為強連通，則\\(u \\)跟\\(w \\)也相互強連通，且\\( u, v, w \\)屬於同一強連通分量中
     
-節點\\(v \\)跟節點\\(u,w \\)都互相連通，則可透過\\(path(u,v)+path(v, w)\\)從點\\(u \\)走到點\\(w \\)，反之亦然。因此\\(u \\)跟\\(w \\)相互連通，故\\(u,v,w \\)屬於同一強連通分量中。
-
-</details>
+節點\\(v \\)跟節點\\(u,w \\)都互為強連通，則可透過\\(path(u,v)+path(v, w)\\)從點\\(u \\)走到點\\(w \\)，反之亦然。因此\\(u \\)跟\\(w \\)為相互強連通，故\\(u,v,w \\)屬於同一強連通分量中。
 
 3. 有向圖\\(G \\)的所有強連通分量兩兩不會有交集
-<details><summary>Proof</summary>
 
-假設存在一點\\(w \\)為SCC \\(C_1 \\)與\\(C_2 \\)的交點，則根據性質2. \\(C_1 \\)的所有點應與\\(C_2 \\)的所有點相互連通(經過\\(w \\))，\\(C_1 \\)與\\(C_2 \\)應屬於同一強連通分量，故交點\\(w \\)必不存在。
+假設存在一點\\(w \\)為SCC \\(C_1 \\)與\\(C_2 \\)的交點，則根據性質2. \\(C_1 \\)的所有點應與\\(C_2 \\)的所有點互為強連通(經過\\(w \\))，\\(C_1 \\)與\\(C_2 \\)應屬於同一強連通分量，故交點\\(w \\)必不存在。
     
-</details>
-
 4. 倘若將每個SCC縮成一個點，產生的新圖為有向無環
 
-<details><summary>Proof</summary>
-
 假設縮點後產生的新圖\\(G' \\)存在環，則環上的點必為互相連通，應屬於同一個SCC中，經縮點操作後應合併為一個點，故圖\\G' \\)上不存在環。
-    
-</details>
 
-根據以上性質，我們可以得到強連通分量(SCC)的正式定義：
 
-對於一個有向圖\\(G \\)的強連通分量\\(C \\)：
-\\(C \\)是\\(G \\)的一個極大子圖，such that \\(\forall u,v \in C, \exists path(u,v),path(v,u) \\)
+
 
 為什麼找出強連通分量那麼重要呢？
 
@@ -48,7 +48,7 @@
 #### 縮點操作：
 
 非常暴力且樸素的作法，建造一個縮點後的圖\\( G' \\)，暴力看過原圖\\( G \\)中的所有邊，圖\\( G' \\)中只存跨越不同SCC的邊。
-```
+```cpp
 void Compress() {
     for(int u = 1;u <= n;u++) {
 		for(int v : G[u]) {
@@ -60,6 +60,100 @@ void Compress() {
 }
 ```
 時間複雜度: \\( O(V+E) \\)
+
+## Kosaraju's Algorithm
+藉由兩次DFS求出所有SCC，好處是code比較好寫，但常數較大。
+
+### Detail process & Template code
+
+先對原圖跑一次DFS，用後序走訪的方式把點丟進stack裡。再把stack裡的點一個個拿出來在反圖上DFS。stack是用來維護每個點的DFS完成時間，在stack中維護完成時間從大到小。因此，此演算法的核心為： 先做一次DFS並紀錄每個點的完成時間，接著每次取完成時間最晚的點出來在反圖上做DFS，能走到的所有點就處於同一個SCC。
+
+```cpp
+class SCC {
+private:
+  int n, num_;
+  vector< vector< int > > G, rG;
+  vector< int > ord, num;
+  vector< bool > vis;
+  void dfs( int u ) {
+    if ( vis[ u ] ) return;
+    vis[ u ] = 1;
+    for ( int v : G[ u ] ) dfs( v );
+    ord.push_back( u );
+  }
+  void rdfs( int u ) {
+    if ( vis[ u ] ) return;
+    num[ u ] = num_;
+    vis[ u ] = 1;
+    for ( int v : rG[ u ] ) rdfs(v);
+  }
+public:
+  inline void init( int n_ ) {
+    n = n_, num_ = 0;
+    G.clear(); G.resize( n );
+    rG.clear(); rG.resize( n );
+    vis.clear(); vis.resize( n );
+    num.resize( n );
+  }
+  inline void add_edge( int st, int ed ) {
+    G[ st ].push_back( ed );
+    rG[ ed ].push_back( st );
+  }
+  void solve() {
+    fill( vis.begin(), vis.end(), 0 );
+    for ( int i = 0 ; i < n ; ++ i )
+      if ( not vis[ i ] ) dfs( i );
+    reverse( ord.begin(), ord.end() );
+    fill( vis.begin(), vis.end(), 0 );
+    for ( int i : ord ) {
+      if( not vis[ i ] ) {
+        rdfs( i ); num_++;
+      }
+    }
+  }
+  inline int get_id( int x ) { return num[ x ]; }
+  inline int count() { return num_; }
+} scc;
+```
+
+### Time complexity and the Correctness
+
+Kosaraju Algo分成3個部份: 
+1. 原圖DFS紀錄完成時間（\\( O(V+E) \\)）
+2. 建立反圖\\( G^T \\)（\\( O(V+E) \\)）
+3. 反圖上DFS （\\( O(V+E) \\)）
+故總時間複雜度也是\\(O(V+E))
+
+而正確性跟以下性質有關：
+
+性質：
+1. \\( G^T\\)跟\\( G \\)的SCC集合相同
+
+<details><summary>Proof</summary>
+
+若在圖\\( G \\)中存在路徑\\( u \to v \\)，則在反圖\\( G^T \\)中存在路徑\\( v \to u \\)。同樣的，若在圖\\( G \\)中存在路徑\\( v \to u \\)，則在反圖\\( G^T \\)中存在路徑\\( u \to v \\)。因此，對於點\\(u \\)跟點\\(v \\)，無論在\\(G \\)還是\\(G^T \\)中，都屬於同一個SCC。
+    
+</details>
+
+2. 設點\\( u \\)為SCC \\( C_u \\)中完成時間最晚的，點\\( v \\)為SCC \\( C_v \\)中完成時間最晚的，且能從\\( C_u \\)走到\\( C_v \\)，則點\\( u \\)的完成時間一定比\\( v \\)還晚。
+
+<details><summary>Proof</summary>
+
+可參考[Kosaraju's Proof](https://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/GraphAlgor/strongComponent.htm)
+    
+</details>
+
+3. 在所有SCC中，若\\( C_u \\)的完成時間最晚，則不存在其他\\( C_v \\) s.t \\( C_v \\)能走到\\( C_u\\)。
+
+<details><summary>Proof</summary>
+
+從性質2可知
+    
+</details>
+
+4. 每次挑完成時間最晚的點出來在反圖上DFS可以得到一組SCC。
+
+重複4直到所有點都打上SCC編號，可得到圖\\(G \\)上的所有SCC。
 
 
 ## Tarjan's Algorithm for SCC
@@ -73,7 +167,7 @@ void Compress() {
 
 Tarjan Algo code:
 
-```
+```cpp
 void DFS(int u, int fa) {
 	D[u] = L[u] = ++Time;
 	stk.emplace(u); //走過的點丟進stack裡
@@ -118,67 +212,6 @@ void DFS(int u, int fa) {
 Cross edge會可能更新答案的情況只有:走到之前已經DFS走過的點，否則這條邊應該要屬於Tree edge。而在實做上，在DFS完前面的點之後，我們已經將SCC順便求了出來，所以前面已經形成SCC的點，不會在當前的stack中，因此不會拿來更新答案。
     
 </details>
-
-## Kosaraju's Algorithm
-藉由兩次DFS求出所有SCC，好處是code比較好寫，但常數較大。
-
-### Detail process & Template code
-
-先對原圖跑一次DFS，用後序走訪的方式把點丟進stack裡。再把stack裡的點一個個拿出來在反圖上DFS。stack是用來維護每個點的DFS完成時間，在stack中維護完成時間從大到小。因此，此演算法的核心為： 先做一次DFS並紀錄每個點的完成時間，接著每次取完成時間最晚的點出來在反圖上做DFS，能走到的所有點就處於同一個SCC。
-
-```
-void DFS1(int u) {
-  	if(visited[u]) return;
-	visited[u] = true;
-	for(int v : G[u]) DFS1(v);
-	stk.emplace(u);
-}
- 
-void DFS2(int u, int k) {
-	if(SCC[u]) return ;
-	SCC[u] = k;
-	for(int v : invG[u]) DFS2(v, k);
-}
-```
-
-### Time complexity and the Correctness
-
-Kosaraju Algo分成3個部份: 
-1. 原圖DFS紀錄完成時間（\\( O(V+E) \\)）
-2. 建立反圖\\( G^T \\)（\\( O(V+E) \\)）
-3. 反圖上DFS （\\( O(V+E) \\)）
-故總時間複雜度也是\\(O(V+E))
-
-而正確性跟以下性質有關：
-
-性質：
-1. \\( G^T\\)跟\\( G \\)的SCC集合相同
-
-<details><summary>Proof</summary>
-
-若在圖\\( G \\)中存在路徑\\( u \to v \\)，則在反圖\\( G^T \\)中存在路徑\\( v \to u \\)。同樣的，若在圖\\( G \\)中存在路徑\\( v \to u \\)，則在反圖\\( G^T \\)中存在路徑\\( u \to v \\)。因此，對於點\\(u \\)跟點\\(v \\)，無論在\\(G \\)還是\\(G^T \\)中，都屬於同一個SCC。
-    
-</details>
-
-2. 設點\\( u \\)為SCC \\( C_u \\)中完成時間最晚的，點\\( v \\)為SCC \\( C_v \\)中完成時間最晚的，且能從\\( C_u \\)走到\\( C_v \\)，則點\\( u \\)的完成時間一定比\\( v \\)還晚。
-
-<details><summary>Proof</summary>
-
-可參考[Kosaraju's Proof](https://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/GraphAlgor/strongComponent.htm)
-    
-</details>
-
-3. 在所有SCC中，若\\( C_u \\)的完成時間最晚，則不存在其他\\( C_v \\) s.t \\( C_v \\)能走到\\( C_u\\)。
-
-<details><summary>Proof</summary>
-
-從性質2可知
-    
-</details>
-
-4. 每次挑完成時間最晚的點出來在反圖上DFS可以得到一組SCC。
-
-重複4直到所有點都打上SCC編號，可得到圖\\(G \\)上的所有SCC。
 
 
 ## Problems
