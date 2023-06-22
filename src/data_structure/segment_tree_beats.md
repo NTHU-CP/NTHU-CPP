@@ -16,8 +16,8 @@ STB 可以滿足下列兩項性質：
 > 給一個長度為 \\( n \\) 的序列 \\( A \\)，並對其進行 \\( m \\) 筆操作。操作有三種：
 >
 > 1. 給定 \\( L, R, x \\)，對所有 \\( i, (L \leq i \leq R) \\)，將 \\( A_i \\) 修改成 \\( min(A_i, x) \\)。
-> 2. 給定 \\( L, R \\)，對所有 \\( i, (L \leq i \leq R) \\)，輸出\\( A_i \\)的最大值。
-> 3. 給定 \\( L, R \\)，對所有 \\( i, (L \leq i \leq R) \\)，輸出\\( \sum_{i = L}^{R} A_i \\)。
+> 2. 給定 \\( L, R \\)，對所有 \\( i, (L \leq i \leq R) \\)，輸出 \\( A_i \\) 的最大值。
+> 3. 給定 \\( L, R \\)，對所有 \\( i, (L \leq i \leq R) \\)，輸出 \\( \sum_{i = L}^{R} A_i \\)。
 >
 > - \\( n, m \leq 10^6 \\)
 
@@ -195,13 +195,13 @@ struct STB {
 
 當前位置下曾經出現過的數的最大值。定義一個輔助數組 \\( B \\)，最開始 \\( B \\) 數組與 \\( A \\) 數組完全相同。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( B_i = max(B_i, A_i) \\)。這時，我們將 \\( B_i \\) 稱作 \\( i \\) 這個位置的歷史最大值。
 
-<img src="image/segment_tree_beats/6-1.jpg" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/6-1.jpg" width="500" style="display:block; margin: 0 auto;"/>
 
 #### 歷史最小值
 
 當前位置下曾經出現過的數的最小值。定義一個輔助數組 \\( B \\)，最開始 \\( B \\) 數組與 \\( A \\) 數組完全相同。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( B_i = min(B_i, A_i) \\)。這時，我們將 \\( B_i \\) 稱作 \\( i \\) 這個位置的歷史最小值。
 
-<img src="image/segment_tree_beats/6-2.jpg" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/6-2.jpg" width="500" style="display:block; margin: 0 auto;"/>
 
 #### 歷史版本和
 
@@ -220,49 +220,59 @@ struct STB {
 >
 > - \\( n, m \leq 10^5 \\)
 
-我們先忽略操作一。
+先忽略操作一。
 
 在每個節點維護維護當前最大值 \\( mx \\) 之外，還要額外維護歷史最大值 \\( hmx \\)，區間加標記 \\( add \\) 以及歷史最大加標記 \\( hadd \\)。
 
 如果只是詢問區間最大值，只需要維護區間加標記 \\( add \\) 就能解決。
 
-現在考慮歷史區間最大值。歷史最大加標記 \\( hadd \\) 代表在生存週期，也就是從上一次把這個節點的標記下傳的時刻到當前時刻的時段中，\\( add \\) 標記值到達過的最大值。
-
-### 觀察生存週期的性質
-
-- 在一個節點標記的生存週期內，因為沒有下傳標記，所以其子節點狀態都不會發生任何變化。
+現在考慮歷史區間最大值。歷史最大加標記 \\( hadd \\)，代表從上一次把這個節點的標記下傳的時刻到當前時刻的時段中，\\( add \\) 標記值到達過的最大值。
 
 ### 標記下傳
 
 當節點 \\( u \\) 的標記下傳到他的子節點 \\( s \\) 時，更新子節點的標記：
 
 \\( hadd_s = max(hadd_s, add_s + hadd_u) \\)
+
 \\( add_s = add_u + add_s \\)
 
 至於區間歷史最大值資訊的更新也類似，只需要將當前的區間最大值加上 \\( hadd_u \\) 然後與原來的歷史最大值進行比較即可：
 
 \\( hmx_s = max(hmx_s, mx_s + hadd_u) \\)
+
 \\( mx_s = mx_s + add_s \\)
 
 ### 加入區間覆蓋
 
 現在考慮操作一。
 
-如果一個節點沒有發生標記下傳，代表它一直被區間加減操作影響，可以用 \\( hadd \\) 標記來記錄。
+節點的標記可以分成兩部分：第一部分是區間加減，第二部分是區間覆蓋。
 
-直到某一時刻，這個節點被區間覆蓋標記影響了，這時節點中的所有數變成完全相同，之後的區間加減修改，對節點而言與區間覆蓋操作是相同的。
+將標記換成 \\( (add, cov) \\)，表示將當前節點先加上 \\( add \\) 再全部變成 \\( cov \\)。
 
-所以每一個節點受到的標記可以分成兩個部分：第一個部分是區間加減，第二個部分是區間覆蓋。
+- 當一個區間已經被覆蓋，節點中的所有數變成完全相同，區間加操作可以直接加到 \\( cov \\) 上。
 
-我們將標記換成 \\( (add, cov) \\)，表示將當前節點先加上 \\( add \\) 再全部變成 \\( cov \\)。
+還需要維護 \\( (hadd, hcov) \\)，表示當前區間在第一階段時的最大加標記是 \\( hadd \\)，在第二階段時的最大覆蓋標記是 \\( hcov \\)。
 
-- 當一個區間已經被覆蓋，區間加操作可以直接加到 \\( cov \\) 上。
+在這裡每一個節點紀錄的資訊的第一列由左至右是 \\( mx \\)，\\( add \\)，\\( cov \\)，第二列由左至右是 \\( hmx \\)，\\( hadd \\)，\\( hcov \\)。
 
-我們還需要維護 \\( (hadd, hcov) \\)，表示當前區間在第一階段時的最大加標記是 \\( hadd \\)，在第二階段時的最大覆蓋標記是 \\( hcov \\)。這個標記也可以進行更新。
+<img src="image/segment_tree_beats/7-0.jpg" width="500" style="display:block; margin: 0 auto;"/>
+
+如下圖所示，左圖是一棵建立在 \\( [1, 4] \\) 上的線段樹。現在我們要將區間 \\( [3, 4] \\) 修改成 \\( 2 \\)。那麼左圖中紅色邊表示搜尋時經過的邊，紅色字體的節點表示正在拜訪的節點，右圖為更新後的線段樹。
+
+<img src="image/segment_tree_beats/7-1.gif" width="700" style="display:block; margin: 0 auto;"/>
+
+接著讓區間 \\( [3, 4] \\) 的元素加上 \\( 1 \\)。本來是下傳區間加標記，但因為右子節點已被覆蓋，所以直接將 \\( 1 \\) 累加在右子節點的 \\( cov \\) 上。
+
+<img src="image/segment_tree_beats/7-2.gif" width="700" style="display:block; margin: 0 auto;"/>
+
+最後讓區間 \\( [4, 4] \\) 的元素加上 \\( 1 \\)。因為右子節點已經被覆蓋，所以下傳覆蓋標記給子節點，變成子節點被覆蓋。接著下傳加標記，因為子節點已被覆蓋，所以直接將 \\( 1 \\) 累加在 \\( cov \\) 上。
+
+<img src="image/segment_tree_beats/7-3.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 ### 時間複雜度
 
-這個算法的時間複雜度是 \\( m \log n \\)。
+這個算法的時間複雜度跟傳統線段樹一樣，是 \\( O(m \log n) \\)。
 
 <details><summary> Solution Code </summary>
 
@@ -279,12 +289,12 @@ struct STB {
         T[u].hmx = max(T[ls].hmx, T[rs].hmx);
     }
 
-    void pushcover(int u, int v, int hv) {        
-        T[u].hmx = max(T[u].hmx, hv);
+    void pushcover(int u, int v, int hv) {
         T[u].mx = v;
+        T[u].hmx = max(T[u].hmx, hv);
 
-        T[u].hcov = max(T[u].hcov, hv);
         T[u].cov = v;
+        T[u].hcov = max(T[u].hcov, hv);
     }
 
     void pushadd(int u, int v, int hv) {
@@ -292,17 +302,19 @@ struct STB {
             pushcover(u, T[u].cov + v, T[u].cov + hv);
             return;
         }
-        T[u].hmx = max(T[u].hmx, T[u].mx + hv);
         T[u].mx += v;
+        T[u].hmx = max(T[u].hmx, T[u].mx + hv);
 
-        T[u].hadd = max(T[u].hadd, T[u].add + hv);
         T[u].add += v;
+        T[u].hadd = max(T[u].hadd, T[u].add + hv);
     }
 
     void pushdown(int u) {
-        pushadd(ls, T[u].add, T[u].hadd);
-        pushadd(rs, T[u].add, T[u].hadd);
-        T[u].add = T[u].hadd = 0;
+        if (T[u].add) {
+            pushadd(ls, T[u].add, T[u].hadd);
+            pushadd(rs, T[u].add, T[u].hadd);
+            T[u].add = T[u].hadd = 0;
+        }
         if (T[u].cov != INT_MIN) {
             pushcover(ls, T[u].cov, T[u].hcov);
             pushcover(rs, T[u].cov, T[u].hcov);
@@ -311,6 +323,7 @@ struct STB {
     }
 
     void build(int u = 1, int l = 1, int r = n) {
+        T[u].cov = T[u].hcov = INT_MIN;
         T[u].l = l, T[u].r = r;
         if (l == r) {
             T[u].mx = T[u].hmx = A[l];
@@ -324,6 +337,7 @@ struct STB {
 
     void add(int L, int R, int x, int u = 1) {
         int l = T[u].l, r = T[u].r;
+        if (R < l || r < L) return;
         if (L <= l && r <= R) {
             pushadd(u, x, x);
             return;
@@ -339,6 +353,7 @@ struct STB {
 
     void cover(int L, int R, int x, int u = 1) {
         int l = T[u].l, r = T[u].r;
+        if (R < l || r < L) return;
         if (L <= l && r <= R) {
             pushcover(u, x, x);
             return;
@@ -375,8 +390,6 @@ struct STB {
 ```
 
 </details>
-
-> 例題 5. [UOJ -【清华集训 2015】V](http://uoj.ac/problem/164)
 
 ## References
 
