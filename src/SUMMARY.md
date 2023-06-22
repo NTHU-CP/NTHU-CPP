@@ -24,11 +24,10 @@
     - [數論分塊](math/sqrt_decomposition.md)
     - [杜教篩](math/du_sieve.md)
     - [Arithmetic Function Revisit](math/revisit_arithmetic_function.md)
-- [Data Structures]()
-  - [Persistable Segment Tree](data_structures/persistable_segment_tree.md)
 - [Miscellaneous]()
 - [C++ Programming Tips]()
-
+- [Data Structures]()
+  - [Persistable Segment Tree](data_structures/persistable_segment_tree.md)
 ---
 
 - [Make a Codebook](others/codebook.md)
