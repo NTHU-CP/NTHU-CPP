@@ -92,6 +92,8 @@ int main() {
 >
 > 給一個長度為 \\( n \\) 的整數陣列。玩家 A，B 輪流採取行動，由 A 開始。玩家每回合可以將一個數字從陣列中移除。當所有數字都被移除後遊戲結束。若 A 移除的數字和為偶數，那麼 A 獲勝。反之，B 獲勝。題目則問若雙方都採取最佳化策略，那麼誰會獲勝。
 
+- \\( 1 \leq n \leq 100 \\)
+
 可以發現陣列中數字大小其實不重要，重要的是奇數偶數的數量各為多少。那麼我們可以用陣列中剩餘奇數個數，剩餘偶數個數，與目前 A 移除數字總和的奇偶性這三項資訊來代表一個 state。
 
 填表的過程可以使用 Top-down DP 並將 base case 處理好，即可判斷狀態是誰的 winning state。
@@ -361,6 +363,66 @@ int main() {
 
 可以注意到巧克力的數目只有 \\( 19 \\) 個。若將每一塊是否取過以 \\( 0 \\) 跟 \\( 1 \\) 來表示，總共只需要 \\( 2 ^ {19} \\) 個 state 就足夠了。因此我們可以從 \\( state\[0\] \\) 依序計算至 \\( state\[2 ^ {19} - 1\] \\)，便可以判斷每個狀態為 winning state 還是 losing state。初始的狀態則為 \\( state\[2 ^ {19} - 1\] \\)。
 
-狀態轉移的時間複雜度經由計算也可以估計。每次取巧克力時有三個方向可以取，若考慮一次取兩塊以上個巧克力，每個方向會有 \\( {3 \choose 2} *2 + {4 \choose 2}* 2 + {5 \choose 2} = 28 \\) 種。因此一次取兩塊以上的取法共有 \\( 84 \\) 種，再加上一次取一塊的 \\( 19 \\) 種，一共是 \\( 103 \\) 種。因此判斷所有狀態的時間複雜度為 \\( 狀態個數 *轉移時間 \\)，也就是 \\(O (2^{19}* 103) \\)。
+狀態轉移的時間複雜度經由計算也可以估計。每次取巧克力時有三個方向可以取，若考慮一次取兩塊以上個巧克力，每個方向會有 \\( {3 \choose 2} *2 + {4 \choose 2}* 2 + {5 \choose 2} = 28 \\) 種。因此一次取兩塊以上的取法共有 \\( 84 \\) 種，再加上一次取一塊的 \\( 19 \\) 種，一共是 \\( 103 \\) 種。因此判斷所有狀態的時間複雜度為狀態個數乘上轉移時間，也就是 \\(O (2^{19} * 103) \\)。
+
+</details>
+
+> [Codeforces Round 573 D - Tokitsukaze, CSL and Stone Game](https://codeforces.com/contest/1191/problem/D)
+>
+> 有若干堆石頭，每堆石頭的個數為 \\( a_i \\)。兩人輪流採取行動，每回合可以從其中一堆取出一顆石頭。落敗的條件有在輪到某方時所有堆的石頭都被取完，或是某方取完後有某兩堆石頭數相同(個數為 \\( 0 \\)的也要考慮)。兩個條件發生其中之一則玩家落敗。問若從 A 開始，且雙方都採取最佳化策略，那麼誰將獲勝。
+
+- \\( 1 \leq N \leq 10^5 \\)
+- \\( 0 \leq a_i \leq 10^9 \\)
+
+<details><summary>Solution</summary>
+
+首先可以發現，若先手的玩家取完沒有落敗，代表他取完後場上所有堆的個數都不同。因此保證接下來雙方不論怎麼取，都可以一直取石頭，直到各堆石頭個數變為 \\( 0, 1, 2, …… , N - 1 \\)。因此若先手不會在第一回合落敗的話，可以利用剩餘回合數的奇偶來判斷誰將獲勝。剩餘的情況即為先手在第一回合不論怎麼取都會直接落敗。我們可以枚舉他所有的取法，看是否都會導致落敗。如果是的話，對手即為勝者。
+
+</details>
+
+<details><summary> Solution Code </summary>
+
+- Time Complexity: \\( O(N*log(N)) \\)
+
+```cpp
+
+#include <bits/stdc++.h>
+using namespace std;
+using ll = long long;
+
+void solve() {
+    int N; cin >> N;
+    ll tot = 0;
+    map<int, int> cnt;
+    vector<int> a;
+    for (int i = 0; i < N; i++) {
+        int x; cin >> x;
+        tot += x;
+        if (x > 0) a.emplace_back(x);
+        cnt[x]++;
+    }
+    bool lose = true;
+    for (auto x: a) { // enumerate first round choices
+        cnt[x]--;
+        cnt[x - 1]++;
+        if (cnt[x] == 0) cnt.erase(x);
+        if (cnt.size() == N) lose = false; // no repeated values
+        cnt[x - 1]--;
+        cnt[x]++;
+        if (cnt[x - 1] == 0) cnt.erase(x - 1);
+    }
+    ll rounds_cnt = tot - (N - 1 + 0) * N / 2;
+    if (!lose && rounds_cnt % 2 == 1) cout << "sjfnb\n"; // first player wins
+    else cout << "cslnb\n";
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    solve();
+}
+
+```
 
 </details>

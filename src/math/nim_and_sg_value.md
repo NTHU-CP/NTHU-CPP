@@ -231,7 +231,7 @@ int main() {
 
 先考慮樹的結構是一條鏈的情況。若只有一個節點，那麼 SG value 為 \\( 0 \\)，因為玩家無法刪除任何一條邊。接著考慮兩個點的情況。因為只有一條邊可以切，而且切完對手就無法採取任何行動了。因此該狀態的 SG value 為 \\( MEX \lbrace 0 \rbrace = 1 \\)。若鏈由三個點構成，那麼在切完邊後，與根相連的聯通塊有可能還剩 \\( 1 \\) 或 \\( 2 \\) 個節點。因此該狀態的 SG value 為 \\( MEX \lbrace 0, 1 \rbrace = 2 \\)。經由觀察或是數學歸納法可以證明，一條含有 \\( n \\) 個點的鏈的 SG value 為 \\( n - 1 \\)。也就是新加入一個點在鏈上時，SG value 會增加一。
 
-另一種情況是父節點連接至若干棵子樹。根據 Colon Principle，我們可以用 Nim sum 將該結構合併成一條鍊。因此若 \\( u \\) 為 \\( v \\) 的父節點，那麼以 \\( v \\) 為根的子樹可以被替換成含有 \\( f_v + 1 \\) 個節點的鏈。再考慮 \\( u - v \\) 這條邊，得到的 SG value 為 \\( f_v + 1 \\)。由此，我們得到了 \\( v \\) 這個子節點的貢獻。那麼考慮所有的子節點 \\( v_i \\)，並根據 Colon Principle。以 \\( u \\) 為根的子樹可以被替換成含有 \\( ( (f_{v_1} + 1) \oplus (f_{v_2} + 1)…… \oplus (f_{v_n} + 1) ) + 1 \\) 個點的鏈，因此以 \\( u \\)為根的子樹的 SG value 即為 \\( ( (f_{v_1} + 1) \oplus (f_{v_2} + 1)…… \oplus (f_{v_n} + 1) ) \\)。有了以上的算式，在遞迴時由葉節點開始求 SG value，並合併至父節點，我們便可以求出以 \\( 1 \\) 號節點為根的樹的 SG value，由此判斷開局的狀態是不是 winning state，便能得知先手的玩家是否存在一個必勝策略了。
+另一種情況是父節點連接至若干棵子樹。根據 Colon Principle，我們可以用 Nim sum 將該結構合併成一條鍊。因此若 \\( u \\) 為 \\( v \\) 的父節點，那麼以 \\( v \\) 為根的子樹可以被替換成含有 \\( f_v + 1 \\) 個節點的鏈。再考慮 \\( u - v \\) 這條邊，得到的 SG value 為 \\( f_v + 1 \\)。由此，我們得到了 \\( v \\) 這個子節點的貢獻。那麼考慮所有的子節點 \\( v_i \\)，並根據 Colon Principle。以 \\( u \\) 為根的子樹可以被替換成含有 \\( ( (f_{v_1} + 1) \oplus (f_{v_2} + 1)……\oplus (f_{v_n} + 1) ) + 1 \\) 個點的鏈，因此以 \\( u \\)為根的子樹的 SG value 即為 \\( ( (f_{v_1} + 1) \oplus (f_{v_2} + 1)……\oplus (f_{v_n} + 1) ) \\)。有了以上的算式，在遞迴時由葉節點開始求 SG value，並合併至父節點，我們便可以求出以 \\( 1 \\) 號節點為根的樹的 SG value，由此判斷開局的狀態是不是 winning state，便能得知先手的玩家是否存在一個必勝策略了。
 
 <details><summary> Solution Code </summary>
 
@@ -344,6 +344,65 @@ int main() {
     }
 }
     
+```
+
+</details>
+
+> [Codeforces Beta Round 73 E - Interesting Game](https://codeforces.com/contest/88/problem/E)
+>
+> 有 \\( N \\) 顆石頭放在同一堆。A，B 兩人輪流採取行動。每回合可以選擇其中一堆並分成 \\( >= 2 \\) 堆。而且被分出來的那幾堆的個數必須是公差為 \\( 1 \\) 的等差數列。無法採取合法行動者落敗。問若從 A 開始，且雙方都採取最佳化策略，那麼誰將獲勝。
+
+- \\( N \leq 10^5 \\)
+
+<details><summary>Solution</summary>
+
+將一堆石頭分成若干堆後，會分成若干個獨立且同類的遊戲。於是我們可以聯想到 Grundy Number。首先，我們必須知道狀態會如何轉移。\\( x \\) 塊石頭會被分成數量有 \\( y 塊, y + 1 塊, y + 2 塊…… \\) 的石頭堆。因為總和還是 \\( x \\)，將這 \\( x \\) 塊分出來的堆數最多只會是 \\( O(sqrt(x)) \\) 的量級。因此可以枚舉會被分成幾堆，並 \\( O(1) \\) 求出 \\( y \\)。這樣狀態轉移只需要 \\( O(sqrt(N)) \\) 的時間。而總共有 \\( N \\) 個狀態，總時間複雜度為 \\( O(N * sqrt(N)) \\)。
+
+另外，我們必須求出轉移到的狀態的 SG value，也就是被分出來的那幾堆的 SG value 做 \\( XOR \\)運算。但慢慢做需要 \\( O(sqrt(N)) \\)，總複雜度變成 \\( O(N *sqrt(N)* sqrt(N)) = O(N ^ 2) \\)，會超時。因此我們需要一個更快的作法。觀察到被拆出來的石頭堆會形成公差為 \\( 1 \\) 的等差數列。因此我們可以構造出 Grundy Number 的前綴和，並 \\( O(1) \\) 計算出 \\( f_y \oplus f_{y+1} \oplus f_{y+2} …… \\)。在花 \\( O(sqrt(N) * 1) \\) 計算出能轉移到的狀態的 SG value 後，再花 \\( O(sqrt(N)) \\) 的時間求 \\( MEX \\) 函數的答案，就能求出現在這個狀態的 SG value 了。
+
+</details>
+
+<details><summary> Solution Code </summary>
+
+- Time complexity: \\( O(N*sqrt(N)) \\)
+
+```cpp
+
+#include <bits/stdc++.h>
+using namespace std;
+
+void solve() {
+    int N; cin >> N;
+    vector<int> pre(N + 1);
+    int mx = sqrt(N) + 10, res = N;
+    for (int i = 2; i <= N; i++) {
+        vector<bool> vis(mx);
+        for (int len = mx; len >= 2; len--) {
+            int x = (1 + len) * len / 2;
+            int s = 1 + (i - x) / len;
+            if ((s + s + len - 1) * len / 2 == i && s >= 1 && s + len - 1 < i) {
+                int sg = pre[s + len - 1] ^ pre[s - 1];
+                vis[sg] = 1;
+                if (sg == 0 && i == N) res = len;
+            }
+        }
+        for (int j = 0; j < mx; j++) {
+            if (!vis[j]) {
+                pre[i] = pre[i - 1] ^ j;
+                break;
+            }
+        }
+    }
+    cout << (res == N ? -1 : res) << '\n';
+}
+
+int main() {
+    ios_base::sync_with_stdio(false);
+    cin.tie(NULL);
+
+    solve();
+}
+
 ```
 
 </details>
