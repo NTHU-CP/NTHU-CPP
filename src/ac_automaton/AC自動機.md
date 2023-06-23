@@ -507,6 +507,132 @@ int main()
     while(t--) solve();
 }
 ```
+# P2414 [NOI2011] 阿狸的打字機
+首先我們可以對所有的文字串建立一個AC自動機，若是處理每一個詢問都在AC自動機上跑匹配將會導致TLE，為了優化這種情況，我们利用Fail Tree的性質，問 y 中有幾個 x 等價於問Fail樹中的末節點子樹中有幾個屬於路徑上的節點。
+我們將Fail樹建出来，處理DFS序列，對DFS序列建一个樹狀數組。按讀入順序遍歷此Trie，每到一個節點對樹狀數組中這個節點位置的DFS序+1，退出一個節點就-1，如此一來，當到達每個文本串的結尾節點時，在它的Trie樹上的樹鏈節點都被+1了，此時對於此文本串的每一個詢問就等同在樹狀數組上查詢它的子樹和。
+因此，離線處理這些詢問，依照 y 分類這些詢問，每遍歷到一個字符串结尾的時候回答，這樣時間複雜度便是\\(O(nlogn)\\)。
+```c++=
+#include <iostream>
+#include <algorithm>
+#include <vector>
+#include <queue>
+
+using namespace std;
+using ll = long long;
+
+const int MAXN = 1e5 + 5;
+const int K = 26;
+
+vector<pair<int, int>> vec[MAXN];
+
+int L[MAXN], R[MAXN], leaf[MAXN], val[MAXN], ans[MAXN], cal, tot, stot;
+struct ACM {
+    struct Vertex {
+        int next[K];
+        int fa;
+        int fail;
+    } node[MAXN];
+
+    int root;
+
+    vector <int> graph[MAXN];
+
+    void Insert(string &operation) {
+        int u = root;
+        for (int i = 0; operation[i]; i++) {
+            if(operation[i] == 'P') leaf[++stot] = u;
+            else if(operation[i] == 'B') u = node[u].fa;
+            else {
+                if (node[u].next[operation[i] - 'a'] == 0) {
+                    node[u].next[operation[i] - 'a'] = ++tot;
+                    node[tot].fa = u;
+                }
+                u = node[u].next[operation[i] - 'a'];
+            }
+        }
+    }
+
+    void Build() {
+        queue <int> q;
+        for (int i = 0; i < 26; i++)
+            if (node[root].next[i]) q.push(node[root].next[i]);
+        while (!q.empty()) {
+            int u = q.front(); q.pop();
+            for (int i = 0; i < 26; i++) {
+                if (node[u].next[i]) {
+                    node[node[u].next[i]].fail = node[node[u].fail].next[i];
+                    q.push(node[u].next[i]);
+                } 
+                else {
+                        node[u].next[i] = node[node[u].fail].next[i];
+                }
+            }
+        }
+    }
+
+    void DFS(int u) {
+        L[u] = ++cal;
+        for(auto v : graph[u])
+            DFS(v);
+        R[u] = cal;
+    }
+
+    void FailTree() {
+        for(int u = 1; u <= tot; ++u) 
+            graph[node[u].fail].push_back(u);
+        DFS(root);
+    }
+}ACM;
+
+
+void add(int x, int v) {
+    for(int i = x; i <= cal; i += i & -i)
+        val[i] += v;
+}
+
+int query(int x) {
+    int result = 0;
+    for(int i = x; i; i -= i & -i)
+        result += val[i];
+    return result;
+}
+
+int main() {
+    cin.tie(nullptr); cout.tie(nullptr);
+    ios_base::sync_with_stdio(false);
+    string operation; cin >> operation;
+    int n; cin >> n;
+    for(int i = 0; i < n; i++) {
+        int x, y; cin >> x >> y;
+        vec[y].push_back({x, i});
+    }
+    ACM.Insert(operation);
+    ACM.Build();
+    ACM.FailTree();
+    int u = 0, cnt = 0;
+    for(auto op : operation) {
+        if(op == 'P') {
+            cnt++;
+            for(int i = 0; i < vec[cnt].size(); i++) {
+                int x = leaf[vec[cnt][i].first];
+                ans[vec[cnt][i].second] += query(R[x]) - query(L[x] - 1);
+            }
+        } 
+        else if(op == 'B') {
+            add(L[u], -1);
+            u = ACM.node[u].fa;
+        } 
+        else {
+            u = ACM.node[u].next[op - 'a'];
+            add(L[u], 1);
+        }
+    }
+    for(int i = 0; i < n; i++) {
+        cout << ans[i] << '\n';
+    }
+}
+```
+
 
 # Codeforces Educational Codeforces Round 70 (Rated for Div. 2) E. You Are Given Some Strings...
 題目給定一個字符串 t ， 及 n 個模式串，設f(t,s)為 s 在 t 中出現的次數，求\\[ \sum_{i=0}^n \sum_{j=1}^n f(t,s_i+s_j) \\]。
