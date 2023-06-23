@@ -7,6 +7,7 @@
 > [CSES - Tree Matching](https://cses.fi/problemset/task/1130)
 >
 > 給定一棵\\(n\\)個點的樹，找出這棵樹上的最大（邊數）配對，並印出總共有幾個邊。配對的定義是：一個邊集合，其中每個點與至多一條邊相鄰。
+> * \\(1\leq n\leq 2\cdot10^5\\)
 
 許多（無根）樹上問題的第一步，就是隨便選一個點當作根。  
 ![](tree_matching_example_tree.png)![](tree_matching_example_rooted_tree.png)
@@ -24,16 +25,21 @@
    ![](tree_matching_example_subtree_matchings_1.png)  
    但反過來就不行了，原因也很明顯：假設根是\\(u\\)，而邊\\((u, v)\\)屬於這個配對，就不能再有其它點跟\\(v\\)配對了。  
    ![](tree_matching_example_subtree_matchings_0.png)![](tree_matching_example_subtree_matchings_with_root_matched_valid.png)![](tree_matching_example_subtree_matchings_with_root_matched_invalid.png)  
-   於是，當遞迴到以\\(v\\)為根的子樹時，只能考慮第1. 種情形的配對；對於其它\\(u\\)的小孩\\(w\neq v\\)，一樣所有可能的配對都可以考慮。
+   於是，當遞迴到以\\(v\\)為根的子樹時，只能考慮第一種情形的配對；對於其它\\(u\\)的小孩\\(w\neq v\\)，一樣所有可能的配對都可以考慮。
 
 #### Defining a DP State
-有了上一節最佳子結構的觀察之後，就能開始設計dp狀態。不妨令\\(dp[1][u]\\)為「以\\(u\\)為根的子樹中，最大配對的邊數」；\\(dp[0][u]\\)的定義差不多，但加入一個限制「\\(u\\)不能是任意配對邊的端點」。其實\\(dp[0][u]\\)就是上述第1. 種情形，而\\(dp[1][u]\\)則同時包含兩種情形。
+有了上一節最佳子結構的觀察之後，就能開始設計dp狀態。
+
+不妨令\\(dp[1][u]\\)為「以\\(u\\)為根的子樹中，最大配對的邊數」；  
+\\(dp[0][u]\\)的定義差不多，但加入一個限制「\\(u\\)不能是任意配對邊的端點」。
+
+其實\\(dp[0][u]\\)就是上述第一種情形，而\\(dp[1][u]\\)則同時包含兩種情形。
 
 \\(dp[0][u]\\)的轉移前一節就提過了，寫成數學式的話是：
 
 \\[dp[0][u]=\sum_{v\in child(u)}dp[1][v]\\]
 
-\\(dp[1][u]\\)的轉移式也不複雜，除了最終要與\\(dp[0][u]\\)取較大值外，對\\(u\\)的所有小孩做前一節第2. 種情形，再全部取最大值就可以了。
+\\(dp[1][u]\\)的轉移式也不複雜，除了最終要與\\(dp[0][u]\\)取較大值外，對\\(u\\)的所有小孩做前一節第二種情形，再全部取最大值就可以了。
 
 \\[dp[1][u]=\max\biggl(dp[0][u],\max_{v\in child(u)}\Bigl(1+dp[0][v]+\sum_{w\in child(u),w\neq v}dp[1][w]\Bigr)\biggr)\\]
 
@@ -43,57 +49,16 @@
 
 遞迴終止條件為\\(u\\)是一個葉節點，此時\\(dp[0][u]=dp[1][u]=0\\)。
 
-#### Implementation Details
-筆者習慣0-based indexing，所以樹的輸入會寫成這樣：
-```cpp
-#define MAXN (int)2e5
-// Global array
-vector<int> tree[MAXN];
-// In main()
-for (int i = 1; i < n; ++i) {
-    int a, b; cin >> a >> b;  // 1 <= a, b <= MAXN on CSES
-    tree[a - 1].push_back(b - 1);
-    tree[b - 1].push_back(a - 1);
-}
-```
-接著，隨便選一個點當作根，假設選擇編號為0的點：
-```cpp
-void DFS(int u, int parent) {
-    for (const int &v: tree[u]) if (v != parent)
-        DFS(v, u);
-}
-DFS(0, -1);
-```
-一個子樹的根可以用這個根節點的編號來代表，所以前一節的dp表會寫成`int dp[2][MAXN];`。
-
-樹DP的轉移通常採用memoization而不是填表，因為要了解一棵樹的整體結構，必定要經過一次（通常是深度優先）搜尋；memoization可以邊DFS邊做，而填表需要先知道轉移順序，也就是需要完整DFS一遍之後才能做，多此一舉。
-
-以下實作中，`tmp`指的是\\(\max_{v\in child(u)}\bigl(dp[0][v]-dp[1][v]\bigr)\\)。如果\\(u\\)是葉節點，那麼\\(dp[0][u]=dp[1][u]=0\\)，此時只要把`tmp`初始化成夠小的數字（實際上\\(-1\\)就夠小了），就能確保最後一行的`max(dp[0][u], dp[1][u] + tmp) == dp[0][u]`。  
-兩個`for (const int &v: tree[u]) if (v != parent)`迴圈看似會讓時間複雜度變差，但只有第一個迴圈會遞迴呼叫`DFS`，所以時間複雜度會是好好的\\(\Theta(n)\\)。讀者也可以試試看只用一個`for`迴圈的實作。
-```cpp
-void DFS(int u, int parent) {
-    dp[0][u] = 0;
-    for (const int &v: tree[u]) if (v != parent) {
-        DFS(v, u);
-        dp[0][u] += dp[1][v];
-    }
-    dp[1][u] = 1; int tmp = -2147483647;
-    for (const int &v: tree[u]) if (v != parent) {
-        dp[1][u] += dp[1][v];
-        tmp = max(tmp, dp[0][v] - dp[1][v]);
-    }
-    dp[1][u] = max(dp[0][u], dp[1][u] + tmp);
-}
-```
-經過一次DFS之後，因為根的編號為0，所以`dp[1][0]`就是答案。
 <details><summary>Solution Code</summary>
 
 ```cpp
 #include <iostream>
 #include <vector>
+#include <algorithm>
 using namespace std;
-#define MAXN (int)2e5
-vector<int> tree[MAXN]; int dp[2][MAXN];
+const int MAXN = 2e5;
+vector<int> tree[MAXN];
+int dp[2][MAXN];
 void DFS(int u, int parent) {
     dp[0][u] = 0;
     for (const int &v: tree[u]) if (v != parent) {
@@ -115,7 +80,8 @@ int main() {
         tree[b - 1].push_back(a - 1);
     }
     DFS(0, -1);
-    cout << dp[1][0] << endl; return 0;
+    cout << dp[1][0] << endl;
+    return 0;
 }
 ```
 
@@ -126,6 +92,7 @@ int main() {
 * 假設\\(n\geq2\\)，如果把根定在葉子，此時\\(dp[1][u]\\)的轉移式會變得如何？這樣的轉移式給你什麼啟發？
 * 如果邊有權重的話，上一點的討論還會成立嗎？
 
+<!--
 > Finding the Diameter and a Center of a Tree
 >
 > 一張圖的直徑(diameter)為圖中任兩點距離中最長的；[^note-1]圓心(center)則為使一個點與其它點最遠的距離最小的點。[^note-2]對於樹，以圓心為樹根，則樹高會最小。[^note-3]給定一棵\\(n\\)個點的樹，請在\\(\Theta(n)\\)的時間內，找出這棵樹的直徑（長度）以及一個圓心。
@@ -144,25 +111,88 @@ int main() {
 ![](diameter_example_path_3.png)![](diameter_example_path_4.png)![](diameter_example_path_5.png)
 
 第一種路徑，長度顯然是零，以本題而言基本上不用多加考慮。  
-對於第二種路徑，假設由根出發，第一個經過的節點是\\(v\\)，那麼這條路徑可以分解成「根與\\(v\\)之間的邊」以及「在以\\(v\\)為根的子樹中，以\\(v\\)為一端點的路徑」。至於為什麼後面那條路徑一定完全落在以\\(v\\)為根的子樹中，其實道理跟「完全不通過根的路徑，恰好位於其中一棵子樹中」是一樣的。  
+對於第二種路徑，假設由根出發，第一個經過的節點是\\(v\\)，那麼這條路徑可以分解成「根與\\(v\\)之間的邊」以及「在以\\(v\\)為根的子樹中，以\\(v\\)為一端點的路徑」。至於為什麼後面那條路徑一定完全落在以\\(v\\)為根的子樹中，道理其實跟「完全不通過根的路徑，恰好位於其中一棵子樹中」是一樣的。  
 ![](diameter_example_path_4_decomposition.png)  
 對於第三種路徑，從根的位置將這種路徑一分為二，就變成兩條第二種路徑。  
 要注意的是，這兩條路徑不能通過根的同一個小孩：  
 ![](diameter_example_path_6-1.png)![](diameter_example_path_6-2.png)![](diameter_example_path_6.png)
 
-最後是圓心的部分。我們需要用到一個性質：樹的圓心一定位於直徑的中點。（如果直徑的長度為奇數，那麼圓心就有兩個。）
+#### Defining a DP State
 
-（註：一般圖的圓心，不一定在任意一條直徑上面！反例請見[^note-4]與[^note-5]。）
+分析完這些性質之後，是時候列出dp狀態跟轉移式了。
 
-### Exercises
+令\\(dp[0][u]\\)為以\\(u\\)為根的子樹直徑長度。  
+我們也需要另一種狀態\\(dp[1][u]\\)，來表示在以\\(u\\)為根的子樹中，以\\(u\\)為端點的路徑最長的長度，因為在計算其父節點的第二種路徑（以及第三種）的時候會用到。這裡是不是應該要放圖示範dp？
+```cpp
+const int MAXN = 1e6;
+vector<int> tree[MAXN];
+int dp[2][MAXN];
+void DFS(int u, int parent) {
+    for (const int &v: tree[u]) if (v != parent)
+        DFS(v, u);
+}
+```
+
+以\\(u\\)為端點的路徑，其實就是前述第一種或第二種的路徑。如果\\(u\\)是葉子，那麼只有第一種路徑，\\(dp[1][u]=0\\)。否則，最長的路徑就會是第二種。  
+剛剛才提到，第二種路徑可以分解成邊\\((u,v)\\)以及「以\\(v\\)為一端點的路徑」。顯然，邊\\((u,v)\\)的長度為\\(1\\)；「以\\(v\\)為一端點的路徑」中最長的長度，其實就是\\(dp[1][v]\\)。  
+於是，只要對每個\\(u\\)的小孩都找一條最長路，然後取長度最大值，這部分的答案就呼之欲出。
+```cpp
+void DFS(int u, int parent) {
+    dp[1][u] = 0;
+    for (const int &v: tree[u]) if (v != parent) {
+        DFS(v, u);
+        // dp[1][v] + 1 is the length of the longest path from u via v
+        dp[1][u] = max(dp[1][u], dp[1][v] + 1);
+    }
+}
+```
+
+因為第三種路徑可以分成兩條第二種路徑，所以第三種路徑的計算方式，就是把兩條通過不同小孩的\\(dp[1][v]+1\\)相加，然後取最大值。
+```cpp
+void DFS(int u, int parent) {
+    vector<int> lengths;  // Records all dp[1][v] + 1
+    dp[1][u] = 0;
+    for (const int &v: tree[u]) if (v != parent) {
+        DFS(v, u);
+        dp[1][u] = max(dp[1][u], dp[1][v] + 1);
+        lengths.push_back(dp[1][v] + 1);
+    }
+    int type3 = 0;
+    // Don't do this yet
+    for (int i = 0; i < (int)lengths.size(); ++i)
+        for (int j = 0; j < (int)lengths.size(); ++j)
+            if (i != j) type3 = max(type3, lengths[i] + lengths[j]);
+}
+```
+顯然，不需要用兩層迴圈才能求得`max(lengths[i] + lengths[j]), i != j`。只要找出最大的跟第二大的值，然後相加即可。最後，\\(dp[0][u]\\)即為第一種與第二種路徑（\\(dp[1][u]\\)）、第三種路徑（`type3`）以及不通過\\(u\\)的路徑\\(\max_{v\in child(u)}(dp[0][v])\\)的最大值。
+```cpp
+void DFS(int u, int parent) {
+    int first = 0, second = 0, subtree_max = 0;
+    dp[1][u] = 0;
+    for (const int &v: tree[u]) if (v != parent) {
+        DFS(v, u);
+        dp[1][u] = max(dp[1][u], dp[1][v] + 1);
+        subtree_max = max(subtree_max, dp[0][v]);
+        if (dp[1][v] + 1 > second) {
+            if (dp[1][v] + 1 > first) {
+                second = first; first = dp[1][v] + 1;
+            } else
+                second = dp[1][v] + 1;
+        }
+    }
+    int type3 = first + second;
+    // Note: in this implementation, max(dp[1][u], type3) == type3
+    // even though there are fewer than 2 children.  (Why?)
+    dp[0][u] = max(max(dp[1][u], type3), subtree_max);
+}
+```
+-->
 
 > [AtCoder Educational DP Contest P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
 >
 > 給定一棵樹，每個點可以是白色或黑色，但是相鄰的兩個點不能都是黑色，請計算有幾種塗色方法（除以\\(10^9+7\\)的餘數）。
 
-> [CSES - Finding a Centroid](https://cses.fi/problemset/task/2079)
->
-> 給定一棵\\(n\\)個點的樹，找出這棵樹的一個重心。重心的定義是：如果把重心定為根，那麼每個子樹最多有\\(\lfloor\frac n2\rfloor\\)個點（不包含根在重心的那棵子樹）。
+<!--### Exercises-->
 
 ### Non-Classic Examples
 樹DP的形式，當然不侷限於以上提到的幾個經典題。固然，這些經典題是通往更多進階題的基石，但實戰上想要更靈活運用，就需要刷更多新鮮的題目。來看幾個「沒那麼經典」的例子：
@@ -219,7 +249,7 @@ int main() {
 
 我們已經知道每個點到其後代(descendant)的距離總和，只需要再算出那些不是後代的點的答案，就解決問題了。
 
-令\\(out[u]\\)為所有不是\\(u\\)的後代的點到\\(u\\)的距離總和。（\\(u\\)是它自己的後代，所以不包含在\\(out[u]\\)裡面，雖然這並不重要。）
+令\\(out[u]\\)為所有不是\\(u\\)的後代的點到\\(u\\)的距離總和。（\\(u\\)是它自己的後代，所以不包含在\\(out[u]\\)裡面，雖然這並不重要。）<!--TODO: 放圖-->
 
 那麼，\\(in[u]+out[u]\\)就是點\\(u\\)的最終答案。
 
@@ -228,7 +258,7 @@ int main() {
 1. \\(u\\)到\\(parent(u)\\)的距離是\\(1\\)。
 2. 對於所有\\(parent(u)\\)的proper descendant \\(v\\)（但不是\\(u\\)的後代），\\(u\\)到\\(v\\)的路徑依序會是\\(parent(u)\\)、一個\\(u\\)的sibling \\(w\\)、從\\(w\\)到\\(v\\)的路徑。  
    對於每個這樣的\\(v\\)，前面兩段路徑的長度為\\(2\\)，而這樣的\\(v\\)共有\\(\sum_{w\in sibling(u),w\neq u}sz[w]\\)個。  
-   至於最後一段路徑，我們需要計算所有「從一個\\(u\\)的sibling到其後代的距離」總和。類似Tree Matching的第1. 種情形，其實就是把每個sibling的\\(in[w]\\)相加。
+   至於最後一段路徑，我們需要計算所有「從一個\\(u\\)的sibling到其後代的距離」總和。類似Tree Matching的第一種情形，其實就是把每個sibling的\\(in[w]\\)相加。
 3. 對於所有不是\\(parent(u)\\)的proper descendant的節點\\(v\\)，\\(u\\)到\\(v\\)的路徑依序會是\\(parent(u)\\)、\\(parent(parent(u))\\)、從\\(parent(parent(u))\\)到\\(v\\)的路徑。  
    第一段路徑的長度為\\(1\\)，而這樣的\\(v\\)共有\\(n-sz[parent(u)]\\)個；後面兩段路徑，全部囊括在\\(out[parent(u)]\\)裡面。
 
@@ -246,7 +276,7 @@ int main() {
 #include <iostream>
 #include <vector>
 using namespace std;
-#define MAXN (int)2e5
+const int MAXN = 2e5;
 int n; vector<int> tree[MAXN];
 int sz[MAXN]; long long in[MAXN], out[MAXN];
 void DFS(int u, int parent) {
@@ -309,12 +339,10 @@ int main() {
 - [DP on Trees - Solving For All Roots · USACO Guide](https://usaco.guide/gold/all-roots?lang=cpp)
 - Thomas H. Cormen, Charles E. Leiserson, Ronald L. Rivest, and Clifford Stein.  *Introduction to Algorithms*, third edition, 379, 384.  The MIT Press, 2009.
 
+<!--
 [^note-1]: [Graph Diameter -- from Wolfram MathWorld](https://mathworld.wolfram.com/GraphDiameter.html)
 
 [^note-2]: [Graph Center -- from Wolfram MathWorld](https://mathworld.wolfram.com/GraphCenter.html)
 
 [^note-3]: [3. 圖論 - 2017建中校內培訓講義](https://tioj.ck.tp.edu.tw/uploads/attachment/11/42/3.pdf)
-
-[^note-4]: Bang Ye Wu and Kun-Mao Chao.  *Spanning Trees and Optimization Problems*, 154-155.  Chapman & Hall/CRC, 2004.
-
-[^note-5]: Kun-Mao Chao. [Slides](https://www.csie.ntu.edu.tw/~kmchao/tree21spr/a_note_for_tree_diameter.pdf) on the eccentricities, diameters, and radii, (4)-1. Special topics on graph algorithms, spring semester, 2021.
+-->

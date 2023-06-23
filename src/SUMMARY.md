@@ -10,6 +10,7 @@
   - [Basic Greedy](greedy/basic.md)
 - [Dynamic Programming]()
   - [Basic DP]()
+  - [DP on Trees](dp_trees.md)
 - [Flow]()
 - [Sqrt Technique](sqrt/intro.md)
   - [Square Root Decomposition](sqrt/sqrt_decomposition.md)
