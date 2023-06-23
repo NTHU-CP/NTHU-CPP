@@ -27,7 +27,8 @@ note:
 
 為了建構出 Z array ，我們必須初始 $L,R$ 並使用 for 迴圈掃描過 $S[0:n-1]$ 。
 
-### 結構
+結構
+--
 
 ```c++=
 vector<int> buildZ(const string &S) {
@@ -44,7 +45,8 @@ vector<int> buildZ(const string &S) {
 }
 ```
 
-### L and R
+L and R
+--
 
 我們想使用for迴圈掃描過 $S$ 中的所有元素，並且在 $index = i$ 時產生 $Z[i]$ ，最終以均攤 $O(n)$ 的複雜度完成Z array。
 
@@ -57,9 +59,11 @@ vector<int> buildZ(const string &S) {
 int L = 0, R = 0;
 ```
 
-### 三種Cases
+三種Cases
+--
 
-#### 1. $i$ 不在 $[L,R]$ 中。
+1.$i$ 不在 $[L,R]$ 中
+-
 
 **Case 1**: $R < i$ or $i < L$
 
@@ -76,7 +80,8 @@ if (R < i || i < L) { //不在範圍內
 }
 ```
 
-#### 2. $i$ 在 $[L,R]$ 中
+2.$i$ 在 $[L,R]$ 中
+-
 
 ![螢幕快照 2023-06-22 23-05-29](https://github.com/williamlin0208/NTHU-CPP/assets/122626646/467f1b1e-2086-4f6d-afd4-127ab4e7f737)
 
@@ -121,7 +126,8 @@ if (L <= L && i <= R && (Z[i-L] >= R-i+1)) { //在範圍內且滿足(Z[i-L] >= R
 }
 ```
 
-### 未化簡程式碼
+未化簡程式碼
+--
 
 ```c++=
 vector<int> buildZ(const string &S) {
@@ -189,7 +195,8 @@ $max(0,R-i+1)$ 可以同時滿足這兩個Case時 $Z[i]$ 的初始值。
 
 於是我們可以將Case 1 與 Case 3合併。
 
-### 化簡後程式碼
+化簡後程式碼
+--
 
 ```c++=
 vector<int> buildZ(const string &S) {
@@ -215,7 +222,8 @@ Case 1: $R < i$ or $i < L$ ( $i$ 於 $L,R$ 範圍之外)
 Case 2: $L \le i \le R$ and $Z[i-L] \lt R-i+1$ ( $i$ 於 $L,R$ 範圍之內，不可擴展)
 Case 3: $L \le i \le R$ and $Z[i-L] \ge R-i+1$ ( $i$ 於 $L,R$ 範圍之內，具擴展潛力)
 
-### 觀察與疑問
+觀察與疑問
+--
 
 為什麼 for 迴圈從 index = 1 開始而不可以從 index = 0 ?
 
@@ -243,7 +251,8 @@ $T(n) = O(n) + O(n) + O(n) = O(n)$
 相關題目
 ---
 
-### CSES - Finding Periods
+CSES - Finding Periods
+--
 
 找到自己的前綴子序列
 
@@ -274,7 +283,8 @@ void find_ans(string &s,vector<int> &z){
 }
 ```
 
-### Codeforces 126B - Password
+Codeforces 126B - Password
+--
 
 找出一最長 t 同時出現在字串 s 最前面、最後面、中間(非前且非後)
 
@@ -312,8 +322,6 @@ Z algorithm 以 $O(n)$ 的時間複雜度算出所有後綴子字串與本字串
 參考資料
 ---
 
-[https://theriseofdavid.github.io/2020/09/18/Codeforces/Codeforces%20126B/](https://theriseofdavid.github.io/2020/09/18/Codeforces/Codeforces%20126B/)
-
-[https://kenjichao.gitbooks.io/algorithm/content/z_algorithm.html](https://kenjichao.gitbooks.io/algorithm/content/z_algorithm.html)
-
-[https://wangwilly.github.io/willywangkaa/2018/03/19/Algorithm-Z-%E6%BC%94%E7%AE%97%E6%B3%95/](https://wangwilly.github.io/willywangkaa/2018/03/19/Algorithm-Z-%E6%BC%94%E7%AE%97%E6%B3%95/)
+[](https://theriseofdavid.github.io/2020/09/18/Codeforces/Codeforces%20126B/)
+[](https://kenjichao.gitbooks.io/algorithm/content/z_algorithm.html)
+[](https://wangwilly.github.io/willywangkaa/2018/03/19/Algorithm-Z-%E6%BC%94%E7%AE%97%E6%B3%95/)
