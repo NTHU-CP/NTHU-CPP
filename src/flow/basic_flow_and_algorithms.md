@@ -1,5 +1,5 @@
 
-## Ford-Fulkerson 算法
+# Ford-Fulkerson 算法
 
 * 首先先介紹一個最大流演算法的核心概念之一，增廣路徑(Augmenting Path)
   * 一個路徑 \\(\{u_{1}, u_{2}, ..., u_{n}\}\\)，其中 \\(u_{1}=s\\)，\\(u_{n}=t\\)，\\(c_{f}(u_{i}, u_{i + 1}) > 0\\)。
@@ -150,7 +150,7 @@
 
     </details>
   
-## Edmonds-Karp 算法
+# Edmonds-Karp 算法
 
 * 基於 Ford-Fulkerson 算法的優化
   * 在前文中 Ford-Fulkerson 算法的時間複雜度分析中，可以發現若使用 DFS 來尋找增廣路徑，可能會存在重複擴充新流量，但每次新增的流量都極小的情況，這也是為甚麼它的複雜度是 \\(O(EF)\\) 的原因，我們會發現若將找增廣路徑的方法改成 BFS，則最後花費的時間和流量沒有關係，亦即時間複雜度和 DFS 的不同，以下為前文 Ford-Fulkerson 算法中所舉的例子。
@@ -310,7 +310,7 @@
       };
   </details>
 
-## 題目實作
+# 題目實作
 
 > [CSES 1694](https://cses.fi/problemset/task/1694)
 >
@@ -382,7 +382,7 @@
       }
     ```
 
-## References
+# References
 
 > * [網路流 - 維基百科](https://zh.wikipedia.org/zh-tw/%E7%BD%91%E7%BB%9C%E6%B5%81)
 > * [网络流的基本概念 - 算法竞赛教程](https://www.dotcpp.com/course/1070) (推薦閱讀，此教學文章的內容及證明較為詳細)
