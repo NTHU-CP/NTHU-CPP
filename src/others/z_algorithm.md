@@ -312,6 +312,6 @@ Z algorithm 以 $O(n)$ 的時間複雜度算出所有後綴子字串與本字串
 參考資料
 ---
 
-[](https://theriseofdavid.github.io/2020/09/18/Codeforces/Codeforces%20126B/)
-[](https://kenjichao.gitbooks.io/algorithm/content/z_algorithm.html)
-[](https://wangwilly.github.io/willywangkaa/2018/03/19/Algorithm-Z-%E6%BC%94%E7%AE%97%E6%B3%95/)
+[https://theriseofdavid.github.io/2020/09/18/Codeforces/Codeforces%20126B/](https://theriseofdavid.github.io/2020/09/18/Codeforces/Codeforces%20126B/)
+[https://kenjichao.gitbooks.io/algorithm/content/z_algorithm.html](https://kenjichao.gitbooks.io/algorithm/content/z_algorithm.html)
+[https://wangwilly.github.io/willywangkaa/2018/03/19/Algorithm-Z-%E6%BC%94%E7%AE%97%E6%B3%95/](https://wangwilly.github.io/willywangkaa/2018/03/19/Algorithm-Z-%E6%BC%94%E7%AE%97%E6%B3%95/)
