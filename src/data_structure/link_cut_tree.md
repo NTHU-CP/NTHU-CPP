@@ -414,20 +414,25 @@ struct LCT
 
 ## LCT 用途
 
-> 有一個國家有很多城市，城市之間一開始沒有道路，但隨著時間會有道路新建成，也會有道路被拆掉  
-問題是在任意時間點，要輸出 A, B 城市是否相連？
+> [DYNACON1](https://www.spoj.com/problems/DYNACON1/)  
+> 有一棵無根樹總共有 \\(N\\) 個節點，一開始沒有邊，題目是對於樹進行 \\(Q\\) 筆，操作總共有三種：
+>
+> 1. 連接兩個原本沒有連結的節點
+> 2. 斷開已經有聯結的兩個節點
+> 3. 詢問兩個節點中是否有一條 path
+>
+> - \\( N, Q \leq 10^5 \\)  
 
 解題思路：  
-一個國家有很多城市可以想像成一個森林，每個城市都是獨立的一棵樹，因此符合 LCT 是一個森林的性質。  
-道路的新建可以用 LCT 的 ``link()`` 來達成  
-道路的拆除可以用 LCT 的 ``cut()`` 來達成
-所以只要能判斷 A, B 城市是否相連就可以回答問題了  
-要判斷兩個城市是否相連其實就等同於兩個節點是否在同一棵樹上，所以我們只要看 A, B 節點的根是否一樣就可以達成  
+可以把題目想像成一個森林，每個節點都是獨立的一棵樹，因此符合 LCT 是一個森林的性質。  
+第一個操作的可以用 LCT 的 ``link()`` 來達成。  
+第二個的操作可以用 LCT 的 ``cut()`` 來達成。
+所以只要能判斷兩個節點是否相連就可以回答問題了。  
+要判斷兩個節點是否相連其實就等同於兩個節點是否在同一棵樹上，所以我們只要看兩個節點的根是否一樣就可以達成。  
   
 時間複雜度分析：  
 對於每一個操作都可以在\\( O(\log N) \\)的時間完成，因此總複雜度就是\\( O(Q \log N) \\)
-  
-參考題目：[DYNACON1](https://www.spoj.com/problems/DYNACON1/)
+
 <details><summary> Solution Code </summary>
 
 在 ``cut()`` 之前要先判斷有沒有邊存在，但在這一題他保證邊一定存在，因此可以大膽的給他 ``cut()`` 下去  
@@ -507,13 +512,6 @@ void up(int x)
 ```cpp
 #include <bits/extc++.h>
 using namespace std;
-struct splay_tree
-{
-    int child[2], parent;
-    int val, mx;
-    bool rev;
-    splay_tree() : parent(0), rev(0), child(), val(0), mx(0) {}
-};
 struct LCT
 {
     void up(int x)
@@ -644,6 +642,7 @@ QTREE 系列題目可以參考這篇文章：[【Qtree】Query on a tree 系列 
 
 - [CF 117E - Tree or not Tree](https://codeforces.com/problemset/problem/117/E)
 - [CF 342E - Xenia and Tree](https://codeforces.com/problemset/problem/342/E)
+- [CF 1172E - Nauuo and ODT](https://codeforces.com/contest/1172/problem/E)
 - [CF 1344E - Train Tracks](https://codeforces.com/problemset/problem/1344/E)
 
 ## 參考資料
