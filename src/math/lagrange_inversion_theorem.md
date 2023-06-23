@@ -107,7 +107,3 @@ F(x) &= x(F(x) + 1)^2 \\\\
 \end{aligned}
 
 因此，\\( c_0 = 1 \\)，\\( c_n = \frac{1}{n + 1} \binom{2n}{n} \\) 為卡特蘭數的一般項。
-
-## Reference
-
-- [ABC222 H Editorial](https://atcoder.jp/contests/abc222/editorial/2765)
