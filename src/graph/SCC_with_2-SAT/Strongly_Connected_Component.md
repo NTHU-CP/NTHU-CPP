@@ -6,17 +6,19 @@
 
 在一張有向圖\\(G \\)中，假使兩個節點\\(u \\)跟\\(v \\)之前同時存在路徑\\(path(u,v) \\)和\\(path(v,u) \\)，則我們說\\(u \\)跟\\(v \\)兩者強連通(strongly connected)。
 
-### *放圖＆解釋*
+<img src="image/Strongly_Connected.png" width="700" style="display:block; margin: 0 auto;"/>
 
+以上圖為例，\\(B, C, depth \\)為Strongly Connected，\\(E, F \\)也為Strongly Connected，但\\(A, B \\)彼此不為Strongly Connected
 
 ### Strongly Connected Component(強連通分量)
 根據以上定義(強連通)，我們可以得到強連通分量(Strongly Connected Component, 以下簡稱SCC)的正式定義：
 
-學術一點來說:
 對於一個有向圖\\(G \\)的強連通分量\\(C \\)：
 \\(C \\)是\\(G \\)的一個*極大子圖*，使得對於所有\\(C \\)內的節點，兩者互為強連通(\\(\forall u,v \in C, \exists path(u,v),path(v,u) \\))
 
-### *放圖&解釋*
+<img src="image/SCC.png" width="700" style="display:block; margin: 0 auto;"/>
+
+以同一張圖來說，\\(B, C, depth \\)形成一SCC，\\(E, F \\)形成一SCC，故圖中共有\\(4 \\)個SCC。
 
 
 #### Property
@@ -38,28 +40,14 @@
 假設縮點後產生的新圖\\(G' \\)存在環，則環上的點必為互相連通，應屬於同一個SCC中，經縮點操作後應合併為一個點，故圖\\G' \\)上不存在環。
 
 
-
-
+#### Why SCC?
 為什麼找出強連通分量那麼重要呢？
 
-因為當我們求出有向圖\\( G\\)的所有SCC之後，我們就可以藉由縮點操作，將每個SCC縮成一個點。根據性質4.，縮點操作後產生的圖\\( G' \\)會是一張有向無環圖。
-變成有向無環圖之後會發現，原本難解的問題，可藉由拓樸排序或是DP等技巧，將問題化簡為多項式時間可解的問題。
+因為當我們求出有向圖\\( G\\)的所有SCC之後，我們就可以藉由縮點操作，將每個SCC縮成一個點。根據性質4.，縮點操作後產生的圖\\( G' \\)會是一張有向無環圖(DAG)。
+根據DAG的一些良好性質，我們就可以利用拓樸排序或是DP等技巧，來達成時間更為優異的解題方法。
 
-#### 縮點操作：
+接下來，會介紹兩種常用的SCC演算法，並介紹找出所有強連通分量後，如何進行縮點操作，最後演練幾組例題，示範如何使用Strongly Connected Component的觀念來解題。
 
-非常暴力且樸素的作法，建造一個縮點後的圖\\( G' \\)，暴力看過原圖\\( G \\)中的所有邊，圖\\( G' \\)中只存跨越不同SCC的邊。
-```cpp
-void Compress() {
-    for(int u = 1;u <= n;u++) {
-		for(int v : G[u]) {
-			if(SCC[v] == SCC[u]) continue;
-			DAG[SCC[u]].emplace_back(SCC[v]);
-			//indegree_SCC[SCC[v]]++; 做拓樸排序用
-		}
-	}
-}
-```
-時間複雜度: \\( O(V+E) \\)
 
 ## Kosaraju's Algorithm
 藉由兩次DFS求出所有SCC，好處是code比較好寫，但常數較大。
@@ -71,56 +59,62 @@ void Compress() {
 ```cpp
 class SCC {
 private:
-  int n, num_;
-  vector< vector< int > > G, rG;
-  vector< int > ord, num;
-  vector< bool > vis;
-  void dfs( int u ) {
-    if ( vis[ u ] ) return;
-    vis[ u ] = 1;
-    for ( int v : G[ u ] ) dfs( v );
-    ord.push_back( u );
+  int n, scc_num;
+  vector<vector<int>> G, invG;
+  stack<int> stk;
+  vector<int> SCC;
+  vector<bool> vis;
+  void DFS1(int u) {
+    if (vis[u]) return;
+    vis[u] = 1;
+    for (int v : G[u]) DFS1(v);
+    stk.push(u);
   }
-  void rdfs( int u ) {
-    if ( vis[ u ] ) return;
-    num[ u ] = num_;
-    vis[ u ] = 1;
-    for ( int v : rG[ u ] ) rdfs(v);
+  void DFS2(int u) {
+    if (vis[u]) return;
+    SCC[u] = scc_num;
+    vis[u] = 1;
+    for (int v : invG[u]) DFS2(v);
   }
 public:
   inline void init( int n_ ) {
-    n = n_, num_ = 0;
-    G.clear(); G.resize( n );
-    rG.clear(); rG.resize( n );
-    vis.clear(); vis.resize( n );
-    num.resize( n );
+    n = n_, scc_num = 0;
+    G.clear(); G.resize(n);
+    invG.clear(); invG.resize(n);
+    vis.assign(n,0);
+    SCC.assign(n,-1);
   }
-  inline void add_edge( int st, int ed ) {
-    G[ st ].push_back( ed );
-    rG[ ed ].push_back( st );
+  inline void add_edge(int u, int v) {
+    G[u].push_back(v);
+    invG[v].push_back(u);
   }
   void solve() {
-    fill( vis.begin(), vis.end(), 0 );
-    for ( int i = 0 ; i < n ; ++ i )
-      if ( not vis[ i ] ) dfs( i );
-    reverse( ord.begin(), ord.end() );
-    fill( vis.begin(), vis.end(), 0 );
-    for ( int i : ord ) {
-      if( not vis[ i ] ) {
-        rdfs( i ); num_++;
+    for (int i = 0 ; i < n ; i++ )
+      if (!vis[i]) DFS1(i);
+    vis.assign(n,0);
+    while(!stk.empty()) {
+	  int u = stk.top(); stk.pop();
+      if(!vis[u]) {
+        DFS2(u);scc_num++;
       }
     }
   }
-  inline int get_id( int x ) { return num[ x ]; }
-  inline int count() { return num_; }
+  inline int get_id(int x) { return SCC[x]; }
+  inline int count() { return scc_num; }
 } scc;
+
 ```
 
+假設在這張圖上，從點\\(A \\)開始DFS，DFS1結束後會長這樣:
+<img src="image/kosaraju.png" width="700" style="display:block; margin: 0 auto;"/>
+
+DFS2的過程如下:
+<img src="image/Kosaraju_gif.gif" width="700" style="display:block; margin: 0 auto;"/>
 ### Time complexity and the Correctness
 
 Kosaraju Algo分成3個部份: 
 1. 原圖DFS紀錄完成時間（\\( O(V+E) \\)）
-2. 建立反圖\\( G^T \\)（\\( O(V+E) \\)）
+2. 建立反圖\\( G^T \\)（\\( O(V+E) \\)(可以在建立原圖的時候順便做)
 3. 反圖上DFS （\\( O(V+E) \\)）
 故總時間複雜度也是\\(O(V+E))
 
@@ -157,42 +151,63 @@ Kosaraju Algo分成3個部份:
 
 
 ## Tarjan's Algorithm for SCC
-圖論大師Tarjan發明的求SCC算法，基於DFS Tree跟定義好的\\( L(x) \\) 跟 \\( D(x) \\) 函數 
+圖論大師Tarjan發明的求SCC算法，基於DFS Tree跟定義好的\\( low(x) \\) 跟 \\( depth(x) \\) 函數 \
+(此算法跟求AP & Bridge的Tarjan算法非常相似，有興趣的話可以參考[這篇](../introduction_to_AP_bridge.md))
 
-定義：
-\\( D(u) \\)為DFS造訪順序的時間戳記
-\\( L(u) \\)為所有點\\( u \\)能夠走到的點中\\( D(x) \\)的最小值
+定義： \
+\\( depth(u) \\)為DFS造訪順序的時間戳記 \
+\\( low(u) \\)為所有點\\( u \\)能夠走到的點中\\( depth(x) \\)的最小值
  
 ### Detail process & Template code
 
 Tarjan Algo code:
 
 ```cpp
-void DFS(int u, int fa) {
-	D[u] = L[u] = ++Time;
-	stk.emplace(u); //走過的點丟進stack裡
-	inStack[u] = 1;
-	for(int v : G[u]) {
-		if(!D[v]) { // Tree edge
-			DFS(v,u); //直接往下走
-			L[u] = min(L[u], L[v]); //更新
+struct SCC {
+	int low[N], depth[N], SCC[N], n, Time, SCCID;
+	bool inStack[N]; 
+	stack<int> stk;
+	vector<int> G[N];
+	void add_edge(int u, int v) {
+		G[u].emplac_back(v);
+	}
+	void DFS(int u, int fa) {
+		depth[u] = low[u] = ++Time;
+		stk.emplace(u); //走過的點丟進stack裡
+		inStack[u] = 1;
+		for(int v : G[u]) {
+			if(!depth[v]) { // Tree edge
+				DFS(v,u); //直接往下走
+				low[u] = min(low[u], low[v]); //更新
+			}
+			else if (inStack[v]) { //Back edge
+				low[u] = min(low[u], depth[v]); //更新
+			}
 		}
-		else if (inStack[v]) { //Back edge
-			L[u] = min(L[u], D[v]); //更新
+		if(depth[u] == low[u]) { //表示u的子樹存在一SCC
+			int x;
+			do {
+				x = stk.top();
+				stk.pop();
+				SCC[x] = SCCID;
+				inStack[x] = 0; //這個點已經隸屬於某個SCC了，從stack中pop出
+			} while(x != u); //當前所有在stack中(未縮點)，都屬於此SCC中。
+			++SCCID;
+		}
+		return ;
+	}
+	void solve() {
+		for(int i = 0; i < n; i++) {
+			low[i] = depth[i] = SCC[i] = 0;
+			inStack[i] = 0;
+		}
+		Time = SCCID = 0;
+		for(int i = 0; i < n; i++) {
+			if(!depth[i]) DFS(i, i);
 		}
 	}
-	if(D[u] == L[u]) { //表示u的子樹存在一SCC
-		int x;
-		do {
-			x = stk.top();
-			stk.pop();
-			SCC[x] = SCCID;
-			inStack[x] = 0; //這個點已經隸屬於某個SCC了，從stack中pop出
-		} while(x != u); //當前所有在stack中(未縮點)，都屬於此SCC中。
-		++SCCID;
-	}
-	return ;
 }
+
 ```
 ### Time complexity and the Correctness
 只需要做一次DFS，因此時間複雜度為: \\( O(V+E) \\)，正確性可以由以下性質得出。
@@ -213,62 +228,52 @@ Cross edge會可能更新答案的情況只有:走到之前已經DFS走過的點
     
 </details>
 
+## 縮點操作：
+
+非常暴力且樸素的作法，建造一個縮點後的圖\\( G' \\)，暴力看過原圖\\( G \\)中的所有邊，圖\\( G' \\)中只存跨越不同SCC的邊。
+
+```cpp
+void Compress() {
+    for(int u = 1;u <= n;u++) {
+		for(int v : G[u]) {
+			if(SCC[v] == SCC[u]) continue;
+			DAG[SCC[u]].emplace_back(SCC[v]);
+		}
+	}
+}
+```
+時間複雜度: \\( O(V+E) \\)
 
 ## Problems
-> [Planets and Kingdoms](https://cses.fi/problemset/task/1683)
-> 給定一張有向圖,找出圖上各點各自屬於哪個SCC
+> [CSES - Planets and Kingdoms](https://cses.fi/problemset/task/1683)
+> 
+> 給定一張 \\( N \\) 個點 \\( M \\) 條邊的有向圖,找出圖上各點各自屬於哪個SCC
+> 
+> \\(1 \leq N \leq 10^5,\ 1 \leq M \leq 2 \cdot 10^5\\)
 
 <details><summary>Solution</summary>
     
 模板題，只需要跑一次Tarjan/Kosaraju把所有點打上SCC編號就好。
-    
-```
-#include<bits/stdc++.h>
-using namespace std;
- 
-vector<vector<int>> G, invG;
-vector<bool> visited;
-stack<int> stk;
-vector<int> SCC;
-int SCCID = 0;
- 
-void DFS1(int u) {
-  	if(visited[u]) return;
-	visited[u] = true;
-	for(int v : G[u]) DFS1(v);
-	stk.emplace(u);
-}
- 
-void DFS2(int u, int k) {
-	if(SCC[u]) return ;
-	SCC[u] = k;
-	for(int v : invG[u]) DFS2(v, k);
-}
- 
-signed main() {
-	int n,m;cin>>n>>m;
-	G.resize(n+1), invG.resize(n+1);
-	visited.assign(n+1, false);
-	SCC.assign(n+1, 0);
-	while(m--) {
-		int u,v;cin>>u>>v;
-		G[u].emplace_back(v);
-		invG[v].emplace_back(u);
-	}
-	for(int i=1;i<=n;i++) DFS1(i);
-	while(!stk.empty()) {
-		int u = stk.top(); stk.pop();
-		if(!SCC[u]) DFS2(u, ++SCCID);
-	}
-  	cout<<SCCID<<'\n';
-	for(int i=1;i<=n;i++) cout<<SCC[i]<<' ';
-}
-```
-    
+        
 </details>
+
+> [CSES - Flight Routes Check](https://cses.fi/problemset/task/1682)
+>
+> 給定一張 \\( N \\) 個點 \\( M \\) 條邊的有向圖,問是否任選兩點都能夠互相走到
+>
+> \\(1 \leq N \leq 10^5,\ 1 \leq M \leq 2 \cdot 10^5\\)
+
+<details><summary>Solution</summary>
     
-> [CSES - Reachability Queries](https://cses.fi/problemset/task/2143)
-> 給定一張有向圖及\\(q \\)筆詢問，每次詢問點\\(a \\)能不能走到點\\(b \\)
+模板題，一樣跑一次Tarjan/Kosaraju，然後看整張圖是不是都屬於同一個SCC即可。
+        
+</details>
+
+> [CSES - Reachable Nodes](https://cses.fi/problemset/task/2138)
+>
+> 給定一張\\( N \\) 個點 \\( M \\) 條邊的有向圖，詢問每個點能夠走到幾個點(包含自己)
+>
+> \\(1 \leq N \leq 5 \cdot 10^4,\ 1 \leq M \leq 10^5\\)
 
 <details><summary>Solution</summary>
 
@@ -276,77 +281,26 @@ SCC模板題
 對於點\\(v \\)來說，跟它處於同一SCC中的點都是它能夠走到的。
 並且，對於它能走到的其他SCC \\(C_u \\)， \\(C_u \\)中的所有點都是他能夠走到的。
 因此，只需要先求出所有的SCC，做完縮點操作後拓樸排序算答案，就能算出每點能走到多少點。
-這邊對每個SCC維護一個bitset，紀錄能夠走到哪些點。
-這邊要注意因為拓樸排序算答案的順序關係，縮點完後的圖\\(G' \\)的邊要反著存，且會發現照著Tarjan Algo打上的SCC編號就會是一組拓樸排序，不需要再DFS一次。
-    
-solution code:
-```
-#include<bits/stdc++.h>
-using namespace std;
-const int N = 5e4+5;
- 
-int n,m,q,Time = 0,SCCID = 0;
-vector<vector<int>> G(N), invDAG(N);
-vector<int> low(N,0),depth(N,0),inStack(N),SCC(N,-1);
-stack<int> stk;
-bitset<N> canReach[N];
-void DFS(int u, int fa) {
-	depth[u] = low[u] = ++Time;
-	stk.emplace(u);
-	inStack[u] = 1;
-	for(int v : G[u]) {
-		if(!depth[v]) {
-			DFS(v,u);
-			low[u] = min(low[u], low[v]);
-		}
-		else if (inStack[v]) {
-			low[u] = min(low[u], depth[v]);
-		}
-	}
-	if(depth[u] == low[u]) {
-		int x;
-		do {
-			x = stk.top();
-			stk.pop();
-			SCC[x] = SCCID;
-			inStack[x] = 0;
-		} while(x != u);
-		++SCCID;
-	}
-	return ;
-}
- 
-void Compress() {
-    for(int u = 1;u <= n;u++) {
-		for(int v : G[u]) {
-			if(SCC[v] == SCC[u]) continue;
-			invDAG[SCC[v]].emplace_back(SCC[u]);
-		}
-	}
-}
- 
-signed main() {
-	cin>>n>>m>>q;
-	while(m--) {
-		int u,v;cin>>u>>v;
-		G[u].emplace_back(v);
-	}
-	for(int i = 1;i <= n;i++) if(!depth[i]) DFS(i,i);
-        Compress();
-	for(int i=0;i<SCCID;i++) {
-		canReach[i][i] = 1;
-		for(auto x : invDAG[i]) canReach[x] |= canReach[i];
-	}
-	while(q--) {
-		int a,b;cin>>a>>b;
-		cout<<(canReach[SCC[a]][SCC[b]] ? "YES\n" : "NO\n");
-	}
-}
-```
+
+</details>   
+
+> [CSES - Reachability Queries](https://cses.fi/problemset/task/2143)
+>
+> 給定一張\\( N \\) 個點 \\( M \\) 條邊的有向圖及\\(Q \\)筆詢問，每次詢問點\\(a \\)能不能走到點\\(b \\)
+>
+> \\(1 \leq N \leq 5 \cdot 10^4,\ 1 \leq M,Q \leq 10^5\\)
+
+<details><summary>Solution</summary>
+
+跟上一題的解法基本上一樣，但這題需要維護點之間的關係，可以考慮使用bitset來維護。
+
 </details>   
 
 > [CSES - Coin Collector](https://cses.fi/problemset/task/1686)
-> 有\\(n \\)個房間, \\(m \\)個單向通道，每個房間有一些金幣。問最多能收集多少金幣？(起點跟終點可以自由選擇)    
+>
+> 有\\(N \\)個房間, \\(M \\)個單向通道，每個房間有一些金幣(\\( K_i\\))。問最多能收集多少金幣？(起點跟終點可以自由選擇)    
+>
+> \\(1 \leq N \leq 10^5,\ 1 \leq M \leq 2 \cdot 10^5, \ 1 \leq K_i \leq 10^9 \\)
 
 <details><summary>Solution</summary>
 
@@ -358,73 +312,6 @@ signed main() {
 不難看出DP轉移式為: \\( DP[v] = max\{DP[u] + Coins[v]\}, \forall u \to v \\) 
 因此，就可以在縮點後的圖\\( DAG \\)上做拓樸排序的同時順便DP。
 
-    
-```
-#include<bits/stdc++.h>
-using namespace std;
-#define int long long
-const int N = 1e5+5;
- 
-int n,m,q,Time = 0,SCCID = 0;
-vector<vector<int>> G(N), invDAG(N);
-vector<int> low(N,0),depth(N,0),inStack(N),SCC(N,-1);
-vector<int> coin(N,0), SCC_value(N,0);
-stack<int> stk;
-void DFS(int u, int fa) {
-	depth[u] = low[u] = ++Time;
-	stk.emplace(u);
-	inStack[u] = 1;
-	for(int v : G[u]) {
-		if(!depth[v]) {
-			DFS(v,u);
-			low[u] = min(low[u], low[v]);
-		}
-		else if (inStack[v]) {
-			low[u] = min(low[u], depth[v]);
-		}
-	}
-	if(depth[u] == low[u]) {
-		int x;
-		do {
-			x = stk.top();
-			stk.pop();
-			SCC[x] = SCCID;
-			inStack[x] = 0;
-		} while(x != u);
-		++SCCID;
-	}
-	return ;
-}
- 
-void Compress() {
-    for(int u = 1;u <= n;u++) {
-		SCC_value[SCC[u]] += coin[u];	
-		for(int v : G[u]) {
-			if(SCC[v] == SCC[u]) continue;
-			invDAG[SCC[v]].emplace_back(SCC[u]);
-		}
-	}
-}
- 
-signed main() {
-	cin>>n>>m;
-	for(int i=1;i<=n;i++) cin>>coin[i];
-	while(m--) {
-		int u,v;cin>>u>>v;
-		G[u].emplace_back(v);
-	}
-	for(int i=1;i<=n;i++) if(!depth[i]) DFS(i,i);
-	Compress();
-	vector<int> DP(SCCID,0);
-	for(int u=SCCID-1;u>=0;u--) {
-		DP[u] = SCC_value[u];
-		for(int v : invDAG[u]) DP[u] = max(DP[u], DP[v] + SCC_value[u]);
-	}
-  	int ans = 0;
-	for(int i=0;i<SCCID;i++) ans = max(ans, DP[i]);
-  	cout<<ans;
-}
-```
     
 </details>
     
