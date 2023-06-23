@@ -30,7 +30,7 @@ a_{n + 1} &= 3 a_n + 2, n \geq 0 \\\\
 \Longrightarrow A(x) &= \frac{2x}{(1 - x)(1 - 3x)}
 \end{aligned}
 
-因此，\\( A(x) = \frac{2x}{(1 - x)(1 - 3x)} \\) 為此數列的 OGF。找到 OGF 之後，我們可以求數列的一般項。先將 \\( A(x) \\) 寫成 partial fraction [^note-1] 的形式，
+因此，\\( A(x) = \frac{2x}{(1 - x)(1 - 3x)} \\) 為此數列的 OGF。找到 OGF 之後，我們可以求數列的一般項。先將 \\( A(x) \\) 寫成 [partial fraction](https://en.wikipedia.org/wiki/Partial_fraction_decomposition#Examples) 的形式，
 
 \\[
 A(x) = 2x(\frac{C}{1 - x} + \frac{D}{1 - 3x})
@@ -170,7 +170,7 @@ F(x) - 1 &= C(x)F(x)^2 \\\\
 \Longrightarrow F(x) &= \frac{1 \pm \sqrt{1 - 4C(x)}}{2C(x)} & \text{把 \\( F(x) \\) 當作變數解二元一次方程式}
 \end{aligned}
 
-由於 \\( f_0 = F(0) = 1 \\)，\\( F(x) \\) 在 \\( x = 0 \\) 要收斂至 \\( 1 \\)，因此要取負號，得到 \\( F(x) = \frac{1 - \sqrt{1 - 4C(x)}}{2C(x)} \\)。一般來說化簡到這裡就可以了，但是在 \\( \bmod 998244353 \\) 下，\\( C(x) \\) 的逆元 \\( C^-1(x) \\) 存在若且唯若 \\( C(x) \\) 的常數項不為 \\( 0 \\)[^note-2]。因此我們要對他有理化，
+由於 \\( f_0 = F(0) = 1 \\)，\\( F(x) \\) 在 \\( x = 0 \\) 要收斂至 \\( 1 \\)，因此要取負號，得到 \\( F(x) = \frac{1 - \sqrt{1 - 4C(x)}}{2C(x)} \\)。一般來說化簡到這裡就可以了，但是在 \\( \bmod 998244353 \\) 下，\\( C(x) \\) 的逆元 \\( C^-1(x) \\) 存在若且唯若 \\( C(x) \\) 的常數項不為 \\( 0 \\)[^note-1]。因此我們要對他有理化，
 
 \begin{aligned}
 F(x) &= \frac{1 - \sqrt{1 - 4C(x)}}{2C(x)} \\\\
@@ -184,7 +184,72 @@ F(x) &= \frac{1 - \sqrt{1 - 4C(x)}}{2C(x)} \\\\
 
 本題中對 FPS 做開根號和逆元的詳細做法可以參考這三篇文章 [1](https://codeforces.com/blog/entry/56422) [2](https://cp-algorithms.com/algebra/polynomial.html) [3](https://www.luogu.com.cn/blog/MoYuFang/sheng-cheng-han-shuo-di-shuo-xue-ji-chu)。
 
-[^note-1]: 將有理函數分解成多個最高次較低的有理函數和，參考 [Partial Fraction Decomposition](https://en.wikipedia.org/wiki/Partial_fraction_decomposition#Examples)
+> [ABC222 H - Beautiful Binary Tree](https://atcoder.jp/contests/abc222/tasks/abc222_h)
+>
+> 每個節點上寫著一個數字 \\( h_i \\)。定義一個 degree 為 \\( n \\) 的漂亮二元樹為：
+>
+> - \\( h_i \in \text{\{ \\( 0, 1 \\) \}} \\)
+> - 葉節點的 \\( h_i = 1 \\)
+> - 執行以下的操作至多 \\( n - 1 \\) 次，使得根節點為 \\( n \\) 且其他節點為 \\( 0 \\)
+>   - 選擇兩個節點 \\( u, v \\)，滿足 \\( v \\) 是 \\( u \\) 的兒子或是孫子，更新為 \\( h_u \leftarrow h_u + h_v, h_v \leftarrow 0 \\)
+> 求 degree 為 \\( n \\) 的漂亮二元樹數量 \\( \bmod 998244353 \\)
+> 
+> - \\( 1 \leq n \leq 10^7 \\)，\\( O(n) \\)
 
-[^note-2]: 假設 \\( A(x)B(x) = 1 \\)，我們稱 \\( B(x) \\) 為 \\( A(x) \\) 的乘法逆元，記做 \\( B(x) = \frac{1}{A(x)} = A(x)^{-1} = A^{-1}(x) \\)。
+觀察：
+
+因為每次操作都要把一個 \\( h_i = 1 \\) 的往上移動，且經過 \\( n - 1 \\) 次操作後根節點要為 \\( n \\)，因此根節點的初始 \\( h_i = 1 \\)。又因為每次往上移動時最多可以跳過一個節點 (\\ (u, v) \\) 可以為父子或爺孫關係) ，因此樹上不能有相鄰的 \\( 0 \\)，否則無法在 \\( N - 1 \\) 次內完成。
+
+有了上述的觀察，我們可以列出 DP 式：
+
+- \\( a_i \\)：degree 為 \\( i \\) 的漂亮二元樹數量。
+- \\( b_i \\)：degree 為 \\( i \\) 且 root 為 \\( 0 \\) 的漂亮二元樹數量。
+
+列出關係式：
+
+\begin{aligned}
+b_i = 2 a_i + \sum\limits_{j = 1}^{i - 1} a_j a_{i - j}
+\end{aligned}
+
+\\( 2 a_i \\) 為只有一個子孫的情況，可以為左或右子樹。\\( \sum\limits_{j = 1}^{i - 1} a_j a_{i - j} \\) 為枚舉左子樹的 degree。因為不能有相鄰的 \\( 0 \\)，因此不能接上 \\( b \\) 類型的根作為子樹。
+
+定義 \\( a_0 = b_0 = 0 \\)，將 \\( a, b \\) 轉換為 OGF \\( A(x), B(x) \\) 得到
+
+\\[
+B(x) = 2A(x) + A(x)^2
+\\]
+
+同樣 \\( a_i \\) 也可以列出遞迴式：
+
+\begin{cases}
+a_1 = 1 & \text{base case} \\\\
+a_i = 2 (a_{i - 1} + b_{i - 1}) + \sum\limits_{j = 1}^{i - 1} (a_j + b_j)(a_{i - 1 - j} + b_{i - 1 - j}), (i > 1) & \text{根節點為 \\( 1 \\)，因此子樹 degree 加起來為 \\( i - 1 \\)} \\\\
+\end{cases}
+
+因此，
+
+\begin{aligned}
+A(x) - a_0 x^0 - a_1 x^1 &= 2x(A(x) + B(x)) + x(A(x) + B(x))^2 & \text{按照套路轉成 OGF} \\\\
+\Longleftrightarrow A(x) &= x + 2x(A(x) + B(x)) + x(A(x) + B(x))^2 & \text{代入 \\( a_0 = 0, a_1 = 1 \\)} \\\\
+&= x(1 + A(x) + B(x))^2 \\\\
+&= x(1 + 3A(x) + A(x)^2)^2 & \text{代入 \\( B(x) \\)} \\\\
+\end{aligned}
+
+到這邊就能夠在 \\( O(n \log n) \\) 求出了。但因為題目要求 \\( O(n) \\)，我們需要進一步化簡。
+
+根據 [Lagrange Inversion Theorem](/math/lagrange_inversion_theorem.md)，我們定義 \\( F(x) = A(x) = x(1 + 3F(x) + F(x)^2)^2 \\)，因此 \\( \frac{F(x)}{(1 + 3F(x) + F(x)^2)^2} = x \\)。不難看出滿足 \\( G(F(x)) = x \\) 的 \\( G(x) = \frac{x}{(1 + 3x + x^2)^2} \\)。根據定理，我們可以列出
+
+\begin{aligned}
+\text{[} x^n \text{]} F(x) &= \frac{1}{n} [x^{n - 1}] (\frac{x}{G(x)})^n \\\\
+&= \frac{1}{n} [x^{n - 1}] (1 + 3x + x^2)^{2n} & \text{代入 \\( G(x) \\)} \\\\
+&= \frac{1}{n} [x^{n - 1}] ((1 + 3x) + x^2)^{2n} \\\\
+&= \frac{1}{n} [x^{n - 1}] \sum\limits_{i = 0}^{2n} \binom{2n}{i} (1 + 3x)^{2n - i} (x^2)^{i} & \text{二項式定理} \\\\
+&= \frac{1}{n} \sum\limits_{i = 0}^{2n} \binom{2n}{i} [x^{n - 1 - 2i}] (1 + 3x)^{2n - i} \\\\
+&= \frac{1}{n} \sum\limits_{i = 0}^{2n} \binom{2n}{i} [x^{n - 1 - 2i}] \sum\limits_{j = 0}^{2n - i} \binom{2n - i}{j} (3x)^j 1^{2n - i - j} & \text{二項式定理} \\\\
+&= \frac{1}{n} \sum\limits_{i = 0}^{2n} \binom{2n}{i} \binom{2n - i}{n - 1 - 2i} 3^{n - 1 - 2i} \\\\
+\end{aligned}
+
+因此我們可以在 \\( O(n) \\) 求出 \\( [x^n] F(x) = [x^n] A(x) = a_n \\)。
+
+[^note-1]: 假設 \\( A(x)B(x) = 1 \\)，我們稱 \\( B(x) \\) 為 \\( A(x) \\) 的乘法逆元，記做 \\( B(x) = \frac{1}{A(x)} = A(x)^{-1} = A^{-1}(x) \\)。
 定義 \\( C(x) = 1 = A(x)B(x) = \sum\limits_{n = 0}^{\infty} (\sum\limits_{i + j = n} a_i b_j) x^n \\)。因此如果 \\( a_0 = 0 \\)，則 \\( [x^0] C(x) = a_0 b_0 = 0 \\)，\\( A(x) \\) 的逆元不存在。
