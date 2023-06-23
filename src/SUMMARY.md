@@ -11,6 +11,7 @@
 - [Dynamic Programming]()
   - [Basic DP]()
 - [Flow]()
+  - [Introduction to flow](flow/introduction.md)
   - [Basic Flow And Ford-Fulkerson and Edmond-Karp](flow/basic_flow_and_algorithms.md)
 - [Sqrt Technique](sqrt/intro.md)
   - [Square Root Decomposition](sqrt/sqrt_decomposition.md)
