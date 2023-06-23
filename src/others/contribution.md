@@ -2,7 +2,7 @@
 
 > 非常歡迎大家一同協作此專案！想新增或修改什麼就直接開 Issue 或者是 Pull Request 吧！
 
-NTHU CPP 是由 mdBook 製作而成，搭配 Github Action，將網站的最新版本部署到 Github Pages。
+NTHU CPP 是由 mdBook 製作而成，搭配 GitHub Action，將網站的最新版本部署到 GitHub Pages。
 
 ## Before your contribution
 
@@ -11,7 +11,7 @@ NTHU CPP 是由 mdBook 製作而成，搭配 Github Action，將網站的最新�
 - 也可以去看有 help wanted 標籤的 issue，有興趣的即可留言並著手開始。
 - Commit message 請使用英文一句話描述此次的修改，盡量不要超過 50 字，首字母大寫。
 - filename 使用底線分詞。
-- 因為 mdBook 的設計，請使用`\\(`  `\\)` 來分隔 MathJax 語法。
+- 因為 mdBook 的設計，請使用 `\\(` `\\)` 來分隔 MathJax 語法。
 - Reviewer 的本意是希望能有高品質的內容而非為了充字數而盡快將內容上架。請踴躍的與 reviewer 討論怎麼樣才能有清楚的說明或者是需要補充哪些內容。
 - 根據經驗，搭配圖例往往能更清楚的說明事情，請不要使用手繪加拍照。可以使用 powerpoint 或其他應用程式輔助製作圖片。
 - 專有名詞盡量使用英文。
@@ -50,8 +50,7 @@ git commit -m "Commit message"
 git push origin your_branch_name
 ```
 
-push 上去之後應該就能在 NTHU CPP 的 repository 或者是 fork 出來的 repository 上看到可以 Compare & pull request。大膽地按下去。
-![](image/pr.png)
+push 上去之後應該就能在 NTHU CPP 的 repository 或者是 fork 出來的 repository 上看到可以 Compare & pull request。大膽地按下去。![](image/pr.png)
 
 你可以在這邊瀏覽一下自己的 commit 或者是寫一些話給要 review 的人。都沒問題後就可以按下 Create pull request 並等人來 review 囉！
 
@@ -61,5 +60,5 @@ push 上去之後應該就能在 NTHU CPP 的 repository 或者是 fork 出來�
 
 以下附上一些可能有用的參考資料：
 
-- [連猴子都能懂的Git入門指南](https://backlog.com/git-tutorial/tw/)
-- [與其它開發者的互動 - 使用 Pull Request（PR）- 為你自己學Git](https://gitbook.tw/chapters/github/pull-request)
+- [連猴子都能懂的 Git 入門指南](https://backlog.com/git-tutorial/tw/)
+- [與其它開發者的互動 - 使用 Pull Request（PR）- 為你自己學 Git](https://gitbook.tw/chapters/github/pull-request)

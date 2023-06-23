@@ -12,7 +12,7 @@
 
 對它取前綴和，會發現它很好算，也就是 \\(\sum_{i=1}^n \mu\ast 1 = \sum_{i=1}^n [i=1] = 1\\)。
 
-因此若可以找到 \\(\mu\ast 1\\)  的前綴和，還有 \\(\mu\\) 的前綴和之間的關係，說不定就能夠加速計算 \\(\mu\\) 的前綴和。
+因此若可以找到 \\(\mu\ast 1\\) 的前綴和，還有 \\(\mu\\) 的前綴和之間的關係，說不定就能夠加速計算 \\(\mu\\) 的前綴和。
 
 而這就是大名鼎鼎的杜教篩。
 
@@ -126,15 +126,15 @@ def Find_S(n):
 
 證明：
 
-根據定義，\\( m\in R(n)) \\) 代表存在某個正整數 \\( i \\)（\\( 1\le i\le n \\)） 使得 \\( \left\lfloor\dfrac n i\right\rfloor = m \\)。
+根據定義，\\( m\in R(n) \\) 代表存在某個正整數 \\( i \\) (\\( 1\le i\le n \\)) 使得 \\( \left\lfloor\dfrac n i\right\rfloor = m \\)。
 
 因此
 
-\\[ R(m)=\left\\{\left\lfloor\frac{\left\lfloor\frac{n}{i}\right\rfloor}{j}\right\rfloor :\  j=1, 2, \cdots, m \right\\} \\]
+\\[ R(m)=\left\\{\left\lfloor\frac{\left\lfloor\frac{n}{i}\right\rfloor}{j}\right\rfloor :\ j=1, 2, \cdots, m \right\\} \\]
 
 利用前述引理，可以簡化成：
 
-\\[ R(m)=\left\\{\left\lfloor\frac{n}{ij}\right\rfloor :\  j=1, 2, \cdots, m \right\\} \\]
+\\[ R(m)=\left\\{\left\lfloor\frac{n}{ij}\right\rfloor :\ j=1, 2, \cdots, m \right\\} \\]
 
 由此可見 \\( R(m)\subseteq R(n) \\)。
 
@@ -610,13 +610,13 @@ Bottleneck 在於求 \\( \mu \\) 的前綴和，時間複雜度依然是 \\( \ma
 
 <br>
 
-[洛谷 P213](https://www.luogu.com.cn/problem/P4213)即是上面兩道練習的模板題。
+[洛谷 P213](https://www.luogu.com.cn/problem/P4213) 即是上面兩道練習的模板題。
 
 在此附上 AC code。
 
 在這道題目中要注意，\\( n + 1 \\) 可能會導致 overflow。
 
-附註：  我只有測試過以下的 code，上面的 code 並沒有丟到 OJ 上測試過。
+附註：我只有測試過以下的 code，上面的 code 並沒有丟到 OJ 上測試過。
 
 ```cpp
 #include <bits/stdc++.h>
