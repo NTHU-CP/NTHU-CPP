@@ -426,8 +426,7 @@ struct LCT
 解題思路：  
 可以把題目想像成一個森林，每個節點都是獨立的一棵樹，因此符合 LCT 是一個森林的性質。  
 第一個操作的可以用 LCT 的 ``link()`` 來達成。  
-第二個的操作可以用 LCT 的 ``cut()`` 來達成。
-所以只要能判斷兩個節點是否相連就可以回答問題了。  
+第二個的操作可以用 LCT 的 ``cut()`` 來達成。所以只要能判斷兩個節點是否相連就可以回答問題了。  
 要判斷兩個節點是否相連其實就等同於兩個節點是否在同一棵樹上，所以我們只要看兩個節點的根是否一樣就可以達成。  
   
 時間複雜度分析：  
@@ -575,11 +574,191 @@ int main()
 
 </details>
 
+> [CF 117E - Tree or not Tree](https://codeforces.com/problemset/problem/117/E)  
+> 給你 \\(N\\) 個車站，一個車站可以連接多個車站，但每次只能往其中一個車站，總共有 \\(N - 1\\) 條單向權重為 \\(d\\) 的鐵路，並且 \\(1\\) 號車站為根節點。  
+> 有 \\(M\\) 台火車，每個火車會在 \\(t_i\\) 的時間進入 \\(1\\) 號車站，並且目標車站為 \\(s_i\\)。  
+> 在每個時間，你可以對火車站的開關操作，讓火車站前往不同的車站，如果火車無法到達目標車站，則火車會爆炸。  
+> 題目要問最晚的爆炸時間，以及最少的操作次數。
+>
+> - \\( N, M \leq 10^5 \\)  
+> - \\( 1 \leq d ,s_i, t_i \leq 10^9\\)  
+
+雖然沒有明確的 Link 與 Cut 的需要，但仔細思考看看發現這題的火車站所前往的方向，就很像 LCT 中的 preferred edge，而火車前往的路徑就是 LCT 中的 preferred path，因此可以用 LCT 試試看。把每個 LCT 節點想成一個火車站，紀錄當前距離 \\(1\\) 號車站的距離，並且記錄當前最晚被操作的時間點。在 ``access()`` 中每一次的 iteration 都代表著一次操作，可以根據最晚操作的時間點，算出一個區間 \\\((L, R\]\\)，代表開關只要在這個時間點中被更改方向，火車就可以前往正確的路徑。把這些區間放進一個 priority_queue 中維護，並且每次挑選最接近當前時間的開關進行操作，如果當前時間超過了當前最早需要的操作，代表火車會爆炸。  
+
+<details><summary> Solution Code </summary>
+
+實作細節：
+
+1. 因為節點深度的資訊在這題中不重要，因此不需要維護，這題要維護的是火車站的最後使用到的時間，因此懶惰標記改成紀錄時間。
+2. 在 ``splay()`` 時，需要從當前輔助樹的根節點將懶惰標記下推，否則向上旋轉時，會出現懶惰標記跑掉的錯誤。
+3. 在 ``access()`` 時，需要紀錄區間 \\\((L, R\]\\)，並把它記錄起來。
+
+```cpp
+#include <bits/extc++.h>
+using namespace std;
+typedef long long ll;
+stack<int> st;
+vector<vector<pair<int, int>>> G;
+vector<pair<ll, ll>> op;
+struct LCT
+{
+    struct splay_node
+    {
+        int child[2], parent;
+        ll time, tag, dist;
+        // Time means the last operation time.
+        // Dist is distance between 1 and current node.
+        splay_node() : parent(0), child(), time(0), tag(0), dist(0) {}
+    };
+    vector<splay_node> node;
+    LCT(int _size) { node.resize(_size + 1); }
+    bool isroot(int x)
+    {
+        return node[node[x].parent].child[0] != x && node[node[x].parent].child[1] != x;
+    }
+    void down(int x)
+    {
+        if (node[x].tag)
+        {
+            node[x].time = node[x].tag;
+            if (node[x].child[0])
+                node[node[x].child[0]].tag = node[x].tag;
+            if (node[x].child[1])
+                node[node[x].child[1]].tag = node[x].tag;
+            node[x].tag = 0;
+        }
+    }
+    void rotate(int x)
+    {
+        int y = node[x].parent, z = node[y].parent, d = (node[y].child[1] == x);
+        node[x].parent = z;
+        if (!isroot(y))
+            node[z].child[node[z].child[1] == y] = x;
+        node[y].child[d] = node[x].child[d ^ 1];
+        node[node[y].child[d]].parent = y;
+        node[y].parent = x, node[x].child[d ^ 1] = y;
+    }
+    void splay(int x)
+    { /* Very important: Need to push down from root */
+        int u = x;
+        st.push(u);
+        while (!isroot(u))
+            st.push(u = node[u].parent);
+        while (st.size())
+        {
+            u = st.top();
+            st.pop();
+            down(u);
+        }
+
+        while (!isroot(x))
+        {
+            int y = node[x].parent;
+            if (!isroot(y))
+            {
+                int z = node[y].parent;
+                if ((node[z].child[0] == y) ^ (node[y].child[0] == x))
+                    rotate(x);
+                else
+                    rotate(y);
+            }
+            rotate(x);
+        }
+    }
+    int access(int x, int t)
+    {
+        int last = 0, ori = x;
+        for (; x; last = x, x = node[x].parent)
+        {
+            splay(x);
+            if (last)
+            {
+                node[x].child[1] = last;
+                a.emplace_back(node[x].time + node[x].dist, t + node[x].dist);
+            }
+        }
+        splay(ori);
+        node[node[ori].child[0]].tag = t;
+        return last;
+    }
+    void dfs(int x, int pa = 0)
+    { /* Use dfs to build tree. */
+        node[x].parent = pa;
+        node[x].time = -node[x].dist;
+        for (auto [v, w] : G[x])
+        {
+            if (v == pa)
+                continue;
+            node[x].child[1] = v;
+            node[v].dist = node[x].dist + w;
+            dfs(v, x);
+        }
+    }
+};
+
+int main()
+{
+    ios::sync_with_stdio(false);
+    cin.tie(0);
+
+    int n, m;
+    cin >> n >> m;
+    LCT lct(n);
+    G.resize(n + 1);
+    for (int i = 1; i < n; i++)
+    {
+        int u, v, w;
+        cin >> u >> v >> w;
+        G[u].emplace_back(v, w);
+        G[v].emplace_back(u, w);
+    }
+    lct.dfs(1);
+
+    for (int i = 1; i <= m; ++i)
+    {
+        int s, t;
+        cin >> s >> t;
+        lct.access(s, t);
+    }
+    sort(op.begin(), op.end());
+    priority_queue<ll, vector<ll>, greater<ll>> q;
+    ll last = 0;
+    int idx = 0;
+    while (!q.empty() || idx != op.size())
+    {
+        if (q.empty())
+            last = op[idx].first;
+        while (idx != op.size() && op[idx].first == last)
+            q.push(op[idx++].second);
+        if (last == q.top())
+        {
+            int ans = 0;
+            for (auto [start, end] : op)
+                if (end < last)
+                    ans++;
+            cout << last << ' ' << ans << '\n';
+            return 0;
+        }
+        q.pop(), last++;
+    }
+    cout << -1 << ' ' << op.size() << '\n';
+
+    return 0;
+}
+```
+
+時間複雜度分析：  
+時間複雜度被操作所執行的次數所決定，由於 ``access()`` 操作有均攤 \\(O (\log N)\\) 的時間複雜度，因此操作最多執行的次數為 \\(O (M \log N)\\)。
+最終用 priority_queue 維護這些操作，因此最終的時間複雜度為 \\(O (N \log N + M \log^2 N)\\)
+
+</details>
+
 總結：  
 
 - LCT 可以判斷連通性
 - LCT 可以做路徑維護，因此可以維護路徑資訊
 - LCT 可以動態切邊，因此當看到 **cut** 關鍵字的時候，或許可以想想看 LCT 可不可以做，因為大部分輕重鏈剖分可以做的題目，LCT 也都可以做
+- LCT 的 ``access()`` 操作可以在 \\(O (\log N)\\) 的時間複雜度完成，因此可以利用這個性質去修改 ``access()``，讓操作有更好的時間複雜度
 
 ## 相關題目
 
