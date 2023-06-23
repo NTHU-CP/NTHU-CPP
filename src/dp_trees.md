@@ -47,6 +47,10 @@
 
 \\[=\max\Bigl(dp[0][u],1+\sum_{v\in child(u)}dp[1][v]+\max_{v\in child(u)}\bigl(dp[0][v]-dp[1][v]\bigr)\Bigr)\\]
 
+\\[=\max\Bigl(dp[0][u],1+dp[0][u]+\max_{v\in child(u)}\bigl(dp[0][v]-dp[1][v]\bigr)\Bigr)\\]
+
+\\[=dp[0][u]+\max\Bigl(0,1+\max_{v\in child(u)}\bigl(dp[0][v]-dp[1][v]\bigr)\Bigr)\\]
+
 遞迴終止條件為\\(u\\)是一個葉節點，此時\\(dp[0][u]=dp[1][u]=0\\)。
 
 <details><summary>Solution Code</summary>
@@ -60,17 +64,14 @@ const int MAXN = 2e5;
 vector<int> tree[MAXN];
 int dp[2][MAXN];
 void DFS(int u, int parent) {
+    int tmp = -2147483647;
     dp[0][u] = 0;
     for (const int &v: tree[u]) if (v != parent) {
         DFS(v, u);
         dp[0][u] += dp[1][v];
-    }
-    dp[1][u] = 1; int tmp = -2147483647;
-    for (const int &v: tree[u]) if (v != parent) {
-        dp[1][u] += dp[1][v];
         tmp = max(tmp, dp[0][v] - dp[1][v]);
     }
-    dp[1][u] = max(dp[0][u], dp[1][u] + tmp);
+    dp[1][u] = dp[0][u] + max(0, 1 + tmp);
 }
 int main() {
     int n; cin >> n;
@@ -89,8 +90,32 @@ int main() {
 
 #### Discussion
 * 如果邊有權重(weight)的話，要找出最大權重配對，假設邊權重皆正（否則直接把非正權的邊刪掉比較容易），那以上討論的轉移式還能輕易套用嗎？如果可以，需要更動哪些細節？
+
+<details><summary>參考答案</summary>
+
+可以，而且只要改一個地方：把\\(dp[1][u]\\)的轉移式的\\(1\\)都移進去\\(\max_{v\in child(u)}\\)，然後改成\\(w(u,v)\\)（邊\\((u,v)\\)的權重）就好了。
+
+</details>
+
 * 假設\\(n\geq2\\)，如果把根定在葉子，此時\\(dp[1][u]\\)的轉移式會變得如何？這樣的轉移式給你什麼啟發？
+
+<details><summary>參考答案</summary>
+
+設\\(v\\)為\\(u\\)的唯一小孩，則\\[dp[1][u]=\max(dp[0][u],1+dp[0][v])=\max(dp[1][v],1+dp[0][v])\\]
+然而容易發現\\(dp[1][v]\leq1+dp[0][v]\\)，因為給定一個以\\(v\\)為根的子樹的最大配對，至多只要移除一條與\\(v\\)相鄰的邊，就能得到滿足\\(dp[0][v]\\)定義的配對。<!--這裡還要附圖嗎？-->  
+於是，\\(dp[1][u]=1+dp[0][v]\\)。也就是說，這個問題其實有greedy解：每次選一個葉子，把唯一的相鄰邊加入配對，並將這個邊的兩個端點（以及所有與這兩個端點相鄰的邊）刪除，直到沒有點或剩餘一個點。
+
+這個方法實作的時候，需要注意不能直接暴力\\(O(n)\\（或\\(O(\log n)\\）移除邊。
+<!--可以參考以下程式碼：https://usaco.guide/gold/dp-trees?lang=cpp#solution-2---greedy 但我現在讀完以後發現它的實作其實不太直覺？-->
+</details>
+
 * 如果邊有權重的話，上一點的討論還會成立嗎？
+
+<details><summary>參考答案</summary>
+
+不會。下圖有唯一的最大權重配對，為中間那條邊，而無論挑哪一個葉子greedy都會是錯的。![](tree_matching_greedy_counterexample.png)
+
+</details>
 
 <!--
 > Finding the Diameter and a Center of a Tree
@@ -191,6 +216,55 @@ void DFS(int u, int parent) {
 > [AtCoder Educational DP Contest P - Independent Set](https://atcoder.jp/contests/dp/tasks/dp_p)
 >
 > 給定一棵樹，每個點可以是白色或黑色，但是相鄰的兩個點不能都是黑色，請計算有幾種塗色方法（除以\\(10^9+7\\)的餘數）。
+
+定根之後，對於根而言，顯然只有兩種情形：根是白色或根是黑色。如果根是白色，那麼與根相鄰的點，可以是白色也可以是黑色；如果根是黑色，那麼與根相鄰的點，都必須是白色。  
+除了上述條件需要滿足以外，可以觀察到，只要每棵與根相鄰的子樹<!--？-->的塗色都合法，整棵樹的塗色就會合法。<!--預計要放四張圖-->
+
+於是，本題的dp狀態可以設計如下：<!--符號問題待改-->
+
+* \\(dp[0][u]\\)為在以\\(u\\)為根的子樹中，若將\\(u\\)塗成**白色**，有幾種塗色方法
+* \\(dp[1][u]\\)為在以\\(u\\)為根的子樹中，若將\\(u\\)塗成**黑色**，有幾種塗色方法
+
+如果\\(u\\)是葉子，那麼\\(dp[0][u]=dp[1][u]=1\\)（遞迴終止條件）。  
+否則，由以上觀察，轉移式可以這樣寫：
+
+* 在把根塗成白色的情形下，所有子樹可能的塗色組合，都會是合法的。由基本計數原理得知，只要把每棵子樹的塗色方法數乘起來，就會是整棵樹的塗色方法數：\\[dp[0][u]=\prod_{v\in child(u)}(dp[0][v]+dp[1][v])\\]
+* 如果把根塗成黑色，則所有子樹在子樹根塗白色的情形下，可能的塗色組合，一樣都會是合法的。同樣地，只要把每棵子樹在「子樹根只能塗白色」的情形下的塗色方法數乘起來，就會是整棵樹的塗色方法數：\\[dp[1][u]=\prod_{v\in child(u)}dp[0][v]\\]
+
+最終答案會是\\(dp[0][u]+dp[1][u]\\)（除以\\(10^9+7\\)的餘數）。
+
+<details><summary>Solution Code</summary>
+
+```cpp
+#include <iostream>
+#include <vector>
+using namespace std;
+const int MAXN = 1e5, MOD = 1e9 + 7;
+vector<int> tree[MAXN];
+int dp[2][MAXN];
+void DFS(int u, int parent) {
+    long long white = 1, black = 1;
+    for (const int &v: tree[u]) if (v != parent) {
+        DFS(v, u);
+        white = white * (dp[0][v] + dp[1][v]) % MOD;
+        black = black * dp[0][v] % MOD;
+    }
+    dp[0][u] = white; dp[1][u] = black;
+}
+int main() {
+    int N; cin >> N;
+    for (int i = 1; i < N; ++i) {
+        int x, y; cin >> x >> y;
+        tree[x - 1].push_back(y - 1);
+        tree[y - 1].push_back(x - 1);
+    }
+    DFS(0, -1);
+    cout << (dp[0][0] + dp[1][0]) % MOD << endl;
+    return 0;
+}
+```
+
+</details>
 
 <!--### Exercises-->
 
