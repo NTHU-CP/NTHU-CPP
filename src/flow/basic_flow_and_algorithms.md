@@ -320,19 +320,17 @@
 
 * 將每台電腦視為點，連結和速度分別視為弧和其容量，建完圖後將源點設為 \\(1\\)，匯點設為 \\(N\\)，最大流即為答案。
 
-  ``` CPP
-    int main(){
-      int n, m, a, b, c, i;
-      while(cin >> n >> m){
-        EdmondsKarp ek(n, m, 1, n);
-        for(i = 1; i <= m; i ++){
-            cin >> a >> b >> c;
-            ek.add_edge(a, b, c);
+      int main(){
+        int n, m, a, b, c, i;
+        while(cin >> n >> m){
+          EdmondsKarp ek(n, m, 1, n);
+          for(i = 1; i <= m; i ++){
+              cin >> a >> b >> c;
+              ek.add_edge(a, b, c);
+          }
+          cout << ek.flow() << '\n';
         }
-        cout << ek.flow() << '\n';
       }
-    }
-  ```
 
   > 有一座城市有 \\(N\\) 棟建築物及 \\(M\\) 個道路，每條道路為雙向連接兩棟建築物，且有其長度，請求出最少需要關閉幾條道路，才能使建築物 \\(1\\) 和建築物 \\(N\\) 之間無法往來。
   >
@@ -340,19 +338,17 @@
 
 * 此問題等同於求出圖上的最小割，因有最大流等於最小割的性質，將每條邊的容量設為 \\(1\\)，最後求出的最大流即為答案。
 
-  ``` CPP
-    int main(){
-      int n, m, a, b, i;
-      while(cin >> n >> m){
-        EdmondsKarp ek(n, m, 1, n);
-        for(i = 1; i <= m; i ++){
-          cin >> a >> b;
-          ek.add_edge(a, b, 1);
+      int main(){
+        int n, m, a, b, i;
+        while(cin >> n >> m){
+          EdmondsKarp ek(n, m, 1, n);
+          for(i = 1; i <= m; i ++){
+            cin >> a >> b;
+            ek.add_edge(a, b, 1);
+          }
+          cout << ek.flow() << '\n';
         }
-        cout << ek.flow() << '\n';
       }
-    }
-  ```
 
 > 給定 \\(N\\) 個男生和 \\(M\\) 個女生，以及 \\(K\\) 個關係 \\((u, v)\\)，每個關係代表 \\(u\\) 和 \\(v\\) 互相喜歡，且不會出現同性戀的情形，請求出最多的情侶關係組數。
 >
@@ -364,23 +360,21 @@
 
 * 原點到男生節點容量為 1 保證了每個男生最多選擇一個女生，而每一個喜歡的關係都連邊代表有很多種選擇，而女生節點到匯點則代表最多被選擇一次。
 
-  ``` CPP
-    int main() {
-      int n, m, k, a, b, i;
-      while(cin >> n >> m >> k){
-        int s = n + m + 1;
-        int t = n + m + 2;
-        EdmondsKarp ek(n, m, s, t);
-        for(i = 1; i <= n; i ++) ek.add_edge(s, i, 1);
-        for(i = n + 1; i <= n + m; i ++) ek.add_edge(i, t, 1);
-        for(i = 1; i <= k; i ++){
-          cin >> a >> b;
-          ek.add_edge(a, n + b, 1);
+      int main() {
+        int n, m, k, a, b, i;
+        while(cin >> n >> m >> k){
+          int s = n + m + 1;
+          int t = n + m + 2;
+          EdmondsKarp ek(n, m, s, t);
+          for(i = 1; i <= n; i ++) ek.add_edge(s, i, 1);
+          for(i = n + 1; i <= n + m; i ++) ek.add_edge(i, t, 1);
+          for(i = 1; i <= k; i ++){
+            cin >> a >> b;
+            ek.add_edge(a, n + b, 1);
+          }
+          cout << ek.flow() << '\n';
         }
-        cout << ek.flow() << '\n';
       }
-    }
-  ```
 
 # References
 
