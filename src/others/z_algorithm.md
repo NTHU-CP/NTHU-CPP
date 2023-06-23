@@ -62,7 +62,7 @@ int L = 0, R = 0;
 三種Cases
 --
 
-1.$i$ 不在 $[L,R]$ 中
+(1) $i$ 不在 $[L,R]$ 中
 -
 
 **Case 1**: $R < i$ or $i < L$
@@ -80,7 +80,7 @@ if (R < i || i < L) { //不在範圍內
 }
 ```
 
-2.$i$ 在 $[L,R]$ 中
+(2) $i$ 在 $[L,R]$ 中
 -
 
 ![螢幕快照 2023-06-22 23-05-29](https://github.com/williamlin0208/NTHU-CPP/assets/122626646/467f1b1e-2086-4f6d-afd4-127ab4e7f737)
