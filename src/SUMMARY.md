@@ -13,6 +13,8 @@
 - [Graph]()
   - [Tree]()
     - [Lowest Common Ancestor](graph/tree/lowest_common_ancestor.md)
+  - [Articulation Point and Bridge](graph/introduction_to_AP_bridge.md)
+  - [BCC-Vertex and BCC-Edge](graph/introduction_to_BCC.md)
 - [Flow]()
 - [Sqrt Technique](sqrt/intro.md)
   - [Square Root Decomposition](sqrt/sqrt_decomposition.md)
