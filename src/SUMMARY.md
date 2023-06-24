@@ -12,7 +12,7 @@
   - [Basic DP]()
 - [Graph]()
   - [Tree]()
-    - [Lowest Common Ancestor](tree/lowest_common_ancestor.md)
+    - [Lowest Common Ancestor](graph/tree/lowest_common_ancestor.md)
 - [Flow]()
 - [Sqrt Technique](sqrt/intro.md)
   - [Square Root Decomposition](sqrt/sqrt_decomposition.md)
