@@ -1,4 +1,4 @@
-- # Summary
+# Summary
 
 - [Foreword](others/foreword.md)
 - [Contribute to NTHU CPP](others/contribution.md)
