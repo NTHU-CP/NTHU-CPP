@@ -20,7 +20,6 @@ Trie 是一個樹狀結構，每一個節點代表的是一個 prefix，其中�
 
 ![](./image/p1.jpg)
 
-
 這個樹是加入了 `bat`, `cat`, `cap` 三個字串得到的 Trie。
 
 ### 查詢
@@ -317,7 +316,6 @@ int main() {
 本文章從最基本的操作開始，介紹了 trie 的用途與實作。接著將 Trie 延伸到 xor sum 的應用上，維護一個集合的精神不變，只是從正常的字串延伸到二進位的 01 字串。因為表示的是數字，因此可以使用 greedy 的方式找集合中的最大值。文章最後介紹了 persistence trie，示範了如何實作持久化的 trie，並且介紹如何使用持久化資料結構，將一些區間問題，轉換成陣列問題。
 
 ## 參考資料
-
 
 - https://oi-wiki.org/string/trie/#%E7%BB%B4%E6%8A%A4%E5%BC%82%E6%88%96%E6%9E%81%E5%80%BC
 - https://www.topcoder.com/thrive/articles/Using%20Tries
