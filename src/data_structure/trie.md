@@ -365,54 +365,54 @@ int new_node = 0;
 int t[N][26], f[N][26], g[N], is_end[N];
 
 int add(string s) { // returns the node corresponding to s.substr(s.size() - 1)
-	int u = 0, prev_u = 0;
-	for(char c:s) {
-		int cc = c - 'a';
-		if(t[u][cc] == 0) t[u][cc] = ++new_node;
-		prev_u = u;
-		u = t[u][cc];
-	}
-	is_end[u]++;
-	return prev_u;
+  int u = 0, prev_u = 0;
+  for(char c:s) {
+    int cc = c - 'a';
+    if(t[u][cc] == 0) t[u][cc] = ++new_node;
+    prev_u = u;
+    u = t[u][cc];
+  }
+  is_end[u]++;
+  return prev_u;
 }
 
 void calc_dp(int u) {
-	g[u] = is_end[u];
-	for(int c = 0; c < 26; c++) {
-		int v = t[u][c];
-		if(v == 0) continue;
-		calc_dp(v);
-		g[u] += g[v];
-	}
-	for(int c = 0; c < 26; c++) {
-		for(int cc = 0; cc < 26; cc++) {
-			int v = t[u][cc];
-			if(v == 0) continue;
-			if(c == cc) f[u][c] += g[v];
-			else f[u][c] += f[v][c];
-		}
-	}
+  g[u] = is_end[u];
+  for(int c = 0; c < 26; c++) {
+    int v = t[u][c];
+    if(v == 0) continue;
+    calc_dp(v);
+    g[u] += g[v];
+  }
+  for(int c = 0; c < 26; c++) {
+    for(int cc = 0; cc < 26; cc++) {
+      int v = t[u][cc];
+      if(v == 0) continue;
+      if(c == cc) f[u][c] += g[v];
+      else f[u][c] += f[v][c];
+    }
+  }
 }
 
 int main()
 {
-	ios::sync_with_stdio(0); cin.tie(0);
+  ios::sync_with_stdio(0); cin.tie(0);
 
-	int n;
-	cin >> n;
-	vector<string> s(n);
-	vector<int> u(n);
-	for(int i = 0; i < n; i++) {
-		cin >> s[i];
-		reverse(s[i].begin(), s[i].end());
-		u[i] = add(s[i]);
-	}
-	calc_dp(0);
-	long long ans = 0;
-	for(int i = 0; i < n; i++) {
-		ans += f[u[i]][s[i].back() - 'a'] - 1;
-	}
-	cout << ans << '\n';
+  int n;
+  cin >> n;
+  vector<string> s(n);
+  vector<int> u(n);
+  for(int i = 0; i < n; i++) {
+    cin >> s[i];
+    reverse(s[i].begin(), s[i].end());
+    u[i] = add(s[i]);
+  }
+  calc_dp(0);
+  long long ans = 0;
+  for(int i = 0; i < n; i++) {
+    ans += f[u[i]][s[i].back() - 'a'] - 1;
+  }
+  cout << ans << '\n';
 }
 ```
 
