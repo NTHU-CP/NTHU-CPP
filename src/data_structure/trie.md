@@ -178,6 +178,118 @@ int main() {
 }
 ```
 
+## Persistence XOR Trie
+
+Trie 是一種樹狀結構，因此可以很容易的持久化，維護每次操作的版本。實作方法可以參考持久化線段樹，每次操作把路徑上的所有節點，複製出一份，所有的值得修改與指標的修改，都只在新的備份上，不會動到舊版本節點。最後儲存每一次操作所得出的新的根，則可以代表該次操作版本的 Trie。
+
+## 例題: Range Maximum XOR Query
+
+題目：
+
+給定一個正整數陣列 \\(A\\)，每次詢問給 \\(l, r, x\\) 求 \\( max_{a\in A[l, r]} x \oplus a\\)
+
+題解：
+
+假如這題詢問不是子陣列，而是整個陣列，那我們可以用 XOR Trie 的技巧解決。與上面例題相似，我們可以使用 greedy algorithm (binary search on tree) 的技巧，從根開始，盡量選擇與 \\(x\\) 想法的位元。
+
+但這個問題變成區間詢問，因此我們可以使用 persistence xor trie 解決。這題的 trie 我們每個節點要維護每個節點，其子樹代表的集合有幾個元素。接著，我們把陣列 A 的元素從左至右依序加入 persistence trie，第 \\(0\\) 號版本是一個 root 代表一個空集合的 trie，接著加入第 \\(i\\) 個元素時，所產生的根節點，儲存為版本 \\(i\\) 的根節點。
+
+有的這樣的 persistence xor trie 我們可以透過比較第 \\(r\\) 個版本，與第 \\(l - 1\\) 個版本，我們可以從第 \\(i\\) 個版本知道陣列 \\(A[1]...A[i]\\) 中，前綴為 \\(s\\) 的字串有幾個（查詢子樹元素總和）。因此我們可以透過相減 \\(r\\) 版本與 \\(l-1\\) 版本的子樹元素總和，求出陣列\\(A[l]...A[r]\\) 中，有多少前綴為 \\(s\\) 的元素。
+
+我們成功把區間問題，透過版本的比較，轉換成原本的陣列問題。相減兩個 trie 得到的虛擬 trie，可以作為一個代表子陣列的 trie 使用。我們可以透過 greedy algorithm (binary search on tree) 的技巧，解決這個問題。（詳細作法見上個章節題解）
+
+### 參考程式碼
+
+```cpp
+#include <bits/stdc++.h>
+
+const int kMaxBits = 30;
+class TrieNode {
+ public:
+  std::shared_ptr<TrieNode> Add(int value, int index) {
+    auto new_node = std::make_shared<TrieNode>(*this);
+    if (index == -1) {
+      ++new_node->size_;
+    } else {
+      int bit = (value >> index) & 1;
+      if (!new_node->next_[bit]) {
+        new_node->next_[bit] = std::make_shared<TrieNode>();
+      }
+      new_node->next_[bit] = new_node->next_[bit]->Add(value, index - 1);
+      new_node->Pull();
+    }
+    return new_node;
+  }
+
+  void Pull() {
+    size_ = 0;
+    for (int i : {0, 1}) {
+      if (next_[i]) {
+        size_ += next_[i]->size_;
+      }
+    }
+  }
+
+  std::array<std::shared_ptr<TrieNode>, 2> next_;
+  int size_;
+
+  TrieNode() : next_(), size_() {}
+  TrieNode(const TrieNode&) = default;
+};
+
+int main() {
+  int n, q;
+  std::cin >> n >> q;
+
+  std::vector<std::shared_ptr<TrieNode>> node_version;
+  node_version.push_back(std::make_shared<TrieNode>());
+
+  for (int i = 1; i <= n; ++i) {
+    int value;
+    std::cin >> value;
+    auto new_node = node_version.back()->Add(value, kMaxBits);
+    node_version.push_back(new_node);
+  }
+
+  for (int _ = 0; _ < q; ++_) {
+    int l, r, a;
+    std::cin >> l >> r >> a;
+
+    auto l_node = node_version[l - 1];
+    auto r_node = node_version[r];
+
+    auto Next = [](auto node, int b) {
+      return node ? node->next_[b] : nullptr;
+    };
+
+    auto GetSize = [](auto node, int b) {
+      if (node && node->next_[b]) {
+        return node->next_[b]->size_;
+      } else {
+        return 0;
+      }
+    };
+
+    int best_b = 0;
+    for (int j = kMaxBits; j >= 0; --j) {
+      int bit = (a >> j) & 1;
+      int size = GetSize(r_node, !bit) - GetSize(l_node, !bit);
+      if (size > 0) {
+        r_node = Next(r_node, !bit);
+        l_node = Next(l_node, !bit);
+        best_b += (!bit) << j;
+      } else {
+        r_node = Next(r_node, bit);
+        l_node = Next(l_node, bit);
+        best_b += (bit) << j;
+      }
+    }
+    std::cout << (a ^ best_b) << std::endl;
+  }
+}
+```
+
+
 ## 其他例題
 
 - 最大 xor sum 子陣列
@@ -186,4 +298,4 @@ int main() {
 
 ## 結語
 
-本文章從最基本的操作開始，介紹了 trie 的用途與實作。接著將 Trie 延伸到 xor sum 的應用上，維護一個集合的精神不變，只是從正常的字串延伸到二進位的 01 字串。因為表示的是數字，因此可以使用 greedy 的方式找集合中的最大值。筆者認為 XOR Trie 可以類比到動態開點線段樹，因此有興趣的讀者可以挑戰持久化 XOR Trie，套用持久化資料結構的技巧，可以延伸解決一些區間問題。
+本文章從最基本的操作開始，介紹了 trie 的用途與實作。接著將 Trie 延伸到 xor sum 的應用上，維護一個集合的精神不變，只是從正常的字串延伸到二進位的 01 字串。因為表示的是數字，因此可以使用 greedy 的方式找集合中的最大值。
