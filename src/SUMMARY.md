@@ -24,7 +24,6 @@
     - [數論分塊](math/sqrt_decomposition.md)
     - [杜教篩](math/du_sieve.md)
     - [Arithmetic Function Revisit](math/revisit_arithmetic_function.md)
-  - [Gauss-Jordan Elimination](math/gauss-jordan_elimination.md)
 - [Miscellaneous]()
 - [C++ Programming Tips]()
 
