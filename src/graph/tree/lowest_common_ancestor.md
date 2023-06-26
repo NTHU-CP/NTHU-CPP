@@ -939,5 +939,4 @@ int main() {
 - [Range Minimum Query and Lowest Common Ancestor](https://www.topcoder.com/thrive/articles/Range%20Minimum%20Query%20and%20Lowest%20Common%20Ancestor)
 - [LCA problems](https://codeforces.com/blog/entry/43917)
 - [圖論進階](https://tioj.ck.tp.edu.tw/uploads/attachment/5/33/8.pdf)
-
-[^note-1]: [Second-best minimum spanning tree - CLRS Solutions](https://walkccc.me/CLRS/Chap23/Problems/23-1/)
+- [Second-best minimum spanning tree - CLRS Solutions](https://walkccc.me/CLRS/Chap23/Problems/23-1/)
