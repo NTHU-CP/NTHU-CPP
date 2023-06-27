@@ -2,8 +2,7 @@
 
 對於多變數的函數，我們一樣可以用生成函數求一般項。
 
-> \\( f(n, k) = \binom{n}{k} \\)，\\( f \\) 可以以遞迴的形式表達：
-> \begin{aligned} f(n, k) =
+> \\( f(n, k) = \binom{n}{k} \\)，\\( f \\) 可以以遞迴的形式表達：> \begin{aligned} f(n, k) =
 \begin{cases}
 1, n \geq 0, k = 0 \\\\
 0, n = 0, k \geq 1 \\\\
@@ -27,10 +26,10 @@ f(n - 1, k) + f(n - 1, k - 1), n, k \geq 1 \\\\
 我們得到 \\( f(n, k) \\) 的 OGF 為 \\( F(x, y) = \frac{1}{1 - x - xy} \\)。可以觀察 OGF 在單一變數的變化，比如固定 \\( n \\)，也就是求 \\( f_n(k) = \binom{n}{k} \\) 的 OGF，就會是
 
 \begin{aligned}
-f_n(k) &= [x^n]F(x, y) \\\\
-&= [x^n]\frac{1}{1 - x - xy} \\\\
-&= [x^n]\frac{1}{1 - x(1 + y)} \\\\
-&= [x^n]\sum\limits_{n = 0}^{\infty} (1 + y)^n x^n & \text{將等比級數展開，公比為 \\( x(1 + y) \\)} \\\\
+f_n(k) &= [x^n] F(x, y) \\\\
+&= [x^n] \frac{1}{1 - x - xy} \\\\
+&= [x^n] \frac{1}{1 - x(1 + y)} \\\\
+&= [x^n] \sum\limits_{n = 0}^{\infty} (1 + y)^n x^n & \text{將等比級數展開，公比為 \\( x(1 + y) \\)} \\\\
 &= (1 + y)^n \\\\
 &= \sum\limits_{k = 0}^n \binom{n}{k} y^k & \text{二項式定理} \\\\
 \end{aligned}
