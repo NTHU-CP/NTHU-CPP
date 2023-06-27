@@ -52,3 +52,8 @@ f_k(n) &= [y^k]F(x, y) \\\\
 \end{aligned}
 
 這個形式的 OGF 會在 \\( k \\) 固定 \\( n \\) 改變的情況下用到。
+
+## References
+
+- [Tutorial] Generating Functions in Competitive Programming [Part 1](https://codeforces.com/blog/entry/77468) [Part 2](https://codeforces.com/blog/entry/77551)
+- [generatingfunctionology](https://www2.math.upenn.edu/~wilf/gfologyLinked2.pdf)

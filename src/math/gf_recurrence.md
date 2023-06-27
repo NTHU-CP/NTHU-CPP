@@ -100,7 +100,7 @@ b_n &= \sum\limits_{k = 1}^n a_k a_{n - k} \\\\
 &= \sum\limits_{k = 0}^n a_k a_{n - k} - a_0 a_n & \text{將 \\( k = 0 \\) 的 case 單獨扣掉} \\\\
 \Longleftrightarrow \sum_{n = 1}^{\infty} b_n x^n &= \sum\limits_{n = 1}^{\infty} (\sum\limits_{k = 0}^n a_k a_{n - k} - a_0 a_n) x^n & \text{兩邊同時乘上 \\( x^n \\) 把數列轉換成生成函數} \\\\
 \Longleftrightarrow B(x) - b_0 x^0 &= \sum\limits_{n = 1}^{\infty} \sum\limits_{k = 0}^n a_k x^k a_{n - k} x^{n - k} - \sum\limits_{n = 1}^{\infty} a_0 a_n x^n & \text{等號左邊缺少 \\( b_0 \\) 項，右邊展開括號} \\\\
-\Longleftrightarrow B(x) - b_0 x^0 &= (A(x)^2 - a_0^2) - \sum\limits_{n = 1}^{\infty} a_0 a_n x^n & \text{等號右邊的第一項其實就是 \\( (A(x))^2 \\) 缺少 \\( n = 0 \\)，單獨減掉} \\\\
+\Longleftrightarrow B(x) - b_0 x^0 &= (A(x)^2 - a_0^2) - \sum\limits_{n = 1}^{\infty} a_0 a_n x^n & \text{等號右邊的第一項其實就是 \\( A(x)^2 \\) 缺少 \\( n = 0 \\)，單獨減掉} \\\\
 \Longleftrightarrow B(x) &= (A(x)^2 - 1) - \sum\limits_{n = 1}^{\infty} a_n x^n & \text{代入 \\( a_0 = 1, b_0 = 0 \\)} \\\\
 &= (A(x)^2 - 1) - (A(x) - a_0 x_0) \\\\
 &= A(x)^2 - A(x) \\\\
@@ -142,6 +142,8 @@ g &= \sum\limits_{n \geq 0} \frac{(n + 1)!}{(n + 1 - k)!} x^n \\\\
 我們可以用 NTT 快速計算 \\( f \\) 和 \\( g \\) 的卷積，\\( b_i \\) 就會是 OGF 的係數。
 
 由於本題 \\( n \\) 很大，再加上 NTT 的複雜度帶 \\( \log \\)，可能要優化 NTT 才能 AC (本題時限 4s，筆者的 NTT 跑 3.3s)。
+
+[Solution Code](https://codeforces.com/contest/1832/submission/211226494)
 
 > [CF 438E - The Child and Binary Tree](https://codeforces.com/problemset/problem/438/E)
 >
@@ -198,7 +200,7 @@ F(x) &= \frac{1 - \sqrt{1 - 4C(x)}}{2C(x)} \\\\
 
 觀察：
 
-因為每次操作都要把一個 \\( h_i = 1 \\) 的往上移動，且經過 \\( n - 1 \\) 次操作後根節點要為 \\( n \\)，因此根節點的初始 \\( h_i = 1 \\)。又因為每次往上移動時最多可以跳過一個節點 (\\ (u, v) \\) 可以為父子或爺孫關係) ，因此樹上不能有相鄰的 \\( 0 \\)，否則無法在 \\( N - 1 \\) 次內完成。
+因為每次操作都要把一個 \\( h_i = 1 \\) 的往上移動，且經過 \\( n - 1 \\) 次操作後根節點要為 \\( n \\)，因此根節點的初始 \\( h_i = 1 \\)。又因為每次往上移動時最多可以跳過一個節點 \\( (u, v) \\) 可以為父子或爺孫關係) ，因此樹上不能有相鄰的 \\( 0 \\)，否則無法在 \\( N - 1 \\) 次內完成。
 
 有了上述的觀察，我們可以列出 DP 式：
 
@@ -253,3 +255,14 @@ A(x) - a_0 x^0 - a_1 x^1 &= 2x(A(x) + B(x)) + x(A(x) + B(x))^2 & \text{按照套
 
 [^note-1]: 假設 \\( A(x)B(x) = 1 \\)，我們稱 \\( B(x) \\) 為 \\( A(x) \\) 的乘法逆元，記做 \\( B(x) = \frac{1}{A(x)} = A(x)^{-1} = A^{-1}(x) \\)。
 定義 \\( C(x) = 1 = A(x)B(x) = \sum\limits_{n = 0}^{\infty} (\sum\limits_{i + j = n} a_i b_j) x^n \\)。因此如果 \\( a_0 = 0 \\)，則 \\( [x^0] C(x) = a_0 b_0 = 0 \\)，\\( A(x) \\) 的逆元不存在。
+
+## References
+
+- [Tutorial] Generating Functions in Competitive Programming [Part 1](https://codeforces.com/blog/entry/77468) [Part 2](https://codeforces.com/blog/entry/77551)
+- FPS 相關運算，有興趣可以自行研究
+  - [CF - Operations on Formal Power Series](https://codeforces.com/blog/entry/56422)
+  - [CP algorithms - Operations on polynomials and series](https://cp-algorithms.com/algebra/polynomial.html)
+  - [生成函数的数学基础](https://www.luogu.com.cn/blog/MoYuFang/sheng-cheng-han-shuo-di-shuo-xue-ji-chu)
+- [generatingfunctionology](https://www2.math.upenn.edu/~wilf/gfologyLinked2.pdf)
+- [non-linear-recursion-generating-functions](https://math.stackexchange.com/questions/1262413/non-linear-recursion-generating-functions)
+- [Lagrange Inversion Theorem](https://atcoder.jp/contests/abc222/editorial/2765)

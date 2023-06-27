@@ -8,7 +8,12 @@
 
 \begin{aligned}
 F(x) &= (1 + x + x^2 + \cdots)(1 + x^5 + x^{10} + \cdots)(1 + x^{10} + x^{20} + \cdots)(1 + x^{50} + x^{100} + \cdots) \\\\
-&= \frac{1}{1 - x} \frac{1}{1 - x^5} \frac{1}{1 - x^{10}} \frac{1}{1 - x^{50}} & \text{每個括號內的都是等比級數} \\\\
+\end{aligned}
+
+因為每個括號內都是等比級數，我們可以進一步化簡為
+
+\begin{aligned}
+&= \frac{1}{1 - x} \frac{1}{1 - x^5} \frac{1}{1 - x^{10}} \frac{1}{1 - x^{50}} \\\\
 &= \frac{1}{(1 - x)(1 - x^5)(1 - x^{10})(1 - x^{50})} \\\\
 \end{aligned}
 
@@ -46,3 +51,11 @@ F(x) &= (1 + x + x^2 + \cdots)(1 + x^5 + x^{10} + \cdots)(1 + x^{10} + x^{20} + 
 計算 \\( f(x)^N \\) 可以用快速冪 + NTT 做到 \\( O(N \log^2 N) \\) 或是運用 \\( f(x)^N = e^{N \log f(x)} \\) 的性質做到 \\( O(N \log N) \\)。
 
 後者的做法一樣可以參考這三篇文章 [1](https://codeforces.com/blog/entry/56422) [2](https://cp-algorithms.com/algebra/polynomial.html) [3](https://www.luogu.com.cn/blog/MoYuFang/sheng-cheng-han-shuo-di-shuo-xue-ji-chu)。
+
+## References
+
+- [Tutorial] Generating Functions in Competitive Programming [Part 1](https://codeforces.com/blog/entry/77468) [Part 2](https://codeforces.com/blog/entry/77551)
+- FPS 相關運算，有興趣可以自行研究
+  - [CF - Operations on Formal Power Series](https://codeforces.com/blog/entry/56422)
+  - [CP algorithms - Operations on polynomials and series](https://cp-algorithms.com/algebra/polynomial.html)
+  - [生成函数的数学基础](https://www.luogu.com.cn/blog/MoYuFang/sheng-cheng-han-shuo-di-shuo-xue-ji-chu)

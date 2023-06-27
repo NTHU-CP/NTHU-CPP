@@ -8,7 +8,7 @@ Generating function 在競程比賽中有許多用途，包含計算排列數、
 
 生成函數是藉由冪級數 (Power Series) 的係數來代表一個數列。在比賽中比較常見的生成函數類型為一般生成函數 (Ordinary Generating Function, OGF) 和指數生成函數 (Exponential Generating Function, EGF)。
 
-對於數列 \\( a_0, a_1, \dots \\)，我們定義他的 OGF 為 \\( A(x) = \sum\limits_{i = 0}^{\infty} a_i x^i \\)，也就是把數列的第 \\( i \\) 項放到 \\( x^i \\) 的係數。舉例來說，費氏數列 (\\( f = \{0, 1, 1, 2, 3, 5, 8, \dots\} \\)) 的 OGF 為 \\( F(x) = 0 + x + 1x^2 + 2x^3 + 3x^4 + 5x^5 + 8x^6 \dots \\)。
+對於數列 \\( a_0, a_1, \dots \\)，我們定義他的 OGF 為 \\( A(x) = \sum\limits_{i = 0}^{\infty} a_i x^i \\)，也就是把數列的第 \\( i \\) 項放到 \\( x^i \\) 的係數。舉例來說，費氏數列 (\\( f = \{0, 1, 1, 2, 3, 5, 8, \dots\} \\)) 的 OGF 為 \\( F(x) = 0 + x + x^2 + 2x^3 + 3x^4 + 5x^5 + 8x^6 \dots \\)。
 
 EGF 的定義與 OGF 類似，只是每一項多除以 \\( i! \\)，也就是 \\( A(x) = \sum\limits_{i = 0}^{\infty} a_i \frac{x^i}{i!} \\)。在計算組合數的時候，EGF 的 \\( \frac{1}{i!} \\) 係數會發揮很大的作用。
 
@@ -18,13 +18,13 @@ EGF 的定義與 OGF 類似，只是每一項多除以 \\( i! \\)，也就是 \\
 數列 \xrightarrow{\text{放在函數的係數}} 無窮級數 \xrightarrow{\text{通式}} 有限函數 \rightarrow 有限函數的運算 \xrightarrow{\text{展開}} 無窮級數 \xrightarrow{\text{觀察係數}} 新的數列
 \\]
 
-以數列 \\( a = \{1, 1, 1, \dots\} \\) 舉例，顯然 \\( a \\) 的 OGF 為 \\( A(x) = 1 + x + x^2 + \dots \\)，有限函數就是 \\( \frac{1}{1 - x} \\)。對 \\( \frac{1}{1 - x} \\) 進行運算就簡單了許多。如上面所說，因為我們只關注函數的係數，並沒有要實際代入數值，\\( x \\) 只作為形式存在，因此我們可以忽略函數的收斂與發散性。這種只以形式存在的冪級數叫做形式冪級數 (Formal Power Series, FPS)。
+以數列 \\( a = \{1, 1, 1, \dots\} \\) 舉例，顯然 \\( a \\) 的 OGF 為 \\( A(x) = 1 + x + x^2 + \dots \\)，有限函數就是 \\( \frac{1}{1 - x} \\)。對 \\( \frac{1}{1 - x} \\) 進行運算就簡單了許多。如上面所說，因為我們只關注函數的係數，並沒有要實際代入數值，\\( x \\) 只作為形式存在，因此我們可以忽略函數的收斂與發散性。這種只以形式存在的冪級數叫做形式冪級數 (Formal Power Series, FPS)。將無限轉化為有限運算的操作可以參考[這篇](https://web.math.sinica.edu.tw/math_media/d222/22209.pdf)。
 
 ## Common series of OGF/EGF
 
 在計算時，我們會希望能夠化簡為容易觀察係數的多項式。常見的生成函數有：
 
-1. \\( \frac{1}{1 - x} = \sum\limits_{k = 0}^{\infty} x^k \\)，在 OGF 中 \\( a_k = 1 \\)，等比級數的公式
+1. \\( \frac{1}{1 - x} = \sum\limits_{k = 0}^{\infty} x^k \\)，在 OGF 中 \\( a_k = 1 \\)，等比級數的公式，作為 FPS 我們可以忽略函數的收斂與發散性
 2. \\( (1 + x)^n = \sum\limits_{k = 0}^n \binom{n}{k} x^k \\)，在 OGF 中 \\( a_k = \binom{n}{k} \\)，固定 \\( n \\) 的二項式係數
 3. \\( \frac{1}{(1 - x)^{k + 1}} = \sum\limits_{n = 0}^{\infty} \binom{n + k}{k} x^n \\)，\\( a_n = \binom{n + k}{k} \\)，固定 \\( k \\) 的二項式係數
 4. \\( e^x = \sum\limits_{k = 0}^{\infty} \frac{x^k}{k!} \\)，在 EGF 中 \\( a_k = 1 \\)，指數函數的泰勒展開式
@@ -122,11 +122,4 @@ c_n &= \sum\limits_{k = 0}^n \frac{n!}{k! (n - k)!} a_k b_{n - k} \\\\
 ## References
 
 - [Tutorial] Generating Functions in Competitive Programming [Part 1](https://codeforces.com/blog/entry/77468) [Part 2](https://codeforces.com/blog/entry/77551)
-- FPS 相關運算，有興趣可以自行研究
-  - [CF - Operations on Formal Power Series](https://codeforces.com/blog/entry/56422)
-  - [CP algorithms - Operations on polynomials and series](https://cp-algorithms.com/algebra/polynomial.html)
-  - [生成函数的数学基础](https://www.luogu.com.cn/blog/MoYuFang/sheng-cheng-han-shuo-di-shuo-xue-ji-chu)
-- [generatingfunctionology](https://www2.math.upenn.edu/~wilf/gfologyLinked2.pdf)
-- [non-linear-recursion-generating-functions](https://math.stackexchange.com/questions/1262413/non-linear-recursion-generating-functions)
 - [等比級數](https://web.math.sinica.edu.tw/math_media/d222/22209.pdf)
-- [Lagrange Inversion Theorem](https://atcoder.jp/contests/abc222/editorial/2765)
