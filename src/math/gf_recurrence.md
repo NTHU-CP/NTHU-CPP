@@ -80,7 +80,8 @@ f_n &= f_{n - 1} + f_{n - 2}, n \geq 2 \\\\
 
 再來看一道題目。
 
-> 給定非線性遞迴關係式，滿足：> \begin{aligned}
+> 給定非線性遞迴關係式，滿足
+> \begin{aligned}
 \begin{cases}
 a_0 &= 1 \\\\
 a_n &= \sum\limits_{k = 1}^n k a_k a_{n - k} = a_1 a_{n - 1} + 2 a_2 a_{n - 2} + \dots + (n - 1) a_{n - 1} a_1 + n a_n a_0, n \in \mathbb{N} \\\\

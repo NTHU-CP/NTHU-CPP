@@ -2,7 +2,8 @@
 
 對於多變數的函數，我們一樣可以用生成函數求一般項。
 
-> \\( f(n, k) = \binom{n}{k} \\)，\\( f \\) 可以以遞迴的形式表達：> \begin{aligned} f(n, k) =
+> \\( f(n, k) = \binom{n}{k} \\)，\\( f \\) 可以以遞迴的形式表達
+> \begin{aligned} f(n, k) =
 \begin{cases}
 1, n \geq 0, k = 0 \\\\
 0, n = 0, k \geq 1 \\\\
