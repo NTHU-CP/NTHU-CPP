@@ -1,0 +1,280 @@
+<!DOCTYPE HTML>
+<html lang="zh-TW" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Lagrange Inversion Theorem - NTHU CPP</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="spacer"></li><li class="chapter-item "><div>Fundemantal</div></li><li class="chapter-item "><a href="../greedy/intro.html">Greedy</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../greedy/basic.html">Basic Greedy</a></li></ol></li><li class="chapter-item "><div>Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div>Basic DP</div></li></ol></li><li class="chapter-item "><div>Graph</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../graph/introduction_to_AP_bridge.html">Articulation Point and Bridge</a></li><li class="chapter-item "><a href="../graph/introduction_to_BCC.html">BCC-Vertex and BCC-Edge</a></li></ol></li><li class="chapter-item "><div>Flow</div></li><li class="chapter-item "><a href="../sqrt/intro.html">Sqrt Technique</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../sqrt/sqrt_decomposition.html">Square Root Decomposition</a></li><li class="chapter-item "><div>Sqrt-Related Observation</div></li><li class="chapter-item "><div>Mo's Algorithm</div></li></ol></li><li class="chapter-item expanded "><a href="../math/intro.html">Mathematics</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../math/introduction_to_generating_function.html">Generating Function</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/gf_recurrence.html">Solving Recurrence</a></li><li class="chapter-item "><a href="../math/gf_combination.html">Combination</a></li><li class="chapter-item expanded "><a href="../math/lagrange_inversion_theorem.html" class="active">Lagrange Inversion Theorem</a></li><li class="chapter-item "><a href="../math/gf_multiple_variables.html">Multiple Variables</a></li></ol></li><li class="chapter-item "><a href="../math/introduction_to_arithmetic_function.html">Arithmetic Function</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/linear_sieve.html">Linear Sieve</a></li><li class="chapter-item "><a href="../math/sqrt_decomposition.html">數論分塊</a></li><li class="chapter-item "><a href="../math/du_sieve.html">杜教篩</a></li><li class="chapter-item "><a href="../math/revisit_arithmetic_function.html">Arithmetic Function Revisit</a></li></ol></li></ol></li><li class="chapter-item "><div>Miscellaneous</div></li><li class="chapter-item "><div>C++ Programming Tips</div></li><li class="spacer"></li><li class="chapter-item "><a href="../others/codebook.html">Make a Codebook</a></li><li class="chapter-item "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item "><div>CSES Problem Tag</div></li><li class="chapter-item "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">NTHU CPP</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/NTHU-CP/NTHU-CPP" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="lagrange-inversion-theorem"><a class="header" href="#lagrange-inversion-theorem">Lagrange Inversion Theorem</a></h1>
+<h2 id="介紹"><a class="header" href="#介紹">介紹</a></h2>
+<p>Lagrange Inversion Theorem 是一個解 GF 很方便的工具。如果對證明沒有興趣的話可以跳過直接看應用。</p>
+<blockquote>
+<p>定理：兩個 FPS \( F(x) \) 和 \( G(x) \) 滿足 \( G(F(x)) = x \)，且 \( [x^0] F(x) = [x^0] G(x) = 0 \)、\( [x^1] F(x) \neq 0, [x^1] G(x) \neq 0 \)，則</p>
+<p>\[
+[x^n] F(x) = \frac{1}{n} [x^{n - 1}] (\frac{x}{G(x)})^n
+\]</p>
+</blockquote>
+<h2 id="證明"><a class="header" href="#證明">證明</a></h2>
+<p>在講解定理的證明之前，我們先來證明一個等下會用到的引理。</p>
+<blockquote>
+<p>引理：對於任何 FPS 滿足 \( F(0) = 0, F^{\prime}(0) \neq 0 \)，和任何 \( k \in \mathbb{Z} \)，</p>
+<p>\[
+[x^{-1}] F^{\prime}(x) F(x)^k = [k = -1]
+\]</p>
+<p>其中 \( [k = -1] \) 為<a href="https://zh.wikipedia.org/zh-tw/%E8%89%BE%E4%BD%9B%E6%A3%AE%E6%8B%AC%E5%8F%B7">艾佛森括號</a>。</p>
+</blockquote>
+<p>引理證明：</p>
+<p>我們分開討論 \( k = -1 \) 和 \( k \neq -1 \) 的情況，</p>
+<p>如果 \( k \neq -1 \)，則 \(F^{\prime}(x)F(x)^k = \frac{1}{k + 1}(F(x)^{k + 1})^{\prime} \) (by 微分 chain rule)，因此 \( x^{-1} \) 項的係數為 \( 0 \)。</p>
+<p>如果 \( k = -1 \)，則</p>
+<p>\begin{aligned}
+F^{\prime}(x)(F(x))^{-1} &amp;= \frac{F^{\prime}(x)}{F(x)} \\
+&amp;= \frac{a_1 + 2 a_2 x + 3 a_3 x^2 + \dots}{a_1 x + a_2 x^2 + a_3 x^3 + \dots} &amp; \text{展開 FPS} \\
+&amp;= \frac{1 + 2 \frac{a_2}{a_1} x + 3 \frac{a_3}{a_1} x^2 + \dots}{x + \frac{a_2}{a_1} x^2 + \frac{a_3}{a_1} x^3 + \dots} &amp; \text{分子分母同時除以 \( a_1 \)} \\
+&amp;= x^{-1} \frac{1 + 2 \frac{a_2}{a_1} x + 3 \frac{a_3}{a_1} x^2 + \dots}{1 + \frac{a_2}{a_1} x + \frac{a_3}{a_1} x^2 + \dots} &amp; \text{提出 \( x^{-1} \)} \\
+\Longleftrightarrow [x^{-1}] F^{\prime}(x)(F(x))^{-1} &amp;= [x^0] \frac{1 + 2 \frac{a_2}{a_1} x + 3 \frac{a_3}{a_1} x^2 + \dots}{1 + \frac{a_2}{a_1} x + \frac{a_3}{a_1} x^2 + \dots} &amp; \text{比對係數} \\
+&amp;= [x^0] (\frac{1}{1 + \frac{a_2}{a_1} x + \frac{a_3}{a_1} x^2 + \dots} + \frac{2 \frac{a_2}{a_1} x}{1 + \frac{a_2}{a_1} x + \frac{a_3}{a_1} x^2 + \dots} + \dots) &amp; \text{把分子拆開} \\
+&amp;= [x^0] (\frac{1}{1 - (-\frac{a_2}{a_1} x - \frac{a_3}{a_1} x^2 - \dots)} + \frac{2 \frac{a_2}{a_1} x}{1 - (-\frac{a_2}{a_1} x - \frac{a_3}{a_1} x^2 - \dots)} + \dots) &amp; \text{等比級數形式} \\
+\end{aligned}</p>
+<p>可以觀察到括號內為無窮個等比級數的加總，其中只有第一個等比級數的首項為常數 \( 1 \)，而公比都有帶 \( x \)，因此後面不會對 \( x^0 \) 係數有貢獻，故引理得證。</p>
+<p>證明完引理，我們回過頭證明 Lagrange Inversion Theorem。</p>
+<p>因為 \( F(x) \) 和 \( G(x) \) 滿足上述引理的條件，</p>
+<p>\begin{aligned}
+F(G(x)) &amp;= x \\
+\Longleftrightarrow F^{\prime}(G(x)) \cdot G^{\prime}(x) &amp;= 1 &amp; \text{等號兩邊同時微分} \\
+\end{aligned}</p>
+<p>因為 \( F^{\prime}(x) = \sum\limits_{i = 1}^{\infty} i ([x^i] F(x)) x^{i - 1} \) (微分的定義)，以 \( x = G(x) \) 代入後得到</p>
+<p>\begin{aligned}
+\sum\limits_{i = 1}^{\infty} i ([x^i] F(x)) G(x)^{i - 1} \cdot G^{\prime}(x) &amp;= 1 \\
+\Longleftrightarrow \sum\limits_{i = 1}^{\infty} i ([x^i] F(x)) G(x)^{i - 1 - n} \cdot G^{\prime}(x) &amp;= G(x)^{-n} &amp; \text{等號兩邊同時乘以 \( G(x)^{-n} \)} \\
+\Longleftrightarrow [x^{-1}] \sum\limits_{i = 1}^{\infty} i ([x^i] F(x)) G(x)^{i - 1 - n} \cdot G^{\prime}(x) &amp;= [x^{-1}] G(x)^{-n} &amp; \text{提取 \( x^{-1} \) 項係數} \\
+\Longleftrightarrow \sum\limits_{i = 1}^{\infty} i ([x^i] F(x)) [x^{-1}] G(x)^{i - 1 - n} \cdot G^{\prime}(x) &amp;= [x^{-1}] G(x)^{-n} \\
+\end{aligned}</p>
+<p>根據引理，\( [x^{-1}] G(x)^{i - 1 - n} \cdot G^{\prime}(x) \) 只有在 \( i - 1 - n = -1 \) 時為 \( 1 \)，其他時候為 \( 0 \)，此時 \( i = n \)，因此</p>
+<p>\begin{aligned}
+n [x^n] F(x) &amp;= [x^{-1}] G(x)^{-n} \\
+\Longleftrightarrow n [x^n] F(x) &amp;= [x^{n - 1}] (x^n G(x)^{-n}) &amp; \text{比對係數} \\
+\Longleftrightarrow [x^n] F(x) &amp;= \frac{1}{n} [x^{n - 1}] (\frac{x}{G(x)})^n \\
+\end{aligned}</p>
+<p>定理證明完畢。</p>
+<h2 id="應用"><a class="header" href="#應用">應用</a></h2>
+<blockquote>
+<p>給定 \( n \) 個左括號和右括號，定義 \( c_ n \) 為合法的括號匹配數量，求 \( c_n \) 的一般項？(<a href="https://zh.wikipedia.org/zh-tw/%E5%8D%A1%E5%A1%94%E5%85%B0%E6%95%B0">卡特蘭數</a>)</p>
+</blockquote>
+<p>\( c_0 = 1 \)。因為任何一個合法的括號匹配 \( s \) 可以分解成 \( s = (s_1)s_2 \)，枚舉 \( s_1 \) 的長度，可以列出遞迴式：</p>
+<p>\[
+c_{n + 1} = \sum\limits_{i = 0}^n c_i c_{n - i}
+\]</p>
+<p>定義 \( C(x) \) 為 \( c_n \) 的 OGF，可以列出</p>
+<p>\begin{aligned}
+\sum\limits_{n = 0}^{\infty} c_{n + 1} x^n &amp;= \sum\limits_{n = 0}^{\infty} \sum\limits_{i = 0}^n c_i c_{n - i} x^n &amp; \text{兩邊同乘 \( x^n \) 並用 \( \sum \) 加起來} \\
+\Longleftrightarrow \frac{C(x) - c_0}{x} &amp;= \sum\limits_{n = 0}^{\infty} \sum\limits_{i = 0}^n c_i x^i c_{n - i} x^{n - i} &amp; \text{將 \( x^n \) 拆開} \\
+\Longleftrightarrow \frac{C(x) - 1}{x} &amp;= C(x)^2 \\
+\Longleftrightarrow C(x) - 1 &amp;= x C(x)^2 \\
+\end{aligned}</p>
+<p>化簡到這裡就可以套用 Lagrange Inversion Theorem 了。因為定理要求 \( F(x) \) 的常數項為 \( 0 \)，因此我們定義 \( F(x) = C(x) - 1 \)，代入後得到</p>
+<p>\begin{aligned}
+F(x) &amp;= x(F(x) + 1)^2 \\
+\Longleftrightarrow \frac{F(x)}{(F(x) + 1)^2} &amp;= x
+\end{aligned}</p>
+<p>我們要找 \( G(F(x))) = x \) 的 \( G(x) \)，不難發現 \( G(x) = \frac{x}{(x + 1)^2} \)。因此，</p>
+<p>\begin{aligned}
+\text{[}x^n\text{]} F(x) &amp;= \frac{1}{n} [x^{n - 1}] (\frac{x}{G(x)})^n \\
+&amp;= \frac{1}{n} [x^{n - 1}] (x + 1)^{2n} &amp; \text{代入 \( G(x) \)} \\
+&amp;= \frac{1}{n} [x^{n - 1}] \sum\limits_{i = 0}^{2n} \binom{2n}{i} x^i 1^{2n - i} &amp; \text{二項式定理} \\
+&amp;= \frac{1}{n} \binom{2n}{n - 1} \\
+&amp;= \frac{1}{n + 1} \binom{2n}{n} \\
+\end{aligned}</p>
+<p>因此，\( c_0 = 1 \)，\( c_n = \frac{1}{n + 1} \binom{2n}{n} \) 為卡特蘭數的一般項。</p>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<ul>
+<li><a href="https://atcoder.jp/contests/abc222/editorial/2765">Lagrange Inversion Theorem</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../math/gf_combination.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../math/gf_multiple_variables.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../math/gf_combination.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../math/gf_multiple_variables.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

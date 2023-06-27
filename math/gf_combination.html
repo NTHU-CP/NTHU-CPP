@@ -1,0 +1,244 @@
+<!DOCTYPE HTML>
+<html lang="zh-TW" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Combination - NTHU CPP</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="spacer"></li><li class="chapter-item "><div>Fundemantal</div></li><li class="chapter-item "><a href="../greedy/intro.html">Greedy</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../greedy/basic.html">Basic Greedy</a></li></ol></li><li class="chapter-item "><div>Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div>Basic DP</div></li></ol></li><li class="chapter-item "><div>Graph</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../graph/introduction_to_AP_bridge.html">Articulation Point and Bridge</a></li><li class="chapter-item "><a href="../graph/introduction_to_BCC.html">BCC-Vertex and BCC-Edge</a></li></ol></li><li class="chapter-item "><div>Flow</div></li><li class="chapter-item "><a href="../sqrt/intro.html">Sqrt Technique</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../sqrt/sqrt_decomposition.html">Square Root Decomposition</a></li><li class="chapter-item "><div>Sqrt-Related Observation</div></li><li class="chapter-item "><div>Mo's Algorithm</div></li></ol></li><li class="chapter-item expanded "><a href="../math/intro.html">Mathematics</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../math/introduction_to_generating_function.html">Generating Function</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/gf_recurrence.html">Solving Recurrence</a></li><li class="chapter-item expanded "><a href="../math/gf_combination.html" class="active">Combination</a></li><li class="chapter-item "><a href="../math/lagrange_inversion_theorem.html">Lagrange Inversion Theorem</a></li><li class="chapter-item "><a href="../math/gf_multiple_variables.html">Multiple Variables</a></li></ol></li><li class="chapter-item "><a href="../math/introduction_to_arithmetic_function.html">Arithmetic Function</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/linear_sieve.html">Linear Sieve</a></li><li class="chapter-item "><a href="../math/sqrt_decomposition.html">數論分塊</a></li><li class="chapter-item "><a href="../math/du_sieve.html">杜教篩</a></li><li class="chapter-item "><a href="../math/revisit_arithmetic_function.html">Arithmetic Function Revisit</a></li></ol></li></ol></li><li class="chapter-item "><div>Miscellaneous</div></li><li class="chapter-item "><div>C++ Programming Tips</div></li><li class="spacer"></li><li class="chapter-item "><a href="../others/codebook.html">Make a Codebook</a></li><li class="chapter-item "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item "><div>CSES Problem Tag</div></li><li class="chapter-item "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">NTHU CPP</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/NTHU-CP/NTHU-CPP" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="combination-problem-with-gf"><a class="header" href="#combination-problem-with-gf">Combination Problem with GF</a></h1>
+<h2 id="介紹"><a class="header" href="#介紹">介紹</a></h2>
+<p>生成函數也可以用來解組合數問題。</p>
+<blockquote>
+<p>\( f(x) \) 為用 \( 1, 5, 10, 50 \) 元硬幣湊出 \( x \) 元的方法數。求 \( f(x) \) 的 OGF \( F(x) \)。</p>
+</blockquote>
+<p>\begin{aligned}
+F(x) &amp;= (1 + x + x^2 + \cdots)(1 + x^5 + x^{10} + \cdots)(1 + x^{10} + x^{20} + \cdots)(1 + x^{50} + x^{100} + \cdots) \\
+\end{aligned}</p>
+<p>因為每個括號內都是等比級數，我們可以進一步化簡為</p>
+<p>\begin{aligned}
+&amp;= \frac{1}{1 - x} \frac{1}{1 - x^5} \frac{1}{1 - x^{10}} \frac{1}{1 - x^{50}} \\
+&amp;= \frac{1}{(1 - x)(1 - x^5)(1 - x^{10})(1 - x^{50})} \\
+\end{aligned}</p>
+<p>等號右邊每個多項式的 \( [x^k] \) 項係數代表使用該種硬幣湊出 \( k \) 元的方法數，因此只有在次方為幣值倍數的情況係數會是 \( 1 \)。根據 OGF 卷積的定義，\( [x^n]F(x) = \sum\limits_{a + b + c + d = n} [x^a]\frac{1}{1 - x} [x^b]\frac{1}{1 - x^5} [x^c]\frac{1}{1 - x^{10}} [x^d]\frac{1}{1 - x^{50}} \)，也就會是使用這 \( 4 \) 種硬幣湊出 \( n \) 元的方法數。</p>
+<h2 id="例題"><a class="header" href="#例題">例題</a></h2>
+<blockquote>
+<p><a href="https://atcoder.jp/contests/abc303/tasks/abc303_h">ABC303 Ex - Constrained Tree Degree</a></p>
+<p>給定正整數 \( N \) 和集合 \( S \)，求 \( N \) 個節點且每個節點的 degree \( \in S \) 的樹數量 \( \bmod 998244353 \)。</p>
+<ul>
+<li>\( 2 \leq N \leq 2 \cdot 10^5 \)</li>
+<li>\( 1 \leq s_1 &lt; s_2 &lt; \dots &lt; s_{p} &lt; N - 1 \)</li>
+</ul>
+</blockquote>
+<p>本題是 EGF 的應用。</p>
+<p>我們知道樹與 <a href="https://zh.wikipedia.org/zh-tw/%E6%99%AE%E5%90%95%E5%BC%97%E5%BA%8F%E5%88%97">prufer sequence</a> 有一對一的關係，\( N \) 個節點的樹可以對應到唯一長度為 \( N - 2 \) 的 prufer sequence，且對於樹中每個節點的 degree \( d_i \) 會剛好在 sequence 中出現 \( d_i - 1 \) 次。</p>
+<p>根據以上的性質，題目可以化簡為：</p>
+<blockquote>
+<p>求長度為 \( N - 2 \)，每個數字的範圍 \( 1 \leq a_i \leq N \) 且 \( d_i + 1 \in S \) 的數列數量</p>
+</blockquote>
+<p>將 \( N \) 種數字分開考慮，如果出現的次數合法就會對答案的方法數貢獻 \( 1 \)，但同時要除以出現次數 (排列數)。因此非常適合套用 EGF！</p>
+<p>定義 EGF \( f(x) = \sum\limits_{k = 0}^{N} [k + 1 \in S] \frac{x^k}{k!}\)，其中 \( [\text{proposition}] \) 為<a href="https://zh.wikipedia.org/zh-tw/%E8%89%BE%E4%BD%9B%E6%A3%AE%E6%8B%AC%E5%8F%B7">艾佛森括號</a>。</p>
+<p>令 \( g_k \) 為長度為 \( k \) 的合法數列數量。我們要求 \( g \) 的 EGF，可以列出</p>
+<p>\[ [x^k]g(x) = \sum\limits_{cnt_1 + cnt_2 + \dots + cnt_n = k} [x^{cnt_1}]f(x) \cdot [x^{cnt_2}]f(x) \cdots [x^{cnt_n}]f(x) \]</p>
+<p>不難看出 \( g(x) = f(x)^N \)，又因為 EGF \( [x^k] g(x) = \frac{g_k}{k!} \)，\( g_k = k! \cdot [x^k] f(x)^N \)。</p>
+<p>因此答案就是 \( g_{N - 2} = (N - 2)! \cdot [x^{N - 2}] f(x)^N \)。</p>
+<p>計算 \( f(x)^N \) 可以用快速冪 + NTT 做到 \( O(N \log^2 N) \) 或是運用 \( f(x)^N = e^{N \log f(x)} \) 的性質做到 \( O(N \log N) \)。</p>
+<p>後者的做法一樣可以參考這三篇文章 <a href="https://codeforces.com/blog/entry/56422">1</a> <a href="https://cp-algorithms.com/algebra/polynomial.html">2</a> <a href="https://www.luogu.com.cn/blog/MoYuFang/sheng-cheng-han-shuo-di-shuo-xue-ji-chu">3</a>。</p>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<ul>
+<li>[Tutorial] Generating Functions in Competitive Programming <a href="https://codeforces.com/blog/entry/77468">Part 1</a> <a href="https://codeforces.com/blog/entry/77551">Part 2</a></li>
+<li>FPS 相關運算，有興趣可以自行研究
+<ul>
+<li><a href="https://codeforces.com/blog/entry/56422">CF - Operations on Formal Power Series</a></li>
+<li><a href="https://cp-algorithms.com/algebra/polynomial.html">CP algorithms - Operations on polynomials and series</a></li>
+<li><a href="https://www.luogu.com.cn/blog/MoYuFang/sheng-cheng-han-shuo-di-shuo-xue-ji-chu">生成函数的数学基础</a></li>
+</ul>
+</li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../math/gf_recurrence.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../math/lagrange_inversion_theorem.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../math/gf_recurrence.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../math/lagrange_inversion_theorem.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

@@ -1,0 +1,423 @@
+<!DOCTYPE HTML>
+<html lang="zh-TW" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Solving Recurrence - NTHU CPP</title>
+
+
+        <!-- Custom HTML head -->
+        
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="spacer"></li><li class="chapter-item "><div>Fundemantal</div></li><li class="chapter-item "><a href="../greedy/intro.html">Greedy</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../greedy/basic.html">Basic Greedy</a></li></ol></li><li class="chapter-item "><div>Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div>Basic DP</div></li></ol></li><li class="chapter-item "><div>Graph</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../graph/introduction_to_AP_bridge.html">Articulation Point and Bridge</a></li><li class="chapter-item "><a href="../graph/introduction_to_BCC.html">BCC-Vertex and BCC-Edge</a></li></ol></li><li class="chapter-item "><div>Flow</div></li><li class="chapter-item "><a href="../sqrt/intro.html">Sqrt Technique</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../sqrt/sqrt_decomposition.html">Square Root Decomposition</a></li><li class="chapter-item "><div>Sqrt-Related Observation</div></li><li class="chapter-item "><div>Mo's Algorithm</div></li></ol></li><li class="chapter-item expanded "><a href="../math/intro.html">Mathematics</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../math/introduction_to_generating_function.html">Generating Function</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item expanded "><a href="../math/gf_recurrence.html" class="active">Solving Recurrence</a></li><li class="chapter-item "><a href="../math/gf_combination.html">Combination</a></li><li class="chapter-item "><a href="../math/lagrange_inversion_theorem.html">Lagrange Inversion Theorem</a></li><li class="chapter-item "><a href="../math/gf_multiple_variables.html">Multiple Variables</a></li></ol></li><li class="chapter-item "><a href="../math/introduction_to_arithmetic_function.html">Arithmetic Function</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/linear_sieve.html">Linear Sieve</a></li><li class="chapter-item "><a href="../math/sqrt_decomposition.html">數論分塊</a></li><li class="chapter-item "><a href="../math/du_sieve.html">杜教篩</a></li><li class="chapter-item "><a href="../math/revisit_arithmetic_function.html">Arithmetic Function Revisit</a></li></ol></li></ol></li><li class="chapter-item "><div>Miscellaneous</div></li><li class="chapter-item "><div>C++ Programming Tips</div></li><li class="spacer"></li><li class="chapter-item "><a href="../others/codebook.html">Make a Codebook</a></li><li class="chapter-item "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item "><div>CSES Problem Tag</div></li><li class="chapter-item "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">NTHU CPP</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/NTHU-CP/NTHU-CPP" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="solving-recurrence-with-gf"><a class="header" href="#solving-recurrence-with-gf">Solving recurrence with GF</a></h1>
+<h2 id="介紹"><a class="header" href="#介紹">介紹</a></h2>
+<p>我們可以用生成函數解遞迴關係式的一般項。</p>
+<blockquote>
+<p>給定線性遞迴關係式，滿足
+\begin{aligned}
+\begin{cases}
+a_0 &amp;= 0 \\
+a_{n + 1} &amp;= 3 a_n + 2, n \geq 0 \\
+\end{cases}
+\end{aligned}</p>
+<p>求數列 \( a \) 的一般項</p>
+</blockquote>
+<p>首先我們先把數列轉換成生成函數的形式，這樣比較方便運算。把等號兩邊同時乘以 \( x^n \)，並對定義的範圍做加總，得到</p>
+<p>\begin{aligned}
+\sum\limits_{n = 0}^{\infty} a_{n + 1} x^n &amp;= \sum\limits_{n = 0}^{\infty} (3 a_n + 2) x^n \\
+\Longrightarrow \frac{A(x) - a_0 x^0}{x} &amp;= 3 \sum\limits_{n = 0}^{\infty} a_n x^n + 2 \sum\limits_{n = 0}^{\infty} x^n \\
+\Longrightarrow \frac{A(x) - a_0 x^0}{x} &amp;= 3A(x) + \frac{2}{1 - x}
+\end{aligned}</p>
+<p>將 \( a_0 = 0 \) 代入，</p>
+<p>\begin{aligned}
+\Longrightarrow A(x) &amp;= 3xA(x) + \frac{2x}{1 - x} \\
+\Longrightarrow (1 - 3x)A(x) &amp;= \frac{2x}{1 - x} \\
+\Longrightarrow A(x) &amp;= \frac{2x}{(1 - x)(1 - 3x)}
+\end{aligned}</p>
+<p>因此，\( A(x) = \frac{2x}{(1 - x)(1 - 3x)} \) 為此數列的 OGF。找到 OGF 之後，我們可以求數列的一般項。先將 \( A(x) \) 寫成 <a href="https://en.wikipedia.org/wiki/Partial_fraction_decomposition#Examples">partial fraction</a> 的形式，</p>
+<p>\[
+A(x) = 2x(\frac{C}{1 - x} + \frac{D}{1 - 3x})
+\]</p>
+<p>解出 \( C = -\frac{1}{2}, D = \frac{3}{2} \)。換成 partial fraction 形式的好處是他可以展開成等比級數，因此</p>
+<p>\begin{aligned}
+\Longrightarrow A(x) &amp;= 2x(-\frac{1}{2} \sum\limits_{n = 0}^{\infty} x^n + \frac{3}{2} \sum\limits_{n = 0}^{\infty} 3^n x^n ) \\
+\Longrightarrow A(x) &amp;= 2x \sum\limits_{n = 0}^{\infty} (-\frac{1}{2} + \frac{3^{n + 1}}{2}) x^n \\
+\Longrightarrow A(x) &amp;= 2x \sum\limits_{n = 0}^{\infty} \frac{3^{n + 1} - 1}{2} x^n \\
+\Longrightarrow A(x) &amp;= \sum\limits_{n = 0}^{\infty} (3^{n + 1} - 1) x^{n + 1} \\
+\Longrightarrow A(x) &amp;= \sum\limits_{n = 1}^{\infty} (3^n - 1) x^n \\
+\Longrightarrow A(x) &amp;= 0 + (3^1 - 1) x^1 + (3^2 - 1) x^2 + (3^3 - 1) x^3 + \cdots \\
+\Longrightarrow a_n &amp;= [x^n]A(x) = 3^n - 1
+\end{aligned}</p>
+<p>因此我們得到 \( a_n = 3^n - 1 \)。</p>
+<blockquote>
+<p>給定費氏數列 \begin{aligned}
+\begin{cases}
+f_0 &amp;= 0 \\
+f_1 &amp;= 1 \\
+f_n &amp;= f_{n - 1} + f_{n - 2}, n \geq 2 \\
+\end{cases}
+\end{aligned}</p>
+<p>求 \( f \) 的 OGF。</p>
+</blockquote>
+<p>同樣先把數列轉換成多項式的形式：</p>
+<p>\begin{aligned}
+\sum\limits_{n = 2}^{\infty} f_n x^n &amp;= x \sum\limits_{n = 2}^{\infty} f_{n - 1} x^{n - 1} + x^2 \sum\limits_{n = 2}^{\infty} f_{n - 2} x^{n - 2} \\
+\Longleftrightarrow F(x) - f_0 x^0 - f_1 x^1 &amp;= x(F(x) - f_0 x^0) + x^2 F(x) &amp; \text{減掉缺少的項} \\
+\Longleftrightarrow F(x) - x &amp;= (x + x^2) F(x) &amp; \text{\( f_0 = 0, f_1 = 1 \) 代入} \\
+\Longleftrightarrow F(x)(1 - x - x^2) &amp;= x \\
+\Longleftrightarrow F(x) &amp;= \frac{x}{1 - x - x^2} \\
+\end{aligned}</p>
+<p>我們求出 \( f \) 的 OGF。多項式 \( 1 - x - x^2 = 0 \) 的兩個根分別為 \( \phi_{+} = \frac{1 + \sqrt{5}}{-2} \) 和 \( \phi_{-} = \frac{1 - \sqrt{5}}{-2} \)，因此 \( F(x) = \frac{x}{(x - \phi_{+})(x - \phi_{-})}\)，將 \( F(x) \) 以 partial fraction 展開就能求出一般項，這部分留給讀者自行練習。</p>
+<p>回顧上面的過程，找線性遞迴關係式的一般項大致可以分成三個步驟：</p>
+<ol>
+<li>列出遞迴式和定義的範圍</li>
+<li>等號兩邊用 \( \sum\limits_{n} \) 將遞迴定義的範圍加起來並將每一項乘以 \( x^n \) (從數列轉換成 FPS)</li>
+<li>化簡算式求出 OGF，\( a_n \) 就是 \( x^n \) 的係數</li>
+</ol>
+<p>再來看一道題目。</p>
+<blockquote>
+<p>給定非線性遞迴關係式，滿足
+\begin{aligned}
+\begin{cases}
+a_0 &amp;= 1 \\
+a_n &amp;= \sum\limits_{k = 1}^n k a_k a_{n - k} = a_1 a_{n - 1} + 2 a_2 a_{n - 2} + \dots + (n - 1) a_{n - 1} a_1 + n a_n a_0, n \in \mathbb{N} \\
+\end{cases}
+\end{aligned}</p>
+<p>求數列的一般項</p>
+</blockquote>
+<p>遞迴關係的等號右邊每一項看起來都很眼熟，實際上我們可以運用目前學會的操作將他分解。</p>
+<p>分別定義 \( b_0 = 0, b_n = \sum\limits_{k = 1}^n a_k a_{n - k} \)，\( A(x), B(x) \) 分別為數列 \( a, b \) 的 OGF。可以發現 \( b_n \) 與卷積的定義只相差在 \( \sum \) 起始的 index，我們可以將 \( k = 0 \) 的 case 單獨扣掉，得到：</p>
+<p>\begin{aligned}
+b_n &amp;= \sum\limits_{k = 1}^n a_k a_{n - k} \\
+&amp;= \sum\limits_{k = 0}^n a_k a_{n - k} - a_0 a_n &amp; \text{將 \( k = 0 \) 的 case 單獨扣掉} \\
+\Longleftrightarrow \sum_{n = 1}^{\infty} b_n x^n &amp;= \sum\limits_{n = 1}^{\infty} (\sum\limits_{k = 0}^n a_k a_{n - k} - a_0 a_n) x^n &amp; \text{兩邊同時乘上 \( x^n \) 把數列轉換成生成函數} \\
+\Longleftrightarrow B(x) - b_0 x^0 &amp;= \sum\limits_{n = 1}^{\infty} \sum\limits_{k = 0}^n a_k x^k a_{n - k} x^{n - k} - \sum\limits_{n = 1}^{\infty} a_0 a_n x^n &amp; \text{等號左邊缺少 \( b_0 \) 項，右邊展開括號} \\
+\Longleftrightarrow B(x) - b_0 x^0 &amp;= (A(x)^2 - a_0^2) - \sum\limits_{n = 1}^{\infty} a_0 a_n x^n &amp; \text{等號右邊的第一項其實就是 \( A(x)^2 \) 缺少 \( n = 0 \)，單獨減掉} \\
+\Longleftrightarrow B(x) &amp;= (A(x)^2 - 1) - \sum\limits_{n = 1}^{\infty} a_n x^n &amp; \text{代入 \( a_0 = 1, b_0 = 0 \)} \\
+&amp;= (A(x)^2 - 1) - (A(x) - a_0 x_0) \\
+&amp;= A(x)^2 - A(x) \\
+\end{aligned}</p>
+<p>我們得到了數列 \( b \) 的生成函數。回到原本的題目，可以發現我們要求的 \( a_n = n b_n \)，可以透過先前提過的技巧 \( A(x) = x B^{\prime}(x) \) 求得。剩下的化簡留給讀者自行練習。</p>
+<h2 id="例題"><a class="header" href="#例題">例題</a></h2>
+<blockquote>
+<p><a href="https://codeforces.com/contest/1832/problem/E">CF 1832E - Combinatorics Problem</a></p>
+<p>\( b_i = (\sum\limits_{j = 0}^i \binom{i - j + 1}{k} \cdot a_j) \bmod 998244353 \)，給定 \( a_0, \dots, a_{n - 1} \)，求 \( b_0, \dots, b_{n - 1} \)</p>
+<ul>
+<li>\( 1 \leq n \leq 10^7 \)</li>
+<li>\( 1 \leq k \leq 5 \)</li>
+</ul>
+</blockquote>
+<p>本題有 \( O(nk) \) 的 DP 解。這邊介紹生成函數 \( O(n \log n) \) 的解法，可以做到 \( k = n \) 量級。</p>
+<p>我們先將二項式係數拆開，得到</p>
+<p>\[
+b_i = \sum\limits_{j = 0}^i \frac{(i - j + 1)!}{k!(i - j + 1 - k)!} a_j
+\]</p>
+<p>按照之前的套路，將等號兩邊定義的範圍加總，並對每一項乘以 \( x^n \)，得到</p>
+<p>\[
+\sum\limits_{n \geq 0} b_n x^n = \frac{1}{k!} \sum\limits_{n \geq 0} \sum\limits_{j = 0}^n \frac{(n - j + 1)!}{(n - j + 1 - k)!} x^{n - j} a_j x^j
+\]</p>
+<p>可以發現等號右邊可以拆成兩個多項式的卷積，</p>
+<p>\begin{aligned}
+f &amp;= \sum\limits_{n \geq 0} a_n x^n \\
+g &amp;= \sum\limits_{n \geq 0} \frac{(n + 1)!}{(n + 1 - k)!} x^n \\
+\Longrightarrow \frac{1}{k!}(f \cdot g) &amp;= \frac{1}{k!} \sum\limits_{n \geq 0} \sum\limits_{j = 0}^n \frac{(n - j + 1)!}{(n - j + 1 - k)!} x^{n - j} a_j x^j
+\end{aligned}</p>
+<p>我們可以用 NTT 快速計算 \( f \) 和 \( g \) 的卷積，\( b_i \) 就會是 OGF 的係數。</p>
+<p>由於本題 \( n \) 很大，再加上 NTT 的複雜度帶 \( \log \)，可能要優化 NTT 才能 AC (本題時限 4s，筆者的 NTT 跑 3.3s)。</p>
+<p><a href="https://codeforces.com/contest/1832/submission/211226494">Solution Code</a></p>
+<blockquote>
+<p><a href="https://codeforces.com/problemset/problem/438/E">CF 438E - The Child and Binary Tree</a></p>
+<p>給定集合 \( C \)。令 \( a_i \) 為節點 \( i \) 的點權。對於 \( S = 1, \dots, m \)，求點權和為 \( S \)，且 \(a_i \in C \) 的二元樹數量 \( \bmod 998244353 \)。</p>
+<ul>
+<li>\( 1 \leq m \leq 10^5 \)</li>
+<li>\( 1 \leq c_i \leq 10^5 \)</li>
+</ul>
+</blockquote>
+<p>定義 \( f_s \) 為權重和為 \( s \) 的合法二元樹數量，\( f_0 = 1 \)。枚舉二元樹樹根的權重 \( w \)，我們可以列出遞迴式，</p>
+<p>\[
+f_s = \sum\limits_{w \in C} \sum\limits_{i = 0}^{s - w} f_i f_{s - w - i}, s \geq 1
+\]</p>
+<p>按照套路，將等號兩邊定義的範圍加總，並對每一項乘以 \( x^n \)，得到</p>
+<p>\begin{aligned}
+\sum\limits_{n \geq 1} f_n x^n &amp;= \sum\limits_{n \geq 1} \sum\limits_{w \in C} x^w \sum\limits_{i = 0}^{n - w} f_i x^i f_{n - w - i} x^{n - w - i} \\
+\Longrightarrow F(x) - f_0 x^0 &amp;= \sum\limits_{w \in C} x^w \sum\limits_{n \geq 1} \sum\limits_{i = 0}^{n - w} f_i x^i f_{n - w - i} x^{n - w - i} \\
+\end{aligned}</p>
+<p>可以發現最右邊其實就是 \( F(x)^2 \)。我們定義 \( C(x) = \sum\limits_{w \in C} x^w \)，可以再化簡為</p>
+<p>\begin{aligned}
+F(x) - 1 &amp;= C(x)F(x)^2 \\
+\Longrightarrow F(x) &amp;= \frac{1 \pm \sqrt{1 - 4C(x)}}{2C(x)} &amp; \text{把 \( F(x) \) 當作變數解二元一次方程式}
+\end{aligned}</p>
+<p>由於 \( f_0 = F(0) = 1 \)，\( F(x) \) 在 \( x = 0 \) 要收斂至 \( 1 \)，因此要取負號，得到 \( F(x) = \frac{1 - \sqrt{1 - 4C(x)}}{2C(x)} \)。一般來說化簡到這裡就可以了，但是在 \( \bmod 998244353 \) 下，\( C(x) \) 的逆元 \( C^-1(x) \) 存在若且唯若 \( C(x) \) 的常數項不為 \( 0 \)<sup class="footnote-reference"><a href="#note-1">1</a></sup>。因此我們要對他有理化，</p>
+<p>\begin{aligned}
+F(x) &amp;= \frac{1 - \sqrt{1 - 4C(x)}}{2C(x)} \\
+&amp;= \frac{(1 - \sqrt{1 - 4C(x)})(1 + \sqrt{1 - 4C(x)})}{2C(x)(1 + \sqrt{1 - 4C(x)})} \\
+&amp;= \frac{1^2 - (1 - 4C(x))}{2C(x)(1 + \sqrt{1 - 4C(x)})} \\
+&amp;= \frac{4C(x)}{2C(x)(1 + \sqrt{1 - 4C(x)})} \\
+&amp;= \frac{2}{1 + \sqrt{1 - 4C(x)}} \\
+\end{aligned}</p>
+<p>化簡到這裡就可以了，因為分母的常數項不為 \( 0 \)。對於 \( S = k \) 的答案就會是 \( f_k = [x^k] F(x) \)。</p>
+<p>本題中對 FPS 做開根號和逆元的詳細做法可以參考這三篇文章 <a href="https://codeforces.com/blog/entry/56422">1</a> <a href="https://cp-algorithms.com/algebra/polynomial.html">2</a> <a href="https://www.luogu.com.cn/blog/MoYuFang/sheng-cheng-han-shuo-di-shuo-xue-ji-chu">3</a>。</p>
+<blockquote>
+<p><a href="https://atcoder.jp/contests/abc222/tasks/abc222_h">ABC222 H - Beautiful Binary Tree</a></p>
+<p>每個節點上寫著一個數字 \( h_i \)。定義一個 degree 為 \( n \) 的漂亮二元樹為：</p>
+<ul>
+<li>
+<p>\( h_i \in \text{{ \( 0, 1 \) }} \)</p>
+</li>
+<li>
+<p>葉節點的 \( h_i = 1 \)</p>
+</li>
+<li>
+<p>執行以下的操作至多 \( n - 1 \) 次，使得根節點為 \( n \) 且其他節點為 \( 0 \)</p>
+<ul>
+<li>選擇兩個節點 \( u, v \)，滿足 \( v \) 是 \( u \) 的兒子或是孫子，更新為 \( h_u \leftarrow h_u + h_v, h_v \leftarrow 0 \)
+求 degree 為 \( n \) 的漂亮二元樹數量 \( \bmod 998244353 \)</li>
+</ul>
+</li>
+<li>
+<p>\( 1 \leq n \leq 10^7 \)，\( O(n) \)</p>
+</li>
+</ul>
+</blockquote>
+<p>觀察：</p>
+<p>因為每次操作都要把一個 \( h_i = 1 \) 的往上移動，且經過 \( n - 1 \) 次操作後根節點要為 \( n \)，因此根節點的初始 \( h_i = 1 \)。又因為每次往上移動時最多可以跳過一個節點 \( (u, v) \) 可以為父子或爺孫關係)，因此樹上不能有相鄰的 \( 0 \)，否則無法在 \( N - 1 \) 次內完成。</p>
+<p>有了上述的觀察，我們可以列出 DP 式：</p>
+<ul>
+<li>\( a_i \)：degree 為 \( i \) 的漂亮二元樹數量。</li>
+<li>\( b_i \)：degree 為 \( i \) 且 root 為 \( 0 \) 的漂亮二元樹數量。</li>
+</ul>
+<p>列出關係式：</p>
+<p>\begin{aligned}
+b_i = 2 a_i + \sum\limits_{j = 1}^{i - 1} a_j a_{i - j}
+\end{aligned}</p>
+<p>\( 2 a_i \) 為只有一個子孫的情況，可以為左或右子樹。\( \sum\limits_{j = 1}^{i - 1} a_j a_{i - j} \) 為枚舉左子樹的 degree。因為不能有相鄰的 \( 0 \)，因此不能接上 \( b \) 類型的根作為子樹。</p>
+<p>定義 \( a_0 = b_0 = 0 \)，將 \( a, b \) 轉換為 OGF \( A(x), B(x) \) 得到</p>
+<p>\[
+B(x) = 2A(x) + A(x)^2
+\]</p>
+<p>同樣 \( a_i \) 也可以列出遞迴式：</p>
+<p>\begin{cases}
+a_1 = 1 &amp; \text{base case} \\
+a_i = 2 (a_{i - 1} + b_{i - 1}) + \sum\limits_{j = 1}^{i - 1} (a_j + b_j)(a_{i - 1 - j} + b_{i - 1 - j}), (i &gt; 1) &amp; \text{根節點為 \( 1 \)，因此子樹 degree 加起來為 \( i - 1 \)} \\
+\end{cases}</p>
+<p>因此，</p>
+<p>\begin{aligned}
+A(x) - a_0 x^0 - a_1 x^1 &amp;= 2x(A(x) + B(x)) + x(A(x) + B(x))^2 &amp; \text{按照套路轉成 OGF} \\
+\Longleftrightarrow A(x) &amp;= x + 2x(A(x) + B(x)) + x(A(x) + B(x))^2 &amp; \text{代入 \( a_0 = 0, a_1 = 1 \)} \\
+&amp;= x(1 + A(x) + B(x))^2 \\
+&amp;= x(1 + 3A(x) + A(x)^2)^2 &amp; \text{代入 \( B(x) \)} \\
+\end{aligned}</p>
+<p>到這邊就能夠在 \( O(n \log n) \) 求出了。但因為題目要求 \( O(n) \)，我們需要進一步化簡。</p>
+<p>根據 <a href="/math/lagrange_inversion_theorem.html">Lagrange Inversion Theorem</a>，我們定義 \( F(x) = A(x) = x(1 + 3F(x) + F(x)^2)^2 \)，因此 \( \frac{F(x)}{(1 + 3F(x) + F(x)^2)^2} = x \)。不難看出滿足 \( G(F(x)) = x \) 的 \( G(x) = \frac{x}{(1 + 3x + x^2)^2} \)。根據定理，我們可以列出</p>
+<p>\begin{aligned}
+\text{[} x^n \text{]} F(x) &amp;= \frac{1}{n} [x^{n - 1}] (\frac{x}{G(x)})^n \\
+&amp;= \frac{1}{n} [x^{n - 1}] (1 + 3x + x^2)^{2n} &amp; \text{代入 \( G(x) \)} \\
+&amp;= \frac{1}{n} [x^{n - 1}] ((1 + 3x) + x^2)^{2n} \\
+&amp;= \frac{1}{n} [x^{n - 1}] \sum\limits_{i = 0}^{2n} \binom{2n}{i} (1 + 3x)^{2n - i} (x^2)^{i} &amp; \text{二項式定理} \\
+&amp;= \frac{1}{n} \sum\limits_{i = 0}^{2n} \binom{2n}{i} [x^{n - 1 - 2i}] (1 + 3x)^{2n - i} \\
+&amp;= \frac{1}{n} \sum\limits_{i = 0}^{2n} \binom{2n}{i} [x^{n - 1 - 2i}] \sum\limits_{j = 0}^{2n - i} \binom{2n - i}{j} (3x)^j 1^{2n - i - j} &amp; \text{二項式定理} \\
+&amp;= \frac{1}{n} \sum\limits_{i = 0}^{2n} \binom{2n}{i} \binom{2n - i}{n - 1 - 2i} 3^{n - 1 - 2i} \\
+\end{aligned}</p>
+<p>因此我們可以在 \( O(n) \) 求出 \( [x^n] F(x) = [x^n] A(x) = a_n \)。</p>
+<div class="footnote-definition" id="note-1"><sup class="footnote-definition-label">1</sup>
+<p>假設 \( A(x)B(x) = 1 \)，我們稱 \( B(x) \) 為 \( A(x) \) 的乘法逆元，記做 \( B(x) = \frac{1}{A(x)} = A(x)^{-1} = A^{-1}(x) \)。
+定義 \( C(x) = 1 = A(x)B(x) = \sum\limits_{n = 0}^{\infty} (\sum\limits_{i + j = n} a_i b_j) x^n \)。因此如果 \( a_0 = 0 \)，則 \( [x^0] C(x) = a_0 b_0 = 0 \)，\( A(x) \) 的逆元不存在。</p>
+</div>
+<h2 id="references"><a class="header" href="#references">References</a></h2>
+<ul>
+<li>[Tutorial] Generating Functions in Competitive Programming <a href="https://codeforces.com/blog/entry/77468">Part 1</a> <a href="https://codeforces.com/blog/entry/77551">Part 2</a></li>
+<li>FPS 相關運算，有興趣可以自行研究
+<ul>
+<li><a href="https://codeforces.com/blog/entry/56422">CF - Operations on Formal Power Series</a></li>
+<li><a href="https://cp-algorithms.com/algebra/polynomial.html">CP algorithms - Operations on polynomials and series</a></li>
+<li><a href="https://www.luogu.com.cn/blog/MoYuFang/sheng-cheng-han-shuo-di-shuo-xue-ji-chu">生成函数的数学基础</a></li>
+</ul>
+</li>
+<li><a href="https://www2.math.upenn.edu/~wilf/gfologyLinked2.pdf">generatingfunctionology</a></li>
+<li><a href="https://math.stackexchange.com/questions/1262413/non-linear-recursion-generating-functions">non-linear-recursion-generating-functions</a></li>
+<li><a href="https://atcoder.jp/contests/abc222/editorial/2765">Lagrange Inversion Theorem</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../math/introduction_to_generating_function.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../math/gf_combination.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../math/introduction_to_generating_function.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../math/gf_combination.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>
