@@ -19,7 +19,7 @@ f(n - 1, k) + f(n - 1, k - 1), n, k \geq 1 \\\\
 \sum\limits_{n = 1}^{\infty} \sum\limits_{k = 1}^{\infty} f(n, k) x^n y^k &= \sum\limits_{n = 1}^{\infty} \sum\limits_{k = 1}^{\infty} (f(n - 1, k) + f(n - 1, k - 1)) x^n y^k \\\\
 &= x \sum\limits_{n = 1}^{\infty} \sum\limits_{k = 1}^{\infty} f(n - 1, k) x^{n - 1} y^k + xy \sum\limits_{n = 1}^{\infty} f(n - 1, k - 1) x^{n - 1} y^{k - 1} \\\\
 \Longleftrightarrow F(x, y) - \sum\limits_{n = 0}^{\infty} x^n &= x(F(x, y) - \sum\limits_{n = 0}^{\infty} x^n) + xy F(x, y) & \text{by f(0, n) = 0} \\\\
-\Longleftrightarrow F(x, y) - \frac{1}{1 - x} &= (x + xy)F(x, y) - \frac{x}{1 - x} & \text{等比級數一般式，整理括號} \\\\
+\Longleftrightarrow F(x, y) - \frac{1}{1 - x} &= (x + xy)F(x, y) - \frac{x}{1 - x} & \text{by 等比級數，整理括號} \\\\
 \Longleftrightarrow (1 - x - xy)F(x, y) &= 1 \\\\
 \Longleftrightarrow F(x, y) &= \frac{1}{1 - x - xy} \\\\
 \end{aligned}
