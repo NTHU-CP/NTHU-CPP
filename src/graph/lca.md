@@ -10,13 +10,13 @@
 
 讀者們可以參考下圖，紅色的點為點 \\( u \\) 和點 \\( v \\) 的共同祖先，其中標星號的點為所有共同祖先中深度最深的點，也就是點 \\( u \\) 和點 \\( v \\) 的最近共同祖先。
 
-<img src="image/LCA/def.png" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/lca/def.png" width="700" style="display:block; margin: 0 auto;"/>
 
 ## 相關性質
 
 - 如果點 \\( u \\) 為點 \\( v \\) 的祖先，那麼 \\( LCA(u,\ v) \\) 為點 \\( u \\)。
 - 如果點對 \\( (u,\ v) \\) 不具祖孫關係，那麼點 \\( u \\) 和點 \\( v \\) 會分別位於 \\( LCA(u,\ v) \\) 的兩個不同子樹內。
-- \\( LCA(u,\ v) \\) 必定會位於點 \\( u \\) 到點 \\( v \\) 的最短路徑上且為該路徑上深度最淺的點。
+- \\( LCA(u,\ v) \\) 必定會位於點 \\( u \\) 到點 \\( v \\) 的最短路徑上（事實上路徑唯一）且為該路徑上深度最淺的點。
 - 在 DFS 的走訪過程中，必定會先經過 \\( LCA(u,\ v) \\)，接著再經過點 \\( u \\) 和點 \\( v \\)。
 
 ## 經典題型
@@ -35,9 +35,11 @@
 
 ### Brute Force
 
-一個直觀的做法是先從根開始作一次 DFS，確認出每個點的父節點以及時間戳（DFS 進行遞迴時進入該節點與離開該節點的時間戳記）。接著針對詢問，我們可以藉由預處理好的的資訊暴力往上搜索所求點對 \\( (u,\ v) \\) 中深度較淺的點的祖先，直到當前搜索的點同時也為另一點的祖先，該點即為點對 \\( (u,\ v) \\) 的最近共同祖先。
+一個直觀的做法是先從根開始作一次 DFS，確認出每個點的父節點以及時間戳（DFS 進行遞迴時進入該節點與離開該節點的時間戳記）。接著針對查詢點對 \\( (u,\ v) \\)，我們每次將點 \\( u \\) 往上移動一位，直到點 \\( u \\) 是點 \\( v \\) 的祖先時，就找到最近共同祖先了。
 
-而確認一個點是否為另一點的祖先，我們可以利用時間戳來判斷。假設點 \\( u \\) 為點 \\( v \\) 的祖先，在 DFS 遞迴的過程中必定會依序進入點 \\( u \\)、進入點 \\( v \\)、離開點 \\( v \\)、離開點 \\( u \\)，由此我們可知進入點 \\( u \\) 的時間戳記必定會小於進入點 \\( v \\) 的時間戳記、離開點 \\( v \\) 的時間戳記必定會小於離開點 \\( u \\) 的時間戳記。透過此條件判斷，我們可以在 \\( O(1) \\) 的時間內得知兩點的祖孫關係。而在實作上我們會把小於換成小於等於，因為這邊我們定義自己為自己的祖先。
+<img src="image/lca/brute_1.gif" width="700" style="display:block; margin: 0 auto;"/>
+
+而確認一個點是否為另一點的祖先，我們可以利用時間戳來判斷。假設點 \\( u \\) 為點 \\( v \\) 的祖先，在 DFS 遞迴的過程中必定會依序進入點 \\( u \\)、進入點 \\( v \\)、離開點 \\( v \\)、離開點 \\( u \\)，由此我們可知進入點 \\( u \\) 的時間戳記必定會小於進入點 \\( v \\) 的時間戳記、離開點 \\( v \\) 的時間戳記必定會小於離開點 \\( u \\) 的時間戳記。透過此條件判斷，我們可以在 \\( O(1) \\) 的時間內得知兩點的祖孫關係。
 
 總結一下此作法的時間複雜度：
 
@@ -52,14 +54,48 @@
 <details><summary> Sample Code </summary>
 
 - 用 adjacency list 來儲存樹的結構。
+- 節點為 0 - indexed 且根的父節點為 \\( -1 \\)。
 - `tin[i]` 代表在 DFS 的過程中進入點 \\( i \\) 的時間。
 - `tout[i]` 代表在 DFS 的過程中離開點 \\( i \\) 的時間。
 - `parent[i]` 代表第 \\( i \\) 個節點的父節點。
-- 樹的根為點 \\( 1 \\) 且根的父節點為 \\( -1 \\)。
+- 在判斷兩點祖孫關係的 `is_ancestor` 函數中，因為這邊我們定義了自己為自己的祖先，所以原先條件判斷中的 `<` 修正成了較寬鬆的 `<=`。
 
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
+
+struct LCA {
+  int time;
+  vector<int> parent, tin, tout;
+  vector<vector<int>> adj;
+  LCA(int N) {
+    parent.resize(N, -1);
+    tin.resize(N);
+    tout.resize(N);
+    adj.resize(N);
+    time = 0;
+  }
+  void add_edge(int u, int v) {
+    adj[u].emplace_back(v);
+    adj[v].emplace_back(u);
+  }
+  void dfs(int u = 0, int p = -1) {
+    tin[u] = ++time;
+    parent[u] = p;
+    for (int v : adj[u])
+      if (v != p) dfs(v, u);
+    tout[u] = ++time;
+  }
+  void build() { dfs(); }
+  bool is_ancestor(int u, int v) {
+    if (u == -1) return 1;
+    return tin[u] <= tin[v] && tout[v] <= tout[u];
+  }
+  int qry(int u, int v) {
+    while (!is_ancestor(u, v)) u = parent[u];
+    return u;
+  }
+};
 
 int main() {
   ios::sync_with_stdio(0);
@@ -68,43 +104,20 @@ int main() {
   int N, Q;
   cin >> N >> Q;
 
-  int time = 0;
-  vector<int> parent(N + 1, -1), tin(N + 1), tout(N + 1);
-  vector<vector<int>> adj(N + 1);
+  LCA lca(N);
 
-  for (int i = 2; i <= N; ++i) {
+  for (int i = 1; i < N; ++i) {
     int p;
-    cin >> p;
-    adj[i].push_back(p);
-    adj[p].push_back(i);
+    cin >> p, --p;
+    lca.add_edge(i, p);
   }
 
-  auto dfs = [&](auto self, int u) -> void {
-    tin[u] = ++time;
-    for (int v : adj[u]) {
-      if (v == parent[u]) continue;
-      parent[v] = u;
-      self(self, v);
-    }
-    tout[u] = ++time;
-  };
-
-  dfs(dfs, 1);
-
-  auto is_ancestor = [&](int u, int v) -> bool {
-    if (u == -1) return 1;
-    return tin[u] <= tin[v] && tout[v] <= tout[u];
-  };
-
-  auto LCA = [&](int u, int v) -> int {
-    while (!is_ancestor(u, v)) u = parent[u];
-    return u;
-  };
+  lca.build();
 
   for (int i = 0; i < Q; ++i) {
     int u, v;
-    cin >> u >> v;
-    cout << LCA(u, v) << "\n";
+    cin >> u >> v, --u, --v;
+    cout << lca.qry(u, v) + 1 << "\n";
   }
 
   return 0;
@@ -122,7 +135,7 @@ int main() {
 
 然而想要完成這種抬升，我們需要在預處理時多紀錄每個點的第 \\( 2^i \\) 個祖先的資訊 \\( (0\leq i\leq\lfloor\log N\rfloor) \\)，實作上我們可以利用 Dynamic Programming 的概念。假設我們想知道點 \\( u \\) 的第 \\( 2^i \\) 個祖先是誰，我們可以將問題等同於點 \\( u \\) 的第 \\( 2^{i-1} \\) 個祖先的第 \\( 2^{i-1} \\) 個祖先是誰，聽起來有點饒口，不清楚的讀者可以看以下示意圖：
 
-<img src="image/LCA/binary_lifting_1.png" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/lca/binary_lifting_1.png" width="700" style="display:block; margin: 0 auto;"/>
 
 根據這個想法，我們可以列出下列遞迴關係式：
 
@@ -130,7 +143,7 @@ $$ancestor(u,\ i) = \begin{cases} parent(u) & \text {if $i = 0$} \newline ancest
 
 這邊 \\( ancestor(u,\ i) \\) 代表點 \\( u \\) 的第 \\( 2^i \\) 個祖先。
 
-利用上述關係式解 DP，我們可以在 \\( O(N\log N) \\) 的時間內預處理完所有點的第 \\( 2^i \\) 個祖先的資訊。等到需要進行點的抬升時，我們即可以在 \\( O(\log N) \\) 的時間內完成。
+利用上述關係式，我們可以靠 bottom up 的填表方式在 \\( O(N\log N) \\) 時間內預處理完所有點的第 \\( 2^i \\) 個祖先的資訊。等到需要進行點的抬升時，我們即可以在 \\( O(\log N) \\) 的時間內完成。
 
 除了抬升的優化以外，在查詢點對 \\( (u,\ v) \\) 深度較淺的點的祖先中找 LCA 本身具有單調性，直覺上可以利用二分搜來加速。但在稍早提到的 Brute force 當中，我們並沒有提到相關的操作。原因是因為我們只記錄了每個點的父節點的資訊，在處理二分搜的檢查函數上會花費線性的時間，導致整個二分搜的時間複雜度為 \\( O(N\log N) \\)，明顯沒有比較快。
 
@@ -154,14 +167,54 @@ $$ancestor(u,\ i) = \begin{cases} parent(u) & \text {if $i = 0$} \newline ancest
 
 <details><summary> Sample Code </summary>
 
+- 節點為 0 - indexed 且根的所有祖先節點均為 \\( -1 \\)。
 - `tin[i]` 代表在 DFS 的過程中進入點 \\( i \\) 的時間。
 - `tout[i]` 代表在 DFS 的過程中離開點 \\( i \\) 的時間
 - `ancestor[i][j]` 代表第 \\( i \\) 個節點的第 \\( 2^j \\) 個祖先。
-- 樹的根為點 \\( 1 \\) 且根的所有祖先節點均為 \\( -1 \\)。
 
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
+
+struct LCA {
+  int time, logN;
+  vector<int> tin, tout;
+  vector<vector<int>> adj, ancestor;
+  LCA(int N) {
+    logN = __lg(N);
+    ancestor.resize(N, vector<int>(logN + 1, -1));
+    tin.resize(N);
+    tout.resize(N);
+    adj.resize(N);
+    time = 0;
+  }
+  void add_edge(int u, int v) {
+    adj[u].emplace_back(v);
+    adj[v].emplace_back(u);
+  }
+  void dfs(int u = 0, int p = -1) {
+    tin[u] = ++time;
+    ancestor[u][0] = p;
+    for (int i = 1; i <= logN; ++i)
+      ancestor[u][i] =
+          ~ancestor[u][i - 1] ? ancestor[ancestor[u][i - 1]][i - 1] : -1;
+    for (int v : adj[u])
+      if (v != p) dfs(v, u);
+    tout[u] = ++time;
+  }
+  void build() { dfs(); }
+  bool is_ancestor(int u, int v) {
+    if (u == -1) return 1;
+    return tin[u] <= tin[v] && tout[v] <= tout[u];
+  }
+  int qry(int u, int v) {
+    if (is_ancestor(u, v)) return u;
+    if (is_ancestor(v, u)) return v;
+    for (int i = logN; ~i; --i)
+      if (!is_ancestor(ancestor[u][i], v)) u = ancestor[u][i];
+    return ancestor[u][0];
+  }
+};
 
 int main() {
   ios::sync_with_stdio(0);
@@ -170,58 +223,20 @@ int main() {
   int N, Q;
   cin >> N >> Q;
 
-  const int logN = __lg(N);
+  LCA lca(N);
 
-  int time = 0;
-  vector<int> tin(N + 1), tout(N + 1);
-  vector<vector<int>> ancestor(N + 1, vector<int>(logN + 1));
-  vector<vector<int>> adj(N + 1);
-
-  for (int i = 2; i <= N; ++i) {
+  for (int i = 1; i < N; ++i) {
     int p;
-    cin >> p;
-    adj[i].push_back(p);
-    adj[p].push_back(i);
+    cin >> p, --p;
+    lca.add_edge(i, p);
   }
 
-  auto dfs = [&](auto self, int u, int p) -> void {
-    ancestor[u][0] = p;
-    tin[u] = ++time;
-
-    for (int i = 1; i <= logN; ++i) {
-      ancestor[u][i] =
-          ~ancestor[u][i - 1] ? ancestor[ancestor[u][i - 1]][i - 1] : -1;
-    }
-
-    for (int v : adj[u]) {
-      if (v == ancestor[u][0]) continue;
-      self(self, v, u);
-    }
-
-    tout[u] = ++time;
-  };
-
-  dfs(dfs, 1, -1);
-
-  auto is_ancestor = [&](int u, int v) -> bool {
-    if (u == -1) return 1;
-    return tin[u] <= tin[v] && tout[v] <= tout[u];
-  };
-
-  auto LCA = [&](int u, int v) -> int {
-    if (is_ancestor(u, v)) return u;
-    if (is_ancestor(v, u)) return v;
-
-    for (int i = logN; ~i; --i)
-      if (!is_ancestor(ancestor[u][i], v)) u = ancestor[u][i];
-
-    return ancestor[u][0];
-  };
+  lca.build();
 
   for (int i = 0; i < Q; ++i) {
     int u, v;
-    cin >> u >> v;
-    cout << LCA(u, v) << "\n";
+    cin >> u >> v, --u, --v;
+    cout << lca.qry(u, v) + 1 << "\n";
   }
 
   return 0;
@@ -233,10 +248,10 @@ int main() {
 
 ### Tarjan's Offline Algorithm
 
-Tarjan 提出的想法是利用 Disjoint Set 來動態地合併子樹，並且用一陣列去記錄集合中深度最淺的點，這邊我們稱為集合的最高點。一開始，所有點都位於一個獨立的並查集且集合的最高點為自己本身，共 \\( N \\) 個集合。接著利用 DFS 去走訪所有點，在 DFS 的走訪過程中，針對經過的每一點 \\( u \\) 我們依序進行以下的操作：
+Tarjan 提出的想法是利用 Disjoint Set 來動態地合併子樹，並且記錄集合中深度最淺的點，這邊我們稱為集合的最高點。一開始，所有點都位於一個獨立的並查集且集合的最高點為自己本身，共 \\( N \\) 個集合。接著利用 DFS 去走訪所有點，對於 DFS 走訪到的點 \\( u \\)，我們依序進行以下的操作：
 
 - DFS 遞迴下去搜索點 \\( u \\) 的所有子樹節點
-- 遞迴 return 後檢查所有包含點 \\( u \\) 在內的查詢點對，如果另一點為搜索過的狀態，那麼根據 Tarjan 的想法，此時我們可以知道該查詢點對的最近共同祖先為另一點所在集合的最高點。
+- 遞迴 return 後檢查所有包含點 \\( u \\) 在內的查詢點對，如果另一點為搜索過的狀態，那麼根據 Tarjan 的想法，此時我們可以知道該查詢點對的最近共同祖先為另一點所在集合的最高點。而如果另一點尚未被搜索過，代表說我們當前還沒有另一點的位置資訊，因此還不足以判斷兩點的最近共同祖先，直接跳過即可。
 - 檢查完後將點 \\( u \\) 所處的並查集和其父節點 \\( p \\) 所處的並查集合併
 - 將合併後集合的最高點設為點 \\( p \\)
 
@@ -244,7 +259,7 @@ Tarjan 提出的想法是利用 Disjoint Set 來動態地合併子樹，並且�
 
 針對任意點對 \\( (u,\ v) \\) 的最近共同祖先，我們可以考慮以下兩種 Case。
 
-<img src="image/LCA/tarjan_1.png" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/lca/tarjan_1.png" width="700" style="display:block; margin: 0 auto;"/>
 
 對於 Case 1，點 \\( u \\) 和點 \\( v \\) 不具祖孫關係，根據我們稍早提及的最近共同祖先的特性，可知點 \\( u \\) 和點 \\( v \\) 會分別位於 \\( LCA(u,\ v) \\) 的兩個不同子樹內。在 DFS 的走訪過程中，必定會先搜索 \\( LCA(u,\ v) \\)，接著依序搜索點 \\( u \\) 、返回 \\( LCA(u,\ v) \\)、搜索點 \\( v \\)（這邊不失一般性地假設會先搜索點 \\( u \\)）。因此當點 \\( v \\) 遞迴搜索完其所有子樹節點時，點 \\( u \\) 會是搜索過的狀態。此時點 \\( u \\) 和 \\( LCA(u,\ v) \\) 會處於同一並查集且集合的最高點為 \\( LCA(u,\ v) \\)。
 
@@ -269,21 +284,19 @@ Tarjan 提出的想法是利用 Disjoint Set 來動態地合併子樹，並且�
 - `ancestor[i]` 代表有著節點 \\( i \\) 作為 representative 的集合的最高點。
 - `query[i]` 存放所有滿足點對 \\( (i,\ j) \\) 為查詢點對的點 \\( j \\) 以及相對應是第幾個查詢點對。
 - `vis[i]` 代表點 \\( i \\) 是否被搜索過。
-- `LCA[i]` 代表第 \\( i \\) 個查詢點對的最近共同祖先。
+- `answer[i]` 代表第 \\( i \\) 個查詢點對的最近共同祖先。
 
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
 struct DSU {
-  int N;
   vector<int> parent, size;
-  DSU(int N) : N(N) {
-    parent.resize(N + 1);
-    size.resize(N + 1, 1);
-    for (int i = 1; i <= N; ++i) {
-      parent[i] = i;
-    }
+  DSU() {}
+  DSU(int N) {
+    parent.resize(N);
+    size.resize(N, 1);
+    iota(parent.begin(), parent.end(), 0);
   }
   int find(int x) { return x == parent[x] ? x : parent[x] = find(parent[x]); }
   void unite(int u, int v) {
@@ -294,6 +307,49 @@ struct DSU {
   }
 };
 
+struct LCA {
+  vector<vector<int>> adj;
+  vector<int> ancestor, answer;
+  vector<vector<pair<int, int>>> query;
+  vector<bool> vis;
+  DSU dsu;
+  LCA(int N, int Q) {
+    adj.resize(N);
+    ancestor.resize(N);
+    answer.resize(Q);
+    query.resize(N);
+    vis.resize(N, false);
+    dsu = DSU(N);
+  }
+  void add_edge(int u, int v) {
+    adj[u].emplace_back(v);
+    adj[v].emplace_back(u);
+  }
+  void add_query(int u, int v, int idx) {
+    query[u].emplace_back(make_pair(v, idx));
+    query[v].emplace_back(make_pair(u, idx));
+  }
+  void dfs(int u = 0) {
+    vis[u] = 1;
+    ancestor[u] = u;
+    for (int v : adj[u]) {
+      if (vis[v]) continue;
+      dfs(v);
+      dsu.unite(u, v);
+      ancestor[dsu.find(u)] = u;
+    }
+    for (auto& q : query[u]) {
+      int v = q.first, idx = q.second;
+      if (!vis[v]) continue;
+      answer[idx] = ancestor[dsu.find(v)];
+    }
+  }
+  void solve() {
+    dfs();
+    for (int& ans : answer) cout << ans + 1 << "\n";
+  }
+};
+
 int main() {
   ios::sync_with_stdio(0);
   cin.tie(0);
@@ -301,50 +357,21 @@ int main() {
   int N, Q;
   cin >> N >> Q;
 
-  vector<vector<pair<int, int>>> query(N + 1);
-  vector<vector<int>> adj(N + 1);
-  vector<int> ancestor(N + 1), LCA(Q);
-  vector<bool> vis(N + 1, false);
+  LCA lca(N, Q);
 
-  DSU dsu(N);
-
-  auto dfs = [&](auto self, int u) -> void {
-    vis[u] = 1;
-    ancestor[u] = u;
-
-    for (int v : adj[u]) {
-      if (vis[v]) continue;
-      self(self, v);
-      dsu.unite(u, v);
-      ancestor[dsu.find(u)] = u;
-    }
-
-    for (auto q : query[u]) {
-      int v = q.first, query_num = q.second;
-      if (!vis[v]) continue;
-      LCA[query_num] = ancestor[dsu.find(v)];
-    }
-  };
-
-  for (int i = 2; i <= N; ++i) {
+  for (int i = 1; i < N; ++i) {
     int p;
-    cin >> p;
-    adj[i].push_back(p);
-    adj[p].push_back(i);
+    cin >> p, --p;
+    lca.add_edge(i, p);
   }
 
   for (int i = 0; i < Q; ++i) {
     int u, v;
-    cin >> u >> v;
-    query[u].push_back({v, i});
-    query[v].push_back({u, i});
+    cin >> u >> v, --u, --v;
+    lca.add_query(u, v, i);
   }
 
-  dfs(dfs, 1);
-
-  for (int i = 0; i < Q; ++i) {
-    cout << LCA[i] << "\n";
-  }
+  lca.solve();
 
   return 0;
 }
@@ -355,15 +382,15 @@ int main() {
 
 ### Heavy Path Decomposition
 
-此小節主要關注於如何利用樹重鏈剖分的概念來查詢點對的最近共同祖先，如果讀者對於樹重鏈的定義以及其相關操作（跳輕邊）還不太清楚的話，建議可以先去觀看相關章節。
+此小節主要關注於如何利用樹鏈剖分的概念來查詢點對的最近共同祖先，如果讀者對於樹重鏈的定義以及其相關操作（跳輕邊）還不太清楚的話，建議可以先去觀看相關章節。
 
 這邊我們簡單 recap 一下何謂重鏈，對於一點 \\( u \\) 的子節點 \\( v \\)，如果以點 \\( v \\) 為根的子樹是所有點 \\( u \\) 子樹中 size 最大的，我們稱點 \\( v \\) 為重小孩，點 \\( u \\) 和點 \\( v \\) 相連的邊稱作重邊，由重邊相連所形成的路徑則稱作重鏈，示意圖如下（紅色路徑為重鏈）：
 
-<img src="image/LCA/heavy_path_decomposition_1.png" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/lca/heavy_path_decomposition_1.png" width="700" style="display:block; margin: 0 auto;"/>
 
 根據定義或是觀察上圖，我們可以知道處於同一重鏈上的任意兩點會具有祖孫關係。藉此特性，我們可以用來查詢任意點對的最近共同祖先。怎麼得出這個結論的呢？以下我們分成兩種 Case 來討論：
 
-<img src="image/LCA/heavy_path_decomposition_2.png" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/lca/heavy_path_decomposition_2.png" width="700" style="display:block; margin: 0 auto;"/>
 
 對於 Case 1，點 \\( u \\) 和點 \\( v \\) 位於同一重鏈上，兩點具有祖孫關係。因此我們可以知道點 \\( u \\) 為點對 \\( (u,\ v) \\) 的最近共同祖先。
 
@@ -374,7 +401,7 @@ int main() {
 
 沒有頭緒的讀者可以看以下示意圖：
 
-<img src="image/LCA/heavy_path_decomposition_3.png" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/lca/heavy_path_decomposition_3.png" width="700" style="display:block; margin: 0 auto;"/>
 
 結合上述資訊可知，點 \\( i \\) 為點 \\( u \\) 和點 \\( v \\) 的共同祖先且點 \\( u \\) 和點 \\( v \\) 會在點 \\( i \\) 的不同子樹內，否則點 \\( u \\) 和點 \\( v \\) 在跳上來當前重鏈之前就會在同一重鏈上。因此對於 Case 2，可知點 \\( i \\) 會是點對 \\( (u,\ v) \\) 的最近共同祖先。
 
@@ -403,40 +430,46 @@ int main() {
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-  ios::sync_with_stdio(0);
-  cin.tie(0);
-
-  int N, Q;
-  cin >> N >> Q;
-
-  vector<int> depth(N + 1, 0), heavyChild(N + 1), size(N + 1), top(N + 1),
-      parent(N + 1);
-  vector<vector<int>> adj(N + 1);
-
-  auto findHeavyChild = [&](auto self, int u, int p) -> void {
-    size[u] = 1;
-    heavyChild[u] = -1;
+struct LCA {
+  vector<int> depth, heavyChild, size, top, parent;
+  vector<vector<int>> adj;
+  LCA(int N) {
+    depth.resize(N, 0);
+    heavyChild.resize(N, -1);
+    size.resize(N, 1);
+    top.resize(N);
+    parent.resize(N, -1);
+    adj.resize(N);
+  }
+  void add_edge(int u, int v) {
+    adj[u].emplace_back(v);
+    adj[v].emplace_back(u);
+  }
+  void findHeavyChild(int u = 0, int p = -1) {
     parent[u] = p;
-    for (int v : adj[u])
-      if (v != p) {
-        depth[v] = depth[u] + 1;
-        self(self, v, u);
-        size[u] += size[v];
-        if (heavyChild[u] == -1 || size[v] > size[heavyChild[u]])
-          heavyChild[u] = v;
-      }
-  };
-
-  auto build_link = [&](auto self, int u, int p, int link_top) -> void {
+    for (int v : adj[u]) {
+      if (v == p) continue;
+      depth[v] = depth[u] + 1;
+      findHeavyChild(v, u);
+      size[u] += size[v];
+      if (heavyChild[u] == -1 || size[heavyChild[u]] < size[v])
+        heavyChild[u] = v;
+    }
+  }
+  void build_link(int u = 0, int p = -1, int link_top = 0) {
     top[u] = link_top;
     if (heavyChild[u] == -1) return;
-    self(self, heavyChild[u], u, link_top);
-    for (int v : adj[u])
-      if (v != p && v != heavyChild[u]) self(self, v, u, v);
-  };
-
-  auto LCA = [&](int u, int v) -> int {
+    build_link(heavyChild[u], u, link_top);
+    for (int v : adj[u]) {
+      if (v == p || v == heavyChild[u]) continue;
+      build_link(v, u, v);
+    }
+  }
+  void build() {
+    findHeavyChild();
+    build_link();
+  }
+  int qry(int u, int v) {
     int tu = top[u], tv = top[v];
     while (tu != tv) {
       if (depth[tu] > depth[tv]) {
@@ -448,22 +481,30 @@ int main() {
       }
     }
     return depth[u] < depth[v] ? u : v;
-  };
+  }
+};
 
-  for (int i = 2; i <= N; ++i) {
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+
+  int N, Q;
+  cin >> N >> Q;
+
+  LCA lca(N);
+
+  for (int i = 1; i < N; ++i) {
     int p;
-    cin >> p;
-    adj[i].push_back(p);
-    adj[p].push_back(i);
+    cin >> p, --p;
+    lca.add_edge(i, p);
   }
 
-  findHeavyChild(findHeavyChild, 1, -1);
-  build_link(build_link, 1, -1, 1);
+  lca.build();
 
   for (int i = 0; i < Q; ++i) {
     int u, v;
-    cin >> u >> v;
-    cout << LCA(u, v) << "\n";
+    cin >> u >> v, --u, --v;
+    cout << lca.qry(u, v) + 1 << "\n";
   }
 
   return 0;
@@ -493,27 +534,27 @@ Eulerian path，中文譯作尤拉路徑或是歐拉路徑。在圖論中，我�
 
 我們可以利用 DFS 走訪來建立歐拉路徑，通常會用一陣列來儲存。在 DFS 的走訪過程中，每經過一個點我們就把該點加入到歐拉路徑，包含返回時所經過的點，不是很清楚的讀者可以看以下示意圖：
 
-<img src="image/LCA/RMQ_1.png" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/lca/RMQ_1.png" width="700" style="display:block; margin: 0 auto;"/>
 
 觀察歐拉路徑我們可以發現，假設我們想知道點對 \\( (u,\ v) \\) 的最近共同祖先是誰，我們只需要沿著歐拉路徑從點 \\( u \\) 到點 \\( v \\) 找路徑上深度最淺的點就會是點對 \\( (u,\ v) \\) 的 LCA，其中點 \\( u \\) 和點 \\( v \\) 在歐拉路徑上可能會出現很多次，我們取第一次出現即可。比如說如下圖所示，點對 \\( (1,\ 8) \\) 的最近共同祖先就會是沿著歐拉路徑從第一次出現的點 \\( 1 \\) 到第一次出現的點 \\( 8 \\)，路徑上所經過深度最淺的點，也就是點 \\( 6 \\)。
 
-<img src="image/LCA/RMQ_2.png" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/lca/RMQ_2.png" width="700" style="display:block; margin: 0 auto;"/>
 
 怎麼得出這個結論的呢？我們可以發現在歐拉路徑上從點 \\( u \\) 到點 \\( v \\) 的任意一條路徑，必定會包含點 \\( u \\) 到點 \\( v \\) 的最短路徑。根據稍早提及的最近共同祖先的特性，我們可以知道 \\( LCA(u,\ v) \\) 會位於最短路徑上且為該路徑上深度最淺的點。而除了經過最短路徑之外，我們可能會多經過有在最短路徑上的點的子樹，但由於多經過的這些點深度都比 \\( LCA(u,\ v) \\) 深。因此針對從點 \\( u \\) 到點 \\( v \\) 的任意一條路徑，\\( LCA(u,\ v) \\) 都會是路徑上深度最淺的點，所以在查詢時我們可以選擇任意一條路徑。但為了方便起見，我們可以在不影響結果的情況下針對所有查詢都選擇從第一次出現的點 \\( u \\) 到第一次出現點 \\( v \\) 的路徑。
 
 因此，透過歐拉路徑我們可以將 LCA 問題轉化成找區間最小值的問題。一般來說，我們會另開一陣列來記錄每個點在歐拉路徑上第一次出現時所對應的 index，方便我們在 \\( O(1) \\) 時間內找到對應的區間。
 
-<img src="image/LCA/RMQ_3.png" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/lca/RMQ_3.png" width="700" style="display:block; margin: 0 auto;"/>
 
-有了上述預處理好的陣列後，剩下的工作就會是處理 RMQ 問題。對於 RMQ 問題，有許多經典的解法像是線段樹、序列分塊或是 Sparse Table，這邊我們不會細講這些經典解法的概念和實作細節，有興趣的讀者可以去觀看相關的章節。而此小節我們主要關注於如何利用高度分塊來達到 \\( O(N) \\) 預處理、每次查詢 \\( O(1) \\) 的做法。
+有了上述預處理好的陣列後，剩下的工作就會是處理 RMQ 問題。對於 RMQ 問題，有許多經典的解法像是線段樹、序列分塊或是 Sparse Table，這邊我們不會細講這些經典解法的概念和實作細節，有興趣的讀者可以去觀看相關的章節。而此小節我們主要關注於如何利用對歐拉路徑的陣列分塊來達到 \\( O(N) \\) 預處理、每次查詢 \\( O(1) \\) 的做法。
 
 #### O(n) -- O(1) LCA
 
-觀察 Depth 陣列我們可以發現，陣列中相鄰的值會剛好差 1。原因是因為在建立歐拉路徑時，我們每次只會往上或是往下走一步，所以在歐拉路徑陣列中相鄰的點，點深度會剛好差 1。基於此特性，我們可以用來優化區間最小值的查詢。
+觀察歐拉路徑陣列每個元素的深度我們可以發現，陣列中相鄰的值會剛好差 1。原因是因為在建立歐拉路徑時，我們每次只會往上或是往下走一步，所以在歐拉路徑陣列中相鄰的點，點深度會剛好差 1。基於此特性，我們可以用來優化區間最小值的查詢。
 
 高度分塊的 RMQ 同樣是基於序列分塊的概念，先將 Depth 陣列分成 \\( \frac{N}{K} \\) 個大小為 \\( K \\) 的塊，每一塊維護該塊最小值所對應到的 index，存放在另開的 Block 陣列中，如下圖所示（範例中 \\( K = 2 \\)）。
 
-<img src="image/LCA/RMQ_4.png" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/lca/RMQ_4.png" width="700" style="display:block; margin: 0 auto;"/>
 
 利用分塊查詢的概念，我們會需要進行塊內以及塊之間的最小值搜索。假設我們想知道 Depth 陣列上區間 \\( \left[l,\ r \right] \\) 的最小值，我們可以分成兩種 Case 來討論。如果 \\( l \\) 和 \\( r \\) 屬於同一塊 block，那麼我們只要在該塊裡面從 \\( l \\) 到 \\( r \\) 暴力搜索最小值就好。但如果 \\( l \\) 和 \\( r \\) 屬於不同塊，我們就需要知道區間 \\( \left[l,\ l^{\prime} \right] \\) 的最小值、區間 \\( \left[r^{\prime},\ r \right] \\) 的最小值、\\( l \\) 和 \\( r \\) 中間橫跨過的所有塊的最小值，三個再取最小值即為區間 \\( \left[l,\ r \right] \\) 的最小值。這邊 \\( l^{\prime} \\) 為 \\( l \\) 所屬塊的最後一個 index，\\( r^{\prime} \\) 則為 \\( r \\) 所屬塊的第一個 index。
 
@@ -580,7 +621,7 @@ $$
 - 用 adjacency list 來儲存樹的結構。
 - `euler_path[i]` 代表歐拉路徑上的第 \\( i \\) 個點。
 - `depth[i]` 代表歐拉路徑上第 \\( i \\) 個點對應的點深度。
-- `first_occurrence[i]` 代表點 \\( i \\) 在Eulerian path上第一次出現時所對應的 index。
+- `first_vis[i]` 代表點 \\( i \\) 在 Eulerian path 上第一次出現時所對應的 index。
 - `block[i]` 記錄了第 \\( i \\) 個塊內最小值所對應的 index。
 - `mask[i]` 代表第 \\( i \\) 個塊的 bitmask。
 - `st[i][j]` 記錄了 block 陣列上區間 \\( \left[i,\ i+2^j-1 \right] \\) 中間所有塊的最小值所對應的 index。
@@ -591,102 +632,95 @@ $$
 #include <bits/stdc++.h>
 using namespace std;
 
-int main() {
-  ios::sync_with_stdio(0);
-  cin.tie(0);
-
-  int N, Q;
-  cin >> N >> Q;
-
-  vector<vector<int>> adj(N + 1);
-  vector<int> euler_tour, depth, first_occurrence(N + 1);
-
-  for (int i = 2; i <= N; ++i) {
-    int p;
-    cin >> p;
-    adj[i].push_back(p);
-    adj[p].push_back(i);
+struct LCA {
+  int M, block_size, block_cnt, table_size, ways;
+  vector<vector<vector<int>>> in_block_RMQ;
+  vector<vector<int>> adj, st;
+  vector<int> euler_path, depth, first_vis, log, block, mask;
+  LCA(int N) {
+    first_vis.resize(N);
+    adj.resize(N);
   }
-
-  auto dfs = [&](auto self, int u, int p, int d) -> void {
-    first_occurrence[u] = euler_tour.size();
-    euler_tour.push_back(u);
-    depth.push_back(d);
-
+  void add_edge(int u, int v) {
+    adj[u].emplace_back(v);
+    adj[v].emplace_back(u);
+  }
+  void dfs(int u = 0, int p = -1, int d = 0) {
+    first_vis[u] = euler_path.size();
+    euler_path.emplace_back(u);
+    depth.emplace_back(d);
     for (int v : adj[u])
       if (v != p) {
-        self(self, v, u, d + 1);
-        euler_tour.push_back(u);
-        depth.push_back(d);
+        dfs(v, u, d + 1);
+        euler_path.emplace_back(u);
+        depth.emplace_back(d);
       }
-  };
-
-  dfs(dfs, 1, -1, 0);
-
-  // precompute the log values
-  int M = euler_tour.size();
-  vector<int> log(M + 1);
-  log[1] = 0;
-  for (int i = 2; i <= M; ++i) log[i] = log[i / 2] + 1;
-
-  // build block and mask array.
-  const int block_size = max(1, log[M] / 2),
-            block_cnt = (M + block_size - 1) / block_size;
-
-  vector<int> block(block_cnt), mask(block_cnt, 0);
-
-  for (int i = 0, j = 0, b = 0; i < M; ++i, ++j) {
-    if (j == block_size) j = 0, ++b;
-    if (j == 0 || depth[i] < depth[block[b]]) block[b] = i;
-    if (j > 0 && (i >= M || depth[i] > depth[i - 1])) mask[b] += 1 << (j - 1);
   }
-
-  // build sparse table for block array.
-  const int table_size = log[block_cnt] + 1;
-  vector<vector<int>> st(block_cnt, vector<int>(table_size));
-
-  for (int i = 0; i < block_cnt; ++i) st[i][0] = block[i];
-  for (int j = 1; j < table_size; ++j) {
+  void precompute_log() {
+    M = euler_path.size();
+    log.resize(M + 1, 0);
+    for (int i = 2; i <= M; ++i) log[i] = log[i / 2] + 1;
+  }
+  void build_block() {
+    block_size = max(1, log[M] / 2);
+    block_cnt = (M + block_size - 1) / block_size;
+    block.resize(block_cnt);
+    mask.resize(block_cnt, 0);
+    for (int i = 0, j = 0, b = 0; i < M; ++i, ++j) {
+      if (j == block_size) j = 0, ++b;
+      if (j == 0 || depth[i] < depth[block[b]]) block[b] = i;
+      if (j > 0 && (i >= M || depth[i] > depth[i - 1])) mask[b] += 1 << (j - 1);
+    }
+  }
+  void build_sparse_table() {
+    table_size = log[block_cnt] + 1;
+    st.resize(block_cnt, vector<int>(table_size));
+    for (int i = 0; i < block_cnt; ++i) st[i][0] = block[i];
+    for (int j = 1; j < table_size; ++j) {
+      for (int i = 0; i < block_cnt; ++i) {
+        int ni = i + (1 << (j - 1));
+        if (ni >= block_cnt)
+          st[i][j] = st[i][j - 1];
+        else
+          st[i][j] = depth[st[i][j - 1]] < depth[st[ni][j - 1]] ? st[i][j - 1]
+                                                                : st[ni][j - 1];
+      }
+    }
+  }
+  void precompute_in_block_RMQ() {
+    ways = 1 << (block_size - 1);
+    in_block_RMQ.resize(ways);
     for (int i = 0; i < block_cnt; ++i) {
-      int ni = i + (1 << (j - 1));
-      if (ni >= block_cnt)
-        st[i][j] = st[i][j - 1];
-      else
-        st[i][j] = (depth[st[i][j - 1]] < depth[st[ni][j - 1]] ? st[i][j - 1]
-                                                               : st[ni][j - 1]);
-    }
-  }
-
-  // precompute in-block RMQ for each block
-  const int ways = 1 << (block_size - 1);
-  vector<vector<vector<int>>> in_block_RMQ(ways);
-
-  for (int i = 0; i < block_cnt; ++i) {
-    if (!in_block_RMQ[mask[i]].empty()) continue;
-
-    in_block_RMQ[mask[i]].resize(block_size, vector<int>(block_size));
-
-    for (int j = 0; j < block_size; ++j) {
-      in_block_RMQ[mask[i]][j][j] = j;
-      for (int k = j + 1; k < block_size; ++k) {
-        in_block_RMQ[mask[i]][j][k] = in_block_RMQ[mask[i]][j][k - 1];
-        int idx = i * block_size + k;
-        if (idx < M &&
-            depth[idx] < depth[i * block_size + in_block_RMQ[mask[i]][j][k]])
-          in_block_RMQ[mask[i]][j][k] = k;
+      if (!in_block_RMQ[mask[i]].empty()) continue;
+      in_block_RMQ[mask[i]].resize(block_size, vector<int>(block_size));
+      for (int j = 0; j < block_size; ++j) {
+        in_block_RMQ[mask[i]][j][j] = j;
+        for (int k = j + 1; k < block_size; ++k) {
+          in_block_RMQ[mask[i]][j][k] = in_block_RMQ[mask[i]][j][k - 1];
+          int idx = i * block_size + k;
+          if (idx < M &&
+              depth[idx] < depth[i * block_size + in_block_RMQ[mask[i]][j][k]])
+            in_block_RMQ[mask[i]][j][k] = k;
+        }
       }
     }
   }
-
-  auto LCA = [&](int u, int v) -> int {
-    u = first_occurrence[u], v = first_occurrence[v];
+  void build() {
+    dfs();
+    precompute_log();
+    build_block();
+    build_sparse_table();
+    precompute_in_block_RMQ();
+  }
+  int qry(int u, int v) {
+    u = first_vis[u], v = first_vis[v];
     if (u > v) swap(u, v);
 
     int u_block = u / block_size, v_block = v / block_size,
         u_offset = u % block_size, v_offset = v % block_size;
 
     if (u_block == v_block)
-      return euler_tour[u_block * block_size +
+      return euler_path[u_block * block_size +
                         in_block_RMQ[mask[u_block]][u_offset][v_offset]];
 
     int mn1 = u_block * block_size +
@@ -701,15 +735,33 @@ int main() {
       lca = depth[lca] < depth[mn] ? lca : mn;
     }
 
-    return euler_tour[lca];
-  };
+    return euler_path[lca];
+  }
+};
 
-  // answer queries
+int main() {
+  ios::sync_with_stdio(0);
+  cin.tie(0);
+
+  int N, Q;
+  cin >> N >> Q;
+
+  LCA lca(N);
+
+  for (int i = 1; i < N; ++i) {
+    int p;
+    cin >> p, --p;
+    lca.add_edge(i, p);
+  }
+
+  lca.build();
+
   for (int i = 0; i < Q; ++i) {
     int u, v;
-    cin >> u >> v;
-    cout << LCA(u, v) << "\n";
+    cin >> u >> v, --u, --v;
+    cout << lca.qry(u, v) + 1 << "\n";
   }
+
   return 0;
 }
 
@@ -792,6 +844,91 @@ $$maxWeight(u,\ i) = \begin{cases} w(u,\ parent(u)) & \text {if $i = 0$} \newlin
 #include <bits/stdc++.h>
 using namespace std;
 
+struct DSU {
+  vector<int> parent, size;
+  DSU() {}
+  DSU(int N) {
+    parent.resize(N);
+    size.resize(N, 1);
+    iota(parent.begin(), parent.end(), 0);
+  }
+  int find(int x) { return x == parent[x] ? x : parent[x] = find(parent[x]); }
+  bool joint(int u, int v) { return find(u) == find(v); }
+  void unite(int u, int v) {
+    u = find(u), v = find(v);
+    if (size[u] > size[v]) swap(u, v);
+    parent[u] = v;
+    size[v] += size[u];
+  }
+};
+
+struct LCA {
+  int time, logN;
+  vector<int> tin, tout, depth;
+  vector<vector<pair<int, int>>> adj;
+  vector<vector<int>> ancestor, mx;
+  LCA(int N) {
+    logN = __lg(N);
+    ancestor.resize(N, vector<int>(logN + 1, -1));
+    mx.resize(N, vector<int>(logN + 1, 0));
+    tin.resize(N);
+    tout.resize(N);
+    depth.resize(N, 0);
+    adj.resize(N);
+    time = 0;
+  }
+  void add_edge(int u, int v, int w) {
+    adj[u].emplace_back(make_pair(w, v));
+    adj[v].emplace_back(make_pair(w, u));
+  }
+  void dfs(int u = 0, int p = -1) {
+    tin[u] = ++time;
+    ancestor[u][0] = p;
+    for (int i = 1; i <= logN; ++i) {
+      ancestor[u][i] =
+          ~ancestor[u][i - 1] ? ancestor[ancestor[u][i - 1]][i - 1] : -1;
+      mx[u][i] = ~ancestor[u][i - 1]
+                     ? max(mx[u][i - 1], mx[ancestor[u][i - 1]][i - 1])
+                     : mx[u][i - 1];
+    }
+    for (auto& pr : adj[u]) {
+      int w = pr.first, v = pr.second;
+      if (v == p) continue;
+      depth[v] = depth[u] + 1;
+      mx[v][0] = w;
+      dfs(v, u);
+    }
+    tout[u] = ++time;
+  }
+  void build() { dfs(); }
+  bool is_ancestor(int u, int v) {
+    if (u == -1) return 1;
+    return tin[u] <= tin[v] && tout[v] <= tout[u];
+  }
+  int get_max(int u, int d) {
+    int res = 0;
+    for (int i = 0; i <= logN; ++i)
+      if (d & 1 << i) {
+        res = max(res, mx[u][i]);
+        u = ancestor[u][i];
+      }
+    return res;
+  }
+  int qry_lca(int u, int v) {
+    if (is_ancestor(u, v)) return u;
+    if (is_ancestor(v, u)) return v;
+    for (int i = logN; ~i; --i)
+      if (!is_ancestor(ancestor[u][i], v)) u = ancestor[u][i];
+    return ancestor[u][0];
+  }
+  int qry_max(int u, int v) {
+    int LCA = qry_lca(u, v);
+    int mx1 = get_max(u, depth[u] - depth[LCA]);
+    int mx2 = get_max(v, depth[v] - depth[LCA]);
+    return max(mx1, mx2);
+  }
+};
+
 int main() {
   ios::sync_with_stdio(0);
   cin.tie(0);
@@ -812,100 +949,29 @@ int main() {
   sort(edges.begin(), edges.end());
   set<array<int, 2>> spanning_tree;
   long long ans = 0;
-  vector<vector<array<int, 2>>> adj(n);
-  vector<int> p(n), size(n, 1);
+  DSU dsu(n);
+  LCA lca(n);
 
-  for (int i = 0; i < n; ++i) p[i] = i;
-
-  auto find = [&](auto self, int x) -> int {
-    return x == p[x] ? x : p[x] = self(self, p[x]);
-  };
-
-  auto joint = [&](int a, int b) { return find(find, a) == find(find, b); };
-
-  auto unite = [&](int a, int b) {
-    a = find(find, a), b = find(find, b);
-    if (size[a] > size[b]) swap(a, b);
-    p[a] = b;
-    size[b] += size[a];
-  };
-
-  for (array<int, 3>& e : edges) {
+  for (auto& e : edges) {
     int w = e[0], u = e[1], v = e[2];
-    if (joint(u, v)) continue;
-    unite(u, v);
+    if (dsu.joint(u, v)) continue;
+    dsu.unite(u, v);
     ans += w;
     spanning_tree.insert({u, v});
-    adj[u].push_back({w, v});
-    adj[v].push_back({w, u});
+    lca.add_edge(u, v, w);
   }
 
-  int time = 0;
-  vector<vector<int>> anc(n, vector<int>(19)), mx(n, vector<int>(19));
-  vector<int> d(n, 0), tin(n), tout(n);
+  lca.build();
 
-  auto dfs = [&](auto self, int u, int p) -> void {
-    anc[u][0] = p;
-    tin[u] = ++time;
-    for (int i = 1; i < 19; ++i) {
-      anc[u][i] = ~anc[u][i - 1] ? anc[anc[u][i - 1]][i - 1] : -1;
-      mx[u][i] = ~anc[u][i - 1] ? max(mx[u][i - 1], mx[anc[u][i - 1]][i - 1])
-                                : mx[u][i - 1];
-    }
-
-    for (array<int, 2>& v : adj[u]) {
-      if (v[1] ^ p) {
-        d[v[1]] = d[u] + 1;
-        mx[v[1]][0] = v[0];
-        self(self, v[1], u);
-      }
-    }
-
-    tout[u] = ++time;
-  };
-
-  dfs(dfs, 0, -1);
-
-  auto is_ancestor = [&](int u, int v) -> bool {
-    if (u == -1) return 1;
-    return tin[u] <= tin[v] && tout[v] <= tout[u];
-  };
-
-  auto lca = [&](int u, int v) {
-    if (is_ancestor(u, v)) return u;
-    if (is_ancestor(v, u)) return v;
-
-    for (int i = 18; ~i; --i)
-      if (!is_ancestor(anc[u][i], v)) u = anc[u][i];
-
-    return anc[u][0];
-  };
-
-  auto get_max = [&](int u, int d) {
-    int res = 0;
-    for (int i = 0; i < 19; ++i)
-      if (d & 1 << i) {
-        res = max(res, mx[u][i]);
-        u = anc[u][i];
-      }
-    return res;
-  };
-
-  auto qry = [&](int u, int v) {
-    int LCA = lca(u, v);
-    int mx1 = get_max(u, d[u] - d[LCA]);
-    int mx2 = get_max(v, d[v] - d[LCA]);
-    return max(mx1, mx2);
-  };
-
-  for (array<int, 3>& q : queries) {
+  for (auto& q : queries) {
     int w = q[0], u = q[1], v = q[2];
     if (spanning_tree.find({u, v}) != spanning_tree.end()) {
       cout << ans << "\n";
       continue;
     }
-    cout << ans - qry(u, v) + w << "\n";
+    cout << ans - lca.qry_max(u, v) + w << "\n";
   }
+
   return 0;
 }
 
@@ -939,4 +1005,5 @@ int main() {
 - [Range Minimum Query and Lowest Common Ancestor](https://www.topcoder.com/thrive/articles/Range%20Minimum%20Query%20and%20Lowest%20Common%20Ancestor)
 - [LCA problems](https://codeforces.com/blog/entry/43917)
 - [圖論進階](https://tioj.ck.tp.edu.tw/uploads/attachment/5/33/8.pdf)
-- [Second-best minimum spanning tree - CLRS Solutions](https://walkccc.me/CLRS/Chap23/Problems/23-1/)
+
+[^note-1]: [Second-best minimum spanning tree - CLRS Solutions](https://walkccc.me/CLRS/Chap23/Problems/23-1/)
