@@ -261,7 +261,7 @@ Tarjan 提出的想法是利用 Disjoint Set 來動態地合併子樹，並且�
 
 <img src="image/lca/tarjan_1.png" width="700" style="display:block; margin: 0 auto;"/>
 
-對於 Case 1，點 \\( u \\) 和點 \\( v \\) 不具祖孫關係，根據我們稍早提及的最近共同祖先的特性，可知點 \\( u \\) 和點 \\( v \\) 會分別位於 \\( LCA(u,\ v) \\) 的兩個不同子樹內。在 DFS 的走訪過程中，必定會先搜索 \\( LCA(u,\ v) \\)，接著依序搜索點 \\( u \\) 、返回 \\( LCA(u,\ v) \\)、搜索點 \\( v \\)（這邊不失一般性地假設會先搜索點 \\( u \\)）。因此當點 \\( v \\) 遞迴搜索完其所有子樹節點時，點 \\( u \\) 會是搜索過的狀態。此時點 \\( u \\) 和 \\( LCA(u,\ v) \\) 會處於同一並查集且集合的最高點為 \\( LCA(u,\ v) \\)。
+對於 Case 1，點 \\( u \\) 和點 \\( v \\) 不具祖孫關係，根據我們稍早提及的最近共同祖先的特性，可知點 \\( u \\) 和點 \\( v \\) 會分別位於 \\( LCA(u,\ v) \\) 的兩個不同子樹內。在 DFS 的走訪過程中，必定會先搜索 \\( LCA(u,\ v) \\)，接著依序搜索點 \\( u \\)、返回 \\( LCA(u,\ v) \\)、搜索點 \\( v \\)（這邊不失一般性地假設會先搜索點 \\( u \\)）。因此當點 \\( v \\) 遞迴搜索完其所有子樹節點時，點 \\( u \\) 會是搜索過的狀態。此時點 \\( u \\) 和 \\( LCA(u,\ v) \\) 會處於同一並查集且集合的最高點為 \\( LCA(u,\ v) \\)。
 
 而對於 Case 2，點 \\( u \\) 和點 \\( v \\) 具有祖孫關係，點 \\( u \\) 為點對 \\( (u,\ v) \\) 的最近共同祖先。在 DFS 的走訪過程中，必定會先搜索點 \\( u \\)，接著依序搜索點 \\( v \\)、返回點 \\( u \\)。因此當點 \\( v \\) 遞迴搜索完其所有子樹節點時，點 \\( u \\) 會是搜索過的狀態。此時點 \\( u \\) 所處並查集的最高點正好為點 \\( u \\)，因為點 \\( u \\) 尚未搜索完其所有子樹節點，其所處的並查集尚未與其父節點所處的並查集合併，所以點 \\( u \\) 會是其所處並查集的最高點。
 
@@ -558,7 +558,7 @@ Eulerian path，中文譯作尤拉路徑或是歐拉路徑。在圖論中，我�
 
 利用分塊查詢的概念，我們會需要進行塊內以及塊之間的最小值搜索。假設我們想知道 Depth 陣列上區間 \\( \left[l,\ r \right] \\) 的最小值，我們可以分成兩種 Case 來討論。如果 \\( l \\) 和 \\( r \\) 屬於同一塊 block，那麼我們只要在該塊裡面從 \\( l \\) 到 \\( r \\) 暴力搜索最小值就好。但如果 \\( l \\) 和 \\( r \\) 屬於不同塊，我們就需要知道區間 \\( \left[l,\ l^{\prime} \right] \\) 的最小值、區間 \\( \left[r^{\prime},\ r \right] \\) 的最小值、\\( l \\) 和 \\( r \\) 中間橫跨過的所有塊的最小值，三個再取最小值即為區間 \\( \left[l,\ r \right] \\) 的最小值。這邊 \\( l^{\prime} \\) 為 \\( l \\) 所屬塊的最後一個 index，\\( r^{\prime} \\) 則為 \\( r \\) 所屬塊的第一個 index。
 
-對於搜索塊之間的最小值，相較於直接遍歷過 \\( l \\) 和 \\( r \\) 中間所有塊，我們可以在 \\(O\left(\frac{N}{K}\log\frac{N}{K}\right) \\) 的時間內先對 Block 陣列建 Sparse Table。基於 RMQ 的特性，之後的查詢可以在 \\( O(1) \\) 時間內辦到 。而對於在塊內搜索最小值，暴力做的話會需要 \\( O(K) \\) 的時間，有沒有更快的作法？
+對於搜索塊之間的最小值，相較於直接遍歷過 \\( l \\) 和 \\( r \\) 中間所有塊，我們可以在 \\(O\left(\frac{N}{K}\log\frac{N}{K}\right) \\) 的時間內先對 Block 陣列建 Sparse Table。基於 RMQ 的特性，之後的查詢可以在 \\( O(1) \\) 時間內辦到。而對於在塊內搜索最小值，暴力做的話會需要 \\( O(K) \\) 的時間，有沒有更快的作法？
 
 還記得在此小節一開始我們提及的歐拉路徑的特性嗎？藉由該特性，我們其實可以透過像是建立差分數組的方式來將每一塊 block 轉換成大小為 \\( K-1 \\) 的塊，使得新塊內元素只會有 \\( +1 \\) 和 \\( -1 \\) 兩種可能性。舉例來說，假設存在一塊 block A 其內容為 \\( \left[0,1,2,1,0\right] \\)，我們可以將其轉換成內容為 \\( \left[1,1,-1,-1\right] \\) 的新塊。而一般來說我們會將 \\( -1 \\) 轉成 \\( 0 \\)，用 bitmask 的方式來方便紀錄以及識別每一種新塊。
 
@@ -826,11 +826,11 @@ int main() {
 
 <details><summary> Solution </summary>
 
-根據題意，我們可以分成兩個 Case 來討論。對於 Case 1，如果給定的邊已經位於該圖的最小生成樹上，那麼我們就直接輸出最小生成樹的權重。而對於 Case 2，如果給定的邊不位於最小生成樹上，那麼我們就需要先將給定的邊加入到最小生成樹中，假設給定邊的兩端點為點 \\( u \\) 和點 \\( v \\)。加入的同時，給定邊會和點 \\( u \\) 到 點 \\( v \\) 的最短路徑組合起來形成環。而為了要取 minimal 且維持樹的結構，我們需要移除環上權重最大的邊，這條邊不會是給定的邊，否則給定的邊會符合 Case 1。因此針對 Case 2，我們需要找到點 \\( u \\) 到 點 \\( v \\) 最短路徑上權重最大的邊。
+根據題意，我們可以分成兩個 Case 來討論。對於 Case 1，如果給定的邊已經位於該圖的最小生成樹上，那麼我們就直接輸出最小生成樹的權重。而對於 Case 2，如果給定的邊不位於最小生成樹上，那麼我們就需要先將給定的邊加入到最小生成樹中，假設給定邊的兩端點為點 \\( u \\) 和點 \\( v \\)。加入的同時，給定邊會和點 \\( u \\) 到點 \\( v \\) 的最短路徑組合起來形成環。而為了要取 minimal 且維持樹的結構，我們需要移除環上權重最大的邊，這條邊不會是給定的邊，否則給定的邊會符合 Case 1。因此針對 Case 2，我們需要找到點 \\( u \\) 到點 \\( v \\) 最短路徑上權重最大的邊。
 
-關於為什麼這樣做會給我們 minimal 的結果，有興趣的讀者可以參考本文附上的參考資料。
+關於為什麼這樣做會給我們 minimal 的結果，有興趣的讀者可以參考本文附上的參考資料[^note-1]。
 
-而針對如何找到點 \\( u \\) 到 點 \\( v \\) 最短路徑上權重最大的邊，我們可以利用 \\( LCA(u,\ v) \\) 將最短路徑拆分成兩條路徑，所求即為兩條路徑上權重最大值的最大值。搭配上 binary lifting 的想法，在預處理點 \\( u \\) 的第 \\( 2^i \\) 個祖先是誰的同時，我們可以多預處理從點 \\( u \\) 到點 \\( u \\) 的第 \\( 2^i \\) 個祖先路徑上最大的權重，遞迴關係式如下：
+而針對如何找到點 \\( u \\) 到點 \\( v \\) 最短路徑上權重最大的邊，我們可以利用 \\( LCA(u,\ v) \\) 將最短路徑拆分成兩條路徑，所求即為兩條路徑上權重最大值的最大值。搭配上 binary lifting 的想法，在預處理點 \\( u \\) 的第 \\( 2^i \\) 個祖先是誰的同時，我們可以多預處理從點 \\( u \\) 到點 \\( u \\) 的第 \\( 2^i \\) 個祖先路徑上最大的權重，遞迴關係式如下：
 
 $$maxWeight(u,\ i) = \begin{cases} w(u,\ parent(u)) & \text {if $i = 0$} \newline maxWeight(maxWeight(u,\ i-1),\ i-1) & \text{if $i > 0$} \end{cases}$$
 
@@ -999,7 +999,7 @@ int main() {
 - [Lowest Common Ancestor - Binary Lifting](https://cp-algorithms.com/graph/lca_binary_lifting.html)
 - [Lowest Common Ancestor - Tarjan's off-line algorithm](https://cp-algorithms.com/graph/lca_tarjan.html)
 - [Lowest Common Ancestor - Farach-Colton and Bender Algorithm](https://cp-algorithms.com/graph/lca_farachcoltonbender.html)
-- [解决LCA问题的三种算法](https://blog.csdn.net/qq_43549984/article/details/100144030?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-2-100144030-blog-7836649.235%5Ev32%5Epc_relevant_increate_t0_download_v2&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-2-100144030-blog-7836649.235%5Ev32%5Epc_relevant_increate_t0_download_v2&utm_relevant_index=5)
+- [解决 LCA 问题的三种算法](https://blog.csdn.net/qq_43549984/article/details/100144030?spm=1001.2101.3001.6650.2&utm_medium=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-2-100144030-blog-7836649.235%5Ev32%5Epc_relevant_increate_t0_download_v2&depth_1-utm_source=distribute.pc_relevant.none-task-blog-2%7Edefault%7EBlogCommendFromBaidu%7ERate-2-100144030-blog-7836649.235%5Ev32%5Epc_relevant_increate_t0_download_v2&utm_relevant_index=5)
 - [最近公共祖先 - OI Wiki](https://oi-wiki.org/graph/lca/)
 - [Tree - 演算法筆記](https://web.ntnu.edu.tw/~algo/Tree2.html#1)
 - [Range Minimum Query and Lowest Common Ancestor](https://www.topcoder.com/thrive/articles/Range%20Minimum%20Query%20and%20Lowest%20Common%20Ancestor)
