@@ -20,6 +20,8 @@
   - [Square Root Decomposition](sqrt/sqrt_decomposition.md)
   - [Sqrt-Related Observation]()
   - [Mo's Algorithm]()
+- [Data Structure]()
+  - [Treap](data_structure/treap.md)
 - [Mathematics](math/intro.md)
   - [Generating Function](math/introduction_to_generating_function.md)
     - [Solving Recurrence](math/gf_recurrence.md)
