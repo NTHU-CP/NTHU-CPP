@@ -62,9 +62,9 @@
 
 標準的 Nim Game 模板題。將各堆的石頭數進行 \\( XOR \\) 運算，即可得到狀態。若得到的答案為 \\( 0 \\)，代表當前局勢是一個 losing state。反之則為 winning state。利用此狀態，我們可以判斷先手的玩家是否有一個必勝策略。
 
-<details><summary> Solution Code </summary>
+時間複雜度為: \\( O(N) \\)
 
-- Time complexity: \\( O(N) \\)
+<details><summary> Solution Code </summary>
 
 ```cpp
 
@@ -112,9 +112,9 @@ int main() {
 
 該如何驗證這個策略的正確性呢?這邊提供一個與 Nim Game 有關的想法。將偶數階階梯的球數視為 Nim Game 每堆的石頭數，且每回合的行動是可以任取一堆並增加該堆石頭數的。而對於一個偶數 \\( K\ (K \geq 2) \\)，若當時第 \\( K + 1 \\) 階有 \\( x \\) 顆球，則代表第 \\( K \\) 階的石頭堆在當時的回合最多可以新增 \\( x \\) 塊石頭。而因為能新增的石頭數量是**有限**的，因此可以採用同上個章節"Nim Game Extension"的策略。
 
-<details><summary> Solution Code </summary>
+時間複雜度為: \\( O(N) \\)
 
-- Time complexity: \\( O(N) \\)
+<details><summary> Solution Code </summary>
 
 ```cpp
 #include <bits/stdc++.h>
@@ -167,9 +167,9 @@ Nim Game 每回合的行動可以從數量為 \\( x(x>0) \\) 的石頭堆取出�
 
 接著我們用 \\( XOR \\) 將各堆的 Grundy Number 進行合併，得到的數字若為 \\( 0 \\)，代表當前狀態是一個 losing state，反之則為 winning state。
 
-<details><summary> Solution Code </summary>
+時間複雜度為: \\( O(N) \\)
 
-- Time complexity: \\( O(N) \\)
+<details><summary> Solution Code </summary>
 
 ```cpp
 #include <bits/stdc++.h>
@@ -233,9 +233,9 @@ int main() {
 
 另一種情況是父節點連接至若干棵子樹。根據 Colon Principle，我們可以用 Nim sum 將該結構合併成一條鍊。因此若 \\( u \\) 為 \\( v \\) 的父節點，那麼以 \\( v \\) 為根的子樹可以被替換成含有 \\( f_v + 1 \\) 個節點的鏈。再考慮 \\( u - v \\) 這條邊，得到的 SG value 為 \\( f_v + 1 \\)。由此，我們得到了 \\( v \\) 這個子節點的貢獻。那麼考慮所有的子節點 \\( v_i \\)，並根據 Colon Principle。以 \\( u \\) 為根的子樹可以被替換成含有 \\( ( (f_{v_1} + 1) \oplus (f_{v_2} + 1)……\oplus (f_{v_n} + 1) ) + 1 \\) 個點的鏈，因此以 \\( u \\)為根的子樹的 SG value 即為 \\( ( (f_{v_1} + 1) \oplus (f_{v_2} + 1)……\oplus (f_{v_n} + 1) ) \\)。有了以上的算式，在遞迴時由葉節點開始求 SG value，並合併至父節點，我們便可以求出以 \\( 1 \\) 號節點為根的樹的 SG value，由此判斷開局的狀態是不是 winning state，便能得知先手的玩家是否存在一個必勝策略了。
 
-<details><summary> Solution Code </summary>
+時間複雜度為: \\( O(N) \\)
 
-- Time complexity: \\( O(N) \\)
+<details><summary> Solution Code </summary>
 
 ```cpp
 
@@ -284,17 +284,15 @@ int main() {
 >
 > - \\( 1 \leq N, L_i, R_i \leq 100 \\)
 
-<details><summary>Solution</summary>
+<details><summary> Solution </summary>
 
 第一眼看到題目可能會覺得狀態不太容易定義。但再想想會發現若把遊戲狀態定義成目前可選擇的範圍是 \\( x \sim y \\)。那麼取完一個區間後，會得到另外兩個可以選的小區間，也就是兩個同類型的子遊戲。這與前面 Grundy Number 章節的概念頗為相似。考慮將狀態定義為 \\( dp\[x\]\[y\] \\)，代表當現在可選的範圍是 \\( x \sim y \\) 時，狀態的 Grundy Number 會是多少。那麼採用 top-down DP 的方式來填表，就能得到整個遊戲的 SG-value，也就能得到最後的答案。
 
 正確性的部分已經沒問題了，那麼時間複雜度呢 ? 狀態總共有 \\( max \lbrace R_i \rbrace ^2 \leq 10^4 \\) 個。每次轉移需要將 \\( N \\) 個可選的區間枚舉一遍，並利用 \\( MEX \\) 函數求出該狀態的 SG-value。總共需要 \\( O(N) \\) 的時間。\\( MEX \\) 函數也只要花 \\( O(N) \\) 是因為每個狀態最多只會轉移到 \\( N \\) 個不同的狀態，由此得知一個狀態的 SG-value 不會大於 \\( N \\)，求值時只要從 \\( 0 \\) 到 \\( N \\) 檢查哪個最小的非負整數不會被轉移到，即為該狀態的 SG-value。綜上所述，整個演算法只需要約 \\( 10^6 \\) 個運算即可完成，能夠在時限內跑完。
 
-</details>
+時間複雜度為: \\( O(max\lbrace R_i \rbrace ^2 \times N) \\)
 
 <details><summary> Solution Code </summary>
-
-- Time Complexity: \\( O(max\lbrace R_i \rbrace ^2 \times N) \\)
 
 ```cpp
 
@@ -348,23 +346,23 @@ int main() {
 
 </details>
 
+</details>
+
 > [Codeforces Beta Round 73 E - Interesting Game](https://codeforces.com/contest/88/problem/E)
 >
 > 有 \\( N \\) 顆石頭放在同一堆。A，B 兩人輪流採取行動。每回合可以選擇其中一堆並分成 \\( >= 2 \\) 堆。而且被分出來的那幾堆的個數必須是公差為 \\( 1 \\) 的等差數列。無法採取合法行動者落敗。問若從 A 開始，且雙方都採取最佳化策略，那麼誰將獲勝。
 >
 > - \\( N \leq 10^5 \\)
 
-<details><summary>Solution</summary>
+<details><summary> Solution </summary>
 
-將一堆石頭分成若干堆後，會分成若干個獨立且同類的遊戲。於是我們可以聯想到 Grundy Number。首先，我們必須知道狀態會如何轉移。\\( x \\) 塊石頭會被分成數量有 \\( y 塊, y + 1 塊, y + 2 塊……\\) 的石頭堆。因為總和還是 \\( x \\)，將這 \\( x \\) 塊分出來的堆數最多只會是 \\( O(sqrt(x)) \\) 的量級。因此可以枚舉會被分成幾堆，並 \\( O(1) \\) 求出 \\( y \\)。這樣狀態轉移只需要 \\( O(sqrt(N)) \\) 的時間。而總共有 \\( N \\) 個狀態，總時間複雜度為 \\( O(N \times sqrt(N)) \\)。
+將一堆石頭分成若干堆後，會分成若干個獨立且同類的遊戲。於是我們可以聯想到 Grundy Number。首先，我們必須知道狀態會如何轉移。\\( x \\) 塊石頭會被分成數量有 \\( y 塊, y + 1 塊, y + 2 塊……\\) 的石頭堆。因為總和還是 \\( x \\)，將這 \\( x \\) 塊分出來的堆數最多只會是 \\( O(sqrt(x)) \\) 的量級。因此可以枚舉會被分成幾堆，並 \\( O(1) \\) 求出 \\( y \\)。這樣狀態轉移只需要 \\( O(sqrt(N)) \\) 的時間。而總共有 \\( N \\) 個狀態，時間複雜度為 \\( O(N \times sqrt(N)) \\)。
 
 另外，我們必須求出轉移到的狀態的 SG value，也就是被分出來的那幾堆的 SG value 做 \\( XOR \\)運算。但慢慢做需要 \\( O(sqrt(N)) \\)，總複雜度變成 \\( O(N \times sqrt(N) \times sqrt(N)) = O(N ^ 2) \\)，會超時。因此我們需要一個更快的作法。觀察到被拆出來的石頭堆會形成公差為 \\( 1 \\) 的等差數列。因此我們可以構造出 Grundy Number 的前綴和，並 \\( O(1) \\) 計算出 \\( f_y \oplus f_{y+1} \oplus f_{y+2}……\\)。在花 \\( O(sqrt(N) \times 1) \\) 計算出能轉移到的狀態的 SG value 後，再花 \\( O(sqrt(N)) \\) 的時間求 \\( MEX \\) 函數的答案，就能求出現在這個狀態的 SG value 了。
 
-</details>
+時間複雜度為: \\( O(N \times sqrt(N)) \\)
 
 <details><summary> Solution Code </summary>
-
-- Time complexity: \\( O(N \times sqrt(N)) \\)
 
 ```cpp
 
@@ -407,6 +405,8 @@ int main() {
 
 </details>
 
+</details>
+
 > [Atcoder Beginner Contest 297 G - Constrained Nim 2](https://atcoder.jp/contests/abc297/tasks/abc297_g)
 >
 > 給 \\( N,L,R \\) 三個整數。玩家 \\( A, B \\) 玩 Nim Game ( \\( N \\) 堆石頭，每堆有 \\( 1 \sim 10^9 \\) 個)，但每回合只能從其中一堆取 \\( L \sim R \\) 個石頭。問若雙方都採取最佳化策略，誰將獲勝。
@@ -414,7 +414,7 @@ int main() {
 > - \\( N \leq 2 \times 10^5 \\)
 > - \\( 1 \leq L \leq R \leq 10^9 \\)
 
-<details><summary>Solution</summary>
+<details><summary> Solution </summary>
 
 打表找規律後可以發現每堆的 SG-value 為 \\( (x\ mod\ (L + R)) / L \\)，\\( x \\) 為該堆石頭個數。而根據上述的定理，可以由 \\( XOR \\) 進行合併，得到最後的 SG-value。
 
@@ -425,11 +425,9 @@ int main() {
 - \\( L + R \leq x < 2(L + R) \\)。而這個 case 可以分成 \\( L+R \leq x < L+R+L, \ \ \ L+R+L \leq x < L+R+2L……\\)。
 - 接著再討論 \\( x \geq 2(L+R) \\) 的 case。
 
-</details>
+時間複雜度為: \\( O(N) \\)
 
 <details><summary> Solution Code </summary>
-
-- Time complexity: \\( O(N) \\)
 
 ```cpp
 #include <bits/stdc++.h>
@@ -454,13 +452,15 @@ int main() {
 
 </details>
 
+</details>
+
 > [Codeforces Round 868 E - Removing Graph](https://codeforces.com/contest/1823/problem/E)
 >
 > 給一張由數個環(每個點的 degree 皆為 2)組成的圖。玩家 \\( A \\) , \\( B \\) 輪流行動。已知 \\( l, r \\) 的值，每回合可以移除 \\( l \sim r \\) 個連通的點(相鄰的邊一同移除)。若輪到某玩家且該玩家沒有合法的移除方式，則玩家落敗。問若雙方都採取最佳化策略，那麼誰將獲勝。
 >
 > - \\( 1 \leq l < r \leq 2 \times 10^5 \\)
 
-<details><summary>Solution</summary>
+<details><summary> Solution </summary>
 
 圖的每個環都是獨立的。若能求出一個環的 SG value，那麼整個遊戲的 SG value 就是所有環的 SG value \\( XOR \\) 出來的結果。
 
@@ -478,13 +478,11 @@ int main() {
 
 由以上的性質，我們只要求出每個環的節點數，並把他們的 \\( SG \ value \\) 合併，就能得出答案。
 
+時間複雜度為: \\( O(N) \\)
+
 證明的部分就請有興趣的讀者自行練習。
 
-</details>
-
 <details><summary> Solution Code </summary>
-
-- Time complexity: \\( O(N) \\)
 
 ```cpp
 #include <bits/stdc++.h>
@@ -526,6 +524,8 @@ int main() {
 }
     
 ```
+
+</details>
 
 </details>
 
