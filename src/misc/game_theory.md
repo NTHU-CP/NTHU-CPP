@@ -6,46 +6,42 @@
 
 為了更好理解，我們直接看一個例題。
 
-> 考慮一個遊戲。有 \\( 100 \\) 顆石頭，兩人輪流取走石頭，每次可以取 \\( 1 \sim 7 \\) 顆，取走最後一顆石頭的獲勝。請問誰有必勝的策略。
+> 有 \\( 100 \\) 顆石頭，兩人輪流取走石頭，每次可以取 \\( 1 \sim 7 \\) 顆，沒有石頭可以拿的人輸。請問誰有必勝的策略。
 
 相信各位讀者可以很快地找出一個策略。那就是先手的玩家必勝，每次取石頭時將剩餘數量為持在 \\( 8 \\) 的倍數。雙方玩家取到最後，先手的玩家必定會取得最後一塊石頭。
 
-簡單地說明一下該策略的正確性。一個數字除以 \\( 8 \\) 的餘數最高為 \\( 7 \\)。因此必定存在一種取法，使得一個數量不能被 \\( 8 \\) 整除的石頭堆，在取完後剩餘數量變為 \\( 8 \\) 的倍數。那麼接下來只要說明為什麼輪到先手的玩家時，剩餘的數量一定不會是 \\( 8 \\) 的倍數，就能完成證明。
-
-一開始石頭數量為 \\( 100 \\)，不是 \\( 8 \\) 的倍數。接下來先手的玩家會取石頭，使其剩下的數字為 \\( 8 \\) 的倍數。輪到對手時，因為一次只能取 \\( 1 \sim 7 \\) 顆，不論如何選擇，取的數量都不會被 \\( 8 \\) 整除，因此對手取完後，剩下的數量一定不被 \\( 8 \\) 整除。而因為石頭是有限的，雙方在進行若干個回合後，先手的玩家取完後剩餘石頭為 \\( 0 \\)，而 \\( 0 \\) 也能被 \\( 8 \\) 整除，與上述的論述相符。
+簡單地說明一下該策略的正確性。一開始先手的玩家可以取 \\( 4 \\) 顆石頭，剩餘的數量為 \\( 96 \\)，是 \\( 8 \\) 的倍數。而後續的回合中，因為一個人只能取 \\( 1 \sim 7 \\) 顆，若後手的玩家取 \\( x \\) 顆，先手的玩家就取 \\( 8 - x \\) 顆。這樣就可以維持每輪減少 \\( 8 \\) 顆石頭，直到遊戲結束。
 
 ## Game States
 
 接下來會定義何謂 **winning state** 與 **losing state**。利用定義好的狀態，我們可以判斷一個玩家在面對某個局勢時會不會獲勝。
 
-若局勢為 winning state，代表當前的玩家可以採用一個最佳化的策略，使得對手不論採取甚麼行動，都無法阻止該玩家獲勝。反之，若玩家在某狀態，不論採取何種行動，都無法阻止對手以某個策略取勝的話，就稱為 losing state。換句話說，winning state 至少存在一種行動，使得遊戲局勢落入 losing state。而 losing state 不論採取什麼行動，都會使局勢落入 winning state。
+- winning state: 當前的玩家可以採用一個最佳化的策略，使得對手不論採取甚麼行動，都無法阻止該玩家獲勝。
+- losing state: 當前的玩家不論採取何種行動，都無法阻止對手以某個策略取勝。
+
+換句話說，winning state 至少存在一種行動，使得遊戲局勢落入 losing state。而 losing state 不論採取什麼行動，都會使局勢落入 winning state。
 
 對於 Introduction 章節中提到的取石頭問題，我們其實可以將每個局勢的 game state 定義出來，那麼有沒有必勝策略這件事也就顯而易見了。
 
 首先，當剩下的石頭數為 \\( 0 \\) 時，玩家將自動落敗，為一個 losing state。石頭數量為 \\( 1 \sim 7 \\) 時，為 winning state。因為玩家可以找到一個取法，使得行動結束後局勢變為 losing state。數量為 \\( 8 \\) 時，玩家不論在該回合取幾個石頭，都會轉移到 winning state，因此當下是一個 losing state。按照從小到大的順序填表，便能將所有局勢的狀態定義出來。於是我們發現當石頭數為 \\( 8 \\) 的倍數時，狀態為 losing state，反之則為 winning state。
 
-另外，在填表時要注意該狀態會轉移到的其他狀態都是已經定義過的，否則會發生錯誤。因此若不確定狀態轉移的順序或是較難判斷時，可以採用 Top-down DP 的方式填表，較為保險。
+另外，大多數的題目都保證遊戲在經過有限個回合內會結束。在這種情況下，遊戲的狀態轉移不會有環產生。如果按照正確的順序填表，就能判斷出所有狀態為 losing state 還是 winning state。
 
 ### Example
 
 > [CSES 1729 - Stick Game](https://cses.fi/problemset/task/1729)
 >
-> 考慮一個遊戲，規則為雙方輪流從一堆棍子中移除若干個棍子，若輪到某玩家且他沒有任何合法的方法可以移除棍子時，則對方獲勝。已知整數 \\( n \\)，長度為 \\( k \\) 的整數陣列 \\( p \\)。\\( p_i \\) 為玩家在每回合可以選擇移除的個數。試問對於所有的 \\( x\ (1 \leq x \leq n) \\)，在目前還有 \\( x \\) 個棍子的情況下，且雙方都採取最佳化策略，那麼目前的玩家會獲勝還是落敗。
+> 考慮一個遊戲，規則為雙方輪流從一堆棍子中移除若干個棍子，若輪到某玩家且他沒有任何合法的方法可以移除棍子時，則對方獲勝。已知整數 \\( n \\)，長度為 \\( k \\) 的整數陣列 \\( p \\)。p 陣列為玩家每回合能挑選移除的棍子個數。試問對於所有的 \\( x\ (1 \leq x \leq n) \\)，在目前還有 \\( x \\) 個棍子的情況下，且雙方都採取最佳化策略，那麼目前的玩家會獲勝還是落敗。
+>
+> - \\( 1 \leq n \leq 10^6 \\)
+> - \\( 1 \leq k \leq 100 \\)
+> - \\( p_i \leq n \\)
 
-- \\( 1 \leq n \leq 10^6 \\)
-- \\( 1 \leq k \leq 100 \\)
-- \\( p_i \leq n \\)
+這題與前面章節的取石頭題目類似。在判斷棍子個數為 \\( x \\) 的狀態時，會用到所有小於 \\( x \\) 的狀態。因此由棍子數量小到大來填表，就不會有問題產生。
 
-這題與前面章節的取石頭題目類似。若剩下 \\( 0 \\) 個棍子，玩家必定無法轉移到其他狀態，相當於落敗，為一個 losing state。
-
-剩餘的情況則可以把所有行動都試一遍，看能否轉移到 losing state。如果可以，代表現在的狀態是一個 winning state。反之則為 losing state。
-
-而在填表時可以發現，在狀態轉移時，剩餘的棍子數量一定會減少，同時代表狀態的數字也會減少。因此整張 state graph 可以視為一個有向無環圖，填表的過程不會有問題產生。
+時間複雜度為: \\( O(nk) \\)
 
 <details><summary> Solution Code </summary>
-
-- Time complexity: \\( O(nk) \\)
-- Bottom-up DP, fill in states from \\(0 \\) to \\( n \\).
 
 ```cpp
 #include <bits/stdc++.h>
@@ -54,7 +50,7 @@ using namespace std;
 void solve() {
     int n, k; cin >> n >> k;
     vector<int> moves;
-    vector<bool> state(n + 1); // 0 for losing state, 1 for winning state
+    vector<bool> state(n + 1);
     for (int i = 0; i < k; i++) {
         int x; cin >> x;
         moves.emplace_back(x);
@@ -64,7 +60,6 @@ void solve() {
         state[i] = 0;
         for (auto m: moves) {
             int new_state = i - m;
-            // able to transition to losing state means that current state is winning state
             if (new_state >= 0 && state[new_state] == 0) state[i] = 1;
         }
     }
@@ -91,52 +86,63 @@ int main() {
 > [Codeforces Global Round 22 C - Even Number Addicts](https://codeforces.com/contest/1738/problem/C)
 >
 > 給一個長度為 \\( n \\) 的整數陣列。玩家 A，B 輪流採取行動，由 A 開始。玩家每回合可以將一個數字從陣列中移除。當所有數字都被移除後遊戲結束。若 A 移除的數字和為偶數，那麼 A 獲勝。反之，B 獲勝。題目則問若雙方都採取最佳化策略，那麼誰會獲勝。
+>
+> - \\( 1 \leq n \leq 100 \\)
 
-- \\( 1 \leq n \leq 100 \\)
+可以發現陣列中數字大小並不重要，重要的是奇數偶數的數量各為多少。那麼我們可以用陣列中剩餘奇數個數，剩餘偶數個數，與目前 A 移除數字總和的奇偶性這三項資訊來代表一個 state。
 
-可以發現陣列中數字大小其實不重要，重要的是奇數偶數的數量各為多少。那麼我們可以用陣列中剩餘奇數個數，剩餘偶數個數，與目前 A 移除數字總和的奇偶性這三項資訊來代表一個 state。
+對於當前的局勢，假設陣列剩下 \\( i \\) 個奇數， \\( j \\) 個偶數，且 A 移除的數字總和除以 \\( 2 \\) 的餘數為 \\( k \\) 。
 
-填表的過程可以使用 Top-down DP 並將 base case 處理好，即可判斷狀態是誰的 winning state。
+let \\( f(i,\ j,\ k) = 0 \\) if state is A's winning state or B's losing state.
+
+let \\( f(i,\ j,\ k) = 1 \\) if state is B's winning state or A's losing state.
+
+在已知由 A 開始的情況，若 \\( n \\) 與 \\( i + j \\) 的奇偶相同，代表現在是 A 的回合，反之則為 B 的回合。因此我們分成兩種情況並列出遞迴關係式:
+
+\\( f(i,\ j,\ k) = \begin{cases} k & \text {$i = 0\ and\ j = 0$} \newline f(i,\ j,\ k) = 1\ and\ (i \geq 1\ and\ f(i - 1,\ j,\ 1 - p))\ and\ (j \geq 1\ and\ f(i,\ j - 1,\ p)) & \text{$ if\ A's\ round $} \newline f(i,\ j,\ k) = 0\ or\ (i \geq 1\ and\ f(i - 1,\ j,\ p))\ or\ (j \geq 1\ and\ f(i,\ j - 1,\ p)) & \text{$ if\ B's\ round $} \end{cases}\\)
+
+填表的過程可以使用 Top-down DP，即可判斷狀態是誰的 winning state。
+
+Time complexity: \\( O(N^2) \\)
+
+值得注意的是 A 與 B 的獲勝條件並不相同，我們必須將 A 與 B 的狀態分開討論。但在判斷狀態時的精神是相同的，若能轉移到對手的 losing state，就代表現在這個狀態為 winning state。此題還有其他方式來表達一個局勢，就請讀者自行練習。
 
 <details><summary> Solution Code </summary>
-
-- Time complexity: \\( O(N^2) \\)
 
 ```cpp
 #include <bits/stdc++.h> 
 using namespace std;
  
 int N, odd_count, even_count;
-int dp[110][110][2]; // 1 if it's Alice's winning state or Bob's losing state.
-                     // 0 if it's Bob's winning state or Alice's losing state.
+int dp[110][110][2]; // 0 if it's Alice's winning state or Bob's losing state.
+                     // 1 if it's Bob's winning state or Alice's losing state.
  
-int recur(int x, int y, int p) {
-    // x: odd count in the remaining array
-    // y: even count in the remaining array
-    // p: current parity of the sum of the numbers A removed
-    if (dp[x][y][p] != -1) return dp[x][y][p];
-    if (x == 0 && y == 0) {
+int recur(int i, int j, int k) {
+    // i: odd count in the remaining array
+    // j: even count in the remaining array
+    // k: current parity of the sum of the numbers A removed
+    if (dp[i][j][k] != -1) return dp[i][j][k];
+    if (i == 0 && j == 0) {
         // base case, all numbers are removed
-        if (p % 2 == 0) return dp[x][y][p] = 1;
-        else return dp[x][y][p] = 0;
+        return k; 
     }
     int ret;
     // determine whose turn it is 
-    if ((odd_count + even_count - x - y) % 2 == 0) {
+    if ((N - i - j) % 2 == 0) {
         // Alice's move
-        ret = 0; // first assume it's Alice losing state.
-        if (x > 0 && recur(x - 1, y, 1 - p)) ret = 1;
-        if (y > 0 && recur(x, y - 1, p)) ret = 1;
+        ret = 1; // first assume it's Alice losing state.
+        if (i > 0) ret &= recur(i - 1, j, 1 - k);
+        if (j > 0) ret &= recur(i, j - 1, k);
         // If this state can transition to Bob's losing state, then change it to Alice's winning state.
     }
     else {
         // Bob's move
-        ret = 1; // first assume it's Bob's losing state.
-        if (x > 0 && recur(x - 1, y, p) == 0) ret = 0;
-        if (y > 0 && recur(x, y - 1, p) == 0) ret = 0;
+        ret = 0; // first assume it's Bob's losing state.
+        if (i > 0) ret |= recur(i - 1, j, k);
+        if (j > 0) ret |= recur(i, j - 1, k);
         // If this state can transition to Alice's losing state, then change it to Bob's winning state.
     }
-    return dp[x][y][p] = ret; 
+    return dp[i][j][k] = ret; 
 }
  
 void solve(){ 
@@ -148,10 +154,10 @@ void solve(){
         if (abs(x) % 2 == 0) even_count++;
         else odd_count++;
     }
-    if (recur(odd_count, even_count, 0) == 1) cout << "Alice\n";
+    if (recur(odd_count, even_count, 0) == 0) cout << "Alice\n";
     else cout << "Bob\n";
 }       
- 
+
 int main(){
     ios_base::sync_with_stdio(false);
     cin.tie(NULL);
@@ -162,7 +168,7 @@ int main(){
     while (TestCases--) {
         solve();
     }
-}    
+}
     
 ```
 
@@ -171,10 +177,10 @@ int main(){
 > [Zerojudge b902 - 肉墊遊戲](https://zerojudge.tw/ShowProblem?problemid=b902)
 >
 > 有兩疊墊子，數量各為 \\( x \\) 塊與 \\( y \\) 塊。玩家 A，B 輪流進行行動。每回合可以選擇一疊非空的墊子，並移除 1 塊墊子，或是在這疊墊子的數量不少於另一疊的前提下，將這疊移除和另一疊數量一樣多的墊子(不能為 0)。玩到最後，取走最後一塊墊子的即為勝者。若雙方都採取最佳化策略，那麼誰將獲勝。
+>
+> - \\( x, y \leq 10^{18} \\)
 
-- \\( x, y \leq 10^{18} \\)
-
-題目的範圍達到 \\( 10^{18} \\)，一一判斷每種狀態是否為 winning state 顯然不是一種實際的做法。但我們可以先試一些數字較小的例子，看能不能從中獲得一些啟發。
+題目的範圍達到 \\( 10^{18} \\)，用 bottom up 的方式填表判斷每種狀態是否為 winning state 會太慢。但我們可以先試一些數字較小的例子，看能不能從中獲得一些啟發。
 
 不妨先討論其中一疊的數量為 \\( 0 \\) 或 \\( 1 \\) 的情況。因為第二種行動取出的墊子數為兩疊中較少的數量。由此得知之後的回合最多只能取一個墊子。那麼判斷兩疊總和的奇偶，即能判斷誰獲勝。對於當前的玩家，是否數量總和為偶數則會落敗，而總和為奇數則會獲勝呢 ? 其實不然。兩疊數量為 {2, 2} 即為一個反例，玩家可以採取第二種行動，從其中一疊取出 2 塊，將數量變為 {2, 0}，使得對手落入 losing state。但是若總合為奇數，兩疊的數量一定是一奇一偶，那麼我們可以選擇從偶數疊中取出一塊，使數量變為 {奇數，奇數}。而不論對手採取甚麼行動，都一定是取出奇數塊的數量，也就會使得場上變為一奇一偶。於是我們可以將數量一奇一偶定義為 winning state，兩疊皆為奇數定義成 losing state。
 
@@ -225,9 +231,9 @@ int main(){
 
 > [The 2021 Zhejiang University City College Freshman Programming Contest I - If I Catch You](https://codeforces.com/gym/103488/problem/I)
 >
-> 給一個 \\( n * n \\) 的正方形棋盤方格，A, B 兩名玩家在正方形邊界的 \\( 4n - 4\ \\) 個格子上輪流進行行動。一開始 A 在左下角，B 在右上角。每個回合可以分成三個依序進行的步驟。首先，B 在目前的格子上放置一個陷阱，且該陷阱會永遠留在方格上。陷阱對 B 不造成任何影響，但 A 在每回合結束後不能停留在任何一個陷阱上(可以經過)。接著 B 以順時針方向走 \\( 2 \sim 3 \\) 格，最後 A 以順時針移動 \\( 1 \sim 4 \\) 格。遊戲結束的條件有以下兩種，且在回合中間也可以被觸發。第一種是 A 順時針方向的 \\( 1 \sim 4 \\) 格都有陷阱，則 B 獲勝。第二種則是 A 與 B 某個時間在同一格上，則 A 獲勝。問在雙方都採取最佳策略的情況下，誰將獲勝 ? 若 B 能獲勝，輸出 \\( -1 \\)，若 A 能獲勝，輸出 A 最少需要幾回合才能獲勝，( 同時 B 也盡全力拖延的情況)。
-
-- \\( 1 \leq n \leq 10^5 \\)
+> 給一個 \\( n \times n \\) 的正方形棋盤方格，A, B 兩名玩家在正方形邊界的 \\( 4n - 4\ \\) 個格子上輪流進行行動。一開始 A 在左下角，B 在右上角。每個回合可以分成三個依序進行的步驟。首先，B 在目前的格子上放置一個陷阱，且該陷阱會永遠留在方格上。陷阱對 B 不造成任何影響，但 A 在每回合結束後不能停留在任何一個陷阱上(可以經過)。接著 B 以順時針方向走 \\( 2 \sim 3 \\) 格，最後 A 以順時針移動 \\( 1 \sim 4 \\) 格。遊戲結束的條件有以下兩種，且在回合中間也可以被觸發。第一種是 A 順時針方向的 \\( 1 \sim 4 \\) 格都有陷阱，則 B 獲勝。第二種則是 A 與 B 某個時間在同一格上，則 A 獲勝。問在雙方都採取最佳策略的情況下，誰將獲勝 ? 若 B 能獲勝，輸出 \\( -1 \\)，若 A 能獲勝，輸出 A 最少需要幾回合才能獲勝，( 同時 B 也盡全力拖延的情況)。
+>
+> - \\( 1 \leq n \leq 10^5 \\)
 
 可以注意到 A 獲勝的條件為**碰到** B，不一定要從後方趕上。那麼換個思路，若 A 每回合都以最少的步數前進，等待 B 自動追上他，是否也是個不錯的策略呢 ? 出乎意料地，這樣的策略是最佳的。以下會提出證明。
 
@@ -273,8 +279,8 @@ int main() {
 > [Codeforces Round 668 B - Tree Tag](https://codeforces.com/contest/1404/problem/B)
 >
 > 給一棵含有 \\( N \\) 個節點的樹，玩家 A，B 輪流採取行動。已知 A，B 的起始位置的編號以及他們每回合最多可以移動的步數。若由 A 先動，且 A 如果碰到 B (與 B 待在同個節點上) 就獲勝。問在 \\( 10^{100} \\) 回合以內 A 能不能獲勝。
-
-- 保證所有 testcase 的 \\( N \\) 總和不超過 \\( 10^5 \\)
+>
+> - 保證所有 testcase 的 \\( N \\) 總和不超過 \\( 10^5 \\)
 
 <details><summary>Solution</summary>
 
@@ -347,42 +353,43 @@ int main() {
 
 </details>
 
-> 給一塊大小為 \\( N * M \\) 的巧克力。A，B 輪流切巧克力。在切巧克力時只能選其中一塊並分成兩份，且分出來的巧克力長寬都要為整數。沒有可行的切法時則落敗。問從 A 開始，且雙方都採取最佳化策略，那麼誰將獲勝。
+> 給一塊大小為 \\( N \times M \\) 的巧克力。A，B 輪流切巧克力。在切巧克力時只能選其中一塊並分成兩份，且分出來的巧克力長寬都要為整數。沒有可行的切法時則落敗。問從 A 開始，且雙方都採取最佳化策略，那麼誰將獲勝。
 
 <details><summary>Solution</summary>
 
-考慮場上的連通塊數目。每次切巧克力時都會加一，直到變為 \\( N * M \\) 時遊戲結束。
+考慮場上的連通塊數目。每次切巧克力時都會加一，直到變為 \\( N \times M \\) 時遊戲結束。
 
 </details>
 
 > [Codeforces Beta Round 59 E - Sweets Game](https://codeforces.com/contest/63/problem/E)
 >
-> 將 \\( 19 \\) 塊巧克力放在一個正六邊形的盒子內。A，B 兩人輪流採取行動。每回合可以取若干個連在一起的巧克力並將其移除，且取出的巧克力必須要與正六邊形的其中一個邊平行。沒有巧克力可以移除的一方落敗。問若從 A 開始，且雙方都採取最佳化策略，那麼誰將獲勝。> <img src="image/CF_59E_problem.jpg" width="500" style="display:block; margin: 0 auto;"/>
+> 將 \\( 19 \\) 塊巧克力放在一個正六邊形的盒子內。A，B 兩人輪流採取行動。每回合可以取若干個連在一起的巧克力並將其移除，且取出的巧克力必須要與正六邊形的其中一個邊平行。沒有巧克力可以移除的一方落敗。問若從 A 開始，且雙方都採取最佳化策略，那麼誰將獲勝。
+<img src="image/CF_59E_problem.jpg" width="500" style="display:block; margin: 0 auto;"/>
 
 <details><summary>Solution</summary>
 
 可以注意到巧克力的數目只有 \\( 19 \\) 個。若將每一塊是否取過以 \\( 0 \\) 跟 \\( 1 \\) 來表示，總共只需要 \\( 2 ^ {19} \\) 個 state 就足夠了。因此我們可以從 \\( state\[0\] \\) 依序計算至 \\( state\[2 ^ {19} - 1\] \\)，便可以判斷每個狀態為 winning state 還是 losing state。初始的狀態則為 \\( state\[2 ^ {19} - 1\] \\)。
 
-狀態轉移的時間複雜度經由計算也可以估計。每次取巧克力時有三個方向可以取，若考慮一次取兩塊以上個巧克力，每個方向會有 \\( {3 \choose 2} *2 + {4 \choose 2}* 2 + {5 \choose 2} = 28 \\) 種。因此一次取兩塊以上的取法共有 \\( 84 \\) 種，再加上一次取一塊的 \\( 19 \\) 種，一共是 \\( 103 \\) 種。因此判斷所有狀態的時間複雜度為狀態個數乘上轉移時間，也就是 \\(O (2^{19} * 103) \\)。
+狀態轉移的時間複雜度經由計算也可以估計。每次取巧克力時有三個方向可以取，若考慮一次取兩塊以上個巧克力，每個方向會有 \\( {3 \choose 2} \times 2 + {4 \choose 2} \times 2 + {5 \choose 2} = 28 \\) 種。因此一次取兩塊以上的取法共有 \\( 84 \\) 種，再加上一次取一塊的 \\( 19 \\) 種，一共是 \\( 103 \\) 種。因此判斷所有狀態的時間複雜度為狀態個數乘上轉移時間，也就是 \\(O (2^{19} \times 103) \\)。
 
 </details>
 
 > [Codeforces Round 573 D - Tokitsukaze, CSL and Stone Game](https://codeforces.com/contest/1191/problem/D)
 >
 > 有若干堆石頭，每堆石頭的個數為 \\( a_i \\)。兩人輪流採取行動，每回合可以從其中一堆取出一顆石頭。落敗的條件有在輪到某方時所有堆的石頭都被取完，或是某方取完後有某兩堆石頭數相同(個數為 \\( 0 \\)的也要考慮)。兩個條件發生其中之一則玩家落敗。問若從 A 開始，且雙方都採取最佳化策略，那麼誰將獲勝。
-
-- \\( 1 \leq N \leq 10^5 \\)
-- \\( 0 \leq a_i \leq 10^9 \\)
+>
+> - \\( 1 \leq N \leq 10^5 \\)
+> - \\( 0 \leq a_i \leq 10^9 \\)
 
 <details><summary>Solution</summary>
 
-首先可以發現，若先手的玩家取完沒有落敗，代表他取完後場上所有堆的個數都不同。因此保證接下來雙方不論怎麼取，都可以一直取石頭，直到各堆石頭個數變為 \\( 0, 1, 2, …… , N - 1 \\)。因此若先手不會在第一回合落敗的話，可以利用剩餘回合數的奇偶來判斷誰將獲勝。剩餘的情況即為先手在第一回合不論怎麼取都會直接落敗。我們可以枚舉他所有的取法，看是否都會導致落敗。如果是的話，對手即為勝者。
+首先可以發現，若先手的玩家取完沒有落敗，代表他取完後場上所有堆的個數都不同。因此保證接下來雙方不論怎麼取，都可以一直取石頭，直到各堆石頭個數變為 \\( 0, 1, 2,…… , N - 1 \\)。因此若先手不會在第一回合落敗的話，可以利用剩餘回合數的奇偶來判斷誰將獲勝。剩餘的情況即為先手在第一回合不論怎麼取都會直接落敗。我們可以枚舉他所有的取法，看是否都會導致落敗。如果是的話，對手即為勝者。
 
 </details>
 
 <details><summary> Solution Code </summary>
 
-- Time Complexity: \\( O(N*log(N)) \\)
+- Time Complexity: \\( O(N \times log(N)) \\)
 
 ```cpp
 
