@@ -10,6 +10,8 @@
   - [Basic Greedy](greedy/basic.md)
 - [Dynamic Programming]()
   - [Basic DP]()
+- [Data Structure]()
+  - [Trie](data_structure/trie.md)
 - [Graph]()
   - [Tree]()
     - [Lowest Common Ancestor](graph/lca.md)
