@@ -86,31 +86,23 @@ int64_t inversions(const vector<int> &seq)
 舉例來說，對於 permutation \\(\left(\begin{array}{ccccc}1&6&2&3&5&4\end{array}\right)\\)，假設我們已經將左右兩半 \\(\left(\begin{array}{ccc}1&6&2\end{array}\right),\left(\begin{array}{ccc}3&5&4\end{array}\right)\\) 分別排序得 \\(\left(\begin{array}{ccc}1&2&6\end{array}\right),\left(\begin{array}{ccc}3&4&5\end{array}\right)\\) 並計算出逆序對數量各有 \\(1\\)，最終合併時可以發現左側 \\(1,2\\) 不能造成任何逆序對而 \\(6\\) 可以形成 \\(3\\) 個，因此原 permutation 一共有 \\(5\\) 個逆序對。
 
 ```cpp
-int64_t merge_sort_inversions(vector<int> &s)
+int64_t merge_sort_inversions(vector<int> &seq)
 {
-    int n = s.size();
+    int n = seq.size();
     if (n == 1)
         return 0;
     int mid = n >> 1;
-    vector<int> left(s.begin(), s.begin() + mid), right(s.begin() + mid, s.end());
-    int64_t inversions = merge_sort_inversions(left)
-                       + merge_sort_inversions(right);
+    vector<int> left(seq.begin(), seq.begin() + mid), right(seq.begin() + mid, seq.end());
+    int64_t inversions_cnt = merge_sort_inversions(left) + merge_sort_inversions(right);
     for (int i = 0, j = 0, k = 0; k < n; k++)
-        if (i < left.size() && j < right.size())
-        {
-            if (left[i] < right[j])
-                s[k] = left[i++];
-            else
-            {
-                inversions += left.size() - i;
-                s[k] = right[j++];
-            }
-        }
-        else if (i < left.size())
-            s[k] = left[i++];
+        if (i < mid && (j == n - mid || left[i] < right[j]))
+            seq[k] = left[i++];
         else
-            s[k] = right[j++];
-    return inversions;
+        {
+            seq[k] = right[j++];
+            inversions_cnt += mid - i;
+        }
+    return inversions_cnt;
 }
 ```
 
