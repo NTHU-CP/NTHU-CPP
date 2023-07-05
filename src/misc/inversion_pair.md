@@ -180,16 +180,16 @@ using namespace __gnu_pbds;
 template <typename K, typename M = null_type, typename Cmp = less<K>, typename T = rb_tree_tag>
 using _tree = tree<K, M, Cmp, T, tree_order_statistics_node_update>;
 
-int64_t inversions(const vector<int> &v)
+int64_t inversions(const vector<int> &seq)
 {
-    int64_t y = 0;
+    int64_t inversions_cnt = 0;
     _tree<int, null_type, less_equal<int>> t;
-    for (int i : v)
+    for (int i : seq)
     {
-        y += t.size() - t.order_of_key(i);
+        inversions_cnt += t.size() - t.order_of_key(i);
         t.insert(i);
     }
-    return y;
+    return inversions_cnt;
 }
 ```
 
