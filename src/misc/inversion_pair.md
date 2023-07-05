@@ -226,7 +226,7 @@ int64_t inversions(const vector<int> &seq)
 
 > [2022 ICPC Asia Taoyuan Regional C. Distance Calculator](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/view.php?id=65292)
 >
-> Wonder kingdom has \\(n!\\) cities. Each city is encoded with \\(n\\) number \\(d_1d_2\dots d_n\\) which is a permutation of \\(1 2\dots n\\). The castle of Wonder kingdom is located in the city encoded as \\(1 2\dots n\\). Let \\(a_1a_2\dots a_n\\) and \\(b_1b_2\dots b_n\\) be the codes of cities A and B, respectively. A road with distance one is built between cities A and B in the kingdom if and only if there exists an \\(i,1\leq i<n\\), such that the following two conditions are satisfied.
+> Wonder kingdom has \\(n!\\) cities. Each city is encoded with \\(n\\) number \\(d_1d_2\dots d_n\\) which is a permutation of \\(1\ 2\dots n\\). The castle of Wonder kingdom is located in the city encoded as \\(1\ 2\dots n\\). Let \\(a_1a_2\dots a_n\\) and \\(b_1b_2\dots b_n\\) be the codes of cities A and B, respectively. A road with distance one is built between cities A and B in the kingdom if and only if there exists an \\(i,1\leq i<n\\), such that the following two conditions are satisfied.
 >
 > 1. \\(a_i=b_i+1\\) and \\(b_i=a_i+1\\);
 > 2. \\(a_j=b_j\forall j\in\\{1,2,\dots,n\\}\setminus\\{i,i+1\\}\\).
