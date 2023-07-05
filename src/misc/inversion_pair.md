@@ -262,20 +262,20 @@ int64_t inversions(const vector<int> &seq)
 
 [^TAOCP]: Donald E. Knuth. 1998. The art of computer programming, volume 3: (2nd ed.) sorting and searching. Addison Wesley Longman Publishing Co., Inc., USA.
 
-[^Kendall]: Maurice G. Kendall. 1938. A new measure of rank correlation. Biometrika 30, 1–2, 81–93.
+[^perm_oi_wiki]:[置换和排列 - OI Wiki](https://oi-wiki.org/math/permulation/)
 
-[^Lehmer]: Derrick H. Lehmer. 1960. Teaching combinatorial tricks to a computer. Combinatorial Analysis, 179–193.
+[^Kendall]: Maurice G. Kendall. 1938. A new measure of rank correlation. Biometrika 30, 1–2, 81–93.
 
 [^Dietz]: Paul F. Dietz. 1989. Optimal Algorithms for List Indexing and Subset Rank. In Proceedings of the Workshop on Algorithms and Data Structures (WADS '89). Springer-Verlag, Berlin, Heidelberg, 39–46.
 
 [^Chan]: Timothy M. Chan and Mihai Pătraşcu. 2010. Counting inversions, offline orthogonal range counting, and related problems. In Proceedings of the twenty-first annual ACM-SIAM symposium on Discrete algorithms (SODA '10). Society for Industrial and Applied Mathematics, USA, 161–173.
 
-[^BIT_cp_algo]: [Fenwick Tree - Algorithms for Competitive Programming](https://cp-algorithms.com/data_structures/fenwick.html)
-
-[^BIT_oi_wiki]: [树状数组 - OI Wiki](https://oi-wiki.org/ds/fenwick/)
-
 [^merge_sort_oi_wiki]: [归并排序 - OI Wik](https://oi-wiki.org/basic/merge-sort/)
 
-[^perm_oi_wiki]:[置换和排列 - OI Wiki](https://oi-wiki.org/math/permulation/)
+[^BIT_cp_algo]: [Fenwick Tree - Algorithms for Competitive Programming](https://cp-algorithms.com/data_structures/fenwick.html)
+
+[^Lehmer]: Derrick H. Lehmer. 1960. Teaching combinatorial tricks to a computer. Combinatorial Analysis, 179–193.
+
+[^BIT_oi_wiki]: [树状数组 - OI Wiki](https://oi-wiki.org/ds/fenwick/)
 
 <!-- [^dividing_oi_wiki]: [划分树 - OI Wiki](https://oi-wiki.org/ds/dividing/) -->
