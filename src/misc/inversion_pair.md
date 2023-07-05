@@ -219,11 +219,10 @@ int64_t inversions(const vector<int> &seq)
 >
 > - \\(1\leq n\leq2\times10^5\\)
 >
-> <details><summary>Hint</summary>
-> 題目給的是 permutation 中每個元素的 index，如果我們將元素們與 indices 互換 (permutation 的 inverse)，則原本的操作就變為 swap 相鄰的元素。於是，題目所求的最小數量即相當前面所證明過的，每次 swap 相鄰元素，最少需要幾次才能完成排序，也就是逆序對數量。
-> </details>
 
----
+<details><summary>Solution</summary>
+題目給的是 permutation 中每個元素的 index，如果我們將元素們與 indices 互換 (permutation 的 inverse)，則原本的操作就變為 swap 相鄰的元素。於是，題目所求的最小數量即相當前面所證明過的，每次 swap 相鄰元素，最少需要幾次才能完成排序，也就是逆序對數量。
+</details>
 
 > [2022 ICPC Asia Taoyuan Regional C. Distance Calculator](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/view.php?id=65292)
 >
@@ -236,12 +235,12 @@ int64_t inversions(const vector<int> &seq)
 >
 > - \\(1\leq m\leq50\\)
 > - \\(1\leq n\leq100\\)
->
-> <details><summary>Hint</summary>
-> 這題乍看之下似乎像是圖論題，然而若我們真的實際著手建一個有 \(n!\) 個節點的 \((n-1)\)-正則圖並在其上 BFS 搜尋最短路，則不論時間或空間複雜度都會遠遠超過上限。
->
-> 事實上，題目的操作即是 swap 相鄰兩元素，而我們的終點就是排序好的 permutation。因此，所求的最短距離即為起點 permutation 的逆序對數量。
-> </details>
+
+<details><summary>Solution</summary>
+這題乍看之下似乎像是圖論題，然而若我們真的實際著手建一個有 \(n!\) 個節點的 \((n-1)\)-正則圖並在其上 BFS 搜尋最短路，則不論時間或空間複雜度都會遠遠超過上限。
+
+事實上，題目的操作即是 swap 相鄰兩元素，而我們的終點就是排序好的 permutation。因此，所求的最短距離即為起點 permutation 的逆序對數量。
+</details>
 
 ### 其他有趣題
 
@@ -250,12 +249,12 @@ int64_t inversions(const vector<int> &seq)
 > 對於一個 permutation，在每次 rotatation 之後計算出逆序對數量。
 >
 > - \\(2\leq n\leq3\times10^5\\)
->
-> <details><summary>Hint</summary>
-> 如果真的每次都重新計算的話，時間複雜度會是 \(O(n\times n\log n)=O(n^2\log n)\)。
->
-> 轉念一想，我們其實可以在 \(O(1)\) 常數時間內知道一次 rotatation 所造成逆序對數量的變化：將這個元素自首端移除會減少多少？Append 至尾端又會增加多少呢？
-> </details>
+
+<details><summary>Solution</summary>
+如果真的每次都重新計算的話，時間複雜度會是 \(O(n\times n\log n)=O(n^2\log n)\)。
+
+轉念一想，我們其實可以在 \(O(1)\) 常數時間內知道一次 rotatation 所造成逆序對數量的變化：將這個元素自首端移除會減少多少？Append 至尾端又會增加多少呢？
+</details>
 
 ## References
 
