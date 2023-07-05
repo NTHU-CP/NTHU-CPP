@@ -148,17 +148,17 @@ struct BIT
     int query(int x1, int x2) { return query(x2) - query(x1 - 1); }
 };
 
-int64_t inversions(const vector<int> &p)
+int64_t inversions(const vector<int> &perm)
 {
-    int n = p.size();
-    BIT fenwick_tree(n);
-    int64_t y = 0;
+    int n = perm.size();
+    BIT bit(n);
+    int64_t inversions_cnt = 0;
     for (int i = 0; i < n; i++)
     {
-        y += fenwick_tree.query(p[i] + 1, n);
-        fenwick_tree.update(p[i]);
+        inversions_cnt += bit.query(perm[i] + 1, n);
+        bit.update(perm[i]);
     }
-    return y;
+    return inversions_cnt;
 }
 ```
 
