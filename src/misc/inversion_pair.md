@@ -67,15 +67,15 @@ Kendall's \\(\tau\\) distance 又被稱為 bubble sort distance，因為其代�
 可以在 bubble sort 的同時紀錄 swap 的數量；更簡單地，我們只需要枚舉所有 \\((i,j),i<j\\) 並逐一檢查是否為 inversion 即是 \\(O(n^2)\\) 的演算法。
 
 ```cpp
-int64_t inversions(const vector<int> &s)
+int64_t inversions(const vector<int> &seq)
 {
-    int n = s.size();
-    int64_t y = 0;
+    int n = seq.size();
+    int64_t inversions_cnt = 0;
     for (int i = 0; i < n; i++)
         for (int j = i + 1; j < n; j++)
-            if (s[i] > s[j])
-                ++y;
-    return y;
+            if (seq[i] > seq[j])
+                ++inversions_cnt;
+    return inversions_cnt;
 }
 ```
 
