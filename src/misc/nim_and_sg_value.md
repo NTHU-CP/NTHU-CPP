@@ -145,12 +145,21 @@ int main() {
 
 ## Sprague-Grundy Theorem
 
-在介紹此定理以前，先引入一個符號 \\( MEX \\)。對於一個集合 \\( s \\)，\\( MEX \lbrace s \rbrace \\) 的定義為不屬於 \\(s \\) 的數字中最小的非負整數。例如 \\( MEX \lbrace 0, 1, 3, 5 \rbrace = 2 \\)，\\( MEX \lbrace 1, 2, 3 \rbrace = 0 \\)。根據 Sprague-Grundy Theorem，一個不偏賽局可以被轉換成 Nim Game 的形式。對於一個狀態(局勢)，我們定義它的 **Grundy Number** (SG value)為 \\( MEX \lbrace g_1, g_2, ..., g_n \rbrace \\)，這裡的 \\( g_i \\) 代表當前的 state 可以轉移到某 \\( n \\) 個不同的 state，且 \\( g_1, g_2,……g_n \\) 分別為那些 state 的 Grundy Number。若一個 state 的 Grundy Number 為 0，代表當前為 losing state。若不為 0，則為 winning state。
+在介紹此定理以前，先引入一個符號 \\( MEX \\)。對於一個集合 \\( s \\)，\\( MEX \lbrace s \rbrace \\) 的定義為不屬於 \\(s \\) 的數字中最小的非負整數。例如 \\( MEX \lbrace 0, 1, 3, 5 \rbrace = 2 \\)，\\( MEX \lbrace 1, 2, 4 \rbrace = 0 \\)。
 
-另外，若遊戲方式為好幾個子遊戲同時進行。我們可以採用與 Nim Game 相似的作法，將若干個子遊戲的 Grundy Number 使用 \\( XOR \\) 來進行合併，得出整個遊戲的狀態。
+根據 Sprague-Grundy Theorem，一個不偏賽局可以被轉換成 Nim Game 的形式。對於一個狀態(局勢)，我們定義它的 **Grundy Number** (SG value)為 \\( MEX \lbrace g_1, g_2, ..., g_n \rbrace \\)，這裡的 \\( g_i \\) 代表當前的 state 可以轉移到某 \\( n \\) 個不同的 state，且 \\( g_1, g_2,……g_n \\) 分別為那些 state 的 Grundy Number。若一個 state 的 Grundy Number 為 0，代表當前為 losing state。若不為 0，則為 winning state。
 
-定理的證明可以利用數學歸納法與 \\( XOR \\) 的性質。但這裡提供一個直觀的想法供讀者參考:
-Nim Game 每回合的行動可以從數量為 \\( x(x>0) \\) 的石頭堆取出任意數量，在取後的剩餘石頭數有可能為 \\( 0 \sim x-1 \\) 的任意一個。相似地，Grundy Number 的性質確保，一個 SG value 為 x 的 state，對於任意一個 \\( i\ (x-1\ge i\ge0, \ i \in Z) \\)，都至少存在一種轉移方法，使玩家在一回合內轉移到 SG value 為 \\( i \\) 的 state。與 Nim Game 不同之處在於，某些不偏賽局在轉移後，有可能會使 SG value 變大。那麼這時可以用"Nim Game Extension"的策略，把對手上一回合的行動消除，即可維持在 winning state。
+舉例來說，若當前的局勢可以轉移到四個不同的狀態，而且那四個狀態的 Grundy Number 分別為 \\( 0, 1, 3, 5\\)，那麼當前狀態的 Grundy Number 為 \\( MEX \lbrace 0, 1, 3, 5 \rbrace = 2\\)，是一個 winning state。若當前局勢無法轉移到其他狀態，他的 Grundy Number 為 \\( MEX \lbrace \rbrace = 0\\)，是一個 losing state。
+
+### Subgames
+
+Nim Game 中，玩家每回合可以從若干堆中選出一堆，並從那堆移除一些石頭。這就好比每一堆都是一個子遊戲 (Subgame)，而玩家在整個遊戲當中，可以選取某個子遊戲採取行動。
+
+前面章節有提到，將每堆石頭進行 \\( XOR \\) 運算得到的答案，可以拿來判斷局勢。這種性質同樣可以應用在 Grundy Number 上。將若干個子遊戲的 Grundy Number 使用 \\( XOR \\) 來進行合併，可以得出整個遊戲的 Grundy Number。同樣地，若為 \\( 0 \\) 代表是 losing state。若不為 \\( 0 \\) 則為 winning state。
+
+詳細的證明可以參考[這篇文章](https://zhuanlan.zhihu.com/p/20611132)。但這裡提供一個直觀的想法供讀者參考: 試著把不偏賽局的 Grundy Number 與 Nim Game 做連結。Nim Game 每回合的行動可以從數量為 \\( x(x>0) \\) 的石頭堆取出任意數量，在取後的剩餘石頭數可以是 \\( 0 \sim x-1 \\) 的任意一個。同樣地，一個 Grundy Number 為 x 的 state，對於任意一個 \\( i\ (x-1\ge i\ge0, \ i \in Z) \\)，都至少存在一種轉移方法，使玩家在一回合內轉移到 SG value 為 \\( i \\) 的 state。
+
+因此不偏賽局的 Grundy Number 就好比 Nim Game 當中的石頭數量，而規則也幾乎相同。唯一與 Nim Game 不同之處在於，某些不偏賽局在轉移後，有可能會使 Grundy Number 變大(不可能相同，原因給讀者自行思考)。那麼這時可以用"Nim Game Extension"的策略，把對手上一回合的行動消除，即可維持在 winning state。
 
 ### Example
 
