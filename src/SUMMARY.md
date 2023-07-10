@@ -6,6 +6,7 @@
 ---
 
 - [Fundemantal]()
+- [Data Structure]()
 - [Greedy](greedy/intro.md)
   - [Basic Greedy](greedy/basic.md)
 - [Dynamic Programming]()
