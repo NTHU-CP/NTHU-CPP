@@ -49,11 +49,11 @@
 
     比較兩條直線提供的答案：
 
-    <img src="image/convex_hull_optimization/cses2084_query_1.png" width="500" style="display:block; margin: 0 auto;"/>
+    <img src="image/convex_hull_optimization/cses2084_query_1_v2.png" width="500" style="display:block; margin: 0 auto;"/>
 
     下一條直線提供的答案更小，因此我們刪除斜率最大的直線：
 
-    <img src="image/convex_hull_optimization/cses2084_query_2.png" width="500" style="display:block; margin: 0 auto;"/>
+    <img src="image/convex_hull_optimization/cses2084_query_2_v2.png" width="500" style="display:block; margin: 0 auto;"/>
 
 - 插入：插入一條新的線
 
