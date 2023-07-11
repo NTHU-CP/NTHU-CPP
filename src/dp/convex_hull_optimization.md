@@ -61,11 +61,11 @@
 
     原本的線集：
 
-    <img src="image/convex_hull_optimization/cses2084_insert_1.png" width="500" style="display:block; margin: 0 auto;"/>
+    <img src="image/convex_hull_optimization/cses2084_insert_1_v2.png" width="500" style="display:block; margin: 0 auto;"/>
 
     加入新的直線：
 
-    <img src="image/convex_hull_optimization/cses2084_insert_2.png" width="500" style="display:block; margin: 0 auto;"/>
+    <img src="image/convex_hull_optimization/cses2084_insert_2_v2.png" width="500" style="display:block; margin: 0 auto;"/>
 
     在我們加入新的直線後，有一些直線便不在凸包上了，意即它們不可能成為任何查詢的答案。這時我們要將它們移出凸包，否則會取到錯誤的答案。
 
