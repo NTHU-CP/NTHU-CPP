@@ -2,7 +2,7 @@
 
 ## 介紹
 
-Link Cut Tree 是一種樹狀的資料結構，主要用來解決 Dynamic connectivity 的問題，Link Cut Tree 支援以下操作：  
+Link Cut Tree 是一種樹狀的資料結構，具體來說是一個森林，也就是很多樹的集合，Link Cut Tree 支援以下操作：  
 
 - 在兩個點之間建立一條邊
 - 在兩個點之間斷開一條邊
@@ -12,17 +12,15 @@ Link Cut Tree 是以 Splay Tree 為基礎實作，因此尚未了解 Splay Tree 
   
 以下文章將用 LCT 簡稱 Link Cut Tree。  
 
-## LCT 實作
+## 先備知識
 
-### 先備知識
-
-#### Splay Tree
-
+- Splay Tree  
 Splay Tree 是一種自平衡的二元搜尋樹，主要通過 Splay 操作讓最近被訪問的節點移動至樹的根部，並且 Splay 操作的時間複雜度為均攤 \\(O(\log n)\\)。
 
-#### 輕重鏈剖分
-
+- 輕重鏈剖分  
 輕重鏈剖分用來處理樹上的動態查詢，它的精髓在於將樹拆分成很多條鏈，使得樹上的操作可以有好的時間複雜度，LCT 也有使用到類似的技巧，因此建議先理解輕重鏈剖分後再回來看 LCT。
+
+## LCT 實作
 
 ### 名詞定義
 
@@ -37,13 +35,16 @@ Splay Tree 是一種自平衡的二元搜尋樹，主要通過 Splay 操作讓�
 
 以下使用輔助樹來稱呼 Auxiliary Tree。  
 
-輔助樹的作用是用來維護訊息，在進行 LCT 操作時同時維護輔助樹的訊息，因此輔助樹能維護的訊息，就決定了 LCT 可以維護的訊息。  
-LCT 利用 Splay Tree 作為輔助樹，在基本 LCT 的 Splay Tree 節點會維護以下訊息：  
+要維護 LCT 的操作，我們需要維護輔助樹 (Auxiliary Tree)。輔助樹通常使用 splay tree來實作，輔助樹的作用是用來維護訊息，在進行 LCT 操作時同時維護輔助樹的訊息，因此輔助樹能維護的訊息，就決定了 LCT 可以維護的訊息。  
+在基本 LCT 的 Splay Tree 節點會維護以下訊息：  
 
 1. 父節點 (子節點有邊指向父節點，但父節點不一定有邊指向子節點)
 2. 左右小孩 (實作時用右小孩代表 preferred edge)
 3. 在 Splay Tree Node 左邊的節點深度比自己小，右邊的節點深度比自己大
 4. 因為 LCT 操作中要維護左右節點深度的性質，所以在某些特定的操作中需要將區間反轉，因此使用懶惰標記，讓翻轉區間能夠有好的時間複雜度
+
+以下是一個原樹與輔助樹的對應關係：<img src="image/LCT/Auxiliary_Tree_Demo.png" style="display:block; margin: 0 auto;"/>
+圖解：左為原樹，原樹的粗邊代表 preferred edge。右為原樹所對應的輔助樹，輔助樹的表示法不唯一，粗邊代表 splay_node 的左右小孩，而帶有箭號的邊代表指向父節點的邊。
 
 以下是一個簡單的 Splay Tree node：
 
@@ -60,12 +61,9 @@ struct splay_node
 - ``parent`` 代表父親
 - ``rev`` 代表區間反轉的懶惰標記
 
-以下是一個原樹與輔助樹的對應關係：<img src="image/LCT/Auxiliary_Tree_Demo.png" style="display:block; margin: 0 auto;"/>
-圖解：左為原樹，原樹的粗邊代表 preferred edge。右為原樹所對應的輔助樹，輔助樹的表示法不唯一，粗邊代表 splay_node 的左右小孩，而帶有箭號的邊代表指向父節點的邊。
-
 接下來就是這棵輔助樹的基本操作。
 
-- ``splay()`` 以及 ``rotate()``  
+#### ``splay()`` 以及 ``rotate()``  
 
 Splay Tree 的基本操作。
 
@@ -103,7 +101,8 @@ void splay(int x) // splay node x
 
 這裡的 ``splay()`` 寫法跟一般的 Splay Tree 不太一樣，LCT 中的 splay 只要到當前這棵輔助樹的樹根即可，因此需要用到 ``isroot()`` 來判斷。
 
-- ``isroot()``  
+#### ``isroot()``  
+
 判斷當前節點是否為根。
 
 ```cpp
@@ -149,17 +148,17 @@ void down(int x)
 ``up()`` 可以將子節點的訊息向上更新，可以自行修改成紀錄其他訊息，例如紀錄子樹大小。  
 最基本的 LCT 沒有使用到。  
 
-### LCT 專屬函式
+### LCT 基本操作
 
-- ``Access()``  
-**LCT 中最重要的函式**  
-``Access()`` 會把當前節點到 LCT 根結點上面所有的邊變成 preferred edge。  
+#### ``access()``  
+
+``access()`` 是**LCT 中最重要的函式**， 可以把當前節點到 LCT 根結點上面所有的邊變成 preferred edge。  
 操作方法：
 
 1. 把當前節點 splay 到目前輔助樹的根
 2. 把當前節點的 preferred edge 設定為上一次走到的節點
 3. 維護節點訊息
-4. 對父節點進行 ``Access()``  
+4. 對父節點進行 ``access()``  
 重複執行 1~4，直到抵達 LCT 的根結點回傳。
 
 ```cpp
@@ -184,7 +183,8 @@ int access(int x)
 先 ``splay(C)``，讓 C 變成輔助樹的根節點。把 C 的 preferred edge 設為 F (這裡為了展示所以將新的 preferred edge 變成粗邊)，所以 C 節點拋棄其中一個小孩，這裡展示的是拋棄 B 小孩。<img src="image/LCT/access_demo_3.png" height="400px" style="display:block; margin: 0 auto;"/>
 最終 ``access(A)``，到達整棵樹的根結點，因此停止操作，最終 F 與根節點 A 的路徑為 preferred path，且 F 與 A 在同一棵輔助樹中。
 
-- ``make_root()``  
+#### ``make_root()``  
+
 將當前節點變為整棵樹的 root。操作方法：
 
 1. 先利用 ``access()`` 將當前節點到根節點的邊都變成 preferred edge
@@ -201,7 +201,8 @@ void make_root(int x)
 }
 ```
 
-- ``link()``
+#### ``link()``
+
 將兩個節點所在的樹合併，兩個節點必須在不同樹。操作方式：
 
 1. 讓其中一個節點 ``x`` 變成根結點
@@ -215,13 +216,15 @@ void link(int x, int y)
 }
 ```
 
-- ``cut()``
+#### ``cut()``
+
 斷開兩個節點之間的邊，兩個節點之間必須有邊。操作方式：
 
 1. 將其中一個節點 ``x`` 變成根結點
 2. ``access()`` 另一個節點 ``y``，讓 ``x`` 和 ``y`` 在同一個輔助樹中
 3. ``splay()`` 節點 ``y``，讓他變成輔助樹的根  
-此時 ``x`` 節點會成為 ``y`` 節點的左小孩。4. 斷開 ``x`` , ``y`` 節點之間的連結
+此時 ``x`` 節點會成為 ``y`` 節點的左小孩
+4. 斷開 ``x`` , ``y`` 節點之間的連結
 
 ```cpp
 void cut(int x, int y)
@@ -234,10 +237,10 @@ void cut(int x, int y)
 }
 ```
 
-另一種 ``cut()`` 操作是針對單一節點，斷開該節點與父節點的邊。操作方式：
+另一種 ``cut()`` 操作是針對單一節點，在原樹中斷開該節點與父節點的邊。操作方式：
 
 1. 直接 ``access()`` 該節點，讓他與當前的根在同一個輔助樹中
-2. ``splay()`` 該節點，讓該節點變成新的根結點
+2. ``splay()`` 該節點，讓該節點變成新的根結點  
 此時父節點位於左小孩的位置
 3. 斷開該節點與父節點的連結
 
@@ -251,7 +254,8 @@ void cut(int x)
 }
 ```
 
-- ``find_root()``
+#### ``find_root()``
+
 尋找此節點所在樹的根結點。操作方式：
 
 1. 首先 ``access()`` 此節點，讓他和根結點在同一個輔助樹裡面
@@ -414,6 +418,8 @@ struct LCT
 
 ## LCT 用途
 
+### Template problem
+
 > [DYNACON1](https://www.spoj.com/problems/DYNACON1/)  
 > 有一棵無根樹總共有 \\(N\\) 個節點，一開始沒有邊，題目是對於樹進行 \\(Q\\) 筆，操作總共有三種：
 >
@@ -466,6 +472,8 @@ int main()
 ```
 
 </details>
+
+### Maintaining edge weight on LCT
 
 > [SPOJ QTREE](https://www.spoj.com/problems/QTREE/)  
 > 給你一棵\\( N \\)個節點的樹，每個邊有邊權\\( w \\)，然後會有\\( Q \\)筆操作。操作有兩種：  
@@ -573,6 +581,8 @@ int main()
 ```
 
 </details>
+
+### ``access()``的其他應用
 
 > [CF 117E - Tree or not Tree](https://codeforces.com/problemset/problem/117/E)  
 > 給你 \\(N\\) 個車站，一個車站可以連接多個車站，但每次只能往其中一個車站，總共有 \\(N - 1\\) 條單向權重為 \\(d\\) 的鐵路，並且 \\(1\\) 號車站為根節點。  
@@ -748,19 +758,18 @@ int main()
 ```
 
 時間複雜度分析：  
-時間複雜度被操作所執行的次數所決定，由於 ``access()`` 操作有均攤 \\(O (\log N)\\) 的時間複雜度，因此操作最多執行的次數為 \\(O (M \log N)\\)。
-最終用 priority_queue 維護這些操作，因此最終的時間複雜度為 \\(O (N \log N + M \log^2 N)\\)
+時間複雜度被操作所執行的次數所決定，由於 ``access()`` 操作有均攤 \\(O (\log N)\\) 的時間複雜度，因此操作最多執行的次數為 \\(O (M \log N)\\)。最終用 priority_queue 維護這些操作，因此最終的時間複雜度為 \\(O (N \log N + M \log^2 N)\\)
 
 </details>
 
-總結：  
+### 總結  
 
 - LCT 可以判斷連通性
 - LCT 可以做路徑維護，因此可以維護路徑資訊
 - LCT 可以動態切邊，因此當看到 **cut** 關鍵字的時候，或許可以想想看 LCT 可不可以做，因為大部分輕重鏈剖分可以做的題目，LCT 也都可以做
 - LCT 的 ``access()`` 操作可以在 \\(O (\log N)\\) 的時間複雜度完成，因此可以利用這個性質去修改 ``access()``，讓操作有更好的時間複雜度
 
-## 相關題目
+## Exercise
 
 [DYNALCA - Dynamic LCA](https://www.spoj.com/problems/DYNALCA/)
 <details><summary> Solution Code </summary>
@@ -819,6 +828,7 @@ SPOJ-QTREE 系列題目：
   
 QTREE 系列題目可以參考這篇文章：[【Qtree】Query on a tree 系列 LCT 解法](https://blog.csdn.net/thy_asdf/article/details/50768620)  
 
+- [CF 13E - Holes](https://codeforces.com/contest/13/problem/E)
 - [CF 117E - Tree or not Tree](https://codeforces.com/problemset/problem/117/E)
 - [CF 342E - Xenia and Tree](https://codeforces.com/problemset/problem/342/E)
 - [CF 1172E - Nauuo and ODT](https://codeforces.com/contest/1172/problem/E)
