@@ -43,7 +43,7 @@ f_n(k) &= [x^n] F(x, y) \\\\
 f_k(n) &= [y^k]F(x, y) \\\\
 &= [y^k]\frac{1}{1 - x - xy} \\\\
 &= [y^k]\frac{1}{(1 - x) - xy} \\\\
-&= [y^k]\frac{\frac{1}{1 - x}}{1 - \frac{xy}{1 - x}} & \text{分子分母同時除以 \\( \frac{1}{1 - x} \\)} \\\\
+&= [y^k]\frac{\frac{1}{1 - x}}{1 - \frac{xy}{1 - x}} & \text{分子分母同時乘以 \\( \frac{1}{1 - x} \\)} \\\\
 &= [y^k]\frac{1}{1 - x} \sum\limits_{k = 0}^{\infty} (\frac{x}{1 - x})^k y^k & \text{將等比級數展開，公比為 \\( \frac{xy}{1 - x} \\)} \\\\
 &= \frac{x^k}{(1 - x)^{k + 1}} \\\\
 \Longleftrightarrow \binom{n}{k} &= [x^n] \frac{x^k}{(1 - x)^{k + 1}} \\\\
