@@ -1,6 +1,7 @@
 # Summary
 
 - [Foreword](others/foreword.md)
+- [Calendar](others/calendar.md)
 - [Contribute to NTHU CPP](others/contribution.md)
 
 ---
