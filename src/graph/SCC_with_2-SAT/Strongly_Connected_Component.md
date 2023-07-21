@@ -160,6 +160,9 @@ Kosaraju Algo分成3個部份:
  
 ### Detail process & Template code
 
+如GIF所示，在DFS的過程中，將點丟進stack中，同時更新每個點的\\( low \\)跟\\( depth \\)值，找出所有的SCC
+<img src="image/Tarjan_SCC.gif" width="700" style="display:block; margin: 0 auto;"/>
+
 Tarjan Algo code:
 
 ```cpp
@@ -169,7 +172,7 @@ struct SCC {
 	stack<int> stk;
 	vector<int> G[N];
 	void add_edge(int u, int v) {
-		G[u].emplac_back(v);
+		G[u].emplace_back(v);
 	}
 	void DFS(int u, int fa) {
 		depth[u] = low[u] = ++Time;
@@ -209,6 +212,7 @@ struct SCC {
 }
 
 ```
+
 ### Time complexity and the Correctness
 只需要做一次DFS，因此時間複雜度為: \\( O(V+E) \\)，正確性可以由以下性質得出。
 
