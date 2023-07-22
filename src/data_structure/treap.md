@@ -50,50 +50,83 @@ Treap 自己本身就是一棵平衡的 Binary Search Tree，而他的平衡方�
 
 ### 概念
 
-Split-Merge Treap (以下簡稱 Treap) 就是透過 Split 還有 Merge 這兩個操作搭配節點隨機賦予的 Priority 值去維護樹的平衡性。
+Split-Merge Treap (以下簡稱 Treap) 就是透過 Split 還有 Merge 這兩個操作搭配節點隨機賦予的 priority 值去維護樹的平衡性。
 而下面則會介紹我們是如何將隨機值賦予給 Treap 的節點，以及如何透過這兩個操作去維護一顆 Treap。
 
-### 節點
+### Node
 
 Treap 本身就是一棵 BST ，而樹上每個節點都會維護一個 key 值，而這個 key 在最前面有提到過，Treap 就是 BST + Heap，而 BST 就是負責維護節點的 key 有二元搜尋樹的性質，而 Heap 就是負責維護 priority 值有最大堆/最小堆的性質。
 
 你可以根據題目需求去決定 Treap 上每個節點的 key 要維護哪些東西，也可以自行修改 key 的型態。
 
-最後我們會證明，只要維護好 Heap 的性質，樹高就會是期望的 \\( N\log N \\) ，其中 \\(N\\) 是節點數量。
+最後我們會證明，只要維護好 Heap 的性質，樹高就會是期望的 \\( \log N \\) ，其中 \\(N\\) 是節點數量。
 
 ```cpp!
 struct node{
     node *l = NULL,*r = NULL;
     int key;
     int pri = rand();//在新建一個節點時 priority 值就已經隨機賦予了。
-    node(T x):key(x){}
-    ~node(){
-        for(auto &i:{l,r})
-            delete i;
-    }
+    node(int x) : key(x) {}
 };
 ```
 
-### 合併
+### Merge
+
+這裡的 Merge 是指把兩棵 Treap 合併，而為了維護 BST 的性質，其中一棵 Treap 的 key 值都要小於另外一棵 Treap 的 key 值。
+
+<img src="treap_img/Merge0.png" width="500" style="display:block; margin: 0 auto;"/>
 
 `merge(node *a,node *b)`
-依照Heap的性質，去合併兩個節點，這裡是以最大堆為示範 (最大堆和最小堆都不會影響樹的高度，只要他是一個 heap ，且 priority 的值是隨機賦予的就可以了) 。
+依照Heap的性質，去合併兩個節點。
+而我們會採用遞迴的方式去實作 `merge` 這個函式
+* merge(a, b)
+    * Base case：a 或 b 是空的
+    * a 的 priority 值 \\(\lt\\) b 的 priority 值
+    * a 的 priority 值 \\(\ge\\) b 的 priority 值
 
-```cpp!
+#### 其中一棵 Treap 為空
+
+* 直接回傳那棵非空的 Treap
+
+#### a 的 priority 值 \\(\lt\\) b 的 priority 值
+
+<img src="treap_img/Merge1.png" width="500" style="display:block; margin: 0 auto;"/>
+
+* b 會在 a 的右子樹
+* 遞迴呼叫 `merge(a->r, b)`
+
+<img src="treap_img/Merge2.png" width="500" style="display:block; margin: 0 auto;"/>
+
+#### a 的 priority 值 \\(\ge\\) b 的 priority 值
+
+<img src="treap_img/Merge3.png" width="500" style="display:block; margin: 0 auto;"/>
+
+* a 會在 b 的左子樹
+* 遞迴呼叫 `merge(a, b->l)`
+
+<img src="treap_img/Merge4.png" width="500" style="display:block; margin: 0 auto;"/>
+
+#### Merge 的過程
+
+<img src="treap_img/MergeStep.gif" width="1000" style="display:block; margin: 0 auto;"/>
+
+#### Code
+
+```cpp
 node *merge(node *a,node *b){
-    if(!a or !b)return a?:b;
-    if(a->pri>b->pri){
-        a->r = merge(a->r,b);
+    if(!a || !b)return a ? a : b;
+    if(a->pri < b->pri){
+        a->r = merge(a->r, b);
         return a;
     }
     else{
-        b->l = merge(a,b->l);
+        b->l = merge(a, b->l);
         return b;
     }
 }
 ```
 
-### 分裂
+### Split
 
 `split_by_key(node *t,int k,node *&a,node *&b)`
 
