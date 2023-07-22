@@ -1,38 +1,61 @@
-# 樹堆 (Treap)
+# Treap
 
 ## 概念
 
 \\(Treap = Binary\ Search\ Tree\ +\ Heap\\)
+	
 ### Binary Search Tree
 
-對於任何一顆二元搜尋樹，都會滿足以下性質
-* 若任意節點的左子樹不空，則左子樹上所有節點的值均小於它的根節點的值
-* 若任意節點的右子樹不空，則右子樹上所有節點的值均大於它的根節點的值
-* 任意節點的左、右子樹也分別為二元搜尋樹
+對於任何一顆二元搜尋樹 (Binary Search Tree)，都會滿足以下性質
+
+**對任意節點來說：**
+* 若其左子樹非空，則左子樹中所有節點的值均小於其自身的值
+* 若其右子樹非空，則右子樹上所有節點的值均大於其自身的值
 
 ### Heap
 
 對於任何一顆Heap，都會滿足以下性質
-* 任何一個父節點他的子節點的值都會小於等於(或大於等於)父節點的值
 
-而我們可以利用Heap的性質搭配隨機產生的pri值去讓整個Treap的高度達到\\(\log(n)\\)的期望高度
+**對任意節點來說：**
+* 他的所有子節點的值都會小於等於（或大於等於）其自身的值
 
-### 請相信treap
+### Self-Balancing Binary Search Tree
 
-![](https://i.imgur.com/c4apmmM.png)
+在這裡會建議讀者如果對於上面提到的 Binary Search Tree 和 Heap 還不熟悉的話，可以先去學習這兩個資料結構，再來看這篇會比較容易理解 Treap 的原理以及特性。
 
-圖片來源: https://www.luogu.com.cn/blog/85514/fhq-treap-xue-xi-bi-ji
+對於一般的 Binary Search Tree 來說，它的樹高會根據你插入的順序不同而有所差異，假如我要連續把 \\(N\\) 個數字放入 BST 內，那最糟糕的情況就是樹高可能會達到 \\(N\\) ，而 BST 的每個操作（插入、刪除等）都是基於它的樹高而定，所以這種情況下每次操作的時間複雜度都會是很慘的 \\(O(N)\\) 。
+
+所以為了解決這種情況，我們會透過一些操作讓樹高盡量維持在 \\(\log N\\) ，而這樣的操作就叫做 `平衡` ，像是 C++ 內建的 `set`, `map` 都是平衡的二元搜尋樹，所以他們的操作（插入、刪除等）時間複雜度都會是 \\(O(\log N)\\)
+
+而平衡一棵二元樹的方式有很多，根據每個方法的不同實作的難度也會有所差異，但他們的共同特色就是樹高都會維持在 \\(\log N\\) ，已確保每個操作的時間複雜度不會太糟。
+
+Treap 自己本身就是一棵平衡的 Binary Search Tree，而他的平衡方式就是透過每個節點的 Heap 性質去維護平衡，而維護方式一共有兩種，第一種是旋轉，第二種就是我們後面會提到的 Split & Merge，而第一種因為實作難度較高較不實用所以不會在本篇提到，比賽中最常見的平衡二元樹（不包含 C++ 內建的資料結構）就是 Split-Merge Treap ，因為他很好寫（跟其他平衡樹相比），然後能做到的事情也很多。
+
+### Why Heap
+
+為什麼是透過 Heap 的性質去維護平衡性呢？因為如果我們在平衡二元樹上的每個節點多記錄一個 "時間" ，會發現這個時間滿足最小堆的性質。
+假如說有一個序列 `A = {4, 8, 7, 6, 3}` ，我們把這個序列的數字依序放入二元搜尋樹，則構造出來的 BST 如下圖所示：
+
+<img src="treap_img/BST0.png" width="500" style="display:block; margin: 0 auto;"/>
+
+節點上的值為 BST 的 key 值，而節點旁邊的數字則是那個 key 插入的順序。
+
+而我們知道 BST 的樹高會根據插入的順序不同而有所不同，如果按照數字小到大的順序插入的話 `{3, 4, 6, 7, 8}` ，樹高會是最糟糕的 \\(O(N)\\) ，如下圖所示：
+
+<img src="treap_img/BST1.png" width="500" style="display:block; margin: 0 auto;"/>
+
+所以我們就是透過把插入的順序隨機化，也就是隨機給予每個節點插入的 "時間"，這個時間我們稱之為 `priority` ，而因為插入的時間會有最小堆的性質，所以只要好好的維護 `priority` 的 Heap 性質，就可以讓樹高維持在期望的 \\(\log N\\)
 
 ## Split-Merge Treap
 
 ### 概念
 
-Split-Merge Treap 顧名思義就是透過 Split 還有 Merge 這兩個操作搭配隨機賦予的 Priority 值去維護樹的平衡性。
+Split-Merge Treap (以下簡稱 Treap) 就是透過 Split 還有 Merge 這兩個操作搭配節點隨機賦予的 Priority 值去維護樹的平衡性。
 而下面則會介紹我們是如何將隨機值賦予給 Treap 的節點，以及如何透過這兩個操作去維護一顆 Treap。
 
 ### 節點
 
-Treap 本身就是一顆平衡樹，而樹上每個節點都會維護一個 key 值，而這個 key 在最前面有提到過，Treap 就是 BST + Heap，而 BST 就是負責維護節點的 key 有二元搜尋樹的性質，而 Heap 就是負責維護 priority 值有最大堆/最小堆的性質。
+Treap 本身就是一棵 BST ，而樹上每個節點都會維護一個 key 值，而這個 key 在最前面有提到過，Treap 就是 BST + Heap，而 BST 就是負責維護節點的 key 有二元搜尋樹的性質，而 Heap 就是負責維護 priority 值有最大堆/最小堆的性質。
 
 你可以根據題目需求去決定 Treap 上每個節點的 key 要維護哪些東西，也可以自行修改 key 的型態。
 
@@ -447,3 +470,5 @@ https://vjudge.net/problem/HDU-1506
 * https://cp-algorithms.com/data_structures/treap.html
 * https://usaco.guide/adv/treaps?lang=cpp
 * https://www.luogu.com.cn/blog/85514/fhq-treap-xue-xi-bi-ji
+* https://codeforces.com/blog/entry/84017
+* https://codeforces.com/blog/entry/108601
