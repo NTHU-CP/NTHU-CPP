@@ -11,12 +11,9 @@
   * 弧(Arc)：網路流圖上的一條帶權邊 \\((u, v) \in E\\)
   * 淨流：通過一條弧 \\((u, v)\\) 的流量(淨流)，記為 \\(f(u, v)\\)。
   * 容量(Capacity)：能通過一條弧 \\((u, v)\\) 的最大淨流，同時也是邊 \\((u, v)\\) 的權重，記為 \\(c(u, v)\\)。
-      <details>
-      <summary> 範例圖片 </summary>
 
-      ![](images/intro/intro_1.jpg)
+      ![](image/intro/intro_1.jpg)
 
-      </details>
   * 網路流圖：
     * 洽有一個源點。
     * 洽有一個匯點。
@@ -26,20 +23,14 @@
   * 可行流：滿足以下條件的網路流稱為可行流
     * 容量限制：\\(0 \leq f(u, v) \leq c(u, v)\\)。
     * 流量守恆：除了源點和匯點，其他點都必須滿足流入量=流出量。
-      <details>
-      <summary> 可行流範例圖片解釋 </summary>
 
-      ![](images/intro/intro_2.jpg)
+      ![](image/intro/intro_2.jpg)
 
-      </details>
   * 最大流：所有可行流當中流量最大的即為最大流，可能存在多種。
-      <details>
-      <summary> 最大流範例 </summary>
 
-      ![](images/intro/intro_3.jpg)
-      ![](images/intro/intro_4.jpg)
+      ![](image/intro/intro_3.jpg)
+      ![](image/intro/intro_4.jpg)
 
-      </details>
   * 剩餘容量(Residual Capacity)：記為 \\(c_{f}(u, v) = c(u, v) - f(u, v)\\)
   
   * 剩餘網路(Residual Network)：為由所有弧、其反向邊、不存在的邊，以及所有原本的點所組成的網路流圖，以定義來看的話，有以下關係。
@@ -47,31 +38,21 @@
     * \\(c_f(u, v) = c(u, v) - f(u, v)\ \ \ u, v \in G\\ \\)
     * \\(c_f(v, u) = f(u, v) \qquad \qquad \quad u, v \in G\\ \\)
     * \\(c_f = 0 \qquad \qquad \qquad \ \ otherwise\\)
-    <details>
-    <summary> 剩餘網路範例(省略不存在的邊) </summary>
 
-    ![](images/intro/intro_5.jpg)
+    ![](image/intro/intro_5.jpg)
 
-    </details>
 
     接下來的兩個演算法都會用到剩餘網路，也就是一開始都會建立反向邊。
 
   * 割(Cut)：
     * 割將網路流圖切分成兩集合 \\(S, T\\)，其中 \\(S \cap T = \emptyset\\) 且 \\(S \cup T = G\\)，其中 \\(s \in S\\)，\\(t \in T\\)。
     * 割的容量為所有在集合 \\(S\\) 中的點連向集合 \\(T\\) 中的點的弧容量總和。\\(c(S, T) = \sum_{u \in S} \sum_{v \in T} c(u, v)\\)
-    <details>
-      <summary> 割範例 </summary>
 
-      ![](images/intro/intro_6.jpg)
+      ![](image/intro/intro_6.jpg)
 
-      </details>
   * 最小割(Minimum cut)：所有割裡面容量最小的為最小割。
-    <details>
-      <summary> 最小割範例 </summary>
 
-      ![](images/intro/intro_7.jpg)
-
-      </details>
+      ![](image/intro/intro_7.jpg)
 
 # [最大流最小割定理(Max Flow Min Cut Theorem)](https://tmt514.github.io/algorithm-analysis/max-flow/max-flow-min-cut-theorem.html)
 
@@ -92,7 +73,7 @@
   * 條件(2) \\(\implies\\) 條件(3)：
     * 設集合 \\(S\\) 為剩餘網路上 \\(s\\) 能到達的點集合，以及集合 \\(T=V-S\\)，\\((S, T)\\) 為 \\(s-t\\) 割，因為已無增廣路徑，所以 \\(S\\) 中的點流到 \\(T\\) 中的點的邊全都達到飽和狀態，且 \\(T\\) 中的點流到 \\(S\\) 中的點的邊流量全都為 \\(0\\)，\\(\forall x \in S, \ \forall y \in T \\)，\\(f(x, y) = c(x, y) , \ \ f(y, x) = 0 \\)，故 \\( \sum_{x \in S,\ y \in T} \ f(x,\ y)= \sum_{x \in S, \ y \in T} \ c(x, y)= |c(S, T)| = |f| \\)
 
-    ![](images/prove_image_1.jpg)
+    ![](image/prove_image_1.jpg)
 
     此圖已無增廣路徑，圖中的紅色邊為飽和的弧，以這三條弧形成的割即為此圖上的最小割，割的容量 \\(c(S, T)\\) 為總流量 \\(f\\)。
 
