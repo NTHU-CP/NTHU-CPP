@@ -91,7 +91,7 @@
 
     <details>
       <summary> Template Code </summary>
-      
+
       ```cpp
       struct FordFulkerson {
         using ll = long long;
@@ -235,11 +235,9 @@
 
   * 和 Ford-Fulkerson 的正確性一樣，根據最大流最小割定理，找不到增廣路徑時，則當前網路上形成最大流。
   
-
-
   <details>
     <summary> Template Code </summary>
-    
+
     ```cpp
     struct EdmondsKarp {
       using ll = long long;
@@ -313,6 +311,7 @@
       }
     };
     ```
+
   </details>
 
 # 題目實作
@@ -324,7 +323,7 @@
 > * \\(N \leq 500 , \quad M \leq 1000\\)
 
 * 將每台電腦視為點，連結和速度分別視為弧和其容量，建完圖後將源點設為 \\(1\\)，匯點設為 \\(N\\)，最大流即為答案。
-      
+
     ```cpp
     int main(){
       int n, m, a, b, c, i;
@@ -400,7 +399,7 @@
   ![](image/EX_image_1.jpg)
 
 * 原點到男生節點容量為 1 保證了每個男生最多選擇一個女生，而每一個喜歡的關係都連邊代表有很多種選擇，而女生節點到匯點則代表最多被選擇一次。
-      
+
     ```cpp
     int main() {
       int n, m, k, a, b, i;
