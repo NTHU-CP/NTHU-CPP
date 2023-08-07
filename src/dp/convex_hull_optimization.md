@@ -14,13 +14,13 @@
 
 考慮 \\(O(n^2)\\) 的做法，令 \\(f(i)\\) 為殺掉第 \\(i\\) 關怪物所需花的最少時間。
 
-轉移式為：\\(f(i)=\underset{i>j}{\min}(f(j)+f_j\times s_i)\\)
+轉移式為：\\(f(i)=\underset{j<i}{\min}(f(j)+f_j\times s_i)\\)
 
 但是這個複雜度無法解決此題。
 
 ### 斜率單調 & 查詢單調
 
-我們觀察一下轉移式：\\(f(i)=\underset{i>j}{\min}(f(j)+f_j\times s_i)\\)。形式其實類似於 \\(y=ax+b\\)，其中 \\(a\\) 與 \\(b\\) 只和 \\(j\\) 有關、\\(x\\) 與 \\(y\\) 只和 \\(i\\) 有關。以剛剛的轉移式來說，對應關係如下：
+我們觀察一下轉移式：\\(f(i)=\underset{j<i}{\min}(f(j)+f_j\times s_i)\\)。形式其實類似於 \\(y=ax+b\\)，其中 \\(a\\) 與 \\(b\\) 只和 \\(j\\) 有關、\\(x\\) 與 \\(y\\) 只和 \\(i\\) 有關。以剛剛的轉移式來說，對應關係如下：
 
 \\[y=f(i)\\]
 \\[x=s_i\\]
@@ -145,7 +145,7 @@ int main(){
 
 一樣，我們先試著列出轉移式。令 \\(f(i)\\) 為前 \\(i\\) 個數字貢獻的價值（同時第 \\(i\\) 個元素為區間右界）。
 
-轉移式為：\\(f(i)=\underset{i>j}{\max}(f(j)-(i-j)^2+suf(i+1))\\)
+轉移式為：\\(f(i)=\underset{j<i}{\max}(f(j)-(i-j)^2+suf(i+1))\\)
 
 其中 \\(suf(k)\\) 是後綴和，範圍從 \\(k\\) 到 \\(n\\)。
 
@@ -347,15 +347,15 @@ int main(){
 
 先列轉移式。令 \\(f(i)\\) 為完成前 \\(i\\) 個任務的最小 cost。
 
-轉移式為：\\(f(i)=\underset{i>j}{\min}(\Sigma_{k=1}^i T_k \times \Sigma_{k=j+1}^i C_k+s \times \Sigma_{k=j+1}^n C_k+f(j))\\)
+轉移式為：\\(f(i)=\underset{j<i}{\min}(\Sigma_{k=1}^i T_k \times \Sigma_{k=j+1}^i C_k+s \times \Sigma_{k=j+1}^n C_k+f(j))\\)
 
 其中，\\(s \times \Sigma_{k=j+1}^n C_k\\) 這一項是為了計算 \\(s\\) 所影響的任務完成時刻。由於影響的時間與總共切幾個區間有關，這裡用類似前面例題 [TIOJ 1676 - 烏龜疊疊樂](https://tioj.ck.tp.edu.tw/problems/1676)，使用後綴和的想法，在每多切一個區間出來時就加上後綴因此而產生的 cost。
 
 接下來，我們將轉移式展開：
 
-\\(f(i)=\underset{i>j}{\min}(\Sigma_{k=1}^i T_k \times \Sigma_{k=j+1}^i C_k+s \times \Sigma_{k=j+1}^n C_k+f(j))\\)
-\\(=\underset{i>j}{\min}(pre_t(i) \times (pre_c(i)-pre_c(j))+s \times (pre_c(n)-pre_c(j))+f(j))\\)
-\\(=\underset{i>j}{\min}(-pre_t(i) \times pre_c(j)-s \times pre_c(j)+f(j))+pre_c(i) \times pre_t(i)+s \times pre_c(n)\\)
+\\(f(i)=\underset{j<i}{\min}(\Sigma_{k=1}^i T_k \times \Sigma_{k=j+1}^i C_k+s \times \Sigma_{k=j+1}^n C_k+f(j))\\)
+\\(=\underset{j<i}{\min}(pre_t(i) \times (pre_c(i)-pre_c(j))+s \times (pre_c(n)-pre_c(j))+f(j))\\)
+\\(=\underset{j<i}{\min}(-pre_t(i) \times pre_c(j)-s \times pre_c(j)+f(j))+pre_c(i) \times pre_t(i)+s \times pre_c(n)\\)
 
 其中 \\(pre_t(i)\\) 為 \\(T\\) 的前綴和，即 \\(\Sigma_{k=1}^i T_k\\)；\\(pre_c(i)\\) 為 \\(C\\) 的前綴和，即 \\(\Sigma_{k=1}^i C_k\\)。
 
@@ -458,7 +458,7 @@ int main(){
 
 令 \\(f(i)\\) 為殺掉第 \\(i\\) 關怪物所需花的最少時間。
 
-轉移式為：\\(f(i)=\underset{i>j}{\min}(f(j)+f_j\times s_i)\\)
+轉移式為：\\(f(i)=\underset{j<i}{\min}(f(j)+f_j\times s_i)\\)
 
 題目大致與 [CSES - Monster Game I](https://cses.fi/problemset/task/2084/) 相同，但此題不再保證 \\(f\\) 與 \\(s\\) 的單調性，意即斜率與查詢都不再單調。不過透過 CDQ 分治，我們可以「人為」創造出斜率的單調性。
 
@@ -806,9 +806,9 @@ int main(){
 
 令 \\f(i\\) 為考慮前 \\(i\\) 個矩形，且要取第 \\(i\\) 個矩形，所能得到的最大值。
 
-轉移式為：\\(f(i)=\underset{i>j}{\max}(x_i(y_i-y_j)+f(j)-a_i)\\)
+轉移式為：\\(f(i)=\underset{j<i}{\max}(x_i(y_i-y_j)+f(j)-a_i)\\)
 
-\\(=\underset{i>j}{\max}(f(j)-x_iy_j)+x_iy_i-a_i\\)
+\\(=\underset{j<i}{\max}(f(j)-x_iy_j)+x_iy_i-a_i\\)
 
 我們得到：
 
@@ -867,7 +867,7 @@ int main(){
 
 令 \\(f(i)\\) 為只砍 index 小於 \\(i\\) 的樹的情況下，砍掉第 \\(i\\) 棵樹的最小 cost。
 
-\\(f(i)=\underset{i>j}{\min}(f(j)+b_j \times a_i)\\)
+\\(f(i)=\underset{j<i}{\min}(f(j)+b_j \times a_i)\\)
 
 由轉移式我們得到：
 
