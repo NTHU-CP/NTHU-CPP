@@ -11,6 +11,7 @@
 - [Greedy](greedy/intro.md)
   - [Basic Greedy](greedy/basic.md)
 - [Dynamic Programming]()
+  - [Knuth's Optimization](Dynamic_Programming/Knuth_optimization.md)
 - [Graph]()
   - [Tree]()
     - [Lowest Common Ancestor](graph/lca.md)
