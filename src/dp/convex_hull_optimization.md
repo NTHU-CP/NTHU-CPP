@@ -85,24 +85,19 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef pair<int, int> pii;
-typedef long long ll;
-typedef pair<ll, ll> pll;
-#define X first
-#define Y second
-#define pf pop_front 
-#define pb pop_back
-#define eb emplace_back
-#define N 200005
+using ll = long long;
+using pll = pair<ll, ll>;
+const ll N = 200005;
 
-ll s[N], f[N];
+int s[N], f[N];
 ll dp[N];
 
 ll cal(ll x, pll line){
-    return x * line.X + line.Y;
+    return x * line.first + line.second;
 }
+
 bool cmp(pll line1, pll line2, pll line3){
-    return (line3.Y - line1.Y) * (line1.X - line2.X) <= (line2.Y - line1.Y) * (line1.X - line3.X); 
+    return (line3.second - line1.second) * (line1.first - line2.first) <= (line2.second - line1.second) * (line1.first - line3.first); 
 }
 
 int main(){
@@ -115,14 +110,21 @@ int main(){
         cin >> f[i];
     }
     deque <pll> dq;
-    dq.eb(f[0], 0);
+    dq.emplace_back(f[0], 0);
+
     for(int i = 1; i <= n; i++){
-        while(dq.size() >= 2 && cal(s[i], dq[0]) > cal(s[i], dq[1])) dq.pf();
+        while(dq.size() >= 2 && cal(s[i], dq[0]) > cal(s[i], dq[1])) dq.pop_front();
         dp[i] = cal(s[i], dq[0]);
+
         pll line(f[i], dp[i]);
-        while(dq.size() >= 2 && cmp(dq[dq.size() - 2], dq[dq.size() - 1], line)) dq.pb();
-        dq.eb(line);
+        int sz = dq.size();
+        while(sz >= 2 && cmp(dq[sz - 2], dq[sz - 1], line)){
+            dq.pop_back();   
+            sz--;
+        }
+        dq.emplace_back(line);
     }
+
     cout << dp[n] << "\n";
     return 0;
 }
@@ -189,11 +191,16 @@ int main(){
 
     ```cpp
     for(ll i = 1; i <= n; i++){
-        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])) dq.pf();
+        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])) dq.pop_front();
         dp[i] = cal(x[i], dq[0]);
+
         pll line(a[i], b[i]);
-        while(dq.size() >= 2 && cmp(dq[dq.size() - 2], dq[dq.size() - 1], line)) dq.pb();
-        dq.eb(line);
+        int sz = dq.size();
+        while(sz >= 2 && cmp(dq[sz - 2], dq[sz - 1], line)){
+            dq.pop_back();
+            sz--;
+        } 
+        dq.emplace_back(line);
     }
     ```
 
@@ -205,12 +212,17 @@ int main(){
 
     ```cpp
     for(ll i = 1; i <= n; i++){
-        while(dq.size() >= 1 && dq[0].idx < i - k) dq.pf();
-        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])) dq.pf();
+        while(dq.size() >= 1 && dq[0].idx < i - k) dq.pop_front();
+        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])) dq.pop_front();
         dp[i] = cal(x[i], dq[0]);
+
         pll line(a[i], b[i]);
-        while(dq.size() >= 2 && cmp(dq[dq.size() - 2], dq[dq.size() - 1], line)) dq.pb();
-        dq.eb(line);
+        int sz = dq.size();
+        while(sz >= 2 && cmp(dq[sz - 2], dq[sz - 1], line)){
+            dq.pop_back();
+            sz--;
+        } 
+        dq.emplace_back(line);
     }
     ```
 
@@ -242,14 +254,19 @@ int main(){
 
     ```cpp
     for(ll i = 1; i <= n; i++){
-        while(dq.size() >= 1 && dq[0].idx < i - k) dq.pf();
-        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])) dq.pf();
+        while(dq.size() >= 1 && dq[0].idx < i - k) dq.pop_front();
+        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])) dq.pop_front();
         dp[i] = cal(x[i], dq[0]);
+
         pll line(a[i], b[i]);
-        while(dq.size() >= 2 
-        && cmp(dq[dq.size() - 2], dq[dq.size() - 1], line)
-        && cal(x[dq[dq.size() - 2].idx], dq[dq.size() - 1]) <= cal(x[dq[dq.size() - 2].idx], line)) dq.pb();
-        dq.eb(line);
+        int sz = dq.size();
+        while(sz >= 2 
+        && cmp(dq[sz - 2], dq[sz - 1], line)
+        && cal(x[dq[sz - 2].idx], dq[sz - 1]) <= cal(x[dq[sz - 2].idx], line)){
+            dq.pop_back();
+            sz--;
+        } 
+        dq.emplace_back(line);
     }
     ```
 
@@ -264,27 +281,22 @@ int main(){
 #pragma GCC optimize("O2")
 using namespace std;
 
-typedef long long ll;
-typedef pair<ll, ll> pll;
-#define X first
-#define Y second
-#define io ios_base::sync_with_stdio(0); cin.tie(0);
-#define eb emplace_back
-#define pb pop_back
-#define pf pop_front
-#define N 500005
+using ll = long long;
+using pll = pair<ll, ll>;
+const ll N = 500005;
 
 ll a[N], suf[N], dp[N];
 
 ll cal(ll x, pll line){
-    return x * line.X + line.Y;
+    return x * line.first + line.second;
 }
+
 bool cmp(pll line1, pll line2, pll line3){
-    return (line3.Y - line1.Y) * (line1.X - line2.X) <= (line2.Y - line1.Y) * (line1.X - line3.X);
+    return (line3.second - line1.second) * (line1.first - line2.first) <= (line2.second - line1.second) * (line1.first - line3.first); 
 }
 
 int main(){
-    io
+    ios_base::sync_with_stdio(0); cin.tie(0);
     ll n, k;
     cin >> n >> k;
     for(int i = 1; i <= n; i++){
@@ -293,17 +305,24 @@ int main(){
     for(int i = n; i >= 1; i--){
         suf[i] = a[i] + suf[i + 1];
     }
+
     deque <pll> dq;
-    dq.eb(0, 0);
+    dq.emplace_back(0, 0);
     for(ll i = 1; i <= n; i++){
-        while(dq.size() >= 1 && dq[0].X < i-k) dq.pf();
-        while(dq.size() >= 2 && cal(2 * i, dq[0]) <= cal(2 * i, dq[1])) dq.pf();
+        while (dq.size() > 0 && dq[0].first < i-k) dq.pop_front();
+        while(dq.size() >= 2 && cal(2 * i, dq[0]) <= cal(2 * i, dq[1])) dq.pop_front();
         dp[i] = cal(2 * i, dq[0]) - i * i + suf[i + 1];
+
         pll line(i, dp[i] - i * i);
-        while(dq.size() >= 2
-            && cal(2 * (dq[dq.size() - 2].X + k), dq.back()) <= cal(2 * (dq[dq.size() - 2].X + k), line)
-            && cmp(dq[dq.size() - 2], dq.back(), line)) dq.pb();
-        dq.eb(line);
+        int sz = dq.size();
+        while(sz >= 2 
+            && cal(2 * (dq[sz - 2].first + k), dq.back()) <= cal(2 * (dq[sz - 2].first + k), line) 
+            && cmp(dq[sz - 2], dq.back(), line)
+        ){
+            sz--;    
+            dq.pop_back();
+        }
+        dq.emplace_back(line);
     }
     cout << dp[n] << "\n";
     return 0;
