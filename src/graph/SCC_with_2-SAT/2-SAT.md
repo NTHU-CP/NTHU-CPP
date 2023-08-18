@@ -41,18 +41,37 @@ SAT(Boolean satisfiability problem)中文為滿足性問題，給定一個布林
 若\\(a = true\\)，\\(b \\)必為\\( false \\) \
 若\\(b = true\\)，\\(a \\)必為\\( false \\) \
 <img src="image/xor.png" width="500" style="display:block; margin: 0 auto;"/>
+
 ### Aspvall, Plass & Tarjan Algorithm
 
 成功的將2-SAT轉成圖之後，要怎麼找出一組可行的解呢？
 或著，我們可以先想一下，在什麼情況下2-SAT問題可能無解？
 
-Aspvall 證明了，一組2-SAT問題如果有解,若且唯若不存在布林變數\\( X\\), such that \\(X \\)跟\\( \neg X \\)處於同一SCC中。
+我們可以發現，一組2-SAT問題如果有解,若且唯若不存在布林變數\\( X\\), such that \\(X \\)跟\\( \neg X \\)處於同一SCC中。
+
+<details><summary>Proof</summary>
+
+假設在某個強連通分量中，存在一個變數$v$及其否定$¬v$。這表示從節點$v$可以到達節點$¬v$，同時也表示從節點$¬v$可以到達節點$v$。
+而這是不可能的，如果要滿足這個條件，必須使變數$v$同時為True與False。
+    
+</details>
 
 於是我們就得到了一組\\( O(n) \\)檢查2-SAT是不是satisfiable的演算法。跑完Tarjan/Kosaraju找出所有SCC之後，對於所有變數\\(X \\)，檢查\\(X \\)跟\\( \neg X \\)是不是在同一個SCC中就好。
 
-Aspvall 也證明了，一組2-SAT問題如果有解，一樣能用\\( O(n) \\)的時間找出一組可行解。
+而一組2-SAT問題如果有解，一樣能用\\( O(n) \\)的時間找出一組可行解。
 
 先對所有找到的SCC縮點，接著依照拓樸排序的順序assign值給SCC內的所有點，若\\( X \\)是\\( true\\)，則\\( \neg X\\)自動assign \\( false \\)。當所有Variable都被assign了一個值，就是一組可行解。
+
+<details><summary>Proof</summary>
+
+假設有一個沒有矛盾的強連通分量，我們將一變數$v$設為True，則滿足所有$(v \lor \dots)$子句。
+同樣的，將$¬v$設為False，會滿足所有$(¬v \lor \dots)$子句。
+
+由於已經確定了對於所有變數$v$，都不存在必須使$v$同時為True與Fale的情況，我們可以不斷的assign值給變數，直到該SCC內的所有子句滿足為止。
+
+由於縮點後會是一個有向無環圖，代表我們可以依照拓樸排序assign值給各個SCC，而不使整張圖矛盾。
+    
+</details>
 
 ### Template Code
 
