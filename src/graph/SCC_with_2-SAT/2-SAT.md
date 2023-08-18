@@ -51,8 +51,8 @@ SAT(Boolean satisfiability problem)中文為滿足性問題，給定一個布林
 
 <details><summary>Proof</summary>
 
-假設在某個強連通分量中，存在一個變數$v$及其否定$¬v$。這表示從節點$v$可以到達節點$¬v$，同時也表示從節點$¬v$可以到達節點$v$。
-而這是不可能的，如果要滿足這個條件，必須使變數$v$同時為True與False。
+假設在某個強連通分量中，存在一個變數\\(v \\)及其否定\\(¬v \\)。這表示從節點\\(v \\)可以到達節點\\(¬v \\)，同時也表示從節點\\(¬v \\)可以到達節點\\(v \\)。
+而這是不可能的，如果要滿足這個條件，必須使變數\\(v \\)同時為True與False。
     
 </details>
 
@@ -60,14 +60,14 @@ SAT(Boolean satisfiability problem)中文為滿足性問題，給定一個布林
 
 而一組2-SAT問題如果有解，一樣能用\\( O(n) \\)的時間找出一組可行解。
 
-先對所有找到的SCC縮點，接著依照拓樸排序的順序assign值給SCC內的所有點，若\\( X \\)是\\( true\\)，則\\( \neg X\\)自動assign \\( false \\)。當所有Variable都被assign了一個值，就是一組可行解。
+先對所有找到的SCC縮點，接著依照拓樸排序的順序assign值給SCC內的所有點，若\\( X \\)是True，則\\( \neg X\\)自動assign成False。當所有Variable都被assign了一個值，就是一組可行解。
 
 <details><summary>Proof</summary>
 
-假設有一個沒有矛盾的強連通分量，我們將一變數$v$設為True，則滿足所有$(v \lor \dots)$子句。
-同樣的，將$¬v$設為False，會滿足所有$(¬v \lor \dots)$子句。
+假設有一個沒有矛盾的強連通分量，我們將一變數\\(v \\)設為True，則滿足所有\\( (v \lor \dots)\\)子句。
+同樣的，將\\(¬v \\)設為False，會滿足所有\\( (¬v \lor \dots) \\)子句。
 
-由於已經確定了對於所有變數$v$，都不存在必須使$v$同時為True與Fale的情況，我們可以不斷的assign值給變數，直到該SCC內的所有子句滿足為止。
+由於已經確定了對於所有變數\\(v \\)，都不存在必須使\\(v \\)同時為True與Fale的情況，我們可以不斷的assign值給變數，直到該SCC內的所有子句滿足為止。
 
 由於縮點後會是一個有向無環圖，代表我們可以依照拓樸排序assign值給各個SCC，而不使整張圖矛盾。
     
@@ -153,3 +153,11 @@ struct SAT { // 0-base
 不難看出這是一個2-SAT的問題，只需要把一對夫妻視為一對\\( (X, \neg X) \\)，而每個矛盾關係都是\\( \oplus \\)。
     
 </details>
+
+## Reference
+- 清大競技程式設計二 - 上課講義
+- [演算法筆記 - Connected Component ](https://web.ntnu.edu.tw/~algo/ConnectedComponent.html)
+- [2-Satisfiability (2-SAT) Problem - GeeksforGeeks](https://www.geeksforgeeks.org/2-satisfiability-2-sat-problem/)
+- [2-SAT Tutorial](https://codeforces.com/blog/entry/16205)
+- [2-SAT - OI Wiki](https://oi-wiki.org/graph/2-sat/)
+- [CP Algorithm - 2-SAT](https://cp-algorithms.com/graph/2SAT.html)
