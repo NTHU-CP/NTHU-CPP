@@ -406,12 +406,9 @@ int main(){
 #include <bits/stdc++.h>
 using namespace std;
 
-typedef long long ll;
-typedef pair<ll, ll> pll;
-#define X first
-#define Y second
-#define io ios_base::sync_with_stdio(0); cin.tie(0);
-#define N 300005
+using ll = long long;
+using pll = pair<ll, ll>;
+const ll N = 300005;
 
 ll pret[N], prec[N];
 ll dp[N];
@@ -419,10 +416,10 @@ pll v[N];
 ll sz;
 
 inline ll cal(ll x, pll line){
-    return x * line.X + line.Y;
+    return x * line.first + line.second;
 }
 inline bool cmp2(pll p1, pll p2, ll x){
-    return (p2.Y - p1.Y) > (p1.X - p2.X) * x;
+    return (p2.second - p1.second) > (p1.first - p2.first) * x;
 }
 inline pll find_line(ll x){
     int l = 0, r = sz - 2, mid, ans = r + 1;
@@ -436,12 +433,13 @@ inline pll find_line(ll x){
     }
     return v[ans];
 }
+
 inline bool cmp(pll line1, pll line2, pll line3){
-    return (__int128)(line3.Y - line1.Y) * (__int128)(line1.X - line2.X) <= (__int128)(line2.Y - line1.Y) * (__int128)(line1.X - line3.X); 
+    return (__int128)(line3.second - line1.second) * (__int128)(line1.first - line2.first) <= (__int128)(line2.second - line1.second) * (__int128)(line1.first - line3.first); 
 }
 
 int main(){
-    io
+    ios_base::sync_with_stdio(0); cin.tie(0);
     ll n, s;
     cin >> n >> s;
     for(int i = 1; i <= n; i++){
@@ -449,6 +447,7 @@ int main(){
         pret[i] += pret[i - 1];
         prec[i] += prec[i - 1];
     }
+
     v[sz++] = pll(0, 0);
     for(int i = 1; i <= n; i++){
         pll fl = find_line(pret[i]);
@@ -507,28 +506,25 @@ CDQ 分治的過程就是對於一個序列 \\([l, r]\\)，我們先遞迴解決
 #pragma GCC optimize("O2")
 using namespace std;
 
-typedef pair<int, int> pii;
-typedef long long ll;
-typedef pair<ll, ll> pll;
-#define X first
-#define Y second
-#define eb emplace_back
-#define pb pop_back
-#define N 200005
+using ll = long long;
+using pii = pair<int, int>;
+using pll = pair<ll, ll>;
+const ll N = 200005;
 const ll INF = 1e14;
 
-ll dp[N], s[N], f[N];
+int s[N], f[N];
+ll dp[N];
 
 ll cal(pll line, ll x){
-    return x * line.X + line.Y;
+    return x * line.first + line.second;
 }
 
 ll cmp2(pll p1, pll p2, ll x){
-    return (p2.Y - p1.Y) > (p1.X - p2.X) * x;
+    return (p2.second - p1.second) > (p1.first - p2.first) * x;
 }
 
 bool cmp(pll line1, pll line2, pll line3){
-    return (line3.Y - line1.Y) * (line1.X - line2.X) <= (line2.Y - line1.Y) * (line1.X - line3.X); 
+    return (line3.second - line1.second) * (line1.first - line2.first) <= (line2.second - line1.second) * (line1.first - line3.first); 
 }
 
 pll find_line(vector <pll> v, ll x){
@@ -547,7 +543,7 @@ pll find_line(vector <pll> v, ll x){
 vector <pll> solve(int l, int r){
     vector <pll> v;
     if(l == r){
-        v.eb(f[l], dp[l]);
+        v.emplace_back(f[l], dp[l]);
         return v;
     }
     int mid = (l + r) >> 1;
@@ -558,13 +554,14 @@ vector <pll> solve(int l, int r){
         dp[i] = min(dp[i], cal(fl, s[i]));
     }
     vector <pll> v2 = solve(mid + 1, r);
+
     int idx1 = 0, idx2 = 0;
     while(idx1 < v1.size() || idx2 < v2.size()){
         pll pl;
         if(idx2 >= v2.size() || (idx1 < v1.size() && v1[idx1] >= v2[idx2])) pl = v1[idx1++];
         else pl = v2[idx2++];
-        while(v.size() >= 2 && cmp(v[v.size() - 2], v.back(), pl)) v.pb();
-        v.eb(pl);
+        while(v.size() >= 2 && cmp(v[v.size() - 2], v.back(), pl)) v.pop_back();
+        v.emplace_back(pl);
     }
     return v;
 }
@@ -665,45 +662,48 @@ int main(){
 #pragma GCC optimize("O2")
 using namespace std;
 
-typedef pair<int, int> pii;
-typedef long long ll;
-typedef pair<ll, ll> pll;
-#define X first
-#define Y second
-#define N 1000005
+using ll = long long;
+using pii = pair<int, int>;
+using pll = pair<ll, ll>;
+const ll N = 1000005;
 const ll INF = 1e18;
 
-ll s[N], f[N];
+int s[N], f[N];
 ll dp[N];
-pll seg[N * 4];
 
-ll cal(pll line, ll x){
-    return line.X * x + line.Y;
-}
+struct LiChao{
+    int n;
+    vector <pll> seg;
+    LiChao(int _n): n(_n){
+        seg.assign(4 * n + 5, pll(0, INF));
+    }
 
-void insert(int l, int r, int id, pll line){
-    if(l == r){
-        if(cal(line, l) < cal(seg[id], l)) seg[id] = line;
-        return;
+    ll cal(pll line, ll x){
+        return line.first * x + line.second;
     }
-    int mid = (l + r) >> 1;
-    if(line.X > seg[id].X) swap(line, seg[id]);
-    if(cal(line, mid) <= cal(seg[id], mid)){
-        insert(l, mid, id * 2, seg[id]);
-        seg[id] = line;
+    void insert(int l, int r, int id, pll line){
+        if(l == r){
+            if(cal(line, l) < cal(seg[id], l)) seg[id] = line;
+            return;
+        }
+        int mid = (l + r) >> 1;
+        if(line.first > seg[id].first) swap(line, seg[id]);
+        if(cal(line, mid) <= cal(seg[id], mid)){
+            insert(l, mid, id * 2, seg[id]);
+            seg[id] = line;
+        }
+        else{
+            insert(mid + 1, r, id * 2 + 1, line);
+        }
     }
-    else{
-        insert(mid + 1, r, id * 2 + 1, line);
+    ll query(int l, int r, int id, ll x){
+        if(x < l || x > r) return INF;
+        if(l == r) return cal(seg[id], x);
+        int mid = (l + r) >> 1;
+        ll val = x <= mid ? query(l, mid, id * 2, x) : query(mid + 1, r, id * 2 + 1, x);
+        return min(val, cal(seg[id], x));
     }
-}
-
-ll query(int l, int r, int id, ll x){
-    if(x < l || x > r) return INF;
-    if(l == r) return cal(seg[id], x);
-    int mid = (l + r) >> 1;
-    ll val = x <= mid ? query(l, mid, id * 2, x) : query(mid + 1, r, id * 2 + 1, x);
-    return min(val, cal(seg[id], x));
-}
+};
 
 int main(){
     int n, x;
@@ -714,13 +714,11 @@ int main(){
     for(int i = 1; i <= n; i++){
         cin >> f[i];
     }
-    for(int i = 1; i <= 4e6; i++){
-        seg[i] = pll(0, INF);
-    }
-    insert(1, 1e6, 1, pll(x, 0));
+    LiChao lt(N);
+    lt.insert(1, 1e6, 1, pll(x, 0));
     for(int i = 1; i <= n; i++){
-        dp[i] = query(1, 1e6, 1, s[i]); 
-        insert(1, 1e6, 1, pll(f[i], dp[i]));
+        dp[i] = lt.query(1, 1e6, 1, s[i]); 
+        lt.insert(1, 1e6, 1, pll(f[i], dp[i]));
     }
     cout << dp[n] << "\n";
     return 0;
