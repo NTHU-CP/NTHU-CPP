@@ -651,6 +651,49 @@ int main(){
     }
     ```
 
+我們可以將以上兩種操作包成 template code 以方便使用：
+
+<details><summary> Template Code </summary>
+
+```cpp
+struct LiChao{
+    int n;
+    vector <pll> seg;
+    LiChao(int _n): n(_n){
+        seg.assign(4 * n + 5, pll(0, INF));
+    }
+
+    ll cal(pll line, ll x){
+        return line.first * x + line.second;
+    }
+    void insert(int l, int r, int id, pll line){
+        if(l == r){
+            if(cal(line, l) < cal(seg[id], l)) seg[id] = line;
+            return;
+        }
+        int mid = (l + r) >> 1;
+        if(line.first > seg[id].first) swap(line, seg[id]);
+        if(cal(line, mid) <= cal(seg[id], mid)){
+            insert(l, mid, id * 2, seg[id]);
+            seg[id] = line;
+        }
+        else{
+            insert(mid + 1, r, id * 2 + 1, line);
+        }
+    }
+    ll query(int l, int r, int id, ll x){
+        if(x < l || x > r) return INF;
+        if(l == r) return cal(seg[id], x);
+        int mid = (l + r) >> 1;
+        ll val = x <= mid ? query(l, mid, id * 2, x) : query(mid + 1, r, id * 2 + 1, x);
+        return min(val, cal(seg[id], x));
+    }
+};
+```
+
+</details>
+<br>
+
 ---
 
 現在我們來看題目，一樣是 [CSES - Monster Game II](https://cses.fi/problemset/task/2085)，但這次我們考慮李超線段樹的作法。想法很直觀，我們只要先在李超樹上查詢最小值以得到當前 dp 值，再將新的線插入樹中就好。時間複雜度 \\(O(n\log n)\\)。
