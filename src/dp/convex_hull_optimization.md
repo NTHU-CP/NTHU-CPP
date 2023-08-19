@@ -27,7 +27,7 @@
 \\[a=f_j\\]
 \\[b=f(j)\\]
 
-因此對於所有的 \\(j\\)，我們可以將所有的 \\(y=ax+b\\) 在座標平面上畫出來。在求 \\(f(i)\\) 時，我們的題目便轉變成：給定一個 \\(x\\)，也就是給定 \\(s_i\\) ，求他帶入一個直線集合中，哪一條能有最小的 \\(y\\)，也就是哪個 \\(j\\) 能有最小的 \\(f(j) + f_j * s_i\\)
+因此對於所有的 \\(j\\)，我們可以將所有的 \\(y=ax+b\\) 在座標平面上畫出來。在求 \\(f(i)\\) 時，我們的題目便轉變成：給定一個 \\(x\\)，也就是給定 \\(s_i\\) ，求他帶入一個直線集合中，哪一條能有最小的 \\(y\\)，也就是哪個 \\(j\\) 能有最小的 \\(f(j) + f_j \times s_i\\)
 
 接下來便要思考如何找最小值。如果要代入每一條直線再取極值才能找到答案，並不會優化複雜度，但我們可以來觀察一下這個線集，應該會長類似這個樣子：
 
@@ -143,7 +143,7 @@ int main(){
 > [TIOJ 1676 - 烏龜疊疊樂](https://tioj.ck.tp.edu.tw/problems/1676)
 >
 > 給定一個長度為 \\(n\\) 的陣列與一個整數 \\(k\\)，你可以將陣列切成數段連續的區間，區間大小不能超過 \\(k\\)，求切完之後的最大價值。
-> 一段長度為 \\(x\\)、為整個陣列由左至右數來第 \\(m\\) 個區間，其價值被定義為 \\((m-1)\times \Sigma^r_{i=l}a_i-x^2\\)。其中 \\(l\\)、\\(r\\) 分別為區間左右界、\\(a_i\\) 為陣列中第 \\(i\\) 個值。
+> 一段長度為 \\(x\\)、為整個陣列由左至右數來第 \\(m\\) 個區間，其價值被定義為 \\((m-1)\times \sum\limits^r_{i=l}a_i-x^2\\)。其中 \\(l\\)、\\(r\\) 分別為區間左右界、\\(a_i\\) 為陣列中第 \\(i\\) 個值。
 >
 > - \\(1 \leq k \leq n \leq 500000\\)
 
@@ -153,15 +153,15 @@ int main(){
 
 其中 \\(suf(i+1)\\) 是後綴和，範圍從 \\(i+1\\) 到 \\(n\\)。
 
-除了 \\(suf(i+1)\\) 這一項外，其他部分還蠻直觀的。而 \\(suf(i+1)\\) 這一項對應到題目的 \\((m-1)\times \Sigma^r_{i=l}a_i\\)，我們看一張示意圖以更好理解 \\(suf(i+1)\\) 的意義：
+除了 \\(suf(i+1)\\) 這一項外，其他部分還蠻直觀的。而 \\(suf(i+1)\\) 這一項對應到題目的 \\((m-1)\times \sum\limits^r_{i=l}a_i\\)，我們看一張示意圖以更好理解 \\(suf(i+1)\\) 的意義：
 
 <img src="image/convex_hull_optimization/tioj1676_formula_1.png" width="500" style="display:block; margin: 0 auto;"/>
 
-上面的示意圖對每個區間畫出了其 \\((m-1)\times \Sigma^r_{i=l}a_i\\) 的值。我們可以將它們重新分割變成下面這樣：
+上面的示意圖對每個區間畫出了其 \\((m-1)\times \sum\limits^r_{i=l}a_i\\) 的值。我們可以將它們重新分割變成下面這樣：
 
 <img src="image/convex_hull_optimization/tioj1676_formula_2.png" width="500" style="display:block; margin: 0 auto;"/>
 
-可以發現這每一塊其實就是一段後綴，而且每個後綴的起點對應到每個區間的起點（除了第一個區間不考慮）。我們轉移式中的 \\(i\\) 是區間終點，因此 \\(i+1\\) 便對應到區間起點。而所有的 \\(suf(i+1)\\) 加起來，就對應到所有區間的 \\((m-1)\times \Sigma^r_{i=l}a_i\\)，這個部分的總和。
+可以發現這每一塊其實就是一段後綴，而且每個後綴的起點對應到每個區間的起點（除了第一個區間不考慮）。我們轉移式中的 \\(i\\) 是區間終點，因此 \\(i+1\\) 便對應到區間起點。而所有的 \\(suf(i+1)\\) 加起來，就對應到所有區間的 \\((m-1)\times \sum\limits^r_{i=l}a_i\\)，這個部分的總和。
 
 瞭解轉移式的推導後，我們回來觀察這個轉移式。它看起來與 \\(y=ax+b\\) 的形式不太像，但我們試著將它展開：
 
@@ -368,17 +368,17 @@ int main(){
 
 先列轉移式。令 \\(f(i)\\) 為完成前 \\(i\\) 個任務的最小 cost。
 
-轉移式為：\\(f(i)=\underset{j<i}{\min}(\Sigma_{k=1}^i T_k \times \Sigma_{k=j+1}^i C_k+s \times \Sigma_{k=j+1}^n C_k+f(j))\\)
+轉移式為：\\(f(i)=\underset{j<i}{\min}(\sum\limits_{k=1}^i T_k \times \sum\limits_{k=j+1}^i C_k+s \times \sum\limits_{k=j+1}^n C_k+f(j))\\)
 
-其中，\\(s \times \Sigma_{k=j+1}^n C_k\\) 這一項是為了計算 \\(s\\) 所影響的任務完成時刻。由於影響的時間與總共切幾個區間有關，這裡用類似前面例題 [TIOJ 1676 - 烏龜疊疊樂](https://tioj.ck.tp.edu.tw/problems/1676)，使用後綴和的想法，在每多切一個區間出來時就加上後綴因此而產生的 cost。
+其中，\\(s \times \sum\limits_{k=j+1}^n C_k\\) 這一項是為了計算 \\(s\\) 所影響的任務完成時刻。由於影響的時間與總共切幾個區間有關，這裡用類似前面例題 [TIOJ 1676 - 烏龜疊疊樂](https://tioj.ck.tp.edu.tw/problems/1676)，使用後綴和的想法，在每多切一個區間出來時就加上後綴因此而產生的 cost。
 
 接下來，我們將轉移式展開：
 
-\\(f(i)=\underset{j<i}{\min}(\Sigma_{k=1}^i T_k \times \Sigma_{k=j+1}^i C_k+s \times \Sigma_{k=j+1}^n C_k+f(j))\\)
+\\(f(i)=\underset{j<i}{\min}(\sum\limits_{k=1}^i T_k \times \sum\limits_{k=j+1}^i C_k+s \times \sum\limits_{k=j+1}^n C_k+f(j))\\)
 \\(=\underset{j<i}{\min}(pre_t(i) \times (pre_c(i)-pre_c(j))+s \times (pre_c(n)-pre_c(j))+f(j))\\)
 \\(=\underset{j<i}{\min}(-pre_t(i) \times pre_c(j)-s \times pre_c(j)+f(j))+pre_c(i) \times pre_t(i)+s \times pre_c(n)\\)
 
-其中 \\(pre_t(i)\\) 為 \\(T\\) 的前綴和，即 \\(\Sigma_{k=1}^i T_k\\)；\\(pre_c(i)\\) 為 \\(C\\) 的前綴和，即 \\(\Sigma_{k=1}^i C_k\\)。
+其中 \\(pre_t(i)\\) 為 \\(T\\) 的前綴和，即 \\(\sum\limits_{k=1}^i T_k\\)；\\(pre_c(i)\\) 為 \\(C\\) 的前綴和，即 \\(\sum\limits_{k=1}^i C_k\\)。
 
 我們可以得到：
 \\[y=f(i)\\]
@@ -901,7 +901,7 @@ int main(){
 
 令 \\(f(i, j)\\) 為前 \\(i\\) 個 feeder 帶走前 \\(j\\) 隻貓所需的最小 cost。
 
-則轉移式為：\\(f(i, j)=\underset{j>k}{\min}(f(i-1, k)-\Sigma_{p=k+1}^j\space t_p+t_j \times (j-k))\\)
+則轉移式為：\\(f(i, j)=\underset{j>k}{\min}(f(i-1, k)-\sum\limits_{p=k+1}^j\space t_p+t_j \times (j-k))\\)
 
 \\(=\underset{j>k}{\min}(f(i-1, k)-suf(k+1)+suf(j+1)+t_{j} \times (j-k))\\)
 
@@ -981,7 +981,7 @@ int main(){
 
 令 \\(f(i, j)\\) 為將前 \\(j\\) 個 elements 分成 \\(i\\) 個 subarrays 的最小 cost。
 
-\\(f(i, j)=\underset{j>k}{\min}(f(i-1, k)+(\Sigma_{t=k+1}^{j}x_t)^2)\\)
+\\(f(i, j)=\underset{j>k}{\min}(f(i-1, k)+(\sum\limits_{t=k+1}^{j}x_t)^2)\\)
 
 \\(=\underset{j>k}{\min}(f(i-1, k)+(pre_{j}-pre_k)^2)\\)
 
