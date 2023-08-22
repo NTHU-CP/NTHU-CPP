@@ -44,3 +44,4 @@
 - [Useful Resources](others/useful_resources.md)
 - [CSES Problem Tag]()
 - [Happy Winter Training Camp](others/hwtc.md)
+- [Weekly Happy Meeting](others/happy_meeting.md)
