@@ -63,9 +63,9 @@ Treap 本身就是一棵 BST ，而樹上每個節點都會維護一個 key 值�
 
 ```cpp!
 struct node{
-    node *l = NULL,*r = NULL;
+    node *l = NULL, *r = NULL;
     int key;
-    int pri = rand();//在新建一個節點時 priority 值就已經隨機賦予了。
+    int pri = rand(); //在新建一個節點時 priority 值就已經隨機賦予了。
     node(int x) : key(x) {}
 };
 ```
