@@ -4,20 +4,22 @@
 
 Segment Tree Beats（簡稱 STB）是北京大學的吉如一提出的概念，發表在《区间最值操作与历史最值问题》[^note-1]中。
 
-STB 可以滿足下列兩項性質：
+STB 可以達到下列兩個目的：
 
 1. 將區間最值操作轉換成區間加減操作，在 \\( O(logn) \\) 的時間複雜度內完成
 2. 將歷史最值問題轉換成區間最值操作，在 \\( O(1) \\) 的時間複雜度內完成（這裡的歷史最值問題是指區間加減，詢問區間歷史最值的和）
+
+區間最值操作指的是，給定 \\( L, R, x \\)，對所有 \\( i \in [L, R] \\)，將 \\( a_i \\) 修改成 \\( min(a_i, x) \\) 或 \\( max(a_i, x) \\)。
 
 考慮以下問題：
 
 > 例題 1. [HDU - Gorgeous Sequence](http://acm.hdu.edu.cn/showproblem.php?pid=5306)
 >
-> 給一個長度為 \\( n \\) 的序列 \\( A \\)，並對其進行 \\( m \\) 筆操作。操作有三種：
+> 給一個長度為 \\( n \\) 的序列 \\( a \\)，並對其進行 \\( m \\) 筆操作。操作有三種：
 >
-> 1. 給定 \\( L, R, x \\)，對所有 \\( i, (L \leq i \leq R) \\)，將 \\( A_i \\) 修改成 \\( min(A_i, x) \\)。
-> 2. 給定 \\( L, R \\)，對所有 \\( i, (L \leq i \leq R) \\)，輸出 \\( A_i \\) 的最大值。
-> 3. 給定 \\( L, R \\)，對所有 \\( i, (L \leq i \leq R) \\)，輸出 \\( \sum_{i = L}^{R} A_i \\)。
+> 1. 給定 \\( L, R, x \\)，對所有 \\( i \in [L, R] \\)，將 \\( a_i \\) 修改成 \\( min(a_i, x) \\)。
+> 2. 給定 \\( L, R \\)，對所有 \\( i \in [L, R] \\)，輸出 \\( a_i \\) 的最大值。
+> 3. 給定 \\( L, R \\)，對所有 \\( i \in [L, R] \\)，輸出 \\( \sum_{i = L}^{R} a_i \\)。
 >
 > - \\( n, m \leq 10^6 \\)
 
@@ -27,7 +29,9 @@ STB 可以滿足下列兩項性質：
 
 考慮下面這一種解法：
 
-對線段樹每一個節點除了維護區間和 \\( sum \\) 之外，還要額外維護區間中的最大值 \\( mx1 \\)，嚴格次大值 \\( mx2 \\) 以及最大值個數 \\( cmx \\)。
+對線段樹每一個節點除了維護區間和 \\( sum \\)、區間最大值 \\( mx1 \\) 之外，還要額外維護嚴格次大值 \\( mx2 \\) 以及最大值個數 \\( cmx \\)。
+
+第二三種操作就是普通線段樹，直接更新就好。現在讓我們來考慮第一種操作。
 
 讓區間 \\( [L, R] \\) 對 \\( x \\) 取 \\( min \\)，我們先在線段樹中定位這個區間，對定位的每一個節點，我們開始暴力搜尋。搜尋到每一個節點時，我們分三種情況討論：
 
@@ -37,22 +41,27 @@ STB 可以滿足下列兩項性質：
 
 如下圖所示，左圖是一棵建立在 \\( [1, 4] \\) 上的線段樹，每一個節點紀錄的資訊的左側是區間最大值，右側是嚴格次大值。現在我們要讓區間 \\( [1, 4] \\) 對 \\( 2 \\) 取 \\( min \\)。那麼左圖中紅色邊表示搜尋時經過的邊，紅色字體的節點表示正在拜訪的節點，右圖為更新後的線段樹。
 
-<img src="image/segment_tree_beats/1-1.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree/segment_tree_beats/1-1.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 ### 觀察性質
 
-- 一個節點的區間次大值，相當於子樹中標記的最大值。
-- 只有在 \\( mx2 \geq x \\) 時，我們會拜訪更多節點。換句話說，只有在子樹的所有標記都小於新標記，我們才打標記。
+- 一個節點的嚴格次大值，相當於子樹中的區間最大值。以更新後的線段樹為例，根結點的嚴格次大值為 \\( 1 \\)，相當於子樹中階層為 \\( 3 \\) 最左邊節點的區間最大值。
+
+<img src="image/segment_tree/segment_tree_beats/2-0.jpg" width="700" style="display:block; margin: 0 auto;"/>
+
+- 狀況一和狀況二都與普通線段樹一樣，只有在狀況三（\\( mx2 \geq x \\)）時，我們會需要左右遞迴子樹，拜訪更多節點。換句話說，只有在子樹的所有標記都大於新標記，我們才打標記。
 
 ### 時間複雜度
 
+直覺上這個做法時間複雜度很差，不過事實上因為取 \\( min \\) 的性質，均攤下來後時間複雜度很好。
+
 現在我們來證明這個算法的時間複雜度是 \\( O((n + m) \log n) \\)。
 
-我們把最大值當作標記。接著如果一個點的標記值與父節點的標記值相同，就把此點的標記刪除，大致轉換如下圖所示（左圖紀錄的是線段樹中的最大值，右圖為轉換後的線段樹）：
+觀察之前讓區間 \\( [1, 4] \\) 對 \\( 2 \\) 取 \\( min \\) 的操作，每一個節點上記錄的是區間最大值。給節點打完標記後，如果一個點的標記值與父節點的標記值相同，就把此點的標記刪除，大致流程如下圖所示（左圖中紅色邊表示搜尋時經過的邊，紅色字體的節點表示正在拜訪的節點，右圖為更新後的線段樹）：
 
-<img src="image/segment_tree_beats/2-1.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree/segment_tree_beats/2-1.gif" width="700" style="display:block; margin: 0 auto;"/>
 
-在轉換之後，我們可以發現每一個位置實際的值等於從它對應的線段樹葉節點出發，向上走遇到的第一個標記值。這些標記滿足：每個點的標記值都嚴格大於子樹中的所有標記值。
+我們可以發現每一個位置實際的值等於從它對應的線段樹葉節點出發，向上走遇到的第一個標記值。這些標記滿足：每個點的標記值都嚴格大於子樹中的所有標記值。
 
 定義標記類的概念：
 
@@ -62,30 +71,30 @@ STB 可以滿足下列兩項性質：
 
 接著定義權值 \\( w(T) \\)（\\( T \\) 為標記類）為在子樹中擁有至少一個屬於標記類 \\( T \\) 的節點數，也就是打標記時經過的點數；勢能 \\( \Phi(x) \\) 為線段樹中所有標記類的 \\( w(T) \\) 總和。
 
-以上面的例子為例，階層為 \\( 3 \\) 的右邊兩個節點的標記屬於同一類，假設這類為 \\( T \\)，因為打標記時有經過兩個節點，所以 \\( w(T) \\)為 \\( 2 \\)。
+以上面的例子為例，階層為 \\( 3 \\) 的右邊兩個節點的標記屬於同一類，假設這類為 \\( T \\)，因為打標記時有經過兩個節點，所以 \\( w(T) \\) 為 \\( 2 \\)。
 
-<img src="image/segment_tree_beats/2-2.jpg" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree/segment_tree_beats/2-2.jpg" width="600" style="display:block; margin: 0 auto;"/>
 
 依次分析三項對勢能產生影響的操作：添加新標記類、標記下傳、標記回收
 
 1. 考慮一次區間取 \\( min \\) 操作，只會添加一個新的標記類 \\( T \\)，它的權值等於我們打標記時經過的節點數。線段樹深度是 \\( O( \lceil \log n \rceil + 1 ) = O( \log n) \\)，打標記時經過的節點數最多也是 \\( O( \log n) \\)，所以 \\( w(T) \\) 是 \\( O( \log n) \\)。
 
-<img src="image/segment_tree_beats/2-3.jpg" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree/segment_tree_beats/2-3.jpg" width="600" style="display:block; margin: 0 auto;"/>
 
 2. 考慮一次標記下傳，只讓標記類 \\( T \\) 的權值 \\( w(T) \\) 增加 \\( O(1) \\)。
 3. 當 \\( mx2 \geq x \\) 時，也就是情況三發生時，要進行遞迴搜尋，因為父節點的標記一定跟其中一個子節點一樣，所以每到一個節點至少回收一個標記，那麼 \\( \Phi(x) \\) 減少了 \\( O(1) \\)。
 
-<img src="image/segment_tree_beats/2-4.gif" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree/segment_tree_beats/2-4.gif" width="600" style="display:block; margin: 0 auto;"/>
 
-### 透過勢能得到時間複雜度
+### 透過均攤分析得到時間複雜度
 
 線段樹中最多存在 \\( n \\) 個標記，每個標記的權值 \\( w(T) \\) 是 \\( O( \log n) \\)。因為 \\( \Phi(x) \\) 是 \\( n \\) 個標記權值總和，所以 \\( \Phi(x) \\) 的初始值是 \\( O(n \log n) \\)。
 
 現在來計算 \\( m \\) 次區間取 \\( min \\) 操作的勢能變化量：
 
 1. 添加 \\( m \\) 個新標記類，\\( \Phi(x) \\) 增加 \\( O(m \log n) \\)。
-2. 標記下傳在一次操作中會進行 \\( O( \log n) \\) 次，每次讓\\( \Phi(x) \\) 增加 \\( O(1) \\)。因此 \\( m \\) 次操作讓 \\( \Phi(x) \\) 總共增加 \\( O(m \log n) \\)。
-3. 父節點對子節點進行標記回收，一定是父節點曾下傳標記給子節點，或曾打標記在子節點上。因此，的時間複雜度不會超過標記下傳和打標記的時間複雜度之和，所以 \\( m \\) 次操作讓 \\( \Phi(x) \\) 總共減少 \\( O(m \log n) \\)。
+2. 標記下傳在一次操作中會進行 \\( O( \log n) \\) 次，每次讓 \\( \Phi(x) \\) 增加 \\( O(1) \\)。因此 \\( m \\) 次操作讓 \\( \Phi(x) \\) 總共增加 \\( O(m \log n) \\)。
+3. 父節點對子節點進行標記回收，一定是父節點曾下傳標記給子節點，或曾打標記在子節點上。因此，標記回收的時間複雜度不會超過打標記和標記下傳的時間複雜度之和，所以 \\( m \\) 次操作讓 \\( \Phi(x) \\) 總共減少 \\( O(m \log n) \\)。
 
 勢能的總變化量為 \\( O(m \log n) \\)。
 
@@ -101,9 +110,9 @@ struct STB {
     struct Node {
         ll sum;
         int l, r, mx1, mx2, cmx, tag;
-    } T[n << 4];
+    } T[N << 4];
 
-    void pushup(int u) {
+    void pull(int u) {
         T[u].sum = T[ls].sum + T[rs].sum;
         if (T[ls].mx1 == T[rs].mx1){
             T[u].mx1 = T[ls].mx1;
@@ -120,7 +129,7 @@ struct STB {
         }
     }
 
-    void pushdown(int u) {
+    void push(int u) {
         if (T[u].tag == -1) return;
         if (T[ls].mx1 > T[u].tag) {
             T[ls].sum += 1LL * T[ls].cmx * (T[u].tag - T[ls].mx1);
@@ -137,7 +146,7 @@ struct STB {
         T[u].tag = -1;
         T[u].l = l, T[u].r = r;
         if (l == r) {
-            T[u].sum = T[u].mx1 = A[l];
+            T[u].sum = T[u].mx1 = a[l];
             T[u].mx2 = -1;
             T[u].cmx = 1;
             return;
@@ -145,7 +154,7 @@ struct STB {
         int mid = (l+r) >> 1;
         build(ls, l, mid);
         build(rs, mid+1, r);
-        pushup(u);
+        pull(u);
     }
 
     void chmin(int L, int R, int x, int u = 1) {
@@ -156,18 +165,18 @@ struct STB {
             T[u].mx1 = T[u].tag = x;
             return;
         }
-        pushdown(u);
+        push(u);
         int mid = (l+r) >> 1;
         if (L <= mid) chmin(L, R, x, ls);
         if (R > mid) chmin(L, R, x, rs);
-        pushup(u);
+        pull(u);
     }
 
     pair<ll, int> query(int L, int R, int u = 1) {
         int l = T[u].l, r = T[u].r;
         if (L <= l && r <= R)
-            return make_pair(T[u].sum, T[u].mx1);
-        pushdown(u);
+            return {T[u].sum, T[u].mx1};
+        push(u);
         ll sum = 0; int mx1 = 0;
         int mid = (l+r) >> 1;
         if (L <= mid) {
@@ -180,43 +189,64 @@ struct STB {
             sum += r2.first;
             mx1 = max(mx1, r2.second);
         }
-        return make_pair(sum, mx1);
+        return {sum, mx1};
     }
-};
+}stb;
+
+int main() {
+    scanf("%d", &t);
+    while (t--) {
+        scanf("%d%d", &n, &m);
+        for (int i = 1; i <= n; i++) scanf("%d", &a[i]);
+        stb.build();
+        for(int i = 1; i <= m; i++) {
+            scanf("%d%d%d", &p, &x, &y);
+            if (p == 0) {
+                scanf("%d", &z);
+                stb.chmin(x, y, z);
+            }
+            auto ans = stb.query(x, y);
+            if (p == 1) printf("%d\n", ans.second);
+            if (p == 2) printf("%lld\n", ans.first);
+        }
+    }
+}
 ```
 
 </details>
 
 ### 歷史最值問題
 
-我們通常需要對一個數組 \\( A \\) 進行多次操作，然後進行一些詢問。少部分問題需要對歷史版本進行詢問，稱為歷史最值問題。我們先來介紹三類歷史最值問題：
+我們通常需要對一個序列 \\( a \\) 進行多次操作，然後進行一些詢問。對歷史版本進行的詢問，稱為歷史最值問題。我們先來介紹三類歷史最值問題：
 
 #### 歷史最大值
 
-當前位置下曾經出現過的數的最大值。定義一個輔助數組 \\( B \\)，最開始 \\( B \\) 數組與 \\( A \\) 數組完全相同。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( B_i = max(B_i, A_i) \\)。這時，我們將 \\( B_i \\) 稱作 \\( i \\) 這個位置的歷史最大值。
+當前位置下曾經出現過的數的最大值。定義一個輔助數組 \\( b \\)，最開始 \\( b \\) 數組與 \\( a \\) 數組完全相同。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( b_i = max(b_i, a_i) \\)。這時，我們將 \\( b_i \\) 稱作 \\( i \\) 這個位置的歷史最大值。
 
-<img src="image/segment_tree_beats/6-1.jpg" width="500" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree/segment_tree_beats/6-1.jpg" width="500" style="display:block; margin: 0 auto;"/>
 
 #### 歷史最小值
 
-當前位置下曾經出現過的數的最小值。定義一個輔助數組 \\( B \\)，最開始 \\( B \\) 數組與 \\( A \\) 數組完全相同。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( B_i = min(B_i, A_i) \\)。這時，我們將 \\( B_i \\) 稱作 \\( i \\) 這個位置的歷史最小值。
+當前位置下曾經出現過的數的最小值。定義一個輔助數組 \\( b \\)，最開始 \\( b \\) 數組與 \\( a \\) 數組完全相同。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( b_i = min(b_i, a_i) \\)。這時，我們將 \\( b_i \\) 稱作 \\( i \\) 這個位置的歷史最小值。
 
-<img src="image/segment_tree_beats/6-2.jpg" width="500" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree/segment_tree_beats/6-2.jpg" width="500" style="display:block; margin: 0 auto;"/>
 
 #### 歷史版本和
 
-定義一個輔助數組 \\( B \\)，最開始 \\( B \\) 數組中的所有數都是 \\( 0 \\)。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( B_i \\) 加上 \\( A_i \\)。這時，我們將 \\( B_i \\) 稱作 \\( i \\) 這個位置的歷史版本和。
+定義一個輔助數組 \\( b \\)，最開始 \\( b \\) 數組中的所有數都是 \\( 0 \\)。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( b_i = b_i + a_i \\)。這時，我們將 \\( b_i \\) 稱作 \\( i \\) 這個位置的歷史版本和。
 
 ### 可以用懶標記處理的問題
 
 > 例題 2. [Tyvj - CPU 監控](http://www.tyvj.cn/p/1518)
 >
-> 給一個長度為 \\( n \\) 的序列 \\( A \\)，同時定義一個輔助數組 \\( B \\)，\\( B \\)開始與 \\( A \\) 完全相同。接下來對其進行 \\( m \\) 筆操作，操作有四種：
+> 給一個長度為 \\( n \\) 的序列 \\( a \\)，同時定義一個輔助數組 \\( b \\)，\\( b \\) 開始與 \\( a \\) 完全相同。接下來對其進行 \\( m \\) 筆操作，操作有四種：
 >
-> 1. 給定 \\( L, R, x \\)，對所有 \\( i \in [L, R] \\)，將 \\( A_i \\) 修改成 \\( x \\)。
-> 2. 給定 \\( L, R, x \\)，對所有 \\( i \in [L, R] \\)，將 \\( A_i \\) 加上 \\( x \\)。
-> 3. 給定 \\( L, R \\)，對所有 \\( i \in [L, R] \\)，輸出 \\( A_i \\) 的最大值。
-> 4. 給定 \\( L, R \\)，對所有 \\( i \in [L, R] \\)，輸出 \\( B_i \\) 的最大值。
+> 1. 給定 \\( L, R, x \\)，對所有 \\( i \in [L, R] \\)，將 \\( a_i \\) 修改成 \\( x \\)。
+> 2. 給定 \\( L, R, x \\)，對所有 \\( i \in [L, R] \\)，將 \\( a_i \\) 加上 \\( x \\)。
+> 3. 給定 \\( L, R \\)，對所有 \\( i \in [L, R] \\)，輸出 \\( a_i \\) 的最大值。
+> 4. 給定 \\( L, R \\)，對所有 \\( i \in [L, R] \\)，輸出 \\( b_i \\) 的最大值。
+>
+> 在每一次操作後，我們都進行一次更新，讓 \\( b_i = max(b_i, a_i) \\)。
 >
 > - \\( n, m \leq 10^5 \\)
 
@@ -256,19 +286,19 @@ struct STB {
 
 在這裡每一個節點紀錄的資訊的第一列由左至右是 \\( mx \\)，\\( add \\)，\\( cov \\)，第二列由左至右是 \\( hmx \\)，\\( hadd \\)，\\( hcov \\)。
 
-<img src="image/segment_tree_beats/7-0.jpg" width="500" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree/segment_tree_beats/7-0.jpg" width="500" style="display:block; margin: 0 auto;"/>
 
 如下圖所示，左圖是一棵建立在 \\( [1, 4] \\) 上的線段樹。現在我們要將區間 \\( [3, 4] \\) 修改成 \\( 2 \\)。那麼左圖中紅色邊表示搜尋時經過的邊，紅色字體的節點表示正在拜訪的節點，右圖為更新後的線段樹。
 
-<img src="image/segment_tree_beats/7-1.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree/segment_tree_beats/7-1.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 接著讓區間 \\( [3, 4] \\) 的元素加上 \\( 1 \\)。本來是下傳區間加標記，但因為右子節點已被覆蓋，所以直接將 \\( 1 \\) 累加在右子節點的 \\( cov \\) 上。
 
-<img src="image/segment_tree_beats/7-2.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree/segment_tree_beats/7-2.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 最後讓區間 \\( [4, 4] \\) 的元素加上 \\( 1 \\)。因為右子節點已經被覆蓋，所以下傳覆蓋標記給子節點，變成子節點被覆蓋。接著下傳加標記，因為子節點已被覆蓋，所以直接將 \\( 1 \\) 累加在 \\( cov \\) 上。
 
-<img src="image/segment_tree_beats/7-3.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree/segment_tree_beats/7-3.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 ### 時間複雜度
 
@@ -284,7 +314,7 @@ struct STB {
         int l, r, mx, hmx, add, hadd, cov, hcov;
     } T[n << 4];
 
-    void pushup(int u) {
+    void pull(int u) {
         T[u].mx = max(T[ls].mx, T[rs].mx);
         T[u].hmx = max(T[ls].hmx, T[rs].hmx);
     }
@@ -309,7 +339,7 @@ struct STB {
         T[u].hadd = max(T[u].hadd, T[u].add + hv);
     }
 
-    void pushdown(int u) {
+    void push(int u) {
         if (T[u].add) {
             pushadd(ls, T[u].add, T[u].hadd);
             pushadd(rs, T[u].add, T[u].hadd);
@@ -326,13 +356,13 @@ struct STB {
         T[u].cov = T[u].hcov = INT_MIN;
         T[u].l = l, T[u].r = r;
         if (l == r) {
-            T[u].mx = T[u].hmx = A[l];
+            T[u].mx = T[u].hmx = a[l];
             return;
         }
         int mid = (l+r) >> 1;
         build(ls, l, mid);
         build(rs, mid+1, r);
-        pushup(u);
+        pull(u);
     }
 
     void add(int L, int R, int x, int u = 1) {
@@ -342,13 +372,13 @@ struct STB {
             pushadd(u, x, x);
             return;
         }
-        pushdown(u);
+        push(u);
         int mid = (l+r) >> 1;
         if (L <= mid)
             add(L, R, x, ls);
         if (mid < R)
             add(L, R, x, rs);
-        pushup(u);
+        pull(u);
     }
 
     void cover(int L, int R, int x, int u = 1) {
@@ -358,20 +388,20 @@ struct STB {
             pushcover(u, x, x);
             return;
         }
-        pushdown(u);
+        push(u);
         int mid = (l+r) >> 1;
         if (L <= mid)
             cover(L, R, x, ls);
         if (mid < R)
             cover(L, R, x, rs);
-        pushup(u);
+        pull(u);
     }
 
     pair<int, int> query(int L, int R, int u = 1) {
         int l = T[u].l, r = T[u].r;
         if (L <= l && r <= R)
-            return make_pair(T[u].mx, T[u].hmx);
-        pushdown(u);
+            return {T[u].mx, T[u].hmx};
+        push(u);
         int mx = INT_MIN; int hmx = INT_MIN;
         int mid = (l+r) >> 1;
         if (L <= mid) {
@@ -384,7 +414,7 @@ struct STB {
             mx = max(mx, r2.first);
             hmx = max(hmx, r2.second);
         }
-        return make_pair(mx, hmx);
+        return {mx, hmx};
     }
 };
 ```
@@ -395,9 +425,9 @@ struct STB {
 
 底下的資源包含許多例題，同學可以去參考看看。
 
-- [A simple introduction to "Segment tree beats"](https://codeforces.com/blog/entry/57319)
-- [Segment Tree Beats - USACO Guide](https://usaco.guide/adv/segtree-beats?lang=cpp)
-- [Segment Tree Beats 学习笔记](https://www.cnblogs.com/Neal-lee/p/15695984.html)
+- [a simple introduction to "Segment tree beats"](https://codeforces.com/blog/entry/57319)
+- [Segment Tree beats - USaCO Guide](https://usaco.guide/adv/segtree-beats?lang=cpp)
+- [Segment Tree beats 学习笔记](https://www.cnblogs.com/Neal-lee/p/15695984.html)
 - [Historic Information on Segment Trees](https://mzhang2021.github.io/cp-blog/historic-segtree)
 - [区间最值操作 & 区间历史最值 - OI Wiki](https://oi-wiki.org/ds/seg-beats)
 - [《区间最值操作与历史最值问题》- 国家集训队 2016 论文集](https://github.com/enkerewpo/OI-Public-Library/blob/master/IOI中国国家候选队论文/国家集训队2016论文集.pdf)
