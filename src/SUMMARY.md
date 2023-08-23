@@ -1,6 +1,12 @@
 # Summary
 
 - [Foreword](others/foreword.md)
+- [2023 Calendar](others/calendar.md)
+- [Contests](contest/intro.md)
+  - [NCPC](contest/ncpc.md)
+  - [TOPC](contest/topc.md)
+  - [ICPC](contest/icpc.md)
+
 - [Contribute to NTHU CPP](others/contribution.md)
 
 ---
