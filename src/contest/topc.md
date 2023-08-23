@@ -6,7 +6,7 @@
 
 [2023 官網資訊](https://topc2023.icpc.tw/)
 
-今年因為規則的更動，台灣選手只能透過 TOPC 取得晉級 ICPC Regional 台灣站的資格。詳情請見 [ICPC](contest/icpc.md)。
+今年因為規則的更動，台灣選手只能透過 TOPC 取得晉級 ICPC Regional 台灣站的資格。詳情請見 [ICPC](icpc.md)。
 
 ## 歷屆題本/題解
 

@@ -238,7 +238,7 @@ A(x) - a_0 x^0 - a_1 x^1 &= 2x(A(x) + B(x)) + x(A(x) + B(x))^2 & \text{按照套
 
 到這邊就能夠在 \\( O(n \log n) \\) 求出了。但因為題目要求 \\( O(n) \\)，我們需要進一步化簡。
 
-根據 [Lagrange Inversion Theorem](math/lagrange_inversion_theorem.md)，我們定義 \\( F(x) = A(x) = x(1 + 3F(x) + F(x)^2)^2 \\)，因此 \\( \frac{F(x)}{(1 + 3F(x) + F(x)^2)^2} = x \\)。不難看出滿足 \\( G(F(x)) = x \\) 的 \\( G(x) = \frac{x}{(1 + 3x + x^2)^2} \\)。根據定理，我們可以列出
+根據 [Lagrange Inversion Theorem](lagrange_inversion_theorem.md)，我們定義 \\( F(x) = A(x) = x(1 + 3F(x) + F(x)^2)^2 \\)，因此 \\( \frac{F(x)}{(1 + 3F(x) + F(x)^2)^2} = x \\)。不難看出滿足 \\( G(F(x)) = x \\) 的 \\( G(x) = \frac{x}{(1 + 3x + x^2)^2} \\)。根據定理，我們可以列出
 
 \begin{aligned}
 \text{[} x^n \text{]} F(x) &= \frac{1}{n} [x^{n - 1}] (\frac{x}{G(x)})^n \\\\
