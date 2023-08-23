@@ -341,7 +341,7 @@ A(x) - a_0 x^0 - a_1 x^1 &amp;= 2x(A(x) + B(x)) + x(A(x) + B(x))^2 &amp; \text{�
 &amp;= x(1 + 3A(x) + A(x)^2)^2 &amp; \text{代入 \( B(x) \)} \\
 \end{aligned}</p>
 <p>到這邊就能夠在 \( O(n \log n) \) 求出了。但因為題目要求 \( O(n) \)，我們需要進一步化簡。</p>
-<p>根據 <a href="/math/lagrange_inversion_theorem.html">Lagrange Inversion Theorem</a>，我們定義 \( F(x) = A(x) = x(1 + 3F(x) + F(x)^2)^2 \)，因此 \( \frac{F(x)}{(1 + 3F(x) + F(x)^2)^2} = x \)。不難看出滿足 \( G(F(x)) = x \) 的 \( G(x) = \frac{x}{(1 + 3x + x^2)^2} \)。根據定理，我們可以列出</p>
+<p>根據 <a href="math/lagrange_inversion_theorem.html">Lagrange Inversion Theorem</a>，我們定義 \( F(x) = A(x) = x(1 + 3F(x) + F(x)^2)^2 \)，因此 \( \frac{F(x)}{(1 + 3F(x) + F(x)^2)^2} = x \)。不難看出滿足 \( G(F(x)) = x \) 的 \( G(x) = \frac{x}{(1 + 3x + x^2)^2} \)。根據定理，我們可以列出</p>
 <p>\begin{aligned}
 \text{[} x^n \text{]} F(x) &amp;= \frac{1}{n} [x^{n - 1}] (\frac{x}{G(x)})^n \\
 &amp;= \frac{1}{n} [x^{n - 1}] (1 + 3x + x^2)^{2n} &amp; \text{代入 \( G(x) \)} \\
