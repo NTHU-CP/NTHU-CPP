@@ -52,7 +52,7 @@ AtCoder 進入題目所在的 contest，上方有 editorial 就可以看場比�
 
 - [Things I don't know](https://codeforces.com/blog/entry/92248)
   - 去學 binary search！
-- [Pro Tips — get them while they are free](https://codeforces.com/blog/entry/113785)
+- [Pro Tips - get them while they are free](https://codeforces.com/blog/entry/113785)
 - [How to practice Competitive Programming [Um_nik version]](https://codeforces.com/blog/entry/98806)
 - [Self-deception: maybe why you're still grey after practicing every day](https://codeforces.com/blog/entry/98621)
   - 心理學
