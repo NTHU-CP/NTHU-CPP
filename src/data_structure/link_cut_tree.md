@@ -2,15 +2,15 @@
 
 ## 介紹
 
-Link Cut Tree 是一種樹狀的資料結構，具體來說是一個森林，也就是很多樹的集合，Link Cut Tree 支援以下操作：  
+Link-Cut Tree 是一種樹狀的資料結構，具體來說是一個森林，也就是很多樹的集合，Link-Cut Tree 支援以下操作：  
 
 - 在兩個點之間建立一條邊
 - 在兩個點之間斷開一條邊
 - 查詢兩點之間是否存連通
   
-Link Cut Tree 是以 Splay Tree 為基礎實作，因此尚未了解 Splay Tree 可以先回去參考 Splay Tree，本篇著重於介紹 Link cut tree。
+Link-Cut Tree 是以 Splay Tree 為基礎實作，因此尚未了解 Splay Tree 可以先回去參考 Splay Tree，本篇著重於介紹 Link-Cut tree。
   
-以下文章將用 LCT 簡稱 Link Cut Tree。  
+以下文章將用 LCT 簡稱 Link-Cut Tree。  
 
 ## 先備知識
 
@@ -20,22 +20,17 @@ Splay Tree 是一種自平衡的二元搜尋樹，主要通過 Splay 操作讓�
 - 輕重鏈剖分  
 輕重鏈剖分用來處理樹上的動態查詢，它的精髓在於將樹拆分成很多條鏈，使得樹上的操作可以有好的時間複雜度，LCT 也有使用到類似的技巧，因此建議先理解輕重鏈剖分後再回來看 LCT。
 
-## LCT 實作
+## 名詞定義
 
-### 名詞定義
+### 代表樹
 
-1. preferred child  
-在 LCT 操作中，每個節點最多有一個 preferred child，代表一個特殊的子節點，這個節點的目的是用來保證操作的時間複雜度。  
-2. preferred edge  
-節點連接 preferred child 的邊稱為 preferred edge。  
-3. preferred path  
-一條全部由 preferred edge 所構成的 path 稱為 preferred path。  
+代表樹就是原樹，原樹由一般的邊以及特別的邊 preferred edge 所連接，在進行 LCT 的 ``access()`` 操作時，會把走訪的邊都設為 preferred edge，並且把 preferred edge 所連接到的兒子稱為 preferred child，一條全部由 preferred edge 所構成的 path 則稱為 preferred path。
 
 ### Auxiliary Tree  
 
 以下使用輔助樹來稱呼 Auxiliary Tree。  
 
-要維護 LCT 的操作，我們需要維護輔助樹 (Auxiliary Tree)。輔助樹通常使用 splay tree來實作，輔助樹的作用是用來維護訊息，在進行 LCT 操作時同時維護輔助樹的訊息，因此輔助樹能維護的訊息，就決定了 LCT 可以維護的訊息。  
+要維護 LCT 的操作，我們需要維護輔助樹 (Auxiliary Tree)。輔助樹通常使用 splay tree 來實作，輔助樹的作用是用來維護訊息，在進行 LCT 操作時同時維護輔助樹的訊息，因此輔助樹能維護的訊息，就決定了 LCT 可以維護的訊息。  
 在基本 LCT 的 Splay Tree 節點會維護以下訊息：  
 
 1. 父節點 (子節點有邊指向父節點，但父節點不一定有邊指向子節點)
@@ -44,7 +39,7 @@ Splay Tree 是一種自平衡的二元搜尋樹，主要通過 Splay 操作讓�
 4. 因為 LCT 操作中要維護左右節點深度的性質，所以在某些特定的操作中需要將區間反轉，因此使用懶惰標記，讓翻轉區間能夠有好的時間複雜度
 
 以下是一個原樹與輔助樹的對應關係：<img src="image/LCT/Auxiliary_Tree_Demo.png" style="display:block; margin: 0 auto;"/>
-圖解：左為原樹，原樹的粗邊代表 preferred edge。右為原樹所對應的輔助樹，輔助樹的表示法不唯一，粗邊代表 splay_node 的左右小孩，而帶有箭號的邊代表指向父節點的邊。
+圖解：左為原樹，原樹的粗邊代表 preferred edge。右為原樹所對應的輔助樹，粗邊代表 splay_node 的左右小孩，而帶有箭號的邊代表指向父節點的邊。
 
 以下是一個簡單的 Splay Tree node：
 
@@ -152,7 +147,7 @@ void down(int x)
 
 #### ``access()``  
 
-``access()`` 是**LCT 中最重要的函式**， 可以把當前節點到 LCT 根結點上面所有的邊變成 preferred edge。  
+``access()`` 是 **LCT 中最重要的函式**，可以把當前節點到 LCT 根結點上面所有的邊變成 preferred edge。  
 操作方法：
 
 1. 把當前節點 splay 到目前輔助樹的根
@@ -582,7 +577,7 @@ int main()
 
 </details>
 
-### ``access()``的其他應用
+### ``access()`` 的其他應用
 
 > [CF 117E - Tree or not Tree](https://codeforces.com/problemset/problem/117/E)  
 > 給你 \\(N\\) 個車站，一個車站可以連接多個車站，但每次只能往其中一個車站，總共有 \\(N - 1\\) 條單向權重為 \\(d\\) 的鐵路，並且 \\(1\\) 號車站為根節點。  
@@ -771,6 +766,7 @@ int main()
 
 ## Exercise
 
+模板題：  
 [DYNALCA - Dynamic LCA](https://www.spoj.com/problems/DYNALCA/)
 <details><summary> Solution Code </summary>
 
@@ -827,6 +823,8 @@ SPOJ-QTREE 系列題目：
 - [QTREE7](https://www.spoj.com/problems/QTREE7/)  
   
 QTREE 系列題目可以參考這篇文章：[【Qtree】Query on a tree 系列 LCT 解法](https://blog.csdn.net/thy_asdf/article/details/50768620)  
+
+CF 相關題目：  
 
 - [CF 13E - Holes](https://codeforces.com/contest/13/problem/E)
 - [CF 117E - Tree or not Tree](https://codeforces.com/problemset/problem/117/E)
