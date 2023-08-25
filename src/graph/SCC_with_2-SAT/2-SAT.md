@@ -10,7 +10,7 @@ SAT(Boolean satisfiability problem)中文為滿足性問題，給定一個布林
 \\( (X_1 \lor X_2) \land (\neg X_1 \lor \neg X_3) \land (\neg X_2 \lor X_3) \land (X_3 \lor \neg X_4) \land (\neg X_2 \lor \neg X_3)\\)
 
 這個運算式共有 5 個子句，而每個子句都各自只包含兩個變數 \
-一組可行的解為：
+一組可行的解為:
 \\( 
 	X_1 = True, \
 	X_2 = False, \
@@ -19,7 +19,7 @@ SAT(Boolean satisfiability problem)中文為滿足性問題，給定一個布林
 \\)
 
 
-對於 K > 2，K-SAT 問題已被證明為 NP-Complete。
+對於 K > 2K-SAT 問題已被證明為 NP-Complete。
 而對於 2-SAT 問題則存在多項式時間的算法
 
 ### Transfer 2-SAT to Graph Problem
@@ -31,10 +31,10 @@ SAT(Boolean satisfiability problem)中文為滿足性問題，給定一個布林
 若\\(a = false\\)，\\(b \\)必為\\( true \\) \
 若\\(b = false\\)，\\(a \\)必為\\( true \\) \
 
-所以轉成圖論可以這樣連：
+所以轉成圖論可以這樣連:
 <img src="image/or.png" width="500" style="display:block; margin: 0 auto;"/>
 
-再舉個例子： \\( a \oplus b\\)
+再舉個例子: \\( a \oplus b\\)
 若要此 clause 為真，則 \
 若\\(a = false\\)，\\(b \\)必為\\( true \\) \
 若\\(b = false\\)，\\(a \\)必為\\( true \\) \
@@ -44,8 +44,8 @@ SAT(Boolean satisfiability problem)中文為滿足性問題，給定一個布林
 
 ### Aspvall, Plass & Tarjan Algorithm
 
-成功的將 2-SAT 轉成圖之後，要怎麼找出一組可行的解呢？
-或著，我們可以先想一下，在什麼情況下 2-SAT 問題可能無解？
+成功的將 2-SAT 轉成圖之後，要怎麼找出一組可行的解呢?
+或著，我們可以先想一下，在什麼情況下 2-SAT 問題可能無解?
 
 我們可以發現，一組 2-SAT 問題如果有解,若且唯若不存在布林變數\\( X\\)，使得\\(X \\)跟\\( \neg X \\)處於同一 SCC 中。
 

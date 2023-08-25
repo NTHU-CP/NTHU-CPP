@@ -8,12 +8,12 @@
 
 <img src="image/Strongly_Connected.png" width="700" style="display:block; margin: 0 auto;"/>
 
-以上圖為例，\\(B, C, depth \\)為 Strongly Connected ，\\(E, F \\)也為 Strongly Connected ，但\\(A, B \\)彼此不為 Strongly Connected
+以上圖為例，\\(B, C, depth \\)為 Strongly Connected，\\(E, F \\)也為 Strongly Connected，但\\(A, B \\)彼此不為 Strongly Connected
 
 ### Strongly Connected Component(強連通分量)
 根據以上定義(強連通)，我們可以得到強連通分量(Strongly Connected Component, 以下簡稱 SCC)的正式定義：
 
-對於一個有向圖\\(G \\)的強連通分量\\(C \\)：
+對於一個有向圖\\(G \\)的強連通分量\\(C \\):
 \\(C \\)是\\(G \\)的一個*極大子圖*，使得對於所有\\(C \\)內的節點，兩者互為強連通(\\(\forall u,v \in C, \exists path(u,v),path(v,u) \\))
 
 <img src="image/SCC.png" width="700" style="display:block; margin: 0 auto;"/>
@@ -54,7 +54,7 @@
 
 ### Detail process & Template code
 
-先對原圖跑一次 DFS，用後序走訪的方式把點丟進 stack 裡。再把 stack 裡的點一個個拿出來在反圖上 DFS。stack 是用來維護每個點的 DFS 完成時間，在 stack 中維護完成時間從大到小。因此，此演算法的核心為： 先做一次 DFS 並紀錄每個點的完成時間，接著每次取完成時間最晚的點出來在反圖上做 DFS，能走到的所有點就處於同一個 SCC。
+先對原圖跑一次 DFS，用後序走訪的方式把點丟進 stack 裡。再把 stack 裡的點一個個拿出來在反圖上 DFS。stack 是用來維護每個點的 DFS 完成時間，在 stack 中維護完成時間從大到小。因此，此演算法的核心為:先做一次 DFS 並紀錄每個點的完成時間，接著每次取完成時間最晚的點出來在反圖上做 DFS，能走到的所有點就處於同一個 SCC。
 
 ```cpp
 class SCC {
@@ -115,7 +115,7 @@ DFS2 的過程如下:
 Kosaraju Algo 分成 3 個部份: 
 1. 原圖 DFS 紀錄完成時間（\\( O(V+E) \\)）
 2. 建立反圖\\( G^T \\)（\\( O(V+E) \\)(可以在建立原圖的時候順便做)
-3. 反圖上 DFS （\\( O(V+E) \\)）
+3. 反圖上 DFS（\\( O(V+E) \\)）
 故總時間複雜度也是\\(O(V+E))
 
 而正確性跟以下性質有關：
@@ -133,7 +133,7 @@ Kosaraju Algo 分成 3 個部份:
 
 <details><summary>Proof</summary>
 
-可參考[Kosaraju's Proof](https://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/GraphAlgor/strongComponent.htm)
+可參考 [Kosaraju's Proof](https://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/GraphAlgor/strongComponent.htm)
     
 </details>
 
@@ -154,7 +154,7 @@ Kosaraju Algo 分成 3 個部份:
 圖論大師 Tarjan 發明的求 SCC 算法，基於 DFS Tree 跟定義好的\\( low(x) \\) 跟 \\( depth(x) \\) 函數 \
 (此算法跟求 AP & Bridge 的 Tarjan 算法非常相似，有興趣的話可以參考[這篇](../introduction_to_AP_bridge.md))
 
-定義： \
+定義：\
 \\( depth(u) \\)為 DFS 造訪順序的時間戳記 \
 \\( low(u) \\)為所有點\\( u \\)能夠走到的點中\\( depth(x) \\)的最小值
  
@@ -283,7 +283,7 @@ void Compress() {
 
 SCC 模板題
 對於點\\(v \\)來說，跟它處於同一 SCC 中的點都是它能夠走到的。
-並且，對於它能走到的其他 SCC \\(C_u \\)， \\(C_u \\)中的所有點都是他能夠走到的。
+並且，對於它能走到的其他 SCC \\(C_u \\)，\\(C_u \\)中的所有點都是他能夠走到的。
 因此，只需要先求出所有的 SCC，做完縮點操作後拓樸排序算答案，就能算出每點能走到多少點。
 
 </details>   
@@ -310,7 +310,7 @@ SCC 模板題
 
 經典的縮點+DP
     
-首先，因為金幣數一定為正整數，所以對於某個 SCC 來說，走遍該 SCC 內的點一定是最佳走法。 因此，可以先做縮點，求出每個 SCC 內的金幣總數。
+首先，因為金幣數一定為正整數，所以對於某個 SCC 來說，走遍該 SCC 內的點一定是最佳走法。因此，可以先做縮點，求出每個 SCC 內的金幣總數。
     
 縮點後，可得到一張代表所有 SCC 的圖\\( DAG \\)，定義\\( DP[i] \\)為：以\\( C_i \\)內的點為終點所能收集的最多金幣數。
 不難看出 DP 轉移式為: \\( DP[v] = max\{DP[u] + Coins[v]\}, \forall u \to v \\) 
