@@ -93,8 +93,8 @@ public:
       if (!vis[i]) DFS1(i);
     vis.assign(n,0);
     while(!stk.empty()) {
-	  int u = stk.top();
-	  stk.pop();
+  int u = stk.top();
+  stk.pop();
       if(!vis[u]) {
         DFS2(u);scc_num++;
       }
@@ -171,48 +171,48 @@ Tarjan Algo code:
 
 ```cpp
 struct SCC {
-	int low[N], depth[N], SCC[N], n, Time, SCCID;
-	bool inStack[N]; 
-	stack<int> stk;
-	vector<int> G[N];
-	void add_edge(int u, int v) {
-		G[u].emplace_back(v);
-	}
-	void DFS(int u, int fa) {
-		depth[u] = low[u] = ++Time;
-		stk.emplace(u); //走過的點丟進stack裡
-		inStack[u] = 1;
-		for(int v : G[u]) {
-			if(!depth[v]) { // Tree edge
-				DFS(v,u); //直接往下走
-				low[u] = min(low[u], low[v]); //更新
-			}
-			else if (inStack[v]) { //Back edge
-				low[u] = min(low[u], depth[v]); //更新
-			}
+int low[N], depth[N], SCC[N], n, Time, SCCID;
+bool inStack[N]; 
+stack<int> stk;
+vector<int> G[N];
+void add_edge(int u, int v) {
+G[u].emplace_back(v);
+}
+void DFS(int u, int fa) {
+	depth[u] = low[u] = ++Time;
+	stk.emplace(u); //走過的點丟進stack裡
+	inStack[u] = 1;
+	for(int v : G[u]) {
+		if(!depth[v]) { // Tree edge
+			DFS(v,u); //直接往下走
+			low[u] = min(low[u], low[v]); //更新
 		}
-		if(depth[u] == low[u]) { //表示u的子樹存在一SCC
-			int x;
-			do {
-				x = stk.top();
-				stk.pop();
-				SCC[x] = SCCID;
-				inStack[x] = 0; //這個點已經隸屬於某個SCC了，從stack中pop出
-			} while(x != u); //當前所有在stack中(未縮點)，都屬於此SCC中。
-			++SCCID;
-		}
-		return ;
-	}
-	void solve() {
-		for(int i = 0; i < n; i++) {
-			low[i] = depth[i] = SCC[i] = 0;
-			inStack[i] = 0;
-		}
-		Time = SCCID = 0;
-		for(int i = 0; i < n; i++) {
-			if(!depth[i]) DFS(i, i);
+		else if (inStack[v]) { //Back edge
+			low[u] = min(low[u], depth[v]); //更新
 		}
 	}
+	if(depth[u] == low[u]) { //表示u的子樹存在一SCC
+		int x;
+		do {
+			x = stk.top();
+			stk.pop();
+			SCC[x] = SCCID;
+			inStack[x] = 0; //這個點已經隸屬於某個SCC了，從stack中pop出
+		} while(x != u); //當前所有在stack中(未縮點)，都屬於此SCC中。
+		++SCCID;
+	}
+	return ;
+}
+void solve() {
+	for(int i = 0; i < n; i++) {
+		low[i] = depth[i] = SCC[i] = 0;
+		inStack[i] = 0;
+	}
+	Time = SCCID = 0;
+	for(int i = 0; i < n; i++) {
+		if(!depth[i]) DFS(i, i);
+	}
+}
 }
 
 ```
@@ -317,9 +317,9 @@ SCC 模板題
 
 經典的縮點+DP
 
-首先，因為金幣數一定為正整數，所以對於某個 SCC 來說，走遍該 SCC 內的點一定是最佳走法。因此，可以先做縮點，求出每個 SCC 內的金幣總數。 \
+首先，因為金幣數一定為正整數，所以對於某個 SCC 來說，走遍該 SCC 內的點一定是最佳走法。因此，可以先做縮點，求出每個 SCC 內的金幣總數。\
 
-縮點後，可得到一張代表所有 SCC 的圖\\( DAG \\)，定義\\( DP[i] \\)為：以\\( C_i \\)內的點為終點所能收集的最多金幣數。
+縮點後，可得到一張代表所有 SCC 的圖\\( DAG \\)，定義\\( DP[i] \\)為：以\\( C_i \\)內的點為終點所能收集的最多金幣數。\
 不難看出 DP 轉移式為: \\( DP[v] = max\{DP[u] + Coins[v]\}, \forall u \to v \\) 
 因此，就可以在縮點後的圖\\( DAG \\)上做拓樸排序的同時順便 DP。
 
