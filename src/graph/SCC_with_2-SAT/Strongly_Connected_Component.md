@@ -183,34 +183,34 @@ depth[u] = low[u] = ++Time;
 stk.emplace(u); //走過的點丟進stack裡
 inStack[u] = 1;
 for(int v : G[u]) {
-	if(!depth[v]) { // Tree edge
-		DFS(v,u); //直接往下走
-		low[u] = min(low[u], low[v]); //更新
-	}
-	else if (inStack[v]) { //Back edge
-		low[u] = min(low[u], depth[v]); //更新
-	}
+if(!depth[v]) { // Tree edge
+  DFS(v,u); //直接往下走
+  low[u] = min(low[u], low[v]); //更新
+}
+else if (inStack[v]) { //Back edge
+  low[u] = min(low[u], depth[v]); //更新
+}
 }
 if(depth[u] == low[u]) { //表示u的子樹存在一SCC
-	int x;
-	do {
-		x = stk.top();
-		stk.pop();
-		SCC[x] = SCCID;
-		inStack[x] = 0; //這個點已經隸屬於某個SCC了，從stack中pop出
-	} while(x != u); //當前所有在stack中(未縮點)，都屬於此SCC中。
-	++SCCID;
+int x;
+do {
+  x = stk.top();
+  stk.pop();
+  SCC[x] = SCCID;
+  inStack[x] = 0; //這個點已經隸屬於某個SCC了，從stack中pop出
+} while(x != u); //當前所有在stack中(未縮點)，都屬於此SCC中。
+++SCCID;
 }
 return ;
 }
 void solve() {
 for(int i = 0; i < n; i++) {
-	low[i] = depth[i] = SCC[i] = 0;
-	inStack[i] = 0;
+low[i] = depth[i] = SCC[i] = 0;
+inStack[i] = 0;
 }
 Time = SCCID = 0;
 for(int i = 0; i < n; i++) {
-	if(!depth[i]) DFS(i, i);
+if(!depth[i]) DFS(i, i);
 }
 }
 }
@@ -254,6 +254,7 @@ for(int u = 1;u <= n;u++) {
 }
 
 ```
+
 時間複雜度: \\( O(V+E) \\)
 
 ## Problems
@@ -295,7 +296,7 @@ SCC 模板題
 並且，對於它能走到的其他 SCC \\(C_u \\)，\\(C_u \\)中的所有點都是他能夠走到的。\
 因此，只需要先求出所有的 SCC，做完縮點操作後拓樸排序算答案，就能算出每點能走到多少點。
 
-</details>   
+</details>
 
 >[CSES - Reachability Queries](https://cses.fi/problemset/task/2143)
 >
@@ -307,11 +308,11 @@ SCC 模板題
 
 跟上一題的解法基本上一樣，但這題需要維護點之間的關係，可以考慮使用 bitset 來維護。
 
-</details>   
+</details>
 
 >[CSES - Coin Collector](https://cses.fi/problemset/task/1686)
 >
->有\\(N \\)個房間, \\(M \\)個單向通道，每個房間有一些金幣(\\( K_i\\))。問最多能收集多少金幣？(起點跟終點可以自由選擇) 
+>有\\(N \\)個房間, \\(M \\)個單向通道，每個房間有一些金幣(\\( K_i\\))。問最多能收集多少金幣？(起點跟終點可以自由選擇)
 >
 >\\(1 \leq N \leq 10^5,\ 1 \leq M \leq 2 \cdot 10^5, \ 1 \leq K_i \leq 10^9 \\)
 
@@ -322,7 +323,7 @@ SCC 模板題
 首先，因為金幣數一定為正整數，所以對於某個 SCC 來說，走遍該 SCC 內的點一定是最佳走法。因此，可以先做縮點，求出每個 SCC 內的金幣總數。\
 
 縮點後，可得到一張代表所有 SCC 的圖\\( DAG \\)，定義\\( DP[i] \\)為：以\\( C_i \\)內的點為終點所能收集的最多金幣數。\
-不難看出 DP 轉移式為: \\( DP[v] = max\{DP[u] + Coins[v]\}, \forall u \to v \\) 
+不難看出 DP 轉移式為: \\( DP[v] = max\{DP[u] + Coins[v]\}, \forall u \to v \\)
 因此，就可以在縮點後的圖\\( DAG \\)上做拓樸排序的同時順便 DP。
 
 </details>
