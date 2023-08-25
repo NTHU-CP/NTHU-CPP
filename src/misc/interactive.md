@@ -29,6 +29,7 @@ Jury 藏著一個數字 \\(x\\)，Participant 可以問 Jury 一個數字 \\(y\\
 <details><summary>Solution</summary>
 
 同一般二分搜的分析，我們希望每次詢問將 \\(x\\) 的範圍縮的愈小愈好。
+
 假設當前 \\(x\\) 可能在區間 \\([l, r]\\)，若我們詢問到的 \\(y \neq x\\)，那 \\(x\\) 可能在的區間會是 \\([l, y-1]\\) 或 \\( [y+1, r] \\)。
 
 若我們考慮最差的情況，也就是 \\(x\\) 永遠落在有最多可能的區間，那不難知道 \\(y = \lfloor \dfrac{l+r}{2} \rfloor\\) 會是最佳的選擇，而我們每次詢問都能把 \\(x\\) 可能在的區間長度減少一半，於是我們最多會問 \\(\lceil lg1000\rceil = 10\\) 次。
@@ -37,6 +38,7 @@ Jury 藏著一個數字 \\(x\\)，Participant 可以問 Jury 一個數字 \\(y\\
 ### Example: Chasing
 
 Jury 在一棵樹 \\(T\\) 上的某個節點，一開始，Jury 會告訴 Participant 它所在的節點 \\(r\\)，跟樹 \\(T\\) 的所有細節。
+
 Jury 跟 Participant 會輪流行動，每回合，Participant 可以把一個 Jury 不在的節點塗黑。而 Jury 會往它所在節點的其中一個非黑色的鄰居移動，並將原先在的節點塗黑，並告訴 Participant 它所在的節點。
 
 Participant 的目標是：在最少的回合數內，將 Jury 困住，即 Jury 無法再往其他節點移動。
@@ -45,7 +47,7 @@ Participant 的目標是：在最少的回合數內，將 Jury 困住，即 Jury
 
 我們將 \\(T\\) 考慮為一棵以 \\(r\\) 為根的樹，則我們可以用 \\(dp_i\\) 代表 Jury 在 \\(i\\) 這個節點且 \\(i\\) 的父節點已經被塗黑時，Jury 最多能走幾步。
 
-不難發現，\\(dp_i\\) 會是 \\(\{dp_c | c \in child_i\}\\) 這個集合中次大的--令其為 \\(dp_u\\)--再加上 \\(1\\)。
+不難發現，\\(dp_i\\) 會是 \\(\{dp_c | c \in child_i\}\\) 這個集合中次大的 -- 令其為 \\(dp_u\\) -- 再加上 \\(1\\)。
 
 因假設 \\(dp_v\\) 是該集合中最大的，對於 Participant 來說，若它塗黑的節點不在 \\(v\\) 的子樹中，那 Jury 自然會往接下來能有有最大步數的 \\(v\\) 走。而若塗黑的節點在 \\(v\\) 的子樹中卻不是 \\(v\\)，那 Jury 最差也能往 \\(u\\) 走。
 
@@ -55,6 +57,7 @@ Participant 的目標是：在最少的回合數內，將 Jury 困住，即 Jury
 ### Summary
 
 上面介紹了兩個不同類型的 Interactive 題目，Binary Search 是典型的猜數字題目，即 Jury 有一些隱藏的資訊，Participant 需要透過一些詢問猜出 Jury 隱藏的資訊。
+
 後者則是與 Jury 互動，要迫使 Jury 達到某個狀態（不能再走）的下棋類題目。
 
 以下我們將介紹遇到 Interactive 題目時的一些思路。
@@ -75,8 +78,9 @@ Participant 的目標是：在最少的回合數內，將 Jury 困住，即 Jury
 
 #### 把query包成一個function
 
-其實大部份時候會問的 query 都會符合某些 pattern，把它包成 function 可以有效降低 coding 的複雜度。
-就算 query 沒有什麼規律可言，包成 function 也可以減少在主要的 procedure 中處理互動，會讓 code 好看一點。
+其實大部份時候會問的  query 都會符合某些  pattern ，把它包成  function 可以有效降低  coding 的複雜度。
+
+就算  query 沒有什麼規律可言，包成 function 也可以減少在主要的 procedure 中處理互動，會讓  code 好看一點。
 
 ### Binary Search
 
