@@ -1,23 +1,22 @@
-## 2-SAT problem
+# 2-SAT problem
 
-### Definition 
+### Definition
 SAT(Boolean satisfiability problem)中文為滿足性問題，給定一個布林運算式，想辦法 assign 給每個布林變數一個值 (True of False)，使得該運算式為 True。
 
 而 K-SAT 問題為：規定運算式的所有子句，每個子句最多只能包含\\(K\\)個變數
 
-舉例來說，一個 2-SAT 問題如下: 
+舉例來說，一個 2-SAT 問題如下:
 
 \\( (X_1 \lor X_2) \land (\neg X_1 \lor \neg X_3) \land (\neg X_2 \lor X_3) \land (X_3 \lor \neg X_4) \land (\neg X_2 \lor \neg X_3)\\)
 
 這個運算式共有 5 個子句，而每個子句都各自只包含兩個變數 \
 一組可行的解為:
-\\( 
-	X_1 = True, \
-	X_2 = False, \
-	X_3 = False, \
-	X_4 = True 
+\\(
+X_1 = True, \
+X_2 = False, \
+X_3 = False, \
+X_4 = True
 \\)
-
 
 對於 K > 2K-SAT 問題已被證明為 NP-Complete。
 而對於 2-SAT 問題則存在多項式時間的算法
@@ -53,7 +52,7 @@ SAT(Boolean satisfiability problem)中文為滿足性問題，給定一個布林
 
 假設在某個強連通分量中，存在一個變數\\(v \\)及其否定\\(¬v \\)。這表示從節點\\(v \\)可以到達節點\\(¬v \\)，同時也表示從節點\\(¬v \\)可以到達節點\\(v \\)。
 而這是不可能的，如果要滿足這個條件，必須使變數\\(v \\)同時為 True 與 False。
-    
+
 </details>
 
 於是我們就得到了一組\\( O(n) \\)檢查 2-SAT 是不是 satisfiable 的演算法。跑完 Tarjan/Kosaraju 找出所有 SCC 之後，對於所有變數\\(X \\)，檢查\\(X \\)跟\\( \neg X \\)是不是在同一個 SCC 中就好。
@@ -70,7 +69,7 @@ SAT(Boolean satisfiability problem)中文為滿足性問題，給定一個布林
 由於已經確定了對於所有變數\\(v \\)，都不存在必須使\\(v \\)同時為 True 與 False 的情況，我們可以不斷的 assign 值給變數，直到該 SCC 內的所有子句滿足為止。
 
 由於縮點後會是一個有向無環圖，代表我們可以依照拓樸排序 assign 值給各個 SCC，而不使整張圖矛盾。
-    
+
 </details>
 
 ### Template Code
@@ -130,9 +129,10 @@ struct SAT { // 0-base
 ```
 
 ## Problems
-> [CSES - Giant Pizza](https://cses.fi/problemset/task/1684)
-> 
-> 詳見原題
+
+>[CSES - Giant Pizza](https://cses.fi/problemset/task/1684)
+>
+>詳見原題
 
 <details><summary>Solution</summary>
 
@@ -141,22 +141,23 @@ struct SAT { // 0-base
 先檢查完所有點與它的 negation 不在同一 SCC 中之後，需要構造出一組解。可以利用\\( X \\)與\\( \neg X \\)的對稱性，在拓樸排序的過程中順便 assign 值給變數。
 
 </details>
-    
-> [hdu 3062 Party](http://acm.hdu.edu.cn/showproblem.php?pid=3062)
+
+>[hdu 3062 Party](http://acm.hdu.edu.cn/showproblem.php?pid=3062)
 >
-> 有\\(N\\)對夫妻被邀請到一個聚會，每對夫妻只有一位可以出席。在\\(2N\\)個人中，有些人之間有矛盾，矛盾關係共有\\( M\\)組，有矛盾的人無法同時出現在聚會上，問聚會上有沒有可能出現\\(N\\)個人？
+>有\\(N\\)對夫妻被邀請到一個聚會，每對夫妻只有一位可以出席。在\\(2N\\)個人中，有些人之間有矛盾，矛盾關係共有\\( M\\)組，有矛盾的人無法同時出現在聚會上，問聚會上有沒有可能出現\\(N\\)個人？
 >
-> \\(1 \leq N \leq 10^3,\ 1 \leq M \leq 10^6\\)
-    
+>\\(1 \leq N \leq 10^3,\ 1 \leq M \leq 10^6\\)
+
 <details><summary>Solution</summary>
 
 不難看出這是一個 2-SAT 的問題，只需要把一對夫妻視為一對\\( (X, \neg X) \\)，而每個矛盾關係都是\\( \oplus \\)。
-    
+
 </details>
 
 ## Reference
+
 - 清大競技程式設計二 - 上課講義
-- [演算法筆記 - Connected Component ](https://web.ntnu.edu.tw/~algo/ConnectedComponent.html)
+- [演算法筆記 - Connected Component](https://web.ntnu.edu.tw/~algo/ConnectedComponent.html)
 - [2-Satisfiability (2-SAT) Problem - GeeksforGeeks](https://www.geeksforgeeks.org/2-satisfiability-2-sat-problem/)
 - [2-SAT Tutorial](https://codeforces.com/blog/entry/16205)
 - [2-SAT - OI Wiki](https://oi-wiki.org/graph/2-sat/)
