@@ -179,39 +179,39 @@ void add_edge(int u, int v) {
 G[u].emplace_back(v);
 }
 void DFS(int u, int fa) {
-	depth[u] = low[u] = ++Time;
-	stk.emplace(u); //走過的點丟進stack裡
-	inStack[u] = 1;
-	for(int v : G[u]) {
-		if(!depth[v]) { // Tree edge
-			DFS(v,u); //直接往下走
-			low[u] = min(low[u], low[v]); //更新
-		}
-		else if (inStack[v]) { //Back edge
-			low[u] = min(low[u], depth[v]); //更新
-		}
+depth[u] = low[u] = ++Time;
+stk.emplace(u); //走過的點丟進stack裡
+inStack[u] = 1;
+for(int v : G[u]) {
+	if(!depth[v]) { // Tree edge
+		DFS(v,u); //直接往下走
+		low[u] = min(low[u], low[v]); //更新
 	}
-	if(depth[u] == low[u]) { //表示u的子樹存在一SCC
-		int x;
-		do {
-			x = stk.top();
-			stk.pop();
-			SCC[x] = SCCID;
-			inStack[x] = 0; //這個點已經隸屬於某個SCC了，從stack中pop出
-		} while(x != u); //當前所有在stack中(未縮點)，都屬於此SCC中。
-		++SCCID;
+	else if (inStack[v]) { //Back edge
+		low[u] = min(low[u], depth[v]); //更新
 	}
-	return ;
+}
+if(depth[u] == low[u]) { //表示u的子樹存在一SCC
+	int x;
+	do {
+		x = stk.top();
+		stk.pop();
+		SCC[x] = SCCID;
+		inStack[x] = 0; //這個點已經隸屬於某個SCC了，從stack中pop出
+	} while(x != u); //當前所有在stack中(未縮點)，都屬於此SCC中。
+	++SCCID;
+}
+return ;
 }
 void solve() {
-	for(int i = 0; i < n; i++) {
-		low[i] = depth[i] = SCC[i] = 0;
-		inStack[i] = 0;
-	}
-	Time = SCCID = 0;
-	for(int i = 0; i < n; i++) {
-		if(!depth[i]) DFS(i, i);
-	}
+for(int i = 0; i < n; i++) {
+	low[i] = depth[i] = SCC[i] = 0;
+	inStack[i] = 0;
+}
+Time = SCCID = 0;
+for(int i = 0; i < n; i++) {
+	if(!depth[i]) DFS(i, i);
+}
 }
 }
 
@@ -224,6 +224,7 @@ void solve() {
 性質：
 
 1. 不存在從一個 SCC 到另一個 SCC 的 Back edge
+
 <details><summary>Proof</summary>
 
 假設 SCC \\( C_u \\)中一點\\( u \\)存在一到 SCC \\( C_v \\)中點\\( v \\)的 Back edge，代表\\( u \\)可以透過\\( u \\)到\\( v \\)的 Tree edge 走到\\( v \\)，而\\( v \\)又可以透過 Back edge 走到\\( u \\)，兩者應屬於同一 SCC 中，故\\( C_u \\)與\\( C_v \\)應為同一 SCC。
@@ -235,22 +236,23 @@ void solve() {
 <details><summary>Proof</summary>
 
 Cross edge 會可能更新答案的情況只有:走到之前已經 DFS 走過的點，否則這條邊應該要屬於 Tree edge。而在實做上，在 DFS 完前面的點之後，我們已經將 SCC 順便求了出來，所以前面已經形成 SCC 的點，不會在當前的 stack 中，因此不會拿來更新答案。
-    
+
 </details>
 
-## 縮點操作：
+## 縮點操作:
 
 非常暴力且樸素的作法，建造一個縮點後的圖\\( G' \\)，暴力看過原圖\\( G \\)中的所有邊，圖\\( G' \\)中只存跨越不同 SCC 的邊。
 
 ```cpp
 void Compress() {
-    for(int u = 1;u <= n;u++) {
-		for(int v : G[u]) {
-			if(SCC[v] == SCC[u]) continue;
-			DAG[SCC[u]].emplace_back(SCC[v]);
-		}
+for(int u = 1;u <= n;u++) {
+	for(int v : G[u]) {
+		if(SCC[v] == SCC[u]) continue;
+		DAG[SCC[u]].emplace_back(SCC[v]);
 	}
 }
+}
+
 ```
 時間複雜度: \\( O(V+E) \\)
 
@@ -309,7 +311,7 @@ SCC 模板題
 
 >[CSES - Coin Collector](https://cses.fi/problemset/task/1686)
 >
->有\\(N \\)個房間, \\(M \\)個單向通道，每個房間有一些金幣(\\( K_i\\))。問最多能收集多少金幣？(起點跟終點可以自由選擇)    
+>有\\(N \\)個房間, \\(M \\)個單向通道，每個房間有一些金幣(\\( K_i\\))。問最多能收集多少金幣？(起點跟終點可以自由選擇) 
 >
 >\\(1 \leq N \leq 10^5,\ 1 \leq M \leq 2 \cdot 10^5, \ 1 \leq K_i \leq 10^9 \\)
 
@@ -330,7 +332,7 @@ SCC 模板題
 - 清大競技程式設計二 - 上課講義
 - [Strongly Connected Components - GeeksforGeeks](https://www.geeksforgeeks.org/strongly-connected-components/)
 - [Tarjan's Algorithm to find Strongly Connected Components - GeeksforGeeks](https://www.geeksforgeeks.org/tarjan-algorithm-find-strongly-connected-components/)
-- [演算法筆記 - Connected Component ](https://web.ntnu.edu.tw/~algo/ConnectedComponent.html)
+- [演算法筆記 - Connected Component](https://web.ntnu.edu.tw/~algo/ConnectedComponent.html)
 - [強連通分量 - OI Wiki](https://oi-wiki.org/graph/scc/)
 - [CP Algorithm - strongly connected components](https://cp-algorithms.com/graph/strongly-connected-components.html)
 - [Strongly Connected Component](https://www.personal.kent.edu/~rmuhamma/Algorithms/MyAlgorithms/GraphAlgor/strongComponent.htm)
