@@ -36,6 +36,7 @@
     - [杜教篩](math/du_sieve.md)
     - [Arithmetic Function Revisit](math/revisit_arithmetic_function.md)
 - [Miscellaneous]()
+    - [Interactive](misc/interactive.md)
 - [C++ Programming Tips]()
 
 ---
