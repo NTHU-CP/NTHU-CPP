@@ -1,6 +1,7 @@
 # 2-SAT problem
 
-### Definition
+## Definition
+
 SAT(Boolean satisfiability problem)中文為滿足性問題，給定一個布林運算式，想辦法 assign 給每個布林變數一個值 (True of False)，使得該運算式為 True。
 
 而 K-SAT 問題為：規定運算式的所有子句，每個子句最多只能包含\\(K\\)個變數
@@ -18,7 +19,7 @@ X_3 = False, \
 X_4 = True
 \\)
 
-對於 K > 2K-SAT 問題已被證明為 NP-Complete。
+對於 K > 2K-SAT 問題已被證明為 NP-Complete \
 而對於 2-SAT 問題則存在多項式時間的算法
 
 ### Transfer 2-SAT to Graph Problem
@@ -50,7 +51,7 @@ X_4 = True
 
 <details><summary>Proof</summary>
 
-假設在某個強連通分量中，存在一個變數\\(v \\)及其否定\\(¬v \\)。這表示從節點\\(v \\)可以到達節點\\(¬v \\)，同時也表示從節點\\(¬v \\)可以到達節點\\(v \\)。
+假設在某個強連通分量中，存在一個變數\\(v \\)及其否定\\(¬v \\)。這表示從節點\\(v \\)可以到達節點\\(¬v \\)，同時也表示從節點\\(¬v \\)可以到達節點\\(v \\)。 \
 而這是不可能的，如果要滿足這個條件，必須使變數\\(v \\)同時為 True 與 False。
 
 </details>
@@ -63,7 +64,7 @@ X_4 = True
 
 <details><summary>Proof</summary>
 
-假設有一個沒有矛盾的強連通分量，我們將一變數\\(v \\)設為 True，則滿足所有\\( (v \lor \dots)\\)子句。
+假設有一個沒有矛盾的強連通分量，我們將一變數\\(v \\)設為 True，則滿足所有\\( (v \lor \dots)\\)子句。 \
 同樣的，將\\(¬v \\)設為 False，會滿足所有\\( (¬v \lor \dots) \\)子句。
 
 由於已經確定了對於所有變數\\(v \\)，都不存在必須使\\(v \\)同時為 True 與 False 的情況，我們可以不斷的 assign 值給變數，直到該 SCC 內的所有子句滿足為止。
