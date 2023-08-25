@@ -239,17 +239,17 @@ Cross edge 會可能更新答案的情況只有:走到之前已經 DFS 走過的
 
 </details>
 
-## 縮點操作:
+## 縮點操作
 
 非常暴力且樸素的作法，建造一個縮點後的圖\\( G' \\)，暴力看過原圖\\( G \\)中的所有邊，圖\\( G' \\)中只存跨越不同 SCC 的邊。
 
 ```cpp
 void Compress() {
 for(int u = 1;u <= n;u++) {
-	for(int v : G[u]) {
-		if(SCC[v] == SCC[u]) continue;
-		DAG[SCC[u]].emplace_back(SCC[v]);
-	}
+for(int v : G[u]) {
+  if(SCC[v] == SCC[u]) continue;
+  DAG[SCC[u]].emplace_back(SCC[v]);
+}
 }
 }
 
