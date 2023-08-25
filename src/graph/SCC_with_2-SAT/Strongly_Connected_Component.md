@@ -1,24 +1,24 @@
-# Strongly Connected Component(強連通分量)
+# Strongly Connected Component (強連通分量)
 
 ## Introduction
 
 ### Definition
 
-在一張有向圖\\(G \\)中，假使兩個節點\\(u \\)跟\\(v \\)之前同時存在路徑\\(path(u,v) \\)和\\(path(v,u) \\)，則我們說\\(u \\)跟\\(v \\)兩者強連通(strongly connected)。
+在一張有向圖\\(G \\)中，假使兩個節點\\(u \\)跟\\(v \\)之前同時存在路徑\\(path(u,v) \\)和\\(path(v,u) \\)，則我們說 \\(u \\)跟\\(v \\)兩者強連通 (strongly connected)。
 
 <img src="image/Strongly_Connected.png" width="700" style="display:block; margin: 0 auto;"/>
 
-以上圖為例，\\(B, C, depth \\)為Strongly Connected，\\(E, F \\)也為Strongly Connected，但\\(A, B \\)彼此不為Strongly Connected
+以上圖為例，\\(B, C, depth \\)為 Strongly Connected ，\\(E, F \\)也為 Strongly Connected ，但\\(A, B \\)彼此不為 Strongly Connected
 
 ### Strongly Connected Component(強連通分量)
-根據以上定義(強連通)，我們可以得到強連通分量(Strongly Connected Component, 以下簡稱SCC)的正式定義：
+根據以上定義(強連通)，我們可以得到強連通分量(Strongly Connected Component, 以下簡稱 SCC)的正式定義：
 
 對於一個有向圖\\(G \\)的強連通分量\\(C \\)：
 \\(C \\)是\\(G \\)的一個*極大子圖*，使得對於所有\\(C \\)內的節點，兩者互為強連通(\\(\forall u,v \in C, \exists path(u,v),path(v,u) \\))
 
 <img src="image/SCC.png" width="700" style="display:block; margin: 0 auto;"/>
 
-以同一張圖來說，\\(B, C, depth \\)形成一SCC，\\(E, F \\)形成一SCC，故圖中共有\\(4 \\)個SCC。
+以同一張圖來說，\\(B, C, depth \\)形成一 SCC，\\(E, F \\)形成一 SCC，故圖中共有\\(4 \\)個 SCC。
 
 
 #### Property
@@ -33,28 +33,28 @@
 
 3. 有向圖\\(G \\)的所有強連通分量兩兩不會有交集
 
-假設存在一點\\(w \\)為SCC \\(C_1 \\)與\\(C_2 \\)的交點，則根據性質2. \\(C_1 \\)的所有點應與\\(C_2 \\)的所有點互為強連通(經過\\(w \\))，\\(C_1 \\)與\\(C_2 \\)應屬於同一強連通分量，故交點\\(w \\)必不存在。
+假設存在一點\\(w \\)為 SCC \\(C_1 \\)與\\(C_2 \\)的交點，則根據性質 2. \\(C_1 \\)的所有點應與\\(C_2 \\)的所有點互為強連通(經過\\(w \\))，\\(C_1 \\)與\\(C_2 \\)應屬於同一強連通分量，故交點\\(w \\)必不存在。
     
-4. 倘若將每個SCC縮成一個點，產生的新圖為有向無環
+4. 倘若將每個 SCC 縮成一個點，產生的新圖為有向無環
 
-假設縮點後產生的新圖\\(G' \\)存在環，則環上的點必為互相連通，應屬於同一個SCC中，經縮點操作後應合併為一個點，故圖\\G' \\)上不存在環。
+假設縮點後產生的新圖\\(G' \\)存在環，則環上的點必為互相連通，應屬於同一個 SCC 中，經縮點操作後應合併為一個點，故圖\\G' \\)上不存在環。
 
 
 #### Why SCC?
 為什麼找出強連通分量那麼重要呢？
 
-因為當我們求出有向圖\\( G\\)的所有SCC之後，我們就可以藉由縮點操作，將每個SCC縮成一個點。根據性質4.，縮點操作後產生的圖\\( G' \\)會是一張有向無環圖(DAG)。
-根據DAG的一些良好性質，我們就可以利用拓樸排序或是DP等技巧，來達成時間更為優異的解題方法。
+因為當我們求出有向圖\\( G\\)的所有 SCC 之後，我們就可以藉由縮點操作，將每個 SCC 縮成一個點。根據性質 4.，縮點操作後產生的圖\\( G' \\)會是一張有向無環圖(DAG)。
+根據 DAG 的一些良好性質，我們就可以利用拓樸排序或是 DP 等技巧，來達成時間更為優異的解題方法。
 
-接下來，會介紹兩種常用的SCC演算法，並介紹找出所有強連通分量後，如何進行縮點操作，最後演練幾組例題，示範如何使用Strongly Connected Component的觀念來解題。
+接下來，會介紹兩種常用的 SCC 演算法，並介紹找出所有強連通分量後，如何進行縮點操作，最後演練幾組例題，示範如何使用 Strongly Connected Component 的觀念來解題。
 
 
 ## Kosaraju's Algorithm
-藉由兩次DFS求出所有SCC，好處是code比較好寫，但常數較大。
+藉由兩次 DFS 求出所有 SCC，好處是 code 比較好寫，但常數較大。
 
 ### Detail process & Template code
 
-先對原圖跑一次DFS，用後序走訪的方式把點丟進stack裡。再把stack裡的點一個個拿出來在反圖上DFS。stack是用來維護每個點的DFS完成時間，在stack中維護完成時間從大到小。因此，此演算法的核心為： 先做一次DFS並紀錄每個點的完成時間，接著每次取完成時間最晚的點出來在反圖上做DFS，能走到的所有點就處於同一個SCC。
+先對原圖跑一次 DFS，用後序走訪的方式把點丟進 stack 裡。再把 stack 裡的點一個個拿出來在反圖上 DFS。stack 是用來維護每個點的 DFS 完成時間，在 stack 中維護完成時間從大到小。因此，此演算法的核心為： 先做一次 DFS 並紀錄每個點的完成時間，接著每次取完成時間最晚的點出來在反圖上做 DFS，能走到的所有點就處於同一個 SCC。
 
 ```cpp
 class SCC {
@@ -105,31 +105,31 @@ public:
 
 ```
 
-假設在這張圖上，從點\\(A \\)開始DFS，DFS1結束後會長這樣:
+假設在這張圖上，從點\\(A \\)開始 DFS，DFS1 結束後會長這樣:
 <img src="image/kosaraju.png" width="700" style="display:block; margin: 0 auto;"/>
 
-DFS2的過程如下:
+DFS2 的過程如下:
 <img src="image/Kosaraju_gif.gif" width="700" style="display:block; margin: 0 auto;"/>
 ### Time complexity and the Correctness
 
-Kosaraju Algo分成3個部份: 
-1. 原圖DFS紀錄完成時間（\\( O(V+E) \\)）
+Kosaraju Algo 分成 3 個部份: 
+1. 原圖 DFS 紀錄完成時間（\\( O(V+E) \\)）
 2. 建立反圖\\( G^T \\)（\\( O(V+E) \\)(可以在建立原圖的時候順便做)
-3. 反圖上DFS （\\( O(V+E) \\)）
+3. 反圖上 DFS （\\( O(V+E) \\)）
 故總時間複雜度也是\\(O(V+E))
 
 而正確性跟以下性質有關：
 
 性質：
-1. \\( G^T\\)跟\\( G \\)的SCC集合相同
+1. \\( G^T\\)跟\\( G \\)的 SCC 集合相同
 
 <details><summary>Proof</summary>
 
-若在圖\\( G \\)中存在路徑\\( u \to v \\)，則在反圖\\( G^T \\)中存在路徑\\( v \to u \\)。同樣的，若在圖\\( G \\)中存在路徑\\( v \to u \\)，則在反圖\\( G^T \\)中存在路徑\\( u \to v \\)。因此，對於點\\(u \\)跟點\\(v \\)，無論在\\(G \\)還是\\(G^T \\)中，都屬於同一個SCC。
+若在圖\\( G \\)中存在路徑\\( u \to v \\)，則在反圖\\( G^T \\)中存在路徑\\( v \to u \\)。同樣的，若在圖\\( G \\)中存在路徑\\( v \to u \\)，則在反圖\\( G^T \\)中存在路徑\\( u \to v \\)。因此，對於點\\(u \\)跟點\\(v \\)，無論在\\(G \\)還是\\(G^T \\)中，都屬於同一個 SCC。
     
 </details>
 
-2. 設點\\( u \\)為SCC \\( C_u \\)中完成時間最晚的，點\\( v \\)為SCC \\( C_v \\)中完成時間最晚的，且能從\\( C_u \\)走到\\( C_v \\)，則點\\( u \\)的完成時間一定比\\( v \\)還晚。
+2. 設點\\( u \\)為 SCC \\( C_u \\)中完成時間最晚的，點\\( v \\)為 SCC \\( C_v \\)中完成時間最晚的，且能從\\( C_u \\)走到\\( C_v \\)，則點\\( u \\)的完成時間一定比\\( v \\)還晚。
 
 <details><summary>Proof</summary>
 
@@ -137,30 +137,30 @@ Kosaraju Algo分成3個部份:
     
 </details>
 
-3. 在所有SCC中，若\\( C_u \\)的完成時間最晚，則不存在其他\\( C_v \\) s.t \\( C_v \\)能走到\\( C_u\\)。
+3. 在所有 SCC 中，若\\( C_u \\)的完成時間最晚，則不存在其他\\( C_v \\) s.t \\( C_v \\)能走到\\( C_u\\)。
 
 <details><summary>Proof</summary>
 
-從性質2可知
+從性質 2 可知
     
 </details>
 
-4. 每次挑完成時間最晚的點出來在反圖上DFS可以得到一組SCC。
+4. 每次挑完成時間最晚的點出來在反圖上 DFS 可以得到一組 SCC。
 
-重複4直到所有點都打上SCC編號，可得到圖\\(G \\)上的所有SCC。
+重複 4 直到所有點都打上 SCC 編號，可得到圖\\(G \\)上的所有 SCC。
 
 
 ## Tarjan's Algorithm for SCC
-圖論大師Tarjan發明的求SCC算法，基於DFS Tree跟定義好的\\( low(x) \\) 跟 \\( depth(x) \\) 函數 \
-(此算法跟求AP & Bridge的Tarjan算法非常相似，有興趣的話可以參考[這篇](../introduction_to_AP_bridge.md))
+圖論大師 Tarjan 發明的求 SCC 算法，基於 DFS Tree 跟定義好的\\( low(x) \\) 跟 \\( depth(x) \\) 函數 \
+(此算法跟求 AP & Bridge 的 Tarjan 算法非常相似，有興趣的話可以參考[這篇](../introduction_to_AP_bridge.md))
 
 定義： \
-\\( depth(u) \\)為DFS造訪順序的時間戳記 \
+\\( depth(u) \\)為 DFS 造訪順序的時間戳記 \
 \\( low(u) \\)為所有點\\( u \\)能夠走到的點中\\( depth(x) \\)的最小值
  
 ### Detail process & Template code
 
-如GIF所示，在DFS的過程中，將點丟進stack中，同時更新每個點的\\( low \\)跟\\( depth \\)值，找出所有的SCC
+如 GIF 所示，在 DFS 的過程中，將點丟進 stack 中，同時更新每個點的\\( low \\)跟\\( depth \\)值，找出所有的 SCC
 <img src="image/Tarjan_SCC.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 Tarjan Algo code:
@@ -214,27 +214,27 @@ struct SCC {
 ```
 
 ### Time complexity and the Correctness
-只需要做一次DFS，因此時間複雜度為: \\( O(V+E) \\)，正確性可以由以下性質得出。
+只需要做一次 DFS，因此時間複雜度為: \\( O(V+E) \\)，正確性可以由以下性質得出。
 
 性質：
-1. 不存在從一個SCC到另一個SCC的Back edge
+1. 不存在從一個 SCC 到另一個 SCC 的 Back edge
 <details><summary>Proof</summary>
 
-假設SCC \\( C_u \\)中一點\\( u \\)存在一到SCC \\( C_v \\)中點\\( v \\)的Back edge，代表\\( u \\)可以透過\\( u \\)到\\( v \\)的Tree edge走到\\( v \\)，而\\( v \\)又可以透過Back edge走到\\( u \\)，兩者應屬於同一SCC中，故\\( C_u \\)與\\( C_v \\)應為同一SCC。
+假設 SCC \\( C_u \\)中一點\\( u \\)存在一到 SCC \\( C_v \\)中點\\( v \\)的 Back edge，代表\\( u \\)可以透過\\( u \\)到\\( v \\)的 Tree edge 走到\\( v \\)，而\\( v \\)又可以透過 Back edge 走到\\( u \\)，兩者應屬於同一 SCC 中，故\\( C_u \\)與\\( C_v \\)應為同一 SCC。
     
 </details>
 
-2. 可以存在SCC之間的Cross edge，但是Cross edge不會拿來更新答案
+2. 可以存在 SCC 之間的 Cross edge，但是 Cross edge 不會拿來更新答案
 
 <details><summary>Proof</summary>
 
-Cross edge會可能更新答案的情況只有:走到之前已經DFS走過的點，否則這條邊應該要屬於Tree edge。而在實做上，在DFS完前面的點之後，我們已經將SCC順便求了出來，所以前面已經形成SCC的點，不會在當前的stack中，因此不會拿來更新答案。
+Cross edge 會可能更新答案的情況只有:走到之前已經 DFS 走過的點，否則這條邊應該要屬於 Tree edge。而在實做上，在 DFS 完前面的點之後，我們已經將 SCC 順便求了出來，所以前面已經形成 SCC 的點，不會在當前的 stack 中，因此不會拿來更新答案。
     
 </details>
 
 ## 縮點操作：
 
-非常暴力且樸素的作法，建造一個縮點後的圖\\( G' \\)，暴力看過原圖\\( G \\)中的所有邊，圖\\( G' \\)中只存跨越不同SCC的邊。
+非常暴力且樸素的作法，建造一個縮點後的圖\\( G' \\)，暴力看過原圖\\( G \\)中的所有邊，圖\\( G' \\)中只存跨越不同 SCC 的邊。
 
 ```cpp
 void Compress() {
@@ -251,13 +251,13 @@ void Compress() {
 ## Problems
 > [CSES - Planets and Kingdoms](https://cses.fi/problemset/task/1683)
 > 
-> 給定一張 \\( N \\) 個點 \\( M \\) 條邊的有向圖,找出圖上各點各自屬於哪個SCC
+> 給定一張 \\( N \\) 個點 \\( M \\) 條邊的有向圖,找出圖上各點各自屬於哪個 SCC
 > 
 > \\(1 \leq N \leq 10^5,\ 1 \leq M \leq 2 \cdot 10^5\\)
 
 <details><summary>Solution</summary>
     
-模板題，只需要跑一次Tarjan/Kosaraju把所有點打上SCC編號就好。
+模板題，只需要跑一次 Tarjan/Kosaraju 把所有點打上 SCC 編號就好。
         
 </details>
 
@@ -269,7 +269,7 @@ void Compress() {
 
 <details><summary>Solution</summary>
     
-模板題，一樣跑一次Tarjan/Kosaraju，然後看整張圖是不是都屬於同一個SCC即可。
+模板題，一樣跑一次 Tarjan/Kosaraju，然後看整張圖是不是都屬於同一個 SCC 即可。
         
 </details>
 
@@ -281,10 +281,10 @@ void Compress() {
 
 <details><summary>Solution</summary>
 
-SCC模板題
-對於點\\(v \\)來說，跟它處於同一SCC中的點都是它能夠走到的。
-並且，對於它能走到的其他SCC \\(C_u \\)， \\(C_u \\)中的所有點都是他能夠走到的。
-因此，只需要先求出所有的SCC，做完縮點操作後拓樸排序算答案，就能算出每點能走到多少點。
+SCC 模板題
+對於點\\(v \\)來說，跟它處於同一 SCC 中的點都是它能夠走到的。
+並且，對於它能走到的其他 SCC \\(C_u \\)， \\(C_u \\)中的所有點都是他能夠走到的。
+因此，只需要先求出所有的 SCC，做完縮點操作後拓樸排序算答案，就能算出每點能走到多少點。
 
 </details>   
 
@@ -296,7 +296,7 @@ SCC模板題
 
 <details><summary>Solution</summary>
 
-跟上一題的解法基本上一樣，但這題需要維護點之間的關係，可以考慮使用bitset來維護。
+跟上一題的解法基本上一樣，但這題需要維護點之間的關係，可以考慮使用 bitset 來維護。
 
 </details>   
 
@@ -310,11 +310,11 @@ SCC模板題
 
 經典的縮點+DP
     
-首先，因為金幣數一定為正整數，所以對於某個SCC來說，走遍該SCC內的點一定是最佳走法。 因此，可以先做縮點，求出每個SCC內的金幣總數。
+首先，因為金幣數一定為正整數，所以對於某個 SCC 來說，走遍該 SCC 內的點一定是最佳走法。 因此，可以先做縮點，求出每個 SCC 內的金幣總數。
     
-縮點後，可得到一張代表所有SCC的圖\\( DAG \\)，定義\\( DP[i] \\)為：以\\( C_i \\)內的點為終點所能收集的最多金幣數。
-不難看出DP轉移式為: \\( DP[v] = max\{DP[u] + Coins[v]\}, \forall u \to v \\) 
-因此，就可以在縮點後的圖\\( DAG \\)上做拓樸排序的同時順便DP。
+縮點後，可得到一張代表所有 SCC 的圖\\( DAG \\)，定義\\( DP[i] \\)為：以\\( C_i \\)內的點為終點所能收集的最多金幣數。
+不難看出 DP 轉移式為: \\( DP[v] = max\{DP[u] + Coins[v]\}, \forall u \to v \\) 
+因此，就可以在縮點後的圖\\( DAG \\)上做拓樸排序的同時順便 DP。
 
     
 </details>
@@ -324,7 +324,7 @@ SCC模板題
 ## Reference
 - 清大競技程式設計二 - 上課講義
 - [Strongly Connected Components - GeeksforGeeks](https://www.geeksforgeeks.org/strongly-connected-components/)
-- [Tarjan’s Algorithm to find Strongly Connected Components - GeeksforGeeks](https://www.geeksforgeeks.org/tarjan-algorithm-find-strongly-connected-components/)
+- [Tarjan's Algorithm to find Strongly Connected Components - GeeksforGeeks](https://www.geeksforgeeks.org/tarjan-algorithm-find-strongly-connected-components/)
 - [演算法筆記 - Connected Component ](https://web.ntnu.edu.tw/~algo/ConnectedComponent.html)
 - [強連通分量 - OI Wiki](https://oi-wiki.org/graph/scc/)
 - [CP Algorithm - strongly connected components](https://cp-algorithms.com/graph/strongly-connected-components.html)
