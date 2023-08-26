@@ -30,16 +30,18 @@ Splay Tree 是一種自平衡的二元搜尋樹，主要通過 Splay 操作讓�
 
 以下使用輔助樹來稱呼 Auxiliary Tree。  
 
-要維護 LCT 的操作，我們需要維護輔助樹 (Auxiliary Tree)。輔助樹通常使用 splay tree 來實作，輔助樹的作用是用來維護訊息，在進行 LCT 操作時同時維護輔助樹的訊息，因此輔助樹能維護的訊息，就決定了 LCT 可以維護的訊息。  
+要維護 LCT 的操作，我們需要維護輔助樹 (Auxiliary Tree)。輔助樹通常使用 splay tree 來實作，輔助樹的作用是用來維護 preferred edge，同時也會維護輔助樹的訊息，因此輔助樹能維護的訊息，就決定了 LCT 可以維護的訊息。  
+每一棵輔助樹都對應到原樹上的一條 preferred edge，而不同的輔助樹之間由 path-parent pointer 連結，這種邊只會由兒子指向父親，而父親不會指向兒子。  
+以下是一個原樹與輔助樹的對應關係：<img src="image/LCT/Auxiliary_Tree_Demo.png" style="display:block; margin: 0 auto;"/>
+圖解：左為原樹，原樹的粗邊代表 preferred edge。右為原樹所對應的輔助樹，一般的邊代表 splay node 的左右小孩，而帶有箭號的邊代表 path-parent pointer，用來連接不同的輔助樹。  
+在原樹中 ABD 構成一條 preferred path，因此 ABD 在同一個輔助樹中，並且依照原樹的深度進行平衡，除此之外 CG 也構成一條 preferred path，因此 CG 在同一個輔助樹中，最後根據原樹上的邊，將輔助樹彼此用 path-parent pointer 連接。
+
 在基本 LCT 的 Splay Tree 節點會維護以下訊息：  
 
-1. 父節點 (子節點有邊指向父節點，但父節點不一定有邊指向子節點)
+1. 父節點
 2. 左右小孩 (實作時用右小孩代表 preferred edge)
 3. 在 Splay Tree Node 左邊的節點深度比自己小，右邊的節點深度比自己大
 4. 因為 LCT 操作中要維護左右節點深度的性質，所以在某些特定的操作中需要將區間反轉，因此使用懶惰標記，讓翻轉區間能夠有好的時間複雜度
-
-以下是一個原樹與輔助樹的對應關係：<img src="image/LCT/Auxiliary_Tree_Demo.png" style="display:block; margin: 0 auto;"/>
-圖解：左為原樹，原樹的粗邊代表 preferred edge。右為原樹所對應的輔助樹，粗邊代表 splay_node 的左右小孩，而帶有箭號的邊代表指向父節點的邊。
 
 以下是一個簡單的 Splay Tree node：
 
