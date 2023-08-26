@@ -21,6 +21,14 @@ jobs:
 
       - run: mdbook build
 
+      - name: Install static-sitemap-cli
+        run: npm install static-sitemap-cli
+
+      - name: Generate sitemap
+        run: |
+          cd book
+          npx sscli --no-clean --base https://nthu-cp.github.io/NTHU-CPP
+
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         if: ${{ github.ref == 'refs/heads/main' }}
