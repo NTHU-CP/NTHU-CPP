@@ -48,13 +48,13 @@ Splay Tree 是一種自平衡的二元搜尋樹，主要通過 Splay 操作讓�
 ```cpp
 struct splay_node
 {
-    int child[2], parent;
+    int child[2], pa;
     bool rev;
-    splay_node() : parent(0), rev(0), child({0, 0}) {}
+    splay_node() : pa(0), rev(false), child({0, 0}) {}
 };
 ```
 
-- ``child[0]`` 代表左小孩、``child[1]`` 代表右小孩
+- ``child[0]`` 代表左小孩(以下用 lc 表示)、``child[1]`` 代表右小孩 (以下用 rc 表示)
 - ``parent`` 代表父親
 - ``rev`` 代表區間反轉的懶惰標記
 
@@ -67,13 +67,13 @@ Splay Tree 的基本操作。
 ```cpp
 void rotate(int x) // balance splay tree
 {
-    int y = node[x].parent, z = node[y].parent, d = (node[y].child[1] == x);
-    node[x].parent = z;
+    int y = cur.pa, z = node[y].pa, d = (node[y].rc == x);
+    cur.pa = z;
     if (!isroot(y))
-        node[z].child[node[z].child[1] == y] = x;
-    node[y].child[d] = node[x].child[d ^ 1];
-    node[node[y].child[d]].parent = y;
-    node[y].parent = x, node[x].child[d ^ 1] = y;
+        node[z].child[node[z].rc == y] = x;
+    node[y].child[d] = cur.child[d ^ 1];
+    node[node[y].child[d]].pa = y;
+    node[y].pa = x, cur.child[d ^ 1] = y;
     up(y);
     up(x);
 }
@@ -82,11 +82,11 @@ void splay(int x) // splay node x
     push_down(x);
     while (!isroot(x))
     {
-        int y = node[x].parent;
+        int y = cur.pa;
         if (!isroot(y))
         {
-            int z = node[y].parent;
-            if ((node[z].child[0] == y) ^ (node[y].child[0] == x))
+            int z = node[y].pa;
+            if ((node[z].lc == y) ^ (node[y].lc == x))
                 rotate(x);
             else
                 rotate(y);
@@ -105,7 +105,7 @@ void splay(int x) // splay node x
 ```cpp
 bool isroot(int x)
 {
-    return node[node[x].parent].child[0] != x && node[node[x].parent].child[1] != x;
+    return node[cur.pa].lc != x && node[cur.pa].rc != x;
 }
 ```
 
@@ -118,7 +118,7 @@ bool isroot(int x)
 void push_down(int x)
 {
     if (!isroot(x))
-        push_down(node[x].parent);
+        push_down(cur.pa);
     down(x);
 }
 ```
@@ -129,14 +129,14 @@ void push_down(int x)
 ```cpp
 void down(int x)
 {
-    if (node[x].rev)
+    if (cur.rev)
     {
-        swap(node[x].child[0], node[x].child[1]);
-        if (node[x].child[0])
-            node[node[x].child[0]].rev ^= 1;
-        if (node[x].child[1])
-            node[node[x].child[1]].rev ^= 1;
-        node[x].rev = 0;
+        swap(cur.lc, cur.rc);
+        if (cur.lc)
+            node[cur.lc].rev ^= 1;
+        if (cur.rc)
+            node[cur.rc].rev ^= 1;
+        cur.rev = 0;
     }
 }
 ```
@@ -162,10 +162,10 @@ void down(int x)
 int access(int x)
 {
     int last = 0;
-    for (; x; last = x, x = node[x].parent)
+    for (; x; last = x, x = cur.pa)
     {
         splay(x);
-        node[x].child[1] = last;
+        cur.rc = last;
         up(x);
     }
     return last;
@@ -195,7 +195,7 @@ void make_root(int x)
 {
     access(x);
     splay(x);
-    node[x].rev ^= 1;
+    cur.rev ^= 1;
 }
 ```
 
@@ -210,7 +210,7 @@ void make_root(int x)
 void link(int x, int y)
 {
     make_root(x);
-    node[x].parent = y;
+    cur.pa = y;
 }
 ```
 
@@ -230,8 +230,8 @@ void cut(int x, int y)
     make_root(x);
     access(y);
     splay(y);
-    node[y].child[0] = 0;
-    node[x].parent = 0;
+    node[y].lc = 0;
+    cur.pa = 0;
 }
 ```
 
@@ -247,8 +247,8 @@ void cut(int x)
 {
     access(x);
     splay(x);
-    node[node[x].child[0]].parent = 0;
-    node[x].child[0] = 0;
+    node[cur.lc].pa = 0;
+    cur.lc = 0;
 }
 ```
 
@@ -264,8 +264,8 @@ void cut(int x)
 int find_root(int x)
 {
     int res = access(x);
-    while (node[res].child[0])
-        res = node[res].child[0];
+    while (node[res].lc)
+        res = node[res].lc;
     splay(res);
     return res;
 }
@@ -304,46 +304,49 @@ LCT 的操作中，都是基於 ``access()`` 操作而完成的，因此只要�
 ```cpp
 struct LCT
 {
+    #define cur node[x]
+    #define lc child[0]
+    #define rc child[1]
     struct splay_node
     {
-        int child[2], parent;
+        int child[2], pa;
         bool rev;
-        splay_node() : parent(0), rev(0), child() {}
+        splay_node() : pa(0), rev(false), child({0, 0}) {}
     };
-    vector<splay_node> node;
+    std::vector<splay_node> node;
     LCT(int _size) { node.resize(_size + 1); }
     bool isroot(int x)
     {
-        return node[node[x].parent].child[0] != x && node[node[x].parent].child[1] != x;
+        return node[cur.pa].lc != x && node[cur.pa].rc != x;
     }
     void down(int x)
     {
-        if (node[x].rev)
+        if (cur.rev)
         {
-            swap(node[x].child[0], node[x].child[1]);
-            if (node[x].child[0])
-                node[node[x].child[0]].rev ^= 1;
-            if (node[x].child[1])
-                node[node[x].child[1]].rev ^= 1;
-            node[x].rev = 0;
+            swap(cur.lc, cur.rc);
+            if (cur.lc)
+                node[cur.lc].rev ^= 1;
+            if (cur.rc)
+                node[cur.rc].rev ^= 1;
+            cur.rev = 0;
         }
     }
     void push_down(int x)
     {
         if (!isroot(x))
-            push_down(node[x].parent);
+            push_down(cur.pa);
         down(x);
     }
     void up(int x) {}
     void rotate(int x)
     {
-        int y = node[x].parent, z = node[y].parent, d = (node[y].child[1] == x);
-        node[x].parent = z;
+        int y = cur.pa, z = node[y].pa, d = (node[y].rc == x);
+        cur.pa = z;
         if (!isroot(y))
-            node[z].child[node[z].child[1] == y] = x;
-        node[y].child[d] = node[x].child[d ^ 1];
-        node[node[y].child[d]].parent = y;
-        node[y].parent = x, node[x].child[d ^ 1] = y;
+            node[z].child[node[z].rc == y] = x;
+        node[y].child[d] = cur.child[d ^ 1];
+        node[node[y].child[d]].pa = y;
+        node[y].pa = x, cur.child[d ^ 1] = y;
         up(y);
         up(x);
     }
@@ -352,11 +355,11 @@ struct LCT
         push_down(x);
         while (!isroot(x))
         {
-            int y = node[x].parent;
+            int y = cur.pa;
             if (!isroot(y))
             {
-                int z = node[y].parent;
-                if ((node[z].child[0] == y) ^ (node[y].child[0] == x))
+                int z = node[y].pa;
+                if ((node[z].lc == y) ^ (node[y].lc == x))
                     rotate(x);
                 else
                     rotate(y);
@@ -367,10 +370,10 @@ struct LCT
     int access(int x)
     {
         int last = 0;
-        for (; x; last = x, x = node[x].parent)
+        for (; x; last = x, x = cur.pa)
         {
             splay(x);
-            node[x].child[1] = last;
+            cur.rc = last;
             up(x);
         }
         return last;
@@ -379,36 +382,39 @@ struct LCT
     {
         access(x);
         splay(x);
-        node[x].rev ^= 1;
+        cur.rev ^= 1;
     }
     void link(int x, int y)
     {
         make_root(x);
-        node[x].parent = y;
+        cur.pa = y;
     }
     void cut(int x, int y)
     {
         make_root(x);
         access(y);
         splay(y);
-        node[y].child[0] = 0;
-        node[x].parent = 0;
+        node[y].lc = 0;
+        cur.pa = 0;
     }
     void cut(int x)
     {
         access(x);
         splay(x);
-        node[node[x].child[0]].parent = 0;
-        node[x].child[0] = 0;
+        node[cur.lc].pa = 0;
+        cur.lc = 0;
     }
     int find_root(int x)
     {
         int res = access(x);
-        while (node[res].child[0])
-            res = node[res].child[0];
+        while (node[res].lc)
+            res = node[res].lc;
         splay(res);
         return res;
     }
+    #undef cur
+    #undef lc
+    #undef rc
 };
 ```
 
@@ -496,7 +502,7 @@ int main()
 ```cpp
 void up(int x)
 {
-    node[x].mx = max(max(node[node[x].child[0]].mx, node[node[x].child[1]].mx), node[x].val);
+    cur.mx = max(max(node[cur.lc].mx, node[cur.rc].mx), cur.val);
 }
 ```
 
@@ -521,7 +527,7 @@ struct LCT
 {
     void up(int x)
     {
-        node[x].mx = max(max(node[node[x].child[0]].mx, node[node[x].child[1]].mx), node[x].val);
+        cur.mx = max(max(node[cur.lc].mx, node[cur.rc].mx), cur.val);
     }
     /* other LCT template */
 };
@@ -622,29 +628,29 @@ struct LCT
     LCT(int _size) { node.resize(_size + 1); }
     bool isroot(int x)
     {
-        return node[node[x].parent].child[0] != x && node[node[x].parent].child[1] != x;
+        return node[cur.parent].lc != x && node[cur.parent].rc != x;
     }
     void down(int x)
     {
-        if (node[x].tag)
+        if (cur.tag)
         {
-            node[x].time = node[x].tag;
-            if (node[x].child[0])
-                node[node[x].child[0]].tag = node[x].tag;
-            if (node[x].child[1])
-                node[node[x].child[1]].tag = node[x].tag;
-            node[x].tag = 0;
+            cur.time = cur.tag;
+            if (cur.lc)
+                node[cur.lc].tag = cur.tag;
+            if (cur.rc)
+                node[cur.rc].tag = cur.tag;
+            cur.tag = 0;
         }
     }
     void rotate(int x)
     {
-        int y = node[x].parent, z = node[y].parent, d = (node[y].child[1] == x);
-        node[x].parent = z;
+        int y = cur.parent, z = node[y].parent, d = (node[y].rc == x);
+        cur.parent = z;
         if (!isroot(y))
-            node[z].child[node[z].child[1] == y] = x;
-        node[y].child[d] = node[x].child[d ^ 1];
+            node[z].child[node[z].rc == y] = x;
+        node[y].child[d] = cur.child[d ^ 1];
         node[node[y].child[d]].parent = y;
-        node[y].parent = x, node[x].child[d ^ 1] = y;
+        node[y].parent = x, cur.child[d ^ 1] = y;
     }
     void splay(int x)
     { /* Very important: Need to push down from root */
@@ -661,11 +667,11 @@ struct LCT
 
         while (!isroot(x))
         {
-            int y = node[x].parent;
+            int y = cur.parent;
             if (!isroot(y))
             {
                 int z = node[y].parent;
-                if ((node[z].child[0] == y) ^ (node[y].child[0] == x))
+                if ((node[z].lc == y) ^ (node[y].lc == x))
                     rotate(x);
                 else
                     rotate(y);
@@ -676,29 +682,29 @@ struct LCT
     int access(int x, int t)
     {
         int last = 0, ori = x;
-        for (; x; last = x, x = node[x].parent)
+        for (; x; last = x, x = cur.parent)
         {
             splay(x);
             if (last)
             {
-                node[x].child[1] = last;
-                a.emplace_back(node[x].time + node[x].dist, t + node[x].dist);
+                cur.rc = last;
+                a.emplace_back(cur.time + cur.dist, t + cur.dist);
             }
         }
         splay(ori);
-        node[node[ori].child[0]].tag = t;
+        node[node[ori].lc].tag = t;
         return last;
     }
     void dfs(int x, int pa = 0)
     { /* Use dfs to build tree. */
-        node[x].parent = pa;
-        node[x].time = -node[x].dist;
+        cur.parent = pa;
+        cur.time = -cur.dist;
         for (auto [v, w] : G[x])
         {
             if (v == pa)
                 continue;
-            node[x].child[1] = v;
-            node[v].dist = node[x].dist + w;
+            cur.rc = v;
+            node[v].dist = cur.dist + w;
             dfs(v, x);
         }
     }
