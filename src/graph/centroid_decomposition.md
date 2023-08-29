@@ -783,7 +783,7 @@ struct CentroidTree {
 
 > [CF 293E - Close Vertices](https://codeforces.com/problemset/problem/293/E)
 >
-> 給定一棵有邊權的樹和兩個變數 \\( l, w \\)，> 問你樹上有多少點對 \\( (u, v) \\) 滿足以下條件：
+> 給定一棵有邊權的樹和兩個變數 \\( l, w \\)，問你樹上有多少點對 \\( (u, v) \\) 滿足以下條件：
 >
 > 1. \\( (u, v) \\) 路徑上的邊數量 \\( \le l \\)
 >
