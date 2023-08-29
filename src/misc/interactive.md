@@ -18,7 +18,7 @@
 
 ### Example: Binary Search
 
-Jury 藏著一個數字 \\(x\\)，Participant 可以問  Jury 一個數字 \\(y\\)，Jury 會回答以下三種情況是否滿足：
+Jury 藏著一個數字 \\(x\\)，Participant 可以問 Jury 一個數字 \\(y\\)，Jury 會回答以下三種情況是否滿足：
 
 - \\(x < y\\)
 - \\(x > y\\)
@@ -76,24 +76,20 @@ Participant 的目標是：在最少的回合數內，將 Jury 困住，即 Jury
 
 這樣的好處是，在寫 code 的時候不用考慮問問題的次數，只要證明問過的組合不會超過某個上界就好了。
 
-#### 把query包成一個function
+#### 把 query 包成一個 function
 
-其實大部份時候會問的  query 都會符合某些  pattern ，把它包成  function 可以有效降低  coding 的複雜度。
+其實大部份時候會問的 query 都會符合某些 pattern，把它包成 function 可以有效降低 coding 的複雜度。
 
-就算  query 沒有什麼規律可言，包成 function 也可以減少在主要的 procedure 中處理互動，會讓  code 好看一點。
+就算 query 沒有什麼規律可言，包成 function 也可以減少在主要的 procedure 中處理互動，會讓 code 好看一點。
 
 ### Binary Search
 
 > [Codeforces 809B - Glad to see you!](https://codeforces.com/problemset/problem/809/B)
-> Jury 有一組大小為 \\(k\\) 的集合，集合內的元素為 \\(1 \sim n\\) 且不重複的數字。
-> Jury 會將 \\(k\\) 跟 \\(n\\) 告訴 Participant。
-> Participant 可以問 Jury 的問題是：給兩個數字 \\(x, y\\)，Jury 將會在它的集合中找到跟 \\(x\\) 最接近的數字 \\(a\\)、跟 \\(y\\) 最接近的數字 \\(b\\)（\\(a\\) 可能等於 \\(b\\)），並回答是否滿足 \\(|x-a| \le |y-b|\\)。
-> Participant 需要在 \\(60\\) 個詢問內找到該集合中的任意兩個數字，其中 \\(2 \le k \le n \le 10^5\\)。
+> Jury 有一組大小為 \\(k\\) 的集合，集合內的元素為 \\(1 \sim n\\) 且不重複的數字。> Jury 會將 \\(k\\) 跟 \\(n\\) 告訴 Participant。> Participant 可以問 Jury 的問題是：給兩個數字 \\(x, y\\)，Jury 將會在它的集合中找到跟 \\(x\\) 最接近的數字 \\(a\\)、跟 \\(y\\) 最接近的數字 \\(b\\)（\\(a\\) 可能等於 \\(b\\)），並回答是否滿足 \\(|x-a| \le |y-b|\\)。> Participant 需要在 \\(60\\) 個詢問內找到該集合中的任意兩個數字，其中 \\(2 \le k \le n \le 10^5\\)。
 
 <details><summary>Solution</summary>
 
-先考慮如何找到一個在集合中的元素，已知在區間 \\([l, r]\\) 中有至少一個元素，則我們可以詢問 \\(x = mid, y = mid+1\\)，其中 \\(mid = \lfloor \dfrac{l+r+1}{2} \rfloor \\)。
-如此一來，我們能知道 \\([l, mid]\\) 或 \\([mid+1, r]\\) 含有至少一個元素，如此一來遞迴下去，我們就能知道至少一個元素，令此元素為 \\(h\\)。
+先考慮如何找到一個在集合中的元素，已知在區間 \\([l, r]\\) 中有至少一個元素，則我們可以詢問 \\(x = mid, y = mid+1\\)，其中 \\(mid = \lfloor \dfrac{l+r+1}{2} \rfloor \\)。如此一來，我們能知道 \\([l, mid]\\) 或 \\([mid+1, r]\\) 含有至少一個元素，如此一來遞迴下去，我們就能知道至少一個元素，令此元素為 \\(h\\)。
 
 \\(h\\) 將區間 \\([1, n]\\) 分隔成了區間 \\([1, h-1]\\) 跟 \\([h+1, n]\\)，我們可以用一樣的方式遞迴找出各區間中的元素，但有可能此區間不包含任何元素，所以我們還需要用額外的一個詢問來確認找到的元素是否真的存在。
 
@@ -166,11 +162,7 @@ get 這個函式則負責尋找在區間 \\([l, r)\\) 中任意一個存在集�
 ### Random
 
 > [Codeforces 843B - Interactive LowerBound](https://codeforces.com/problemset/problem/843/B)
-> Jury 有一個 Link-List \\(L\\)，\\(L\\) 的每個節點都有其編號。
-> 每個節點 \\(i\\) 上存有這個節點指向的下一個節點編號 \\(nxt_i\\)，跟它所紀錄的值 \\(val_i\\)。
-> 已知，此 Link-List 紀錄的值是遞增的，Participant 每次詢問能夠詢問任意編號 \\(i\\) 的 \\(nxt_i\\) 跟 \\(val_i\\)。
-> 節點編號範圍是 \\(1 \sim n\\)，其中 \\(1 \le n \le 50000\\)，Participant 需在 \\(2000\\) 次詢問內找到某一給定 \\(x\\) 的 Lower bound。
-> 一開始，Jury 會告訴 Participant 這個 Link-List 起點的編號跟 \\(n\\)。
+> Jury 有一個 Link-List \\(L\\)，\\(L\\) 的每個節點都有其編號。> 每個節點 \\(i\\) 上存有這個節點指向的下一個節點編號 \\(nxt_i\\)，跟它所紀錄的值 \\(val_i\\)。> 已知，此 Link-List 紀錄的值是遞增的，Participant 每次詢問能夠詢問任意編號 \\(i\\) 的 \\(nxt_i\\) 跟 \\(val_i\\)。> 節點編號範圍是 \\(1 \sim n\\)，其中 \\(1 \le n \le 50000\\)，Participant 需在 \\(2000\\) 次詢問內找到某一給定 \\(x\\) 的 Lower bound。> 一開始，Jury 會告訴 Participant 這個 Link-List 起點的編號跟 \\(n\\)。
 
 <details><summary>Solution</summary>
 
@@ -250,9 +242,7 @@ code 中的 K 代表我們隨機遍歷的節點數。
 ### Parity
 
 > [Codeforces 835E - The penguin's game](https://codeforces.com/problemset/problem/835/E)
-> Jury 有一集合 \\(S\\)，其中恰兩個元素是 \\(y\\)，其他則是 \\(x\\)，Jury 會告訴 Participant \\(x, y\\) 分別是多少。
-> Participant 每次詢問能問 Jury，\\(S\\) 的一個 subset 的所有元素的 xor 值。
-> 請 Participant 在 \\(19\\) 次詢問內找到兩個 \\(y\\) 所在的位置，其中 \\(2 \le |S| \le 1000\\)。
+> Jury 有一集合 \\(S\\)，其中恰兩個元素是 \\(y\\)，其他則是 \\(x\\)，Jury 會告訴 Participant \\(x, y\\) 分別是多少。> Participant 每次詢問能問 Jury，\\(S\\) 的一個 subset 的所有元素的 xor 值。> 請 Participant 在 \\(19\\) 次詢問內找到兩個 \\(y\\) 所在的位置，其中 \\(2 \le |S| \le 1000\\)。
 
 <details><summary>Solution</summary>
 
@@ -347,8 +337,7 @@ ask 這個函式會吃一個 vector 並詢問 Jury 這個 vector 中所有 eleme
 ### Constructive
 
 > [Codeforces 727C - Guess the Array](https://codeforces.com/problemset/problem/727/C)
-> Jury 有一組大小為 \\(N\\) 的陣列 \\(A\\)，Participant 每次能詢問此陣列中任兩個元素的和。
-> Participant 需要在 \\(N\\) 次詢問內知道這個陣列的所有元素是多少。
+> Jury 有一組大小為 \\(N\\) 的陣列 \\(A\\)，Participant 每次能詢問此陣列中任兩個元素的和。> Participant 需要在 \\(N\\) 次詢問內知道這個陣列的所有元素是多少。
 
 <details><summary>Solution</summary>
 
@@ -419,8 +408,7 @@ int main () {
 ## Exercises
 
 > [Codeforces 750F - New Year and Finding Roots](https://codeforces.com/problemset/problem/750/F)
-> Jury 有一棵高度是 \\(h\\) 的 perfect binary tree，Participant 能夠問 Jury 一個節點，Jury 會告訴 Participant 該節點的鄰居集合。
-> Participant 需在 \\(16\\) 次詢問內得知此 perfect binary tree 的根節點編號，其中 \\(2 \le h \le 7\\)。
+> Jury 有一棵高度是 \\(h\\) 的 perfect binary tree，Participant 能夠問 Jury 一個節點，Jury 會告訴 Participant 該節點的鄰居集合。> Participant 需在 \\(16\\) 次詢問內得知此 perfect binary tree 的根節點編號，其中 \\(2 \le h \le 7\\)。
 
 <details><summary>Solution</summary>
 
@@ -432,14 +420,12 @@ int main () {
 
 接著，對於已經知道其中一個子節點的點 \\(x\\)，我們也能用類似的方法在 \\(h\\) 此詢問內知道此點的父親是誰。
 
-於是我們使用這樣的方式從開始節點一路往上走，直到我們知道高度已經超過 \\(5\\)，因為此時高度太高，用原本的方法會超過詢問限制，就改用BFS找到根。
+於是我們使用這樣的方式從開始節點一路往上走，直到我們知道高度已經超過 \\(5\\)，因為此時高度太高，用原本的方法會超過詢問限制，就改用 BFS 找到根。
 
 </details>
 
 > [Codeforces 1033E - Hidden Bipartite Graph](https://codeforces.com/problemset/problem/1033/E)
-> Jury 有一張圖 \\(G\\)，其中有 \\(n\\) 個點，\\(1 \le n \le 600\\)。
-> Participant 每次能詢問 Jury 一個點集的 subset，Jury 會回答此 subset induce 出的邊的數量。
-> Participant 需在 \\(20000\\) 次詢問內判斷此圖是否為二分圖，如是，請輸出一種塗色方式；如否，請輸出一個奇環。
+> Jury 有一張圖 \\(G\\)，其中有 \\(n\\) 個點，\\(1 \le n \le 600\\)。> Participant 每次能詢問 Jury 一個點集的 subset，Jury 會回答此 subset induce 出的邊的數量。> Participant 需在 \\(20000\\) 次詢問內判斷此圖是否為二分圖，如是，請輸出一種塗色方式；如否，請輸出一個奇環。
 
 <details><summary>Solution</summary>
 
@@ -447,7 +433,7 @@ int main () {
 
 則任兩個 disjoint 的點集 \\(A\\),\\(B\\)，其中一端點在 \\(A\\)，另一端點在 \\(B\\) 的邊數為：\\(F(A, B) = Q(A \cup B) - Q(A) - Q(B)\\)。
 
-若我們想找出任意，一端點在 \\(A\\)，另一端點在 \\(B\\) 的邊，我們可以用 \\(F\\) 這個function，不斷將 \\(B\\) 跟 \\(A\\) 切半直到兩個集合的大小變為 \\(1\\)，就能找出此任意邊。
+若我們想找出任意，一端點在 \\(A\\)，另一端點在 \\(B\\) 的邊，我們可以用 \\(F\\) 這個 function，不斷將 \\(B\\) 跟 \\(A\\) 切半直到兩個集合的大小變為 \\(1\\)，就能找出此任意邊。
 
 有了 \\(F\\) 這個 function，我們能夠每次詢問尚未與當前連通塊連通的點與當前連通塊的任意邊，蓋出 \\(G\\) 的 spanning forest，如此一來，就能點著色，再用一次詢問判斷是否為二分圖。找奇環也不難辦到。
 
