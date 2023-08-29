@@ -10,7 +10,7 @@
 
 常見的互動形式(如 Codeforces 所使用的互動形式)有透過 standard IO 來傳遞訊息，在此情況下每次輸出後需要記得 flush 緩衝區，這樣 Jury 才能夠正確讀取 Participant 的輸出。
 
-還有多種互動方式如使用標頭檔呼叫函式等等，端看使用的解題平台(如OJ.uz)。
+還有多種互動方式如使用標頭檔呼叫函式等等，端看使用的解題平台(如 OJ.uz)。
 
 這類題目通常會限制 Participant 跟 Jury 溝通的次數，要求你在有限的次數內猜到 Jury 藏著的數字、或引導 Jury 到某個狀態之類的。
 
@@ -25,8 +25,7 @@ Jury 藏著一個數字 \\(x\\)，Participant 可以問 Jury 一個數字 \\(y\\
 - \\(x > y\\)
 - \\(x = y\\)
 
-其中 \\(1 \le x \le 1000\\)，Participant 想在 \\(10\\) 次詢問以內猜到 \\(x\\) 的值。
-:::
+其中 \\(1 \le x \le 1000\\)，Participant 想在 \\(10\\) 次詢問以內猜到 \\(x\\) 的值。:::
 
 <details><summary>Solution</summary>
 
@@ -44,8 +43,7 @@ Jury 在一棵樹 \\(T\\) 上的某個節點，一開始，Jury 會告訴 Partic
 
 Jury 跟 Participant 會輪流行動，每回合，Participant 可以把一個 Jury 不在的節點塗黑。而 Jury 會往它所在節點的其中一個非黑色的鄰居移動，並將原先在的節點塗黑，並告訴 Participant 它所在的節點。
 
-Participant 的目標是：在最少的回合數內，將 Jury 困住，即 Jury 無法再往其他節點移動。
-:::
+Participant 的目標是：在最少的回合數內，將 Jury 困住，即 Jury 無法再往其他節點移動。:::
 
 <details><summary>Solution</summary>
 
