@@ -26,13 +26,13 @@
 <div style="display:flex; flex-direction:row;">
     <div>
         <p align="center">
-            <img src="images/0.png" style="height:250px">
+            <img src="image/centroid_decomposition/0.png" style="height:250px">
         </p>
         <p style="text-align: center;"> 原樹 </p>
     </div>
     <div>
         <p align="center">
-            <img src="images/1.png" style="height:250px">
+            <img src="image/centroid_decomposition/1.png" style="height:250px">
         </p>
         <p style="text-align: center;"> 重心樹 </p>
     </div>
@@ -41,7 +41,7 @@
 可以參考下面的 GIF 來體會一下每次拔掉重心的過程
 
 <p align="center">
-    <img src="images/tree.gif" style="height:250px">
+    <img src="image/centroid_decomposition/tree.gif" style="height:250px">
 </p>
 <p style="text-align: center;"> 節點刪完之時，重心樹歸來之日XD </p>
 
