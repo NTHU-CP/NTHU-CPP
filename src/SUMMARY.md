@@ -11,7 +11,7 @@
 - [Greedy](greedy/intro.md)
   - [Basic Greedy](greedy/basic.md)
 - [Dynamic Programming]()
-  - [Convex hull optimization](dp/convex_hull_optimization.md)
+  - [Convex Hull Optimization](dp/convex_hull_optimization.md)
 - [Graph]()
   - [Tree]()
     - [Lowest Common Ancestor](graph/lca.md)
