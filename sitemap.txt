@@ -3,6 +3,7 @@ https://nthu-cp.github.io/NTHU-CPP/contest/icpc.html
 https://nthu-cp.github.io/NTHU-CPP/contest/intro.html
 https://nthu-cp.github.io/NTHU-CPP/contest/ncpc.html
 https://nthu-cp.github.io/NTHU-CPP/contest/topc.html
+https://nthu-cp.github.io/NTHU-CPP/dp/convex_hull_optimization.html
 https://nthu-cp.github.io/NTHU-CPP/graph/introduction_to_AP_bridge.html
 https://nthu-cp.github.io/NTHU-CPP/graph/introduction_to_BCC.html
 https://nthu-cp.github.io/NTHU-CPP/graph/lca.html
