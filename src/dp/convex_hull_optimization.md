@@ -117,11 +117,11 @@ ll cal(ll x, pll line){
 }
 
 bool cmp(pll line1, pll line2, pll line3){
-	ll a = line3.second - line1.second;
-	ll b = line2.second - line1.second;
-	ll c = line1.first - line3.first;
-	ll d = line1.first - line2.first;
-	return a * d <= b * c;
+    ll a = line3.second - line1.second;
+    ll b = line2.second - line1.second;
+    ll c = line1.first - line3.first;
+    ll d = line1.first - line2.first;
+    return a * d <= b * c;
 }
 
 int main(){
@@ -138,7 +138,7 @@ int main(){
 
     for(int i = 1; i <= n; i++){
         while(dq.size() >= 2 && cal(s[i], dq[0]) > cal(s[i], dq[1])){
-        	dq.pop_front();
+            dq.pop_front();
         }
         dp[i] = cal(s[i], dq[0]);
 
@@ -216,7 +216,7 @@ int main(){
     ```cpp
     for(ll i = 1; i <= n; i++){
         while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])){
-        	dq.pop_front();
+            dq.pop_front();
         }
 
         dp[i] = cal(x[i], dq[0]);
@@ -240,10 +240,10 @@ int main(){
     ```cpp
     for(ll i = 1; i <= n; i++){
         while(dq.size() >= 1 && dq[0].idx < i - k){
-        	dq.pop_front();
+            dq.pop_front();
         }
         while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])){
-        	dq.pop_front();
+            dq.pop_front();
         }
 
         dp[i] = cal(x[i], dq[0]);
@@ -287,10 +287,10 @@ int main(){
     ```cpp
     for(ll i = 1; i <= n; i++){
         while(dq.size() >= 1 && dq[0].idx < i - k){
-        	dq.pop_front();
+            dq.pop_front();
         }
         while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])){
-        	dq.pop_front();
+            dq.pop_front();
         }
 
         dp[i] = cal(x[i], dq[0]);
@@ -329,11 +329,11 @@ ll cal(ll x, pll line){
 }
 
 bool cmp(pll line1, pll line2, pll line3){
-	ll a = line3.second - line1.second;
-	ll b = line2.second - line1.second;
-	ll c = line1.first - line3.first;
-	ll d = line1.first - line2.first;
-	return a * d <= b * c;
+    ll a = line3.second - line1.second;
+    ll b = line2.second - line1.second;
+    ll c = line1.first - line3.first;
+    ll d = line1.first - line2.first;
+    return a * d <= b * c;
 }
 
 int main(){
@@ -351,10 +351,10 @@ int main(){
     dq.emplace_back(0, 0);
     for(ll i = 1; i <= n; i++){
         while (dq.size() > 0 && dq[0].first < i-k){
-        	dq.pop_front();
+            dq.pop_front();
         }
         while(dq.size() >= 2 && cal(2 * i, dq[0]) <= cal(2 * i, dq[1])){
-        	dq.pop_front();
+            dq.pop_front();
         }
 
         dp[i] = cal(2 * i, dq[0]) - i * i + suf[i + 1];
@@ -478,11 +478,11 @@ inline pll find_line(ll x){
 }
 
 inline bool cmp(pll line1, pll line2, pll line3){
-	__int128 a = line3.second - line1.second;
-	__int128 b = line2.second - line1.second;
-	__int128 c = line1.first - line3.first;
-	__int128 d = line1.first - line2.first;
-	return a * d <= b * c;
+    __int128 a = line3.second - line1.second;
+    __int128 b = line2.second - line1.second;
+    __int128 c = line1.first - line3.first;
+    __int128 d = line1.first - line2.first;
+    return a * d <= b * c;
 }
 
 int main(){
@@ -571,11 +571,11 @@ ll cmp2(pll p1, pll p2, ll x){
 }
 
 bool cmp(pll line1, pll line2, pll line3){
-	ll a = line3.second - line1.second;
-	ll b = line2.second - line1.second;
-	ll c = line1.first - line3.first;
-	ll d = line1.first - line2.first;
-	return a * d <= b * c;
+    ll a = line3.second - line1.second;
+    ll b = line2.second - line1.second;
+    ll c = line1.first - line3.first;
+    ll d = line1.first - line2.first;
+    return a * d <= b * c;
 }
 
 pll find_line(vector <pll> &v, ll x){
@@ -610,11 +610,11 @@ vector <pll> solve(int l, int r){
     while(idx1 < v1.size() || idx2 < v2.size()){
         pll pl;
         if(idx2 >= v2.size() || (idx1 < v1.size() && v1[idx1] >= v2[idx2])){
-        	pl = v1[idx1++];
+            pl = v1[idx1++];
         }
         else pl = v2[idx2++];
         while(v.size() >= 2 && cmp(v[v.size() - 2], v.back(), pl)){
-        	v.pop_back();
+            v.pop_back();
         }
         v.emplace_back(pl);
     }
