@@ -93,7 +93,7 @@
 
     \\((b_3-b_1)(a_1-a_2) \le (b_2-b_1)(a_1-a_3)\\)
 
-綜合上述，我們可以使用單調隊列，開一個 deque 完成這兩項操作。具體而言，每算完一個 \\(f(i)\\)，便將 pair \\((f_i, f(i))\\) 插入隊列尾端，分別代表直線的 \\(a\\) 與 \\(b\\)。插入之前，我們檢查是否有直線在這次插入後，再也不會被當成答案，有的話就從後端 pop 掉。
+綜合上述，我們可以使用單調隊列，開一個 `deque` 完成這兩項操作。具體而言，每算完一個 \\(f(i)\\)，便將 pair \\((f_i, f(i))\\) 插入隊列尾端，分別代表直線的 \\(a\\) 與 \\(b\\)。插入之前，我們檢查是否有直線在這次插入後，再也不會被當成答案，有的話就從後端 pop 掉。
 
 在查詢最小值時，我們不斷比較隊列中第一個與第二個直線，如果將當前的 \\(x\\) 代入兩條直線後，發現代入第二條直線有更好的解，則將第一條直線 pop 掉。
 
@@ -117,7 +117,11 @@ ll cal(ll x, pll line){
 }
 
 bool cmp(pll line1, pll line2, pll line3){
-    return (line3.second - line1.second) * (line1.first - line2.first) <= (line2.second - line1.second) * (line1.first - line3.first); 
+    ll a = line3.second - line1.second;
+    ll b = line2.second - line1.second;
+    ll c = line1.first - line3.first;
+    ll d = line1.first - line2.first;
+    return a * d <= b * c;
 }
 
 int main(){
@@ -133,7 +137,9 @@ int main(){
     dq.emplace_back(f[0], 0);
 
     for(int i = 1; i <= n; i++){
-        while(dq.size() >= 2 && cal(s[i], dq[0]) > cal(s[i], dq[1])) dq.pop_front();
+        while(dq.size() >= 2 && cal(s[i], dq[0]) > cal(s[i], dq[1])){
+            dq.pop_front();
+        }
         dp[i] = cal(s[i], dq[0]);
 
         pll line(f[i], dp[i]);
@@ -209,7 +215,10 @@ int main(){
 
     ```cpp
     for(ll i = 1; i <= n; i++){
-        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])) dq.pop_front();
+        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])){
+            dq.pop_front();
+        }
+
         dp[i] = cal(x[i], dq[0]);
 
         pll line(a[i], b[i]);
@@ -224,14 +233,19 @@ int main(){
 
 2. 轉移範圍有限制，只能從往前 \\(k-1\\) 個轉移點來轉移。
 
-    看起來也不是什麼大問題，好像只需要在 pop deque 前端的直線時，將過期的線也 pop 掉就好。
+    看起來也不是什麼大問題，好像只需要在 pop `deque` 前端的直線時，將過期的線也 pop 掉就好。
 
-    這邊假設 deque 裡面的每個元素由 \\(a\\)、\\(b\\)、\\(idx\\) 組成，\\(a\\)、\\(b\\) 代表直線的資訊，\\(idx\\) 代表轉移點的 index。
+    這邊假設 `deque` 裡面的每個元素由 \\(a\\)、\\(b\\)、\\(idx\\) 組成，\\(a\\)、\\(b\\) 代表直線的資訊，\\(idx\\) 代表轉移點的 index。
 
     ```cpp
     for(ll i = 1; i <= n; i++){
-        while(dq.size() >= 1 && dq[0].idx < i - k) dq.pop_front();
-        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])) dq.pop_front();
+        while(dq.size() >= 1 && dq[0].idx < i - k){
+            dq.pop_front();
+        }
+        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])){
+            dq.pop_front();
+        }
+
         dp[i] = cal(x[i], dq[0]);
 
         pll line(a[i], b[i]);
@@ -272,8 +286,13 @@ int main(){
 
     ```cpp
     for(ll i = 1; i <= n; i++){
-        while(dq.size() >= 1 && dq[0].idx < i - k) dq.pop_front();
-        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])) dq.pop_front();
+        while(dq.size() >= 1 && dq[0].idx < i - k){
+            dq.pop_front();
+        }
+        while(dq.size() >= 2 && cal(x[i], dq[0]) < cal(x[i], dq[1])){
+            dq.pop_front();
+        }
+
         dp[i] = cal(x[i], dq[0]);
 
         pll line(a[i], b[i]);
@@ -288,7 +307,7 @@ int main(){
     }
     ```
 
-    在加線之前判斷是否要 pop 掉 deque 最後方的線那一部分，我們多加了一個條件判斷 deque 最後方的線是否有可能在它前方的線被 pop 掉後提供答案。由此我們可以保證每一條在 deque 裡面的線都是可能的轉移來源。
+    在加線之前判斷是否要 pop 掉 `deque` 最後方的線那一部分，我們多加了一個條件判斷 `deque` 最後方的線是否有可能在它前方的線被 pop 掉後提供答案。由此我們可以保證每一條在 `deque` 裡面的線都是可能的轉移來源。
 
 其他部分便與上一個例題概念相同，上述做法複雜度一樣為 \\(O(n)\\)。
 
@@ -310,7 +329,11 @@ ll cal(ll x, pll line){
 }
 
 bool cmp(pll line1, pll line2, pll line3){
-    return (line3.second - line1.second) * (line1.first - line2.first) <= (line2.second - line1.second) * (line1.first - line3.first); 
+    ll a = line3.second - line1.second;
+    ll b = line2.second - line1.second;
+    ll c = line1.first - line3.first;
+    ll d = line1.first - line2.first;
+    return a * d <= b * c;
 }
 
 int main(){
@@ -327,8 +350,13 @@ int main(){
     deque <pll> dq;
     dq.emplace_back(0, 0);
     for(ll i = 1; i <= n; i++){
-        while (dq.size() > 0 && dq[0].first < i-k) dq.pop_front();
-        while(dq.size() >= 2 && cal(2 * i, dq[0]) <= cal(2 * i, dq[1])) dq.pop_front();
+        while (dq.size() > 0 && dq[0].first < i-k){
+            dq.pop_front();
+        }
+        while(dq.size() >= 2 && cal(2 * i, dq[0]) <= cal(2 * i, dq[1])){
+            dq.pop_front();
+        }
+
         dp[i] = cal(2 * i, dq[0]) - i * i + suf[i + 1];
 
         pll line(i, dp[i] - i * i);
@@ -353,14 +381,14 @@ int main(){
 
 以上就是斜率優化的例題與概念，我們再複習一下大致的步驟：
 
-1. 將初始值放入 deque
+1. 將初始值放入 `deque`
 2. 根據填表順序計算 \\(f(i)\\)：
 
-    i. 不斷比較 deque 最前端的兩條線。若第二條線有較好的答案就 pop 掉最前端的線，不斷重複直到最前端的線有最好的答案，或是 deque 中只剩一條線。
+    i. 不斷比較 `deque` 最前端的兩條線。若第二條線有較好的答案就 pop 掉最前端的線，不斷重複直到最前端的線有最好的答案，或是 `deque` 中只剩一條線。
 
-    ii. 利用 deque 最前端的線計算 \\(f(i)\\)。
+    ii. 利用 `deque` 最前端的線計算 \\(f(i)\\)。
 
-    iii. 不斷比較 deque 最尾端的線與新的直線。若前者在新的線加入後便不在凸包中就 pop 掉，最後插入新的直線。
+    iii. 不斷比較 `deque` 最尾端的線與新的直線。若前者在新的線加入後便不在凸包中就 pop 掉，最後插入新的直線。
 
 雖然步驟都大同小異，但不同題目還是有一些差異，在實作前要特別注意：
 
@@ -370,7 +398,7 @@ int main(){
 
 ### 斜率單調 & 查詢不單調
 
-上面的題目由於查詢單調，我們才能保證可以只看 deque 前端的線段就找到最小值。那麼，要是查詢不單調該怎麼辦？
+上面的題目由於查詢單調，我們才能保證可以只看 `deque` 前端的線段就找到最小值。那麼，要是查詢不單調該怎麼辦？
 
 我們來看另一個例題：
 > [P5785 任務安排](https://www.luogu.com.cn/problem/P5785)
@@ -415,7 +443,7 @@ int main(){
 
 <details><summary> Solution Code </summary>
 
-此題時間較緊，需要壓一下常數，因此這邊使用陣列來實作。一般情況下，deque 常數較大，且因為我們不需要 pop_front，可以使用 vector 來實作。
+此題時間較緊，需要壓一下常數，因此這邊使用陣列來實作。一般情況下，`deque` 常數較大，且因為我們不需要 `pop_front`，可以使用 `vector` 來實作。
 
 ```cpp
 #include <bits/stdc++.h>
@@ -450,7 +478,11 @@ inline pll find_line(ll x){
 }
 
 inline bool cmp(pll line1, pll line2, pll line3){
-    return (__int128)(line3.second - line1.second) * (__int128)(line1.first - line2.first) <= (__int128)(line2.second - line1.second) * (__int128)(line1.first - line3.first); 
+    __int128 a = line3.second - line1.second;
+    __int128 b = line2.second - line1.second;
+    __int128 c = line1.first - line3.first;
+    __int128 d = line1.first - line2.first;
+    return a * d <= b * c;
 }
 
 int main(){
@@ -480,7 +512,7 @@ int main(){
 
 ### 斜率不單調
 
-斜率不單調的情況更為複雜，我們不能再使用 deque 或是 vector 來維護凸包，以下會介紹幾個解決此問題的方法。
+斜率不單調的情況更為複雜，我們不能再使用 `deque` 或是 `vector` 來維護凸包，以下會介紹幾個解決此問題的方法。
 
 #### CDQ 分治
 
@@ -539,7 +571,11 @@ ll cmp2(pll p1, pll p2, ll x){
 }
 
 bool cmp(pll line1, pll line2, pll line3){
-    return (line3.second - line1.second) * (line1.first - line2.first) <= (line2.second - line1.second) * (line1.first - line3.first); 
+    ll a = line3.second - line1.second;
+    ll b = line2.second - line1.second;
+    ll c = line1.first - line3.first;
+    ll d = line1.first - line2.first;
+    return a * d <= b * c;
 }
 
 pll find_line(vector <pll> &v, ll x){
@@ -573,9 +609,13 @@ vector <pll> solve(int l, int r){
     int idx1 = 0, idx2 = 0;
     while(idx1 < v1.size() || idx2 < v2.size()){
         pll pl;
-        if(idx2 >= v2.size() || (idx1 < v1.size() && v1[idx1] >= v2[idx2])) pl = v1[idx1++];
+        if(idx2 >= v2.size() || (idx1 < v1.size() && v1[idx1] >= v2[idx2])){
+            pl = v1[idx1++];
+        }
         else pl = v2[idx2++];
-        while(v.size() >= 2 && cmp(v[v.size() - 2], v.back(), pl)) v.pop_back();
+        while(v.size() >= 2 && cmp(v[v.size() - 2], v.back(), pl)){
+            v.pop_back();
+        }
         v.emplace_back(pl);
     }
     return v;
@@ -661,7 +701,9 @@ int main(){
         if(x < l || x > r) return INF;
         if(l == r) return cal(seg[id], x);
         int mid = (l + r) >> 1;
-        ll val = x <= mid ? query(l, mid, id * 2, x) : query(mid + 1, r, id * 2 + 1, x);
+        ll val = 0;
+        if(x <= mid) val = query(l, mid, id * 2, x);
+        else val = query(mid + 1, r, id * 2 + 1, x);
         return min(val, cal(seg[id], x));
     }
     ```
@@ -700,7 +742,9 @@ struct LiChao{
         if(x < l || x > r) return INF;
         if(l == r) return cal(seg[id], x);
         int mid = (l + r) >> 1;
-        ll val = x <= mid ? query(l, mid, id * 2, x) : query(mid + 1, r, id * 2 + 1, x);
+        ll val = 0;
+        if(x <= mid) val = query(l, mid, id * 2, x);
+        else val = query(mid + 1, r, id * 2 + 1, x);
         return min(val, cal(seg[id], x));
     }
 };
@@ -758,7 +802,9 @@ struct LiChao{
         if(x < l || x > r) return INF;
         if(l == r) return cal(seg[id], x);
         int mid = (l + r) >> 1;
-        ll val = x <= mid ? query(l, mid, id * 2, x) : query(mid + 1, r, id * 2 + 1, x);
+        ll val = 0;
+        if(x <= mid) val = query(l, mid, id * 2, x);
+        else val = query(mid + 1, r, id * 2 + 1, x);
         return min(val, cal(seg[id], x));
     }
 };
@@ -937,9 +983,9 @@ int main(){
 
 > [CF 319C - Kalila and Dimna in the Logging Industry](https://codeforces.com/problemset/problem/319/C)
 >
-> 有 \\(n\\) 棵樹，第 \\(i\\) 棵樹高度為 \\(a_i\\)。每次使用鋸子砍樹可以使任意棵樹的高度減\\(1\\)，且使用完鋸子後需要充電才能做下一次使用。充電的成本是已經被砍到\\(0\\)的樹中\\(id\\)最大的那棵，的\\(b_i\\)的值。請找出把樹全部砍光的最小成本。
+> 有 \\(n\\) 棵樹，第 \\(i\\) 棵樹高度為 \\(a_i\\)。每次使用鋸子砍樹可以使任意棵樹的高度減 \\(1\\)，且使用完鋸子後需要充電才能做下一次使用。充電的成本是已經被砍到 \\(0\\) 的樹中 \\(id\\) 最大的那棵，的 \\(b_i\\) 的值。請找出把樹全部砍光的最小成本。
 >
-> - 保證\\(a_1 = 1, b_n = 0\\)，且\\(a_1 < a_2 < \dots < a_n\\)且\\(b_1 > b_2 > \dots > b_n\\)。
+> - 保證 \\(a_1 = 1, b_n = 0\\)，且 \\(a_1 < a_2 < \dots < a_n\\) 且 \\(b_1 > b_2 > \dots > b_n\\)。
 > - \\(1 \le n \le 10^5\\)
 
 <details><summary> Solution </summary>
@@ -963,7 +1009,7 @@ int main(){
 
 > [CF 1715E - Long Way Home](https://codeforces.com/problemset/problem/1715/E)
 >
-> 有 \\(n\\) 個城市編號 \\(1 \sim n\\)，從城市 \\(u\\) 移動到城市 \\(v\\) 的成本是 \\((u-v)^2\\)。> 現在 Stanley 想從城市 \\(1\\) 用至多 \\(k\\) 步走到城市 \\(n\\)，請找出最小的成本。
+> 有 \\(n\\) 個城市編號 \\(1 \sim n\\)，從城市 \\(u\\) 移動到城市 \\(v\\) 的成本是 \\((u-v)^2\\)。現在 Stanley 想從城市 \\(1\\) 用至多 \\(k\\) 步走到城市 \\(n\\)，請找出最小的成本。
 >
 > - \\(2 \le n \le 10^5, 1 \le k \le 20\\)
 
