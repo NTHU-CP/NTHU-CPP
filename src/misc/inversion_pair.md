@@ -170,7 +170,7 @@ int64_t inversions(const vector<int> &perm)
 
 這種演算法沒那麼受歡迎的原因可能是 C++ STL 內建的二分搜尋樹並不支援 rank query，而自己刻一棵 self-balanced BST 像是 R-B tree、AVL tree、splay tree⋯⋯並不好玩。如果你是 treap 愛好者，在 treap 的每個 node 紀錄 size 就可以二分搜 rank，但記得留意 sequence 可能包含重複元素。
 
-假若 OJ 還有你用的是 GNU 的 `g++`，那麼有個黑魔法：Policy-Based Data Structures _(PBDS)_ 就像是 GNU 擴充的 STL，其中的 `__gnu_pbds::tree<>` 原本跟普通 `std::set<>` (or `std::map<,>`) 沒什麼區別，但在套上 `tree_order_statistics_node_update` 這個 policy 之後 BST 每個 node 都會記錄 order statistic，搖身一變成為一棵貨真價實的 order statistic tree。但注意到 `__gnu_pbds::tree<>` 預設跟 `std::set<>` 一樣會忽略重複元素，我們需要將第三個 template argument `Cmp_Fn` 改為 `less_equal<>` 才能變成像 `std::multiset<>` 的行為。另外，根據筆者自身經驗，雖然 PBDS 很方便，但它的常數往往很大。
+假若 OJ 還有你用的是 GNU 的 `g++`，那麼有個黑魔法：Policy-Based Data Structures _(PBDS)_ 就像是 GNU 擴充的 STL，其中的 `__gnu_pbds::tree<>` 原本跟普通 `std::set<>` (or `std::map<,>` ) 沒什麼區別，但在套上 `tree_order_statistics_node_update` 這個 policy 之後 BST 每個 node 都會記錄 order statistic，搖身一變成為一棵貨真價實的 order statistic tree。但注意到 `__gnu_pbds::tree<>` 預設跟 `std::set<>` 一樣會忽略重複元素，我們需要將第三個 template argument `Cmp_Fn` 改為 `less_equal<>` 才能變成像 `std::multiset<>` 的行為。另外，根據筆者自身經驗，雖然 PBDS 很方便，但它的常數往往很大。
 
 ```cpp
 #include <bits/extc++.h>
@@ -209,7 +209,7 @@ int64_t inversions(const vector<int> &seq)
 
 - [2021 TOI 1! 入營考 C. 粉刷護欄](https://tioj.ck.tp.edu.tw/problems/2195)
 
-其實 NCPC 2021 Final 也有一題 [LIS](https://ncpc.ntnu.edu.tw/file/110/決賽-110.pdf)([OJ](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/view.php?id=60575)).
+其實 NCPC 2021 Final 也有一題 [LIS](https://ncpc.ntnu.edu.tw/file/110/決賽-110.pdf) ( [OJ](https://e-tutor.itsa.org.tw/e-Tutor/mod/programming/view.php?id=60575) ).
 
 ### 競賽實戰題
 
