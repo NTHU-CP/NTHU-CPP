@@ -34,7 +34,7 @@
 ### 時間複雜度
 持久化線段樹的操作的時間複雜度與普通的線段樹是一樣的，以這題爲例，建樹的時間複雜度是 \\(O(N)\\) ，單點修改（即題目的操作 \\(1\\) ）的時間複雜度是 \\(O(log{N})\\) ， 區間查詢（即題目的操作 \\(2\\) ）的時間為 \\(O(log{N})\\) ，總時間複雜度為 \\(O(N) + O(Qlog{N})\\) 。
 
-[CSES 1737](https://cses.fi/problemset/task/1737/)
+<details><summary> Solution Code </summary>
 ```cpp=
 #include <bits/stdc++.h>
 using namespace std;
@@ -103,6 +103,8 @@ signed main() {
   return 0;
 }
 ```
+</details>
+
 ## 經典應用 區間第k小
 
 > [洛谷P3834 【模板】可持久化线段树 2](https://www.luogu.com.cn/problem/P3834)
@@ -137,7 +139,7 @@ int query_kth(int l, int r, int rt, int k){
 時間複雜度：\\(O(Nlog{N}) + O(Qlog{N})\\)
 空間複雜度：\\( O(Nlog{N}) \\)
 
-附上 [洛谷 P3834](https://www.luogu.com.cn/problem/P3834) 的code
+<details><summary> Solution Code </summary>
 
 ```cpp=
 #include <bits/stdc++.h>
@@ -201,6 +203,7 @@ int main() {
   return 0;
 }
 ```
+</details>
 
 ## 其他練習題
 
@@ -223,7 +226,7 @@ int main() {
 
 時間複雜度：\\( O(Nlog{N} + Mlog^2{N}) \\)
 
-#### AC code
+<details><summary> Solution Code </summary>
 ```cpp 
 #include <bits/stdc++.h>
 using namespace std;
@@ -298,6 +301,7 @@ signed main() {
   return 0;
 }
 ```
+</details>
 
 >### [洛谷 P2617 Dynamic Rankings](https://www.luogu.com.cn/problem/P2617)
 >
@@ -322,7 +326,7 @@ signed main() {
 時間複雜度: \\(O(Mlog^2{N})\\)
 空間的部分，因為我們是採用動態開點來實作，所需的空間複雜度跟修改是同一階的，所以是 \\(O(Mlog^2{N})\\)
 
-#### AC code
+<details><summary> Solution Code </summary>
 ```cpp=
 #include <bits/stdc++.h>
 using namespace std;
@@ -415,6 +419,7 @@ int main() {
 }
 
 ```
+</details>
 
 >### [洛谷 P2633 Count on a tree](https://www.luogu.com.cn/problem/P2633)
 >
@@ -436,7 +441,7 @@ int main() {
 
 時間複雜度：\\( O(Qlog{N} + Nlog{N}) \\)
 
-#### AC code
+<details><summary> Solution Code </summary>
 ```cpp=
 #include <bits/stdc++.h>
 using namespace std;
@@ -540,6 +545,7 @@ int main() {
   return 0;
 }
 ```
+</details>
 
 >### [Codefroces 1171F](https://codeforces.com/problemset/problem/1771/F)
 >
@@ -554,7 +560,7 @@ int main() {
 
 時間複雜度：\\( O(Qlog{N} + Nlog{N}) \\)
 
-#### AC code
+<details><summary> Solution Code </summary>
 ```cpp=
 #include <bits/stdc++.h>
 using namespace std;
@@ -605,7 +611,7 @@ signed main() {
   }
 }
 ```
-
+</details>
 
 
 
