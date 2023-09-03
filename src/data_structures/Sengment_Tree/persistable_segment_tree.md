@@ -123,7 +123,7 @@ signed main() {
 
 由於每個節點是存的是區間和，要求第 \\(k\\) 小，我們從根節點開始，每次判斷左子樹的和是否**大於等於** \\(k\\)，如果是的話表示有至少 \\(k\\) 個數字在左子樹，所以往左子樹找。如果左子樹的和**小於** \\(k\\) ，表示答案在右子樹，先把 \\(k\\) 減掉左子樹的和，再往右子樹找答案，直到找到葉節點，所對應的下標就是答案。
 
-```cpp=
+```cpp
 int query_kth(int l, int r, int rt, int k){
     if(l == r) return l;
     int sum = seg[rt << 1], mid = l + r >> 1;
@@ -632,3 +632,5 @@ signed main() {
 [Persistent segment tree ( Problems )](https://codeforces.com/blog/entry/56880)
 
 [Preserving the history of its values (Persistent Segment Tree)](https://cp-algorithms.com/data_structures/segment_tree.html#compression-of-2d-segment-tree)
+
+[洛谷題單 - 持久化線段樹](https://www.luogu.com.cn/problem/list?tag=233)
