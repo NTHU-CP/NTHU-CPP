@@ -17,13 +17,13 @@
 仔細回想一下在線段樹的修改（以單點修改爲例），會發現其實每次有改到的點只有根到葉子的那一條鏈，而其他節點的值都不變。
 
 （修改第13個點的值）
-![](src\data_structures\image\persistable_segment_tree\persistable_segment_tree-1.png)
+<img src= "image\persistable_segment_tree\persistable_segment_tree-1.png" />
 
 
 所以每次遞迴修改的時候，遇到需要修改的子節點就新建一個指標給它，另一個未修改到的子節點就連回上一個版本的指標位置，其餘的部分都跟普通的線段樹一樣。
 
 
-![](src\data_structures\image\persistable_segment_tree\persistable_segment_tree-2.png)
+<img src= "image\persistable_segment_tree\persistable_segment_tree-2.png" />
 
 
 
@@ -35,7 +35,8 @@
 持久化線段樹的操作的時間複雜度與普通的線段樹是一樣的，以這題爲例，建樹的時間複雜度是 \\(O(N)\\) ，單點修改（即題目的操作 \\(1\\) ）的時間複雜度是 \\(O(log{N})\\) ， 區間查詢（即題目的操作 \\(2\\) ）的時間為 \\(O(log{N})\\) ，總時間複雜度為 \\(O(N) + O(Qlog{N})\\) 。
 
 <details><summary> Solution Code </summary>
-```cpp=
+
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
@@ -117,7 +118,7 @@ signed main() {
 #### 如何查詢第 \\(k\\) 小
 在求區間第 \\(k\\) 小之前，先來看一下要如何求出全部數字（也就是詢問 \\([1, n]\\) ）的第 \\(k\\) 小，我們考慮對線段樹做一點修改，原本的線段樹存的是一個序列的值，我們把線段樹的下標改成存某個數字出現的次數（即下標為 \\(x\\) 的葉節點存的是數字 \\(x\\) 的出現次數），而其他節點則是存左右子樹的和。
 
-![](src\data_structures\image\persistable_segment_tree\persistable_segment_tree-3.png)
+<img src = "image\persistable_segment_tree\persistable_segment_tree-3.png" />
 
 
 由於每個節點是存的是區間和，要求第 \\(k\\) 小，我們從根節點開始，每次判斷左子樹的和是否**大於等於** \\(k\\)，如果是的話表示有至少 \\(k\\) 個數字在左子樹，所以往左子樹找。如果左子樹的和**小於** \\(k\\) ，表示答案在右子樹，先把 \\(k\\) 減掉左子樹的和，再往右子樹找答案，直到找到葉節點，所對應的下標就是答案。
@@ -141,7 +142,7 @@ int query_kth(int l, int r, int rt, int k){
 
 <details><summary> Solution Code </summary>
 
-```cpp=
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -227,6 +228,7 @@ int main() {
 時間複雜度：\\( O(Nlog{N} + Mlog^2{N}) \\)
 
 <details><summary> Solution Code </summary>
+
 ```cpp 
 #include <bits/stdc++.h>
 using namespace std;
@@ -327,7 +329,8 @@ signed main() {
 空間的部分，因為我們是採用動態開點來實作，所需的空間複雜度跟修改是同一階的，所以是 \\(O(Mlog^2{N})\\)
 
 <details><summary> Solution Code </summary>
-```cpp=
+
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 #define lb(x) x & -x
@@ -417,7 +420,6 @@ int main() {
   }
   return 0;
 }
-
 ```
 </details>
 
@@ -442,7 +444,8 @@ int main() {
 時間複雜度：\\( O(Qlog{N} + Nlog{N}) \\)
 
 <details><summary> Solution Code </summary>
-```cpp=
+
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 typedef long long ll;
@@ -561,7 +564,8 @@ int main() {
 時間複雜度：\\( O(Qlog{N} + Nlog{N}) \\)
 
 <details><summary> Solution Code </summary>
-```cpp=
+
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -617,14 +621,14 @@ signed main() {
 
 
 ## References
-https://blog.csdn.net/yanweiqi1754989931/article/details/117380913
+[数据结构 线段树--权值线段树 详解](https://blog.csdn.net/yanweiqi1754989931/article/details/117380913)
 
-https://oi-wiki.org/ds/persistent-seg/
+[OIWiki 持久化線段樹](https://oi-wiki.org/ds/persistent-seg/)
 
-https://usaco.guide/adv/persistent?lang=cpp
+[USACO Guide - Persistent Data Structures](https://usaco.guide/adv/persistent?lang=cpp)
 
-https://codeforces.com/blog/entry/49777
+[Illustrated persistent segment tree tutorial](https://codeforces.com/blog/entry/49777)
 
-https://codeforces.com/blog/entry/56880
+[Persistent segment tree ( Problems )](https://codeforces.com/blog/entry/56880)
 
-https://cp-algorithms.com/data_structures/segment_tree.html#compression-of-2d-segment-tree
+[Preserving the history of its values (Persistent Segment Tree)](https://cp-algorithms.com/data_structures/segment_tree.html#compression-of-2d-segment-tree)
