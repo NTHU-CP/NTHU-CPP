@@ -305,7 +305,7 @@ signed main() {
 ```
 </details>
 
->### [洛谷 P2617 Dynamic Rankings](https://www.luogu.com.cn/problem/P2617)
+>### [洛谷 P2617 Dynamic Rankings (動態區間第k小)](https://www.luogu.com.cn/problem/P2617)
 >
 >#### 題目敘述
 >
@@ -617,7 +617,73 @@ signed main() {
 ```
 </details>
 
+> ### [Codeforces 813E](https://codeforces.com/problemset/problem/813/E)
+>
+> #### 題目敘述
+> 給定一個長度為 \\(n\\) 的正整數序列 \\(a\\) 和一個正整數 \\(k\\)，接下來有 \\(q\\) 筆詢問，每次詢問一個區間 \\([l, r]\\) 最多可以選多少個數，使得同一個數的出現次數不超過 \\(k\\) ，本題强制在線 。
+> \\(1 \le n, q, a_i, k \le 10^5\\)
 
+#### 想法
+考慮對索引值建立持久化線段樹。 我們掃過序列，並把數字的索引值插入到持久化線段樹中（假設現在數字的索引值是 \\(i\\) ，就把線段樹中的第 \\(i\\) 個位置設為 \\(1\\) ）， 順便記錄序列中數字出現的位置，當數字出現超過 \\(k\\) 次之後，還要把現在線段樹版本下的第上 \\( k \\) 個位置改成 \\(0\\) 。 這樣對於一組詢問 \\([l, r]\\)，我們只要詢問第 \\(r\\) 個版本的持久化線段樹中，大於等於 \\(l\\) 的索引值有多少是 \\(1\\) 即可。
+
+  
+<details><summary> Solution Code </summary>
+    
+```cpp
+#include <bits/stdc++.h>
+using namespace std;
+const int maxn = 1e5 + 5;
+
+int n, m, k;
+vector<int> pos[maxn];
+struct persistent_segment_tree {
+  int ls[maxn * 40], rs[maxn * 40], root[maxn], cnt, sum[maxn * 40];
+  void insert(int &o, int pre, int l, int r, int x, int v) {
+    o = ++cnt;
+    sum[o] = sum[pre] + v, ls[o] = ls[pre], rs[o] = rs[pre];
+    if (l == r)
+      return;
+    int mid = l + r >> 1;
+    if (x <= mid)
+      insert(ls[o], ls[pre], l, mid, x, v);
+    else
+      insert(rs[o], rs[pre], mid + 1, r, x, v);
+  }
+  int query(int o, int l, int r, int x) {
+    if (!o)
+      return 0;
+    if (l == r)
+      return sum[o];
+    int mid = l + r >> 1;
+    if (x <= mid)
+      return sum[rs[o]] + query(ls[o], l, mid, x);
+    return query(rs[o], mid + 1, r, x);
+  }
+} seg;
+int main() {
+  ios::sync_with_stdio(0), cin.tie(0), cout.tie(0);
+  cin >> n >> k;
+  for (int i = 1, x; i <= n; ++i) {
+    cin >> x;
+    pos[x].push_back(i);
+    seg.insert(seg.root[i], seg.root[i - 1], 1, n, i, 1);
+    if ((int)pos[x].size() > k)
+      seg.insert(seg.root[i], seg.root[i], 1, n, pos[x][pos[x].size() - k - 1],
+                 -1);
+  }
+  cin >> m;
+  for (int l, r, last = 0; m--;) {
+    cin >> l >> r;
+    l = (l + last) % n + 1;
+    r = (r + last) % n + 1;
+    if (l > r)
+      swap(l, r);
+    cout << (last = seg.query(seg.root[r], 1, n, l)) << "\n";
+  }
+  return 0;
+}
+```
+</details>    
 
 
 ## References
