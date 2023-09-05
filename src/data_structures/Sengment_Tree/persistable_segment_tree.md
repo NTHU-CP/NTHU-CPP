@@ -229,7 +229,7 @@ int main() {
 
 <details><summary> Solution Code </summary>
 
-```cpp 
+```cpp
 #include <bits/stdc++.h>
 using namespace std;
 #define F first
@@ -321,7 +321,7 @@ signed main() {
 
 仔細思考發現靜態的區間第 \\(k\\) 小利用的是持久化線段樹前綴和的特性，而這題的差別多了一個修改操作，所以我們需要一個支援單點修改和區間求和的資料結構：**樹狀數組**，我們可以考慮樹狀數組套權值線段樹，樹狀數組的每個節點都代表一個線段樹的根節點。
 
-在修改的時候，樹狀數組的單點修改複雜度為 \\(O(log{N})\\)，每個線段樹的修改也要 \\(O(log{N})\\)，所以一次修改所要花費的時間複雜度為 \\(O(log^2{N})\\)。 
+在修改的時候，樹狀數組的單點修改複雜度為 \\(O(log{N})\\)，每個線段樹的修改也要 \\(O(log{N})\\)，所以一次修改所要花費的時間複雜度為 \\(O(log^2{N})\\)。
 
 對於區間查詢 \\([l, r]\\)，我們直接從樹狀數組取出相對應的 \\(log{N}\\) 個節點 ( \\(l-1\\) 和 \\( r \\) 都各有 \\(log{N}\\)) 個，之後遞迴詢問就跟一般的區間第 \\(k\\) 小一樣，只是這次要對 \\(log{N}\\) 個線段樹相減。
 
@@ -634,7 +634,7 @@ signed main() {
 時間複雜度：\\(O(Nlog{N}+Mlog{N})\\)
   
 <details><summary> Solution Code </summary>
-    
+
 ```cpp
 #include <bits/stdc++.h>
 using namespace std;
@@ -690,9 +690,10 @@ int main() {
 }
 ```
 
-</details>    
+</details>
 
 ## References
+
 [數據結構線段樹 -- 權值線段樹詳解](https://blog.csdn.net/yanweiqi1754989931/article/details/117380913)
 
 [OIWiki 持久化線段樹](https://oi-wiki.org/ds/persistent-seg/)
