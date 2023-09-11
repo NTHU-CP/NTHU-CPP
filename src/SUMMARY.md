@@ -6,7 +6,7 @@
   - [NCPC](contest/ncpc.md)
   - [TOPC](contest/topc.md)
   - [ICPC](contest/icpc.md)
-
+- [How to Practice](others/how_to_practice.md)
 - [Contribute to NTHU CPP](others/contribution.md)
 
 ---
