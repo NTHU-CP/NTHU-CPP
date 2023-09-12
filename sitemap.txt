@@ -25,6 +25,7 @@ https://nthu-cp.github.io/NTHU-CPP/others/codebook.html
 https://nthu-cp.github.io/NTHU-CPP/others/contribution.html
 https://nthu-cp.github.io/NTHU-CPP/others/foreword.html
 https://nthu-cp.github.io/NTHU-CPP/others/happy_meeting.html
+https://nthu-cp.github.io/NTHU-CPP/others/how_to_practice.html
 https://nthu-cp.github.io/NTHU-CPP/others/hwtc.html
 https://nthu-cp.github.io/NTHU-CPP/others/useful_resources.html
 https://nthu-cp.github.io/NTHU-CPP/sqrt/intro.html
