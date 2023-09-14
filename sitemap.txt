@@ -20,6 +20,8 @@ https://nthu-cp.github.io/NTHU-CPP/math/lagrange_inversion_theorem.html
 https://nthu-cp.github.io/NTHU-CPP/math/linear_sieve.html
 https://nthu-cp.github.io/NTHU-CPP/math/revisit_arithmetic_function.html
 https://nthu-cp.github.io/NTHU-CPP/math/sqrt_decomposition.html
+https://nthu-cp.github.io/NTHU-CPP/misc/game_theory.html
+https://nthu-cp.github.io/NTHU-CPP/misc/nim_and_sg_value.html
 https://nthu-cp.github.io/NTHU-CPP/others/calendar.html
 https://nthu-cp.github.io/NTHU-CPP/others/codebook.html
 https://nthu-cp.github.io/NTHU-CPP/others/contribution.html
