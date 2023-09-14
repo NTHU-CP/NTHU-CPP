@@ -218,7 +218,6 @@ int64_t inversions(const vector<int> &seq)
 > 對於一個 permutation，每次操作我們可以 swap 值相差恰為一的兩個元素，求使該 permutation 完成排序的最小操作數。
 >
 > - \\(1\leq n\leq2\times10^5\\)
->
 
 <details><summary>Solution</summary>
 題目給的是 permutation 中每個元素的 index，如果我們將元素們與 indices 互換 (permutation 的 inverse)，則原本的操作就變為 swap 相鄰的元素。於是，題目所求的最小數量即相當前面所證明過的，每次 swap 相鄰元素，最少需要幾次才能完成排序，也就是逆序對數量。
