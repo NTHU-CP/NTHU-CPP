@@ -37,6 +37,8 @@
     - [杜教篩](math/du_sieve.md)
     - [Arithmetic Function Revisit](math/revisit_arithmetic_function.md)
 - [Miscellaneous]()
+  - [Game Theory](misc/game_theory.md)
+    - [Nim and Sprague-Grundy Theorem](misc/nim_and_sg_value.md)
 - [C++ Programming Tips]()
 
 ---
