@@ -199,11 +199,21 @@ int64_t inversions(const vector<int> &seq)
 
 注意由於逆序對數量的 upper bound 是 \\(O(n^2)\\)，當 \\(n\geq2^{16}=65536\\) 時必須使用諸如 `int64_t` 等 64-bit 整數型別。
 
-- [UVa 13212 How many inversions?](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=5135)\
+> [UVa 13212 How many inversions?](https://onlinejudge.org/index.php?option=com_onlinejudge&Itemid=8&page=show_problem&problem=5135)\
+>
+> 就是模板題。
+>
+> - \\(1\leq n\leq10^6\\)
 
----
-
-- [Codeforces Round 790 (Div. 4) H1. Maximum Crossings (Easy Version)](https://codeforces.com/contest/1676/problem/H1), [Codeforces Round 790 (Div. 4) H2. Maximum Crossings (Hard Version)](https://codeforces.com/contest/1676/problem/H2)
+> [Codeforces Round 790 (Div. 4) H1. Maximum Crossings (Easy Version)](https://codeforces.com/contest/1676/problem/H1)
+> [Codeforces Round 790 (Div. 4) H2. Maximum Crossings (Hard Version)](https://codeforces.com/contest/1676/problem/H2)
+>
+> 稍微包裝過的模板題，其中 Easy Version 可使用暴力解。
+>
+> - Easy Version
+>   - \\(1\leq n\leq1000\\)
+> - Hard Version
+>   - \\(1\leq n2\times\leq10^5\\)
 
 以上這題與前揭 arrow diagram of permutation 的 crossings 相關。而下面這題可以說是非常相似，但考的則是 LIS 而且又更變化而難不少。
 
