@@ -1,0 +1,42 @@
+graph {
+    splines=false
+    ranksep=1
+    nodesep=0.25
+    ordering=out
+    
+    subgraph a {
+        rank="same"
+        
+        a1[label=1]
+        a2[label=2]
+        a3[label=3]
+        a4[label=4]
+        a5[label=5]
+        a6[label=6]
+        
+        node[style=invis]
+        a0 -- a1 -- a2 -- a3 -- a4 -- a5 -- a6 -- a7 [style=invis]
+    }
+    
+    subgraph b {
+        rank="same"
+        
+        b1[label=1]
+        b6[label=6]
+        b2[label=2]
+        b3[label=3]
+        b5[label=5]
+        b4[label=4]
+        
+        node[style=invis]
+        b0 -- b1 -- b6 -- b2 -- b3 -- b5 -- b4 -- b7 [style=invis]
+    }
+    
+    a1 -- b1
+    a2 -- b2
+    a3 -- b3
+    a4 -- b4
+    a5 -- b5
+    a6 -- b6
+    a7 -- b7 [style=invis]
+}

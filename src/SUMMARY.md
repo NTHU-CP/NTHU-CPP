@@ -37,6 +37,7 @@
     - [杜教篩](math/du_sieve.md)
     - [Arithmetic Function Revisit](math/revisit_arithmetic_function.md)
 - [Miscellaneous]()
+  - [Inversion](misc/inversion_pair.md)
 - [C++ Programming Tips]()
 
 ---
