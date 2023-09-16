@@ -6,8 +6,8 @@ Segment Tree Beats（簡稱 STB）是北京大學的吉如一提出的概念，�
 
 STB 可以達到下列兩個目的：
 
-1. 將區間最值操作轉換成區間加減操作，在 \\( O(logn) \\) 的時間複雜度內完成
-2. 將歷史最值問題轉換成區間最值操作，在 \\( O(1) \\) 的時間複雜度內完成（這裡的歷史最值問題是指區間加減，詢問區間歷史最值的和）
+1. 將區間最值操作轉換成區間加減操作，在 \\( O( \log n) \\) 的時間複雜度內完成。
+2. 將歷史最值問題轉換成區間最值操作，在 \\( O(1) \\) 的時間複雜度內完成（這裡的歷史最值問題是指區間加減，詢問區間歷史最值的和）。
 
 區間最值操作指的是，給定 \\( L, R, x \\)，對所有 \\( i \in [L, R] \\)，將 \\( a_i \\) 修改成 \\( min(a_i, x) \\) 或 \\( max(a_i, x) \\)。
 
@@ -33,7 +33,7 @@ STB 可以達到下列兩個目的：
 
 第二三種操作就是普通線段樹，直接更新就好。現在讓我們來考慮第一種操作。
 
-讓區間 \\( [L, R] \\) 對 \\( x \\) 取 \\( min \\)，我們先在線段樹中定位這個區間，對定位的每一個節點，我們開始暴力搜尋。搜尋到每一個節點時，我們分三種情況討論：
+讓區間 \\( [L, R] \\) 對 \\( x \\) 取 \\( min \\)，我們先在線段樹中定位這個區間，對定位的每一個節點，我們開始暴力搜尋。搜尋到每一個節點時，我們分三種狀況討論：
 
 1. 當 \\( mx1 \leq x \\) 時，區間每個元素對 \\( x \\) 取 \\( min \\) 還是元素本身，不會對這個節點產生影響，直接退出。
 2. 當 \\( mx2 < x < mx1 \\) 時，這一次修改只會影響到所有最大值，所以我們把區間和 \\( sum \\) 加上 \\( t \cdot (x - mx1) \\)，將 \\( mx1 \\) 更新為 \\( x \\)，接著打上標記然後退出（只有發生狀況二才會打標記）。
@@ -49,7 +49,11 @@ STB 可以達到下列兩個目的：
 
 <img src="image/segment_tree/segment_tree_beats/2-0.jpg" width="700" style="display:block; margin: 0 auto;"/>
 
-- 狀況一和狀況二都與普通線段樹一樣，只有在狀況三（\\( mx2 \geq x \\)）時，我們會需要左右遞迴子樹，拜訪更多節點。換句話說，只有在子樹的所有標記都大於新標記，我們才打標記。
+- 狀況一和狀況二都與普通線段樹一樣，只有在狀況三（\\( mx2 \geq x \\)）時，我們會需要左右遞迴子樹，拜訪更多節點。換句話說，只有在子樹的所有標記都大於新標記，我們才在子樹打標記。
+
+- 打上區間取 \\( min \\) 標記時（狀況二發生時），此區間只有最大值受到影響，其他數維持不變。最大值被修改之後，原來是區間最大值的數依舊是區間最大值，原來不是區間最大值的數依舊不是。
+
+<img src="image/segment_tree/segment_tree_beats/2-5.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 ### 時間複雜度
 
@@ -75,20 +79,24 @@ STB 可以達到下列兩個目的：
 
 <img src="image/segment_tree/segment_tree_beats/2-2.jpg" width="600" style="display:block; margin: 0 auto;"/>
 
-運用均攤分析中的位能法，依次分析三項對位能產生影響的操作：添加新標記類、標記下傳、標記回收
+依次分析三項對位能產生影響的操作：添加新標記類、標記下傳、標記回收
 
-1. 考慮一次區間取 \\( min \\) 操作，只會添加一個新的標記類 \\( T \\)，它的權值等於我們打標記時經過的節點數。線段樹深度是 \\( O( \lceil \log n \rceil + 1 ) = O( \log n) \\)，打標記時經過的節點數最多也是 \\( O( \log n) \\)，所以 \\( w(T) \\) 是 \\( O( \log n) \\)。
+1. 考慮一次區間取 \\( min \\) 操作，只會添加一個新的標記類 \\( T \\)，它的權值等於我們打標記時經過的節點數。線段樹深度是 \\( O( \lceil \log n \rceil + 1 ) = O( \log n) \\)，打標記時經過的節點數最多也是 \\( O( \log n) \\)，所以 \\( w(T) \\) 是 \\( O( \log n) \\)，\\( \Phi(x) \\) 增加了 \\( O( \log n) \\)。
 
 <img src="image/segment_tree/segment_tree_beats/2-3.jpg" width="600" style="display:block; margin: 0 auto;"/>
 
-2. 考慮一次標記下傳，只讓標記類 \\( T \\) 的權值 \\( w(T) \\) 增加 \\( O(1) \\)。
-3. 當 \\( mx2 \geq x \\) 時，也就是情況三發生時，要進行遞迴搜尋，因為父節點的標記一定跟其中一個子節點一樣，所以每到一個節點至少回收一個標記，那麼 \\( \Phi(x) \\) 減少了 \\( O(1) \\)。
+2. 考慮一次標記下傳，只讓標記類 \\( T \\) 的權值 \\( w(T) \\) 增加 \\( O(1) \\)，\\( \Phi(x) \\) 增加了 \\( O(1) \\)。
+3. 當 \\( mx2 \geq x \\) 時，也就是狀況三發生時，要進行遞迴搜尋，因為父節點的標記一定跟其中一個子節點一樣，所以每到一個節點至少回收一個標記，那麼 \\( \Phi(x) \\) 減少了 \\( O(1) \\)。
 
 <img src="image/segment_tree/segment_tree_beats/2-4.gif" width="600" style="display:block; margin: 0 auto;"/>
 
-### 透過均攤分析得到時間複雜度
+### 透過位能法得到時間複雜度
 
-線段樹中最多存在 \\( n \\) 個標記，每個標記的權值 \\( w(T) \\) 是 \\( O( \log n) \\)。因為 \\( \Phi(x) \\) 是 \\( n \\) 個標記權值總和，所以 \\( \Phi(x) \\) 的初始值是 \\( O(n \log n) \\)。
+定義均攤成本 \\( \hat c_i \\) 為實際成本 \\( c_i \\) 加上位能變化量 \\( \Phi(x_i) - \Phi(x_{i-1}) \\)，即 \\( \hat c_i = c_i + \Phi(x_i) - \Phi(x_{i-1}) \\)。
+
+當一次操作的均攤成本大於實際成本時，位能變化量為正，可以將位能的正差額存起來。下次遇到均攤成本小於實際成本時，可以用儲存的位能支付不足的負差額。
+
+總均攤成本必須大於總實際成本，即 \\( \sum \hat c_i \geq \sum c_i \\)。
 
 現在來計算 \\( m \\) 次區間取 \\( min \\) 操作的位能變化量：
 
@@ -96,9 +104,17 @@ STB 可以達到下列兩個目的：
 2. 標記下傳在一次操作中會進行 \\( O( \log n) \\) 次，每次讓 \\( \Phi(x) \\) 增加 \\( O(1) \\)。因此 \\( m \\) 次操作讓 \\( \Phi(x) \\) 總共增加 \\( O(m \log n) \\)。
 3. 父節點對子節點進行標記回收，一定是父節點曾下傳標記給子節點，或曾打標記在子節點上。因此，標記回收的時間複雜度不會超過打標記和標記下傳的時間複雜度之和，所以 \\( m \\) 次操作讓 \\( \Phi(x) \\) 總共減少 \\( O(m \log n) \\)。
 
-位能的總變化量為 \\( O(m \log n) \\)。
+總位能變化量為 \\( O(m \log n) \\)。
 
-將位能初始值 \\( O(n \log n) \\) 加上變化量 \\( O(m \log n) \\)，得到這個算法時間複雜度是 \\( O((n + m) \log n) \\)。
+接著計算 \\( m \\) 次區間取 \\( min \\) 操作的實際成本：
+
+1. 添加 \\( m \\) 個新標記類，實際成本為 \\( O(m \log n) \\)。
+2. 標記下傳在一次操作中會進行 \\( O( \log n) \\) 次，每次的實際成本為 \\( O(1) \\)。因此 \\( m \\) 次操作的實際成本為 \\( O(m \log n) \\)。
+3. 標記回收的時間複雜度不會超過打標記和標記下傳的實際成本之和，所以 \\( m \\) 次操作的實際成本為 \\( O(m \log n) \\)。
+
+總實際成本為 \\( O(m \log n) \\)。
+
+總均攤成本為 \\( O(m \log n) \\)，得到這個算法時間複雜度是 \\( O(m \log n) \\)。
 
 <details><summary> Solution Code </summary>
 
@@ -114,7 +130,7 @@ struct STB {
 
     void pull(int u) {
         T[u].sum = T[ls].sum + T[rs].sum;
-        if (T[ls].mx1 == T[rs].mx1){
+        if (T[ls].mx1 == T[rs].mx1) {
             T[u].mx1 = T[ls].mx1;
             T[u].cmx = T[ls].cmx + T[rs].cmx;
             T[u].mx2 = max(T[ls].mx2, T[rs].mx2);
@@ -215,6 +231,258 @@ int main() {
 
 </details>
 
+我們接著再看一題。
+
+> 例題 2. [BZOJ - 最假女選手](https://bzoj.net/p/4695)
+>
+> 給一個長度為 \\( n \\) 的序列 \\( a \\)，並對其進行 \\( m \\) 筆操作。操作有六種：
+>
+> 1. 給定 \\( L, R, x \\)，對所有 \\( i \in [L, R] \\)，將 \\( a_i \\) 加上 \\( x \\)。
+> 2. 給定 \\( L, R, x \\)，對所有 \\( i \in [L, R] \\)，將 \\( a_i \\) 修改成 \\( max(a_i, x) \\)。
+> 3. 給定 \\( L, R, x \\)，對所有 \\( i \in [L, R] \\)，將 \\( a_i \\) 修改成 \\( min(a_i, x) \\)。
+> 4. 給定 \\( L, R \\)，對所有 \\( i \in [L, R] \\)，輸出 \\( \sum_{i = l}^{r} a_i \\)。
+> 5. 給定 \\( L, R \\)，對所有 \\( i \in [L, R] \\)，輸出 \\( a_i \\) 的最大值。
+> 6. 給定 \\( L, R \\)，對所有 \\( i \in [L, R] \\)，輸出 \\( a_i \\) 的最小值。
+>
+> - \\( n, m \leq 5 \times 10^5 \\)
+> - \\( | a_i | \leq 10^8 \\)
+
+這題可以套用第一個範例題目的解法，維護維護區間 \\( max \\)、區間 \\( min \\)、區間加的標記，但實現起來會很複雜。因此，我們考慮將區間最值操作轉換為區間加減。
+
+### 將區間最值操作轉換為區間加減操作
+
+我們採用這樣的策略：
+
+將一個區間的節點劃分為最大值、最小值和其他值三種。
+
+對每一個節點維護區間和 \\( sum \\)、區間最大值 \\( mx1 \\)、次大值 \\( mx2 \\)、最大個數 \\( cmx \\)、最小值 \\( mn1 \\)、次小值 \\( mn2 \\)、最小個數 \\( cmn \\)。我們還需要維護區間 \\( max \\)、區間 \\( min \\)、區間加的標記。
+
+依次分析題目中的三種修改操作：
+
+1. 對於加減操作，直接將最大值、最小值和其他值同時加上 \\( x \\)。
+2. 對於區間取 \\( min \\) 操作，在線段樹上搜尋找到 \\( mx2 < x < mx1 \\) 的節點，這些節點的區間最大值都應改成 \\( x \\)，可視為只針對最大值的加減操作，只對最大值加上 \\( x - mx1 \\) 即可。
+3. 區間取 \\( max \\) 操作同理。
+
+分別維護最大值、最小值和其他值的加減標記
+
+下傳最大值的加減標記時要判斷子區間內是否包含最大值，如果不包含則應下傳其他值的加減標記。
+
+在標記下傳時，需要根據兩個子節點是否包含最大值，最大值較大的子節點下傳最大值標記到中（兩子節點最大值相同時同時下傳），最大值較小的子節點則下傳其他值的加減標記。
+
+另外，當一個區間的值域很小（只有 \\( 1 \\) 個數或 \\( 2 \\) 個數），可能會發生一個值既是最大值又是次小值的情況。這種情況要特判，分辨到底該被哪個標記作用。
+
+<details><summary> Solution Code </summary>
+
+```cpp
+typedef struct trio {
+    ll first;
+    int second, third;
+}trio;
+
+struct STB {
+    #define ls (u << 1)
+    #define rs (u << 1 | 1)
+
+    struct Node {
+        ll sum, tag;
+        int l, r, mx1, mx2, cmx, mn1, mn2, cmn;
+    } T[N << 4];
+
+    void pull(int u) {
+        T[u].sum = T[ls].sum + T[rs].sum;
+        if (T[ls].mx1 == T[rs].mx1) {
+            T[u].mx1 = T[ls].mx1;
+            T[u].cmx = T[ls].cmx + T[rs].cmx;
+            T[u].mx2 = max(T[ls].mx2, T[rs].mx2);
+        } else if (T[ls].mx1 > T[rs].mx1) {
+            T[u].mx1 = T[ls].mx1;
+            T[u].cmx = T[ls].cmx;
+            T[u].mx2 = max(T[ls].mx2, T[rs].mx1);
+        } else {
+            T[u].mx1 = T[rs].mx1;
+            T[u].cmx = T[rs].cmx;
+            T[u].mx2 = max(T[ls].mx1, T[rs].mx2);
+        }
+        if (T[ls].mn1 == T[rs].mn1) {
+            T[u].mn1 = T[ls].mn1;
+            T[u].cmn = T[ls].cmn + T[rs].cmn;
+            T[u].mn2 = min(T[ls].mn2, T[rs].mn2);
+        } else if (T[ls].mn1 < T[rs].mn1) {
+            T[u].mn1 = T[ls].mn1;
+            T[u].cmn = T[ls].cmn;
+            T[u].mn2 = min(T[ls].mn2, T[rs].mn1);
+        } else {
+            T[u].mn1 = T[rs].mn1;
+            T[u].cmn = T[rs].cmn;
+            T[u].mn2 = min(T[ls].mn1, T[rs].mn2);
+        }
+    }
+
+    void pushmax(int u, int v) {
+        int l = T[u].l, r = T[u].r;
+        if (T[u].mx1 == T[u].mn1) {
+            T[u].mx1 = T[u].mn1 = v;
+            T[u].cmx = T[u].cmn = r - l + 1;
+            T[u].sum = 1LL * T[u].cmx * v;
+            T[u].mx2 = INT_MIN;
+            T[u].mn2 = INT_MAX;
+            return;
+        }
+        T[u].sum += 1LL * T[u].cmn * (v - T[u].mn1);
+        T[u].mn1 = v;
+        T[u].mx1 = max(T[u].mx1, v);
+        T[u].mx2 = max(T[u].mx2, v);
+    }
+
+    void pushmin(int u, int v) {
+        int l = T[u].l, r = T[u].r;
+        if (T[u].mx1 == T[u].mn1) {
+            T[u].mx1 = T[u].mn1 = v;
+            T[u].cmx = T[u].cmn = r - l + 1;
+            T[u].sum = 1LL * T[u].cmx * v;
+            T[u].mx2 = INT_MIN;
+            T[u].mn2 = INT_MAX;
+            return;
+        }
+        T[u].sum += 1LL * T[u].cmx * (v - T[u].mx1);
+        T[u].mx1 = v;
+        T[u].mn1 = min(T[u].mn1, v);
+        T[u].mn2 = min(T[u].mn2, v);
+    }
+
+    void pushadd(int u, int v) {
+        T[u].mx1 += v;
+        if (T[u].mx2 != INT_MIN) T[u].mx2 += v;
+        T[u].mn1 += v;
+        if (T[u].mn2 != INT_MAX) T[u].mn2 += v;
+        int l = T[u].l, r = T[u].r;
+        T[u].sum += 1LL * (r - l + 1) * v;
+        T[u].tag += v;
+    }
+
+    void push(int u) {
+        if (T[u].tag) {
+            pushadd(ls, T[u].tag);
+            pushadd(rs, T[u].tag);
+            T[u].tag = 0;
+        }
+        if (T[ls].mx1 > T[u].mx1 && T[ls].mx2 < T[u].mx1) {
+            pushmin(ls, T[u].mx1);
+        }
+        if (T[rs].mx1 > T[u].mx1 && T[rs].mx2 < T[u].mx1) {
+            pushmin(rs, T[u].mx1);
+        }
+        if (T[ls].mn1 < T[u].mn1 && T[ls].mn2 > T[u].mn1) {
+            pushmax(ls, T[u].mn1);
+        }
+        if (T[rs].mn1 < T[u].mn1 && T[rs].mn2 > T[u].mn1) {
+            pushmax(rs, T[u].mn1);
+        }
+    }
+
+    void build(int u = 1, int l = 1, int r = n) {
+        T[u].tag = -1;
+        T[u].l = l, T[u].r = r;
+        if (l == r) {
+            T[u].sum = T[u].mx1 = T[u].mn1 = a[l];
+            T[u].mx2 = INT_MIN;
+            T[u].mn2 = INT_MAX;
+            T[u].cmx = T[u].cmn = r - l + 1;
+            return;
+        }
+        int mid = (l+r) >> 1;
+        build(ls, l, mid);
+        build(rs, mid+1, r);
+        pull(u);
+    }
+
+    void add(int L, int R, int x, int u = 1) {
+        int l = T[u].l, r = T[u].r;
+        if (R < l || r < L) return;
+        if (L <= l && r <= R) {
+            pushadd(u, x);
+            return;
+        }
+        push(u);
+        int mid = (l+r) >> 1;
+        if (L <= mid)
+            add(L, R, x, ls);
+        if (mid < R)
+            add(L, R, x, rs);
+        pull(u);
+    }
+
+    void chmax(int L, int R, int x, int u = 1) {
+        if (T[u].mn1 >= x) return;
+        int l = T[u].l, r = T[u].r;
+        if (L <= l && r <= R && T[u].mn2 > x) {
+            pushmax(u, x);
+            return;
+        }
+        push(u);
+        int mid = (l+r) >> 1;
+        if (L <= mid) chmax(L, R, x, ls);
+        if (R > mid) chmax(L, R, x, rs);
+        pull(u);
+    }
+
+    void chmin(int L, int R, int x, int u = 1) {
+        if (T[u].mx1 <= x) return;
+        int l = T[u].l, r = T[u].r;
+        if (L <= l && r <= R && T[u].mx2 < x) {
+            pushmin(u, x);
+            return;
+        }
+        push(u);
+        int mid = (l+r) >> 1;
+        if (L <= mid) chmin(L, R, x, ls);
+        if (R > mid) chmin(L, R, x, rs);
+        pull(u);
+    }
+
+    trio query(int L, int R, int u = 1) {
+        int l = T[u].l, r = T[u].r;
+        if (L <= l && r <= R)
+            return {T[u].sum, T[u].mx1, T[u].mn1};
+        push(u);
+        ll sum = 0; int mx1 = INT_MIN, mn1 = INT_MAX;
+        int mid = (l+r) >> 1;
+        if (L <= mid) {
+            auto r1 = query(L, R, ls);
+            sum += r1.first;
+            mx1 = max(mx1, r1.second);
+            mn1 = min(mn1, r1.third);
+        }
+        if (mid < R) {
+            auto r2 = query(L, R, rs);
+            sum += r2.first;
+            mx1 = max(mx1, r2.second);
+            mn1 = min(mn1, r2.third);
+        }
+        return {sum, mx1, mn1};
+    }
+}stb;
+
+int main() {
+    scanf("%d", &n);
+    for (int i = 1; i <= n; i++) scanf("%d", &a[i]);
+    stb.build();
+    scanf("%d", &m);
+    while (m--) {
+        scanf("%d%d%d", &p, &x, &y);
+        auto ans = stb.query(x, y);
+        if (p == 1) scanf("%d", &z), stb.add(x, y, z);
+        if (p == 2) scanf("%d", &z), stb.chmax(x, y, z);
+        if (p == 3) scanf("%d", &z), stb.chmin(x, y, z);
+        if (p == 4) printf("%lld", ans.first);
+        if (p == 5) printf("%d", ans.second);
+        if (p == 6) printf("%d", ans.third);
+    }
+}
+```
+
+</details>
+
 ### 歷史最值問題
 
 我們通常需要對一個序列 \\( a \\) 進行多次操作，然後進行一些詢問。對歷史版本進行的詢問，稱為歷史最值問題。我們先來介紹三類歷史最值問題：
@@ -237,7 +505,7 @@ int main() {
 
 ### 可以用懶標記處理的問題
 
-> 例題 2. [DBZOJ - CPU 監控](https://darkbzoj.cc/problem/3064)
+> 例題 3. [BZOJ - CPU 監控](https://bzoj.net/p/3064)
 >
 > 給一個長度為 \\( n \\) 的序列 \\( a \\)，同時定義一個輔助數組 \\( b \\)，\\( b \\) 開始與 \\( a \\) 完全相同。接下來對其進行 \\( m \\) 筆操作，操作有四種：
 >
