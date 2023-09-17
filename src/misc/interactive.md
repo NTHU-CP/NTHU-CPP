@@ -164,11 +164,7 @@ get 這個函式則負責尋找在區間 \\([l, r)\\) 中任意一個存在集�
 
 > [Codeforces 843B - Interactive LowerBound](https://codeforces.com/problemset/problem/843/B)
 >
-> Jury 有一個 Link-List \\(L\\)，\\(L\\) 的每個節點都有其編號。
-> 每個節點 \\(i\\) 上存有這個節點指向的下一個節點編號 \\(nxt_i\\)，跟它所紀錄的值 \\(val_i\\)。
-> 已知，此 Link-List 紀錄的值是遞增的，Participant 每次詢問能夠詢問任意編號 \\(i\\) 的 \\(nxt_i\\) 跟 \\(val_i\\)。
-> 節點編號範圍是 \\(1 \sim n\\)，其中 \\(1 \le n \le 50000\\)，Participant 需在 \\(2000\\) 次詢問內找到某一給定 \\(x\\) 的 Lower bound。
-> 一開始，Jury 會告訴 Participant 這個 Link-List 起點的編號跟 \\(n\\)。
+> Jury 有一個 Link-List \\(L\\)，\\(L\\) 的每個節點都有其編號。> 每個節點 \\(i\\) 上存有這個節點指向的下一個節點編號 \\(nxt_i\\)，跟它所紀錄的值 \\(val_i\\)。> 已知，此 Link-List 紀錄的值是遞增的，Participant 每次詢問能夠詢問任意編號 \\(i\\) 的 \\(nxt_i\\) 跟 \\(val_i\\)。> 節點編號範圍是 \\(1 \sim n\\)，其中 \\(1 \le n \le 50000\\)，Participant 需在 \\(2000\\) 次詢問內找到某一給定 \\(x\\) 的 Lower bound。> 一開始，Jury 會告訴 Participant 這個 Link-List 起點的編號跟 \\(n\\)。
 
 <details><summary>Solution</summary>
 
@@ -448,3 +444,4 @@ int main () {
 有了 \\(F\\) 這個 function，我們能夠每次詢問尚未與當前連通塊連通的點與當前連通塊的任意邊，蓋出 \\(G\\) 的 spanning forest，如此一來，就能點著色，再用一次詢問判斷是否為二分圖。找奇環也不難辦到。
 
 </details>
+
