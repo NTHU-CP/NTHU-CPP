@@ -6,7 +6,7 @@
   - [NCPC](contest/ncpc.md)
   - [TOPC](contest/topc.md)
   - [ICPC](contest/icpc.md)
-
+- [How to Practice](others/how_to_practice.md)
 - [Contribute to NTHU CPP](others/contribution.md)
 
 ---
@@ -16,6 +16,7 @@
 - [Greedy](greedy/intro.md)
   - [Basic Greedy](greedy/basic.md)
 - [Dynamic Programming]()
+  - [Convex Hull Optimization](dp/convex_hull_optimization.md)
 - [Graph]()
   - [Tree]()
     - [Lowest Common Ancestor](graph/lca.md)
@@ -37,6 +38,8 @@
     - [Arithmetic Function Revisit](math/revisit_arithmetic_function.md)
 - [Miscellaneous]()
   - [Interactive](misc/interactive.md)
+  - [Game Theory](misc/game_theory.md)
+    - [Nim and Sprague-Grundy Theorem](misc/nim_and_sg_value.md)
 - [C++ Programming Tips]()
 
 ---
@@ -45,3 +48,4 @@
 - [Useful Resources](others/useful_resources.md)
 - [CSES Problem Tag]()
 - [Happy Winter Training Camp](others/hwtc.md)
+- [Weekly Happy Meeting](others/happy_meeting.md)
