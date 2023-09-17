@@ -2,138 +2,138 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/index.html</loc>
-        <lastmod>2023-09-16T10:37:24.655Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.601Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/contest/icpc.html</loc>
-        <lastmod>2023-09-16T10:37:24.659Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.601Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/contest/intro.html</loc>
-        <lastmod>2023-09-16T10:37:24.655Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.601Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/contest/ncpc.html</loc>
-        <lastmod>2023-09-16T10:37:24.659Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.601Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/contest/topc.html</loc>
-        <lastmod>2023-09-16T10:37:24.659Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.601Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/dp/convex_hull_optimization.html</loc>
-        <lastmod>2023-09-16T10:37:24.667Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.609Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/graph/introduction_to_AP_bridge.html</loc>
-        <lastmod>2023-09-16T10:37:24.675Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.617Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/graph/introduction_to_BCC.html</loc>
-        <lastmod>2023-09-16T10:37:24.675Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.617Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/graph/lca.html</loc>
-        <lastmod>2023-09-16T10:37:24.671Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.613Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/greedy/basic.html</loc>
-        <lastmod>2023-09-16T10:37:24.663Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.605Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/greedy/intro.html</loc>
-        <lastmod>2023-09-16T10:37:24.659Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.605Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/math/du_sieve.html</loc>
-        <lastmod>2023-09-16T10:37:24.687Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.629Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/math/gf_combination.html</loc>
-        <lastmod>2023-09-16T10:37:24.683Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.625Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/math/gf_multiple_variables.html</loc>
-        <lastmod>2023-09-16T10:37:24.683Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.625Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/math/gf_recurrence.html</loc>
-        <lastmod>2023-09-16T10:37:24.683Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.621Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/math/intro.html</loc>
-        <lastmod>2023-09-16T10:37:24.679Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.621Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/math/introduction_to_arithmetic_function.html</loc>
-        <lastmod>2023-09-16T10:37:24.683Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.625Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/math/introduction_to_generating_function.html</loc>
-        <lastmod>2023-09-16T10:37:24.679Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.621Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/math/lagrange_inversion_theorem.html</loc>
-        <lastmod>2023-09-16T10:37:24.683Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.625Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/math/linear_sieve.html</loc>
-        <lastmod>2023-09-16T10:37:24.687Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.625Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/math/revisit_arithmetic_function.html</loc>
-        <lastmod>2023-09-16T10:37:24.687Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.629Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/math/sqrt_decomposition.html</loc>
-        <lastmod>2023-09-16T10:37:24.687Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.625Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/misc/game_theory.html</loc>
-        <lastmod>2023-09-16T10:37:24.691Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.629Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/misc/nim_and_sg_value.html</loc>
-        <lastmod>2023-09-16T10:37:24.695Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.633Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/others/calendar.html</loc>
-        <lastmod>2023-09-16T10:37:24.655Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.601Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/others/codebook.html</loc>
-        <lastmod>2023-09-16T10:37:24.695Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.633Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/others/contribution.html</loc>
-        <lastmod>2023-09-16T10:37:24.659Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.605Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/others/foreword.html</loc>
-        <lastmod>2023-09-16T10:37:24.655Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.601Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/others/happy_meeting.html</loc>
-        <lastmod>2023-09-16T10:37:24.699Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.633Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/others/how_to_practice.html</loc>
-        <lastmod>2023-09-16T10:37:24.659Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.605Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/others/hwtc.html</loc>
-        <lastmod>2023-09-16T10:37:24.695Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.633Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/others/useful_resources.html</loc>
-        <lastmod>2023-09-16T10:37:24.695Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.633Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/sqrt/intro.html</loc>
-        <lastmod>2023-09-16T10:37:24.675Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.617Z</lastmod>
     </url>
     <url>
         <loc>https://nthu-cp.github.io/NTHU-CPP/sqrt/sqrt_decomposition.html</loc>
-        <lastmod>2023-09-16T10:37:24.679Z</lastmod>
+        <lastmod>2023-09-17T11:38:05.621Z</lastmod>
     </url>
 </urlset>
