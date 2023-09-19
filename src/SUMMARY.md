@@ -39,6 +39,7 @@
 - [Miscellaneous]()
   - [Game Theory](misc/game_theory.md)
     - [Nim and Sprague-Grundy Theorem](misc/nim_and_sg_value.md)
+  - [CDQ Divide and Conquer](misc/cdq.md)
 - [C++ Programming Tips]()
 
 ---
