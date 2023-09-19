@@ -12,6 +12,6 @@
 
 | 年度 | 題本 | 題解 | 記分板 | OJ |
 | :---: | --- | --- | --- | --- |
-| 2023 | | | |
+| 2023 | | | [記分板連結](https://media.discordapp.net/attachments/894225772997386251/1152642560347607061/topc.jpeg?width=101&height=661) | |
 | 2022 | [題本連結](https://codeforces.com/gym/103990/attachments/download/17602/statements.pdf) | [題解連結](https://hackmd.io/@rTbBGGVYR3e0Ee1fJry9fg/Hyat7r84j) | [記分板連結](https://codeforces.com/gym/103990/standings) | [OJ 連結](https://codeforces.com/gym/103990) |
 | 2021 | [題本連結](https://codeforces.com/gym/103373/attachments/download/14574/statements.pdf) | [題解連結](https://hackmd.io/@rTbBGGVYR3e0Ee1fJry9fg/r15T-itMF) | [記分板連結](https://codeforces.com/gym/103373/standings) | [OJ 連結](https://codeforces.com/gym/103373) |
