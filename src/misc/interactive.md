@@ -86,9 +86,7 @@
 
 > [Codeforces 809B - Glad to see you!](https://codeforces.com/problemset/problem/809/B)
 >
-> Jury 有一組大小為 \\(k\\) 的集合，集合內的元素為 \\(1 \sim n\\) 且不重複的數字。> Jury 會將 \\(k\\) 跟 \\(n\\) 告訴 Participant。
-> Participant 可以問 Jury 的問題是：給兩個數字 \\(x, y\\)，Jury 將會在它的集合中找到跟 \\(x\\) 最接近的數字 \\(a\\)、跟 \\(y\\) 最接近的數字 \\(b\\)（\\(a\\) 可能等於 \\(b\\)），並回答是否滿足 \\(|x-a| \le |y-b|\\)。
-> Participant 需要在 \\(60\\) 個詢問內找到該集合中的任意兩個數字，其中 \\(2 \le k \le n \le 10^5\\)。
+> Jury 有一組大小為 \\(k\\) 的集合，集合內的元素為 \\(1 \sim n\\) 且不重複的數字。> Jury 會將 \\(k\\) 跟 \\(n\\) 告訴 Participant。> Participant 可以問 Jury 的問題是：給兩個數字 \\(x, y\\)，Jury 將會在它的集合中找到跟 \\(x\\) 最接近的數字 \\(a\\)、跟 \\(y\\) 最接近的數字 \\(b\\)（\\(a\\) 可能等於 \\(b\\)），並回答是否滿足 \\(|x-a| \le |y-b|\\)。> Participant 需要在 \\(60\\) 個詢問內找到該集合中的任意兩個數字，其中 \\(2 \le k \le n \le 10^5\\)。
 
 <details><summary>Solution</summary>
 
