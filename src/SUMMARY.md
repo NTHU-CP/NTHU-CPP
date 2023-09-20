@@ -23,6 +23,8 @@
   - [Articulation Point and Bridge](graph/introduction_to_AP_bridge.md)
   - [BCC-Vertex and BCC-Edge](graph/introduction_to_BCC.md)
 - [Flow]()
+  - [Introduction to Flow](flow/introduction.md)
+  - [Ford-Fulkerson and Edmonds-Karp](flow/basic_flow_and_algorithms.md)
 - [Sqrt Technique](sqrt/intro.md)
   - [Square Root Decomposition](sqrt/sqrt_decomposition.md)
 - [Mathematics](math/intro.md)
