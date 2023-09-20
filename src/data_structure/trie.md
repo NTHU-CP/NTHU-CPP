@@ -44,11 +44,14 @@ Trie 是一個樹狀結構，每一個節點代表的是一個 prefix，其中�
 
 上圖為 Trie 中加入 `com` 的例子。
 
-## 複雜度分析
+### 複雜度分析
 
 查詢、加入、刪除一個長度為 L 的字串都需要 \\(O(L)\\) 的時間複雜度，以及 \\(O(L)\\) 的空間複雜度。讀者可能會拿 trie 跟 hash set 比較，的確如果考慮將字串 hash 之後以 hash set 儲存，可以達到與 trie 相同的複雜度，但時務上，trie 可以提供的確定性，以及維護共同前綴的特性，時常能夠幫助解決更多的問題。下一章節 XOR Trie 就會是很好的使用 trie 的例子。
 
-## 實作
+### 實作
+
+<details><summary> Sample Code </summary>
+
 
 ```cpp
 #include <bits/stdc++.h>
@@ -82,14 +85,19 @@ public:
 };
 ```
 
+</details>
+
 ## XOR Trie
 
-XOR Trie 是一種 Trie 的應用，通常使用時機是求在一個整數集合中，XOR 值最大或最小的兩個元素。讓我們用一個實際的例題來認識 XOR Trie:
+XOR Trie 是一種 Trie 的應用，通常使用時機是求在一個整數集合中，XOR 值最大或最小的兩個元素。 讓我們用一個實際的例題來認識 XOR Trie:
 
-### 例題: BZOJ1954 樹上最大 xor sum 路徑
-
-一棵帶有正整數邊權的無根樹，求 \\((u, v)\\) 使得節點 \\(u\\) 到 \\(v\\) 的路徑之間邊權 xor 總和最大，輸出這個邊權 xor 總和。 (\\(1 \leq N \leq 10^5, 0 \leq w \le 2^31\\))
-
+### 例題
+> [BZOJ1954 樹上最大 xor sum 路徑](#)
+> 
+> 一棵帶有正整數邊權的無根樹，求 \\((u, v)\\) 使得節點 \\(u\\) 到 \\(v\\) 的路徑之間邊權 xor 總和最大，輸出這個邊權 xor 總和。
+> 
+> - (\\(1 \leq N \leq 10^5, 0 \leq w \le 2^31\\))
+ 
 這題需要一點點的拆開題目包裝，我們定義 \\(T(u, v)\\) 為在樹上 \\(u\\) 到 \\(v\\) 之間的路徑 xor sum。我們可以發現指定任意一個節點作為 root 我們有 \\(T(u, v) = T(u, root)\\) xor \\(T(v, root)\\)。有這樣的觀察，我們可以用一次 dfs 對於所有節點 x 計算出 \\(T(x, root)\\)。接著問題就轉換成：如何在一個整數集合中，找出 XOR 值最大的兩個元素。
 
 如下圖所示，節點 \\(u, v\\) 路徑的頂點為 ，\\(T(u, root) \oplus T(v, root) = T(u, lca) \oplus T(lca, root) \oplus T(v, lca) \oplus T(lca, root) = T(u, lca) \loplus T(v, lca) = T(u, v)\\) ，因為 xor 運算我們有 \\(T(lca, root) \oplus T(lca, root) = 0 \\)。
@@ -102,7 +110,9 @@ XOR Trie 是一種 Trie 的應用，通常使用時機是求在一個整數集�
 
 ### 參考程式碼
 
-```cpp
+<details><summary> Sample Code </summary>
+
+  ```cpp
 #include <bits/stdc++.h>
 
 template<typename T, std::size_t _Nm>
@@ -185,6 +195,7 @@ int main() {
   std::cout << t_u_v_max << std::endl;
 }
 ```
+</details>
 
 ## Persistence XOR Trie
 
@@ -194,14 +205,13 @@ Trie 是一種樹狀結構，因此可以很容易的持久化，維護每次操
 
 ![](./image/presistence_trie.jpg)
 
-### 例題: Range Maximum XOR Query
+### 例題
 
-題目：
+> [Range Maximum XOR Query](#)
+> 
+> 給定一個正整數陣列 \\(A\\)，每次詢問給 \\(l, r, x\\) 求 \\( max\_{a\in A[l, r]} x \oplus a\\)
 
-給定一個正整數陣列 \\(A\\)，每次詢問給 \\(l, r, x\\) 求 \\( max\_{a\in A[l, r]} x \oplus a\\)
-
-題解：
-
+<details><summary> 題解 </summary>
 假如這題詢問不是子陣列，而是整個陣列，那我們可以用 XOR Trie 的技巧解決。與上面例題相似，我們可以使用 greedy algorithm (binary search on tree) 的技巧，從根開始，盡量選擇與 \\(x\\) 想法的位元。
 
 但這個問題變成區間詢問，因此我們可以使用 persistence xor trie 解決。這題的 trie 我們每個節點要維護每個節點，其子樹代表的集合有幾個元素。接著，我們把陣列 A 的元素從左至右依序加入 persistence trie，第 \\(0\\) 號版本是一個 root 代表一個空集合的 trie，接著加入第 \\(i\\) 個元素時，所產生的根節點，儲存為版本 \\(i\\) 的根節點。
@@ -210,11 +220,13 @@ Trie 是一種樹狀結構，因此可以很容易的持久化，維護每次操
 
 我們成功把區間問題，透過版本的比較，轉換成原本的陣列問題。相減兩個 trie 得到的虛擬 trie，可以作為一個代表子陣列的 trie 使用。我們可以透過 greedy algorithm (binary search on tree) 的技巧，解決這個問題。（詳細作法見上個章節題解）
 
-### 複雜度分析
+#### 複雜度分析
 
 考慮到每次新增會增加一個長度為 \\(L\\) 所會創造出的節點數還是 \\(O(L)\\)，時間複雜度和空間複雜度與一般的 trie 一樣皆是線性於操作的字串長度。
 
-### 參考程式碼
+#### 參考程式碼
+
+<details><summary> Sample Code </summary>
 
 ```cpp
 #include <bits/stdc++.h>
@@ -305,40 +317,42 @@ int main() {
 }
 ```
 
-## 其他例題
+</details>
+</details>
 
-### 最大 XOR sum 子陣列
+> [最大 XOR sum 子陣列](#)
+> 
+> 給定一個正整數陣列 \\(A\\)，求 xor sum 最大的子陣列。
 
-題目：
-
-給定一個正整數陣列 \\(A\\)，求 xor sum 最大的子陣列。
-
-題解：
+<details><summary> 題解 </summary>
 
 這題可以透過前綴和的技巧。定義 \\(X(L, R) = A[L] \oplus A[L+1] \oplus ... \oplus A[R] \\)，我們對於所有 \\(1 \leq i \leq N\\) 計算 \\(P(i) = X(1, i)\\)。因為 \\(\forall x \geq 0, x \oplus x = 0\\)，我們可以推得 \\(X(L, R) = X(1, L - 1) \oplus X(1, R)\\)。因此最大化 \\(X(L, R)\\) 其實就相當於找到兩個元素 \\(L, R\\) 最大化 \\(P(L - 1) \oplus P(R)\\)
 
 因此我們同樣可以使用 xor trie 的技巧，先將所有 \\(P(i)\\)加入 xor trie，接著我們枚舉第一個元素 L，我們即可以在 trie 中尋找最大化 \\(P(L) \oplus P(R)\\) 的 R。
 
-### First Second
+</details>
 
-題目: 對於一個長度大於 \\(1\\) 的字串 \\(S = s_1 s_2 ... s_{len}\\)，你可以做以下操作:
+> [First Second](#)
+> 對於一個長度大於 \\(1\\) 的字串 \\(S = s_1 s_2 ... s_{len}\\)，你可以做以下操作:
+> 
+> - 把 \\(S\\) 變成 \\(S = s_2 s_3...s_{len}\\) (把第一個字元刪掉)
+> - 把 \\(S\\) 變成 \\(S = s_1 s_3...s_{len}\\) (把第二個字元刪掉)
+> 
+> 給你 \\(N\\) 個由小寫字母 (`a-z`) 組成的字串 \\(S_1, S_2, ..., S_N\\)，請問有多少對 \\(1 \leq i, j, \leq N\\) 滿足
+> 
+> - \\(i \neq j\\)
+> - \\(S_i\\) 可以經過若干次操作後變成 \\(S_j\\)
+> 
+> 題目限制:
+> 
+> - \\(2 \leq N \leq 2 \times 10^5\\)
+> - 所有字串都是由小寫英文字母 (`a-z`) 組成的
+> - \\(i \neq j \implies S_i \neq S_j\\)
+> - \\(|S_1| + |S_2| + ... + |S_N| \leq 10^6\\)
 
-- 把 \\(S\\) 變成 \\(S = s_2 s_3...s_{len}\\) (把第一個字元刪掉)
-- 把 \\(S\\) 變成 \\(S = s_1 s_3...s_{len}\\) (把第二個字元刪掉)
+<details><summary> 題解 </summary>
 
-給你 \\(N\\) 個由小寫字母 (`a-z`) 組成的字串 \\(S_1, S_2, ..., S_N\\)，請問有多少對 \\(1 \leq i, j, \leq N\\) 滿足
-
-- \\(i \neq j\\)
-- \\(S_i\\) 可以經過若干次操作後變成 \\(S_j\\)
-
-題目限制:
-
-- \\(2 \leq N \leq 2 \times 10^5\\)
-- 所有字串都是由小寫英文字母 (`a-z`) 組成的
-- \\(i \neq j \implies S_i \neq S_j\\)
-- \\(|S_1| + |S_2| + ... + |S_N| \leq 10^6\\)
-
-作法: 定義 \\(len_i = |S_i|\\)
+定義 \\(len_i = |S_i|\\)
 首先我們可以觀察到，\\(S_i\\)可以經過若干次操作後變成 \\(S_j\\) 的充分必要條件是:
 
 > \\(S_j[2,] = S_i[len_i-len_j+2,]\\) 且 \\(S_j[1]\\) 有出現在 \\(S_i[,len_i-len_j+1]\\) 當中
@@ -361,6 +375,8 @@ int main() {
 \\(g[u]\\) 表示有多少 \\(S_i\\) 使得 \\(S_i\\) 在 trie 上的節點 \\(v\\) 是 \\(u\\) 的子孫，\\(g\\) 同樣可以用樹 DP 來求出: \\(g[u] = (\sum*{u\xrightarrow{c}v}{g[v]}) + [u\text{ 是某個 } S_i\text{ 對應到的節點}]\\)
 
 總時間複雜度 \\(O(\sum(len_i) \cdot |\Sigma|)\\)
+
+<details><summary> Sample Code </summary>
 
 ```cpp!
 #include <bits/stdc++.h>
@@ -423,6 +439,9 @@ int main()
   cout << ans << '\n';
 }
 ```
+
+</details>
+</details>
 
 ## 結語
 
