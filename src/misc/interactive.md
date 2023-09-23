@@ -86,7 +86,13 @@
 
 > [Codeforces 809B - Glad to see you!](https://codeforces.com/problemset/problem/809/B)
 >
-> Jury 有一組大小為 \\(k\\) 的集合，集合內的元素為 \\(1 \sim n\\) 且不重複的數字。> Jury 會將 \\(k\\) 跟 \\(n\\) 告訴 Participant。> Participant 可以問 Jury 的問題是：給兩個數字 \\(x, y\\)，Jury 將會在它的集合中找到跟 \\(x\\) 最接近的數字 \\(a\\)、跟 \\(y\\) 最接近的數字 \\(b\\)（\\(a\\) 可能等於 \\(b\\)），並回答是否滿足 \\(|x-a| \le |y-b|\\)。> Participant 需要在 \\(60\\) 個詢問內找到該集合中的任意兩個數字，其中 \\(2 \le k \le n \le 10^5\\)。
+> Jury 有一組大小為 \\(k\\) 的集合，集合內的元素為 \\(1 \sim n\\) 且不重複的數字。
+>
+> Jury 會將 \\(k\\) 跟 \\(n\\) 告訴 Participant。
+>
+> Participant 可以問 Jury 的問題是：給兩個數字 \\(x, y\\)，Jury 將會在它的集合中找到跟 \\(x\\) 最接近的數字 \\(a\\)、跟 \\(y\\) 最接近的數字 \\(b\\)（\\(a\\) 可能等於 \\(b\\)），並回答是否滿足 \\(|x-a| \le |y-b|\\)。
+>
+> Participant 需要在 \\(60\\) 個詢問內找到該集合中的任意兩個數字，其中 \\(2 \le k \le n \le 10^5\\)。
 
 <details><summary>Solution</summary>
 
@@ -164,7 +170,15 @@ get 這個函式則負責尋找在區間 \\([l, r)\\) 中任意一個存在集�
 
 > [Codeforces 843B - Interactive LowerBound](https://codeforces.com/problemset/problem/843/B)
 >
-> Jury 有一個 Link-List \\(L\\)，\\(L\\) 的每個節點都有其編號。> 每個節點 \\(i\\) 上存有這個節點指向的下一個節點編號 \\(nxt_i\\)，跟它所紀錄的值 \\(val_i\\)。> 已知，此 Link-List 紀錄的值是遞增的，Participant 每次詢問能夠詢問任意編號 \\(i\\) 的 \\(nxt_i\\) 跟 \\(val_i\\)。> 節點編號範圍是 \\(1 \sim n\\)，其中 \\(1 \le n \le 50000\\)，Participant 需在 \\(2000\\) 次詢問內找到某一給定 \\(x\\) 的 Lower bound。> 一開始，Jury 會告訴 Participant 這個 Link-List 起點的編號跟 \\(n\\)。
+> Jury 有一個 Link-List \\(L\\)，\\(L\\) 的每個節點都有其編號。
+>
+> 每個節點 \\(i\\) 上存有這個節點指向的下一個節點編號 \\(nxt_i\\)，跟它所紀錄的值 \\(val_i\\)。
+>
+> 已知，此 Link-List 紀錄的值是遞增的，Participant 每次詢問能夠詢問任意編號 \\(i\\) 的 \\(nxt_i\\) 跟 \\(val_i\\)。
+>
+> 節點編號範圍是 \\(1 \sim n\\)，其中 \\(1 \le n \le 50000\\)，Participant 需在 \\(2000\\) 次詢問內找到某一給定 \\(x\\) 的 Lower bound。
+>
+> 一開始，Jury 會告訴 Participant 這個 Link-List 起點的編號跟 \\(n\\)。
 
 <details><summary>Solution</summary>
 
@@ -245,7 +259,11 @@ code 中的 K 代表我們隨機遍歷的節點數。
 
 > [Codeforces 835E - The penguin's game](https://codeforces.com/problemset/problem/835/E)
 >
-> Jury 有一集合 \\(S\\)，其中恰兩個元素是 \\(y\\)，其他則是 \\(x\\)，Jury 會告訴 Participant \\(x, y\\) 分別是多少。> Participant 每次詢問能問 Jury，\\(S\\) 的一個 subset 的所有元素的 xor 值。> 請 Participant 在 \\(19\\) 次詢問內找到兩個 \\(y\\) 所在的位置，其中 \\(2 \le |S| \le 1000\\)。
+> Jury 有一集合 \\(S\\)，其中恰兩個元素是 \\(y\\)，其他則是 \\(x\\)，Jury 會告訴 Participant \\(x, y\\) 分別是多少。
+>
+> Participant 每次詢問能問 Jury，\\(S\\) 的一個 subset 的所有元素的 xor 值。
+>
+> 請 Participant 在 \\(19\\) 次詢問內找到兩個 \\(y\\) 所在的位置，其中 \\(2 \le |S| \le 1000\\)。
 
 <details><summary>Solution</summary>
 
@@ -341,7 +359,9 @@ ask 這個函式會吃一個 vector 並詢問 Jury 這個 vector 中所有 eleme
 
 > [Codeforces 727C - Guess the Array](https://codeforces.com/problemset/problem/727/C)
 >
-> Jury 有一組大小為 \\(N\\) 的陣列 \\(A\\)，Participant 每次能詢問此陣列中任兩個元素的和。> Participant 需要在 \\(N\\) 次詢問內知道這個陣列的所有元素是多少。
+> Jury 有一組大小為 \\(N\\) 的陣列 \\(A\\)，Participant 每次能詢問此陣列中任兩個元素的和。
+>
+> Participant 需要在 \\(N\\) 次詢問內知道這個陣列的所有元素是多少。
 
 <details><summary>Solution</summary>
 
@@ -413,7 +433,9 @@ int main () {
 
 > [Codeforces 750F - New Year and Finding Roots](https://codeforces.com/problemset/problem/750/F)
 >
-> Jury 有一棵高度是 \\(h\\) 的 perfect binary tree，Participant 能夠問 Jury 一個節點，Jury 會告訴 Participant 該節點的鄰居集合。> Participant 需在 \\(16\\) 次詢問內得知此 perfect binary tree 的根節點編號，其中 \\(2 \le h \le 7\\)。
+> Jury 有一棵高度是 \\(h\\) 的 perfect binary tree，Participant 能夠問 Jury 一個節點，Jury 會告訴 Participant 該節點的鄰居集合。
+>
+> Participant 需在 \\(16\\) 次詢問內得知此 perfect binary tree 的根節點編號，其中 \\(2 \le h \le 7\\)。
 
 <details><summary>Solution</summary>
 
@@ -431,7 +453,11 @@ int main () {
 
 > [Codeforces 1033E - Hidden Bipartite Graph](https://codeforces.com/problemset/problem/1033/E)
 >
-> Jury 有一張圖 \\(G\\)，其中有 \\(n\\) 個點，\\(1 \le n \le 600\\)。> Participant 每次能詢問 Jury 一個點集的 subset，Jury 會回答此 subset induce 出的邊的數量。> Participant 需在 \\(20000\\) 次詢問內判斷此圖是否為二分圖，如是，請輸出一種塗色方式；如否，請輸出一個奇環。
+> Jury 有一張圖 \\(G\\)，其中有 \\(n\\) 個點，\\(1 \le n \le 600\\)。
+>
+> Participant 每次能詢問 Jury 一個點集的 subset，Jury 會回答此 subset induce 出的邊的數量。
+>
+> Participant 需在 \\(20000\\) 次詢問內判斷此圖是否為二分圖，如是，請輸出一種塗色方式；如否，請輸出一個奇環。
 
 <details><summary>Solution</summary>
 
