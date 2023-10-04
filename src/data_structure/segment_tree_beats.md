@@ -326,8 +326,6 @@ int main() {
 
 總均攤成本為 \\( O(m \log^2 n) \\)，得到這個算法時間複雜度的上界是 \\( O(m \log^2 n) \\)。
 
-實際上這個上界是比較鬆的，然而目前還沒有方法可以證明更嚴謹的上界。
-
 <details><summary> Solution Code </summary>
 
 ```cpp
