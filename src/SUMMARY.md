@@ -22,6 +22,8 @@
     - [Lowest Common Ancestor](graph/lca.md)
   - [Articulation Point and Bridge](graph/introduction_to_AP_bridge.md)
   - [BCC-Vertex and BCC-Edge](graph/introduction_to_BCC.md)
+  - [Strongly Connected Component](graph/SCC_with_2-SAT/Strongly_Connected_Component.md)
+    - [2-SAT](graph/SCC_with_2-SAT/2-SAT.md)
 - [Flow]()
 - [Sqrt Technique](sqrt/intro.md)
   - [Square Root Decomposition](sqrt/sqrt_decomposition.md)
@@ -36,6 +38,7 @@
     - [數論分塊](math/sqrt_decomposition.md)
     - [杜教篩](math/du_sieve.md)
     - [Arithmetic Function Revisit](math/revisit_arithmetic_function.md)
+
 - [Miscellaneous]()
   - [Interactive Problems](misc/interactive.md)
   - [Game Theory](misc/game_theory.md)
