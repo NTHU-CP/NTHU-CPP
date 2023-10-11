@@ -41,19 +41,19 @@ STB 可以達到下列兩個目的：
 
 如下圖所示，左圖是一棵建立在 \\( [1, 4] \\) 上的線段樹，每一個節點紀錄的資訊的左側是區間最大值，右側是嚴格次大值。現在我們要讓區間 \\( [1, 4] \\) 對 \\( 2 \\) 取 \\( min \\)。那麼左圖中紅色邊表示搜尋時經過的邊，紅色字體的節點表示正在拜訪的節點，右圖為更新後的線段樹。
 
-<img src="image/segment_tree/segment_tree_beats/1-1.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/1-1.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 ### 觀察性質
 
 - 一個節點的嚴格次大值，子樹中一定存在點的區間最大值，和原來的嚴格次大值相等。以更新後的線段樹為例，根節點的嚴格次大值為 \\( 1 \\)，相當於子樹中階層為 \\( 3 \\) 最左邊節點的區間最大值。
 
-<img src="image/segment_tree/segment_tree_beats/2-0.jpg" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/2-0.jpg" width="700" style="display:block; margin: 0 auto;"/>
 
 - 狀況一和狀況二都與普通線段樹一樣，只有在狀況三（\\( mx2 \geq x \\)）時，我們會需要左右遞迴子樹，拜訪更多節點。換句話說，只有在子樹有兩種標記大於等於新標記，我們才有可能在子樹打標記。
 
 - 打上區間取 \\( min \\) 標記時（狀況二發生時），此區間只有最大值受到影響，其他數維持不變。最大值被修改之後，原來是區間最大值的數依舊是區間最大值，原來不是區間最大值的數依舊不是。
 
-<img src="image/segment_tree/segment_tree_beats/2-5.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/2-5.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 ### 時間複雜度
 
@@ -63,7 +63,7 @@ STB 可以達到下列兩個目的：
 
 觀察之前讓區間 \\( [1, 4] \\) 對 \\( 2 \\) 取 \\( min \\) 的操作，每一個節點上記錄的是區間最大值。給節點打完標記後，如果一個點的標記值與父節點的標記值相同，就把此點的標記刪除，大致流程如下圖所示（左圖中紅色邊表示搜尋時經過的邊，紅色字體的節點表示正在拜訪的節點，右圖為更新後的線段樹）：
 
-<img src="image/segment_tree/segment_tree_beats/2-1.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/2-1.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 我們可以發現每一個位置實際的值等於從它對應的線段樹葉節點出發，向上走遇到的第一個標記值。這些標記滿足：每個點的標記值都嚴格大於子樹中的所有標記值。
 
@@ -79,18 +79,18 @@ STB 可以達到下列兩個目的：
 
 以上面的例子為例，階層為 \\( 3 \\) 的右邊兩個節點的標記屬於同一類，假設這類為 \\( T \\)，因為打標記時有經過兩個節點，所以 \\( w(T) \\) 為 \\( 2 \\)。
 
-<img src="image/segment_tree/segment_tree_beats/2-2.jpg" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/2-2.jpg" width="600" style="display:block; margin: 0 auto;"/>
 
 依次分析三項對位能產生影響的操作：添加新標記類、標記下傳、標記回收
 
 1. 考慮一次區間取 \\( min \\) 操作，只會添加一個新的標記類 \\( T \\)，它的權值等於我們打標記時經過的節點數。線段樹深度是 \\( O( \lceil \log n \rceil + 1 ) = O( \log n) \\)，打標記時經過的節點數最多也是 \\( O( \log n) \\)，所以 \\( w(T) \\) 是 \\( O( \log n) \\)，\\( \Phi(x) \\) 增加了 \\( O( \log n) \\)。
 
-<img src="image/segment_tree/segment_tree_beats/2-3.jpg" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/2-3.jpg" width="600" style="display:block; margin: 0 auto;"/>
 
 2. 考慮一次標記下傳，只讓標記類 \\( T \\) 的權值 \\( w(T) \\) 增加 \\( O(1) \\)，\\( \Phi(x) \\) 增加了 \\( O(1) \\)。
 3. 當 \\( mx2 \geq x \\) 時，也就是狀況三發生時，要進行遞迴搜尋，因為父節點的標記一定跟其中一個子節點一樣，所以每到一個節點至少回收一個標記，那麼 \\( \Phi(x) \\) 減少了 \\( O(1) \\)。
 
-<img src="image/segment_tree/segment_tree_beats/2-4.gif" width="600" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/2-4.gif" width="600" style="display:block; margin: 0 auto;"/>
 
 ### 透過均攤分析得到時間複雜度
 
@@ -275,15 +275,15 @@ int main() {
 
 如下圖所示，左圖是一棵建立在 \\( [1, 4] \\) 上的線段樹，每個節點上方那一列的左側是區間最大值，右側是嚴格次大值；下方那一列的左側是區間最小值，右側是嚴格次小值。現在我們要讓區間 \\( [3, 4] \\) 對 \\( 2 \\) 取 \\( min \\)。那麼左圖中紅色邊表示搜尋時經過的邊，紅色字體的節點表示正在拜訪的節點，右圖為更新後的線段樹。
 
-<img src="image/segment_tree/segment_tree_beats/3-1.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/3-1.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 接著讓區間 \\( [3, 4] \\) 的元素加上 \\( 1 \\)。在右子節點打上加標記，然後退出。
 
-<img src="image/segment_tree/segment_tree_beats/3-2.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/3-2.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 最後讓區間 \\( [4, 4] \\) 的元素加上 \\( 1 \\)。階層為 \\( 2 \\) 的右邊節點下傳區間加標記，接著發現其左子節點的 \\( mx2 < 3 < mx1 \\)，所以需要用 \\( 3 \\) 更新左子節點的最大值和最小值。
 
-<img src="image/segment_tree/segment_tree_beats/3-3.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/3-3.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 ### 觀察性質
 
@@ -546,13 +546,13 @@ int main() {
 
 當前位置下曾經出現過的數的最大值。定義一個輔助數組 \\( b \\)，最開始 \\( b \\) 數組與 \\( a \\) 數組完全相同。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( b_i = max(b_i, a_i) \\)。這時，我們將 \\( b_i \\) 稱作 \\( i \\) 這個位置的歷史最大值。
 
-<img src="image/segment_tree/segment_tree_beats/6-1.jpg" width="500" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/6-1.jpg" width="500" style="display:block; margin: 0 auto;"/>
 
 #### 歷史最小值
 
 當前位置下曾經出現過的數的最小值。定義一個輔助數組 \\( b \\)，最開始 \\( b \\) 數組與 \\( a \\) 數組完全相同。在每一次操作後，對每一個 \\( i \in [1, n] \\)，我們都進行一次更新，讓 \\( b_i = min(b_i, a_i) \\)。這時，我們將 \\( b_i \\) 稱作 \\( i \\) 這個位置的歷史最小值。
 
-<img src="image/segment_tree/segment_tree_beats/6-2.jpg" width="500" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/6-2.jpg" width="500" style="display:block; margin: 0 auto;"/>
 
 #### 歷史版本和
 
@@ -617,19 +617,19 @@ int main() {
 
 在這裡每一個節點紀錄的資訊的第一列由左至右是 \\( mx \\)，\\( add \\)，\\( cov \\)，第二列由左至右是 \\( hmx \\)，\\( hadd \\)，\\( hcov \\)。
 
-<img src="image/segment_tree/segment_tree_beats/7-0.jpg" width="500" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/7-0.jpg" width="500" style="display:block; margin: 0 auto;"/>
 
 如下圖所示，左圖是一棵建立在 \\( [1, 4] \\) 上的線段樹。現在我們要將區間 \\( [3, 4] \\) 修改成 \\( 2 \\)。那麼左圖中紅色邊表示搜尋時經過的邊，紅色字體的節點表示正在拜訪的節點，右圖為更新後的線段樹。
 
-<img src="image/segment_tree/segment_tree_beats/7-1.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/7-1.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 接著讓區間 \\( [3, 4] \\) 的元素加上 \\( 1 \\)。本來是下傳區間加標記，但因為右子節點已被覆蓋，所以直接將 \\( 1 \\) 累加在右子節點的 \\( cov \\) 上。
 
-<img src="image/segment_tree/segment_tree_beats/7-2.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/7-2.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 最後讓區間 \\( [4, 4] \\) 的元素加上 \\( 1 \\)。因為右子節點已經被覆蓋，所以下傳覆蓋標記給子節點，變成子節點被覆蓋。接著下傳加標記，因為子節點已被覆蓋，所以直接將 \\( 1 \\) 累加在 \\( cov \\) 上。
 
-<img src="image/segment_tree/segment_tree_beats/7-3.gif" width="700" style="display:block; margin: 0 auto;"/>
+<img src="image/segment_tree_beats/7-3.gif" width="700" style="display:block; margin: 0 auto;"/>
 
 ### 時間複雜度
 
