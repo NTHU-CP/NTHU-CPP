@@ -21,7 +21,7 @@
 
 | 年度 | 題本 | 題解 | 記分板 | OJ |
 | :---: | --- | --- | --- | --- |
-| 2023 | | | |
+| 2023 | | | [記分板連結](https://reg.ncpc.ntnu.edu.tw/ncpc2023/NCPC_scorboard/NCPC2023_final_result.html) |
 | 2022 | | | | |
 | 2021 | | | [記分板連結](https://www2.nsysu.edu.tw/NCPC_scoreboard/NCPC2021_scoreboard.php) | |
 | 2020 | | | |
