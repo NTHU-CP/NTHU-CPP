@@ -20,6 +20,8 @@
 - [Graph]()
   - [Tree]()
     - [Lowest Common Ancestor](graph/lca.md)
+    - [Centroid](graph/centroid.md)
+    - [Centroid Decomposition](graph/centroid_decomposition.md)
   - [Articulation Point and Bridge](graph/introduction_to_AP_bridge.md)
   - [BCC-Vertex and BCC-Edge](graph/introduction_to_BCC.md)
 - [Flow]()
