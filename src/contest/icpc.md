@@ -26,7 +26,7 @@
 
 | 年度 | 題本 | 題解 | 記分板 | OJ |
 | :---: | --- | --- | --- | --- |
-| 2023 | | | |
+| 2023 | [題本連結](https://cdn.discordapp.com/attachments/1153229992638029874/1165506820530524201/ICPC2023-problems.pdf?ex=654719d0&is=6534a4d0&hm=7982992af763997e63cab346c03499c008a8763a8adeea1fb5601db2428db23d&) | | [記分板連結](https://web.archive.org/web/20231022094124/https://judge.icpc.ntub.edu.tw/public?release) | |
 | 2022 | | | [記分板連結](https://icpc2022.ntub.edu.tw/final-scoreboard/) | |
 | 2021 | [題本連結](https://drive.google.com/file/d/1YUMxajkblszqjcVhb3ksvv1UL44JOlJT/view) | [Hint 連結](https://codeforces.com/gym/103443/attachments/download/14823/main-with-hint.pdf) | [記分板連結](https://icpc2021.ntub.edu.tw/final-scoreboard/) | [OJ 連結](https://codeforces.com/gym/103443) |
 | 2020 | [題本連結](https://drive.google.com/file/d/1v6vk-VEtyNNDbTPOlc1JE_m9VllTHwi0/view) | [Hint 連結](https://drive.google.com/file/d/1fzZ9UKE8tr315wFAaC1jBVaNrF6a-WO7/view) | [記分板連結](https://icpc2020.ntub.edu.tw/final-scoreboard/) | [OJ 連結](https://codeforces.com/gym/102835) |
