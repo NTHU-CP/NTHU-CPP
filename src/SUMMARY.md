@@ -16,6 +16,7 @@
 - [Greedy](greedy/intro.md)
   - [Basic Greedy](greedy/basic.md)
 - [Dynamic Programming]()
+  - [Aliens Optimization](dp/aliens.md)
   - [Convex Hull Optimization](dp/convex_hull_optimization.md)
 - [Graph]()
   - [Tree]()
