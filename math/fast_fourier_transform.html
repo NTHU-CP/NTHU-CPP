@@ -1,0 +1,925 @@
+<!DOCTYPE HTML>
+<html lang="zh-TW" class="sidebar-visible no-js light">
+    <head>
+        <!-- Book generated using mdBook -->
+        <meta charset="UTF-8">
+        <title>Fast Fourier Transform - NTHU CPP</title>
+
+
+        <!-- Custom HTML head -->
+        <meta name="google-site-verification" content="aHI6EvEvMoCy151ZL2UYTQxmetpqMtOPEYb4Mm2luAw" />
+        
+        <!-- Google tag (gtag.js) -->
+        <script async src="https://www.googletagmanager.com/gtag/js?id=G-F8EBK1EKYT"></script>
+        <script>
+          window.dataLayer = window.dataLayer || [];
+          function gtag(){dataLayer.push(arguments);}
+          gtag('js', new Date());
+        
+          gtag('config', 'G-F8EBK1EKYT');
+        </script>
+
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="theme-color" content="#ffffff" />
+
+        <link rel="icon" href="../favicon.svg">
+        <link rel="shortcut icon" href="../favicon.png">
+        <link rel="stylesheet" href="../css/variables.css">
+        <link rel="stylesheet" href="../css/general.css">
+        <link rel="stylesheet" href="../css/chrome.css">
+
+        <!-- Fonts -->
+        <link rel="stylesheet" href="../FontAwesome/css/font-awesome.css">
+        <link rel="stylesheet" href="../fonts/fonts.css">
+
+        <!-- Highlight.js Stylesheets -->
+        <link rel="stylesheet" href="../highlight.css">
+        <link rel="stylesheet" href="../tomorrow-night.css">
+        <link rel="stylesheet" href="../ayu-highlight.css">
+
+        <!-- Custom theme stylesheets -->
+
+        <!-- MathJax -->
+        <script async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    </head>
+    <body>
+        <!-- Provide site root to javascript -->
+        <script>
+            var path_to_root = "../";
+            var default_theme = window.matchMedia("(prefers-color-scheme: dark)").matches ? "navy" : "light";
+        </script>
+
+        <!-- Work around some values being stored in localStorage wrapped in quotes -->
+        <script>
+            try {
+                var theme = localStorage.getItem('mdbook-theme');
+                var sidebar = localStorage.getItem('mdbook-sidebar');
+
+                if (theme.startsWith('"') && theme.endsWith('"')) {
+                    localStorage.setItem('mdbook-theme', theme.slice(1, theme.length - 1));
+                }
+
+                if (sidebar.startsWith('"') && sidebar.endsWith('"')) {
+                    localStorage.setItem('mdbook-sidebar', sidebar.slice(1, sidebar.length - 1));
+                }
+            } catch (e) { }
+        </script>
+
+        <!-- Set the theme before any content is loaded, prevents flash -->
+        <script>
+            var theme;
+            try { theme = localStorage.getItem('mdbook-theme'); } catch(e) { }
+            if (theme === null || theme === undefined) { theme = default_theme; }
+            var html = document.querySelector('html');
+            html.classList.remove('no-js')
+            html.classList.remove('light')
+            html.classList.add(theme);
+            html.classList.add('js');
+        </script>
+
+        <!-- Hide / unhide sidebar before it is displayed -->
+        <script>
+            var html = document.querySelector('html');
+            var sidebar = 'hidden';
+            if (document.body.clientWidth >= 1080) {
+                try { sidebar = localStorage.getItem('mdbook-sidebar'); } catch(e) { }
+                sidebar = sidebar || 'visible';
+            }
+            html.classList.remove('sidebar-visible');
+            html.classList.add("sidebar-" + sidebar);
+        </script>
+
+        <nav id="sidebar" class="sidebar" aria-label="Table of contents">
+            <div class="sidebar-scrollbox">
+                <ol class="chapter"><li class="chapter-item "><a href="../others/foreword.html">Foreword</a></li><li class="chapter-item "><a href="../others/calendar.html">2023 Calendar</a></li><li class="chapter-item "><a href="../contest/intro.html">Contests</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../contest/ncpc.html">NCPC</a></li><li class="chapter-item "><a href="../contest/topc.html">TOPC</a></li><li class="chapter-item "><a href="../contest/icpc.html">ICPC</a></li></ol></li><li class="chapter-item "><a href="../others/how_to_practice.html">How to Practice</a></li><li class="chapter-item "><a href="../others/contribution.html">Contribute to NTHU CPP</a></li><li class="spacer"></li><li class="chapter-item "><div>Fundemantal</div></li><li class="chapter-item "><div>Data Structure</div></li><li class="chapter-item "><a href="../greedy/intro.html">Greedy</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../greedy/basic.html">Basic Greedy</a></li></ol></li><li class="chapter-item "><div>Dynamic Programming</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../dp/convex_hull_optimization.html">Convex Hull Optimization</a></li></ol></li><li class="chapter-item "><div>Graph</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><div>Tree</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../graph/lca.html">Lowest Common Ancestor</a></li></ol></li><li class="chapter-item "><a href="../graph/introduction_to_AP_bridge.html">Articulation Point and Bridge</a></li><li class="chapter-item "><a href="../graph/introduction_to_BCC.html">BCC-Vertex and BCC-Edge</a></li></ol></li><li class="chapter-item "><div>Flow</div></li><li class="chapter-item "><a href="../sqrt/intro.html">Sqrt Technique</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../sqrt/sqrt_decomposition.html">Square Root Decomposition</a></li></ol></li><li class="chapter-item expanded "><a href="../math/intro.html">Mathematics</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/introduction_to_generating_function.html">Generating Function</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/gf_recurrence.html">Solving Recurrence</a></li><li class="chapter-item "><a href="../math/gf_combination.html">Combination</a></li><li class="chapter-item "><a href="../math/lagrange_inversion_theorem.html">Lagrange Inversion Theorem</a></li><li class="chapter-item "><a href="../math/gf_multiple_variables.html">Multiple Variables</a></li></ol></li><li class="chapter-item "><a href="../math/introduction_to_arithmetic_function.html">Arithmetic Function</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../math/linear_sieve.html">Linear Sieve</a></li><li class="chapter-item "><a href="../math/sqrt_decomposition.html">數論分塊</a></li><li class="chapter-item "><a href="../math/du_sieve.html">杜教篩</a></li><li class="chapter-item "><a href="../math/revisit_arithmetic_function.html">Arithmetic Function Revisit</a></li></ol></li><li class="chapter-item expanded "><a href="../math/fast_fourier_transform.html" class="active">Fast Fourier Transform</a></li></ol></li><li class="chapter-item "><div>Miscellaneous</div><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../misc/interactive.html">Interactive Problems</a></li><li class="chapter-item "><a href="../misc/game_theory.html">Game Theory</a><a class="toggle"><div>❱</div></a></li><li><ol class="section"><li class="chapter-item "><a href="../misc/nim_and_sg_value.html">Nim and Sprague-Grundy Theorem</a></li></ol></li></ol></li><li class="chapter-item "><div>C++ Programming Tips</div></li><li class="spacer"></li><li class="chapter-item "><a href="../others/codebook.html">Make a Codebook</a></li><li class="chapter-item "><a href="../others/useful_resources.html">Useful Resources</a></li><li class="chapter-item "><div>CSES Problem Tag</div></li><li class="chapter-item "><a href="../others/hwtc.html">Happy Winter Training Camp</a></li><li class="chapter-item "><a href="../others/happy_meeting.html">Weekly Happy Meeting</a></li></ol>
+            </div>
+            <div id="sidebar-resize-handle" class="sidebar-resize-handle"></div>
+        </nav>
+
+        <div id="page-wrapper" class="page-wrapper">
+
+            <div class="page">
+                                <div id="menu-bar-hover-placeholder"></div>
+                <div id="menu-bar" class="menu-bar sticky bordered">
+                    <div class="left-buttons">
+                        <button id="sidebar-toggle" class="icon-button" type="button" title="Toggle Table of Contents" aria-label="Toggle Table of Contents" aria-controls="sidebar">
+                            <i class="fa fa-bars"></i>
+                        </button>
+                        <button id="theme-toggle" class="icon-button" type="button" title="Change theme" aria-label="Change theme" aria-haspopup="true" aria-expanded="false" aria-controls="theme-list">
+                            <i class="fa fa-paint-brush"></i>
+                        </button>
+                        <ul id="theme-list" class="theme-popup" aria-label="Themes" role="menu">
+                            <li role="none"><button role="menuitem" class="theme" id="light">Light</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="rust">Rust</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="coal">Coal</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="navy">Navy</button></li>
+                            <li role="none"><button role="menuitem" class="theme" id="ayu">Ayu</button></li>
+                        </ul>
+                        <button id="search-toggle" class="icon-button" type="button" title="Search. (Shortkey: s)" aria-label="Toggle Searchbar" aria-expanded="false" aria-keyshortcuts="S" aria-controls="searchbar">
+                            <i class="fa fa-search"></i>
+                        </button>
+                    </div>
+
+                    <h1 class="menu-title">NTHU CPP</h1>
+
+                    <div class="right-buttons">
+                        <a href="https://github.com/NTHU-CP/NTHU-CPP" title="Git repository" aria-label="Git repository">
+                            <i id="git-repository-button" class="fa fa-github"></i>
+                        </a>
+
+                    </div>
+                </div>
+
+                <div id="search-wrapper" class="hidden">
+                    <form id="searchbar-outer" class="searchbar-outer">
+                        <input type="search" id="searchbar" name="searchbar" placeholder="Search this book ..." aria-controls="searchresults-outer" aria-describedby="searchresults-header">
+                    </form>
+                    <div id="searchresults-outer" class="searchresults-outer hidden">
+                        <div id="searchresults-header" class="searchresults-header"></div>
+                        <ul id="searchresults">
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Apply ARIA attributes after the sidebar and the sidebar toggle button are added to the DOM -->
+                <script>
+                    document.getElementById('sidebar-toggle').setAttribute('aria-expanded', sidebar === 'visible');
+                    document.getElementById('sidebar').setAttribute('aria-hidden', sidebar !== 'visible');
+                    Array.from(document.querySelectorAll('#sidebar a')).forEach(function(link) {
+                        link.setAttribute('tabIndex', sidebar === 'visible' ? 0 : -1);
+                    });
+                </script>
+
+                <div id="content" class="content">
+                    <main>
+                        <h1 id="fast-fourier-transform-fft"><a class="header" href="#fast-fourier-transform-fft">Fast Fourier Transform (FFT)</a></h1>
+<p>本單元介紹快速傅立葉轉換法 (Fast Fourier Transform, 簡稱 FFT). FFT 常被利用於計算兩多項式的相乘，即給定兩個 \( n \) 次多項式，求兩多項式的乘積。直覺上有個 \( \Theta(n^2) \) 的算法是將係數逐一相乘再相加，而 FFT 利用分治法提供時間為 \( \Theta(n \log n) \) 的算法。為了討論方便，我們有以下假設：</p>
+<ul>
+<li>所有 \( n \) 皆為 \( 2 \) 的冪次方, 即存在正整數 \( k \) 使得 \( n = 2^k \).</li>
+<li>多項式 \( A(x) \) 和 \( B(x) \) 為被乘式和乘式，次方為 \( n-1 \) 次。相乘結果為 \( 2n-2 \) 次多項式 \( C(x) \).</li>
+</ul>
+<p>實作上，若 \( n-1 \) 次多項式的 \( n \) 不為 \( 2 \) 的冪次，我們會將多項式拓展至 \( m-1 \) 次，並在新增的次方係數補零，其中 \( m \) 為大於 \( n \) 且為 \( 2 \) 的冪次中最小的數。例如我們會將
+$$
+5x^4+4x^3+3x^2+2x+1
+$$
+拓展至
+$$
+0x^7+0x^6+0x^5+5x^4+4x^3+3x^2+2x+1
+$$</p>
+<p>若 \( A(x) \) 和 \( B(x) \) 的次數不同，我們也會將兩多項式拓展至相同次數。</p>
+<p>本文首先介紹兩種多項式的表示式，這兩種表示式之間的轉換就是 FFT, 其性質在本文扮演重要的角色。再來介紹 \( n \) 次單位根 (The principal nth root of unity) 和范德蒙矩陣 (Vandermonde matrix) 兩個數學工具。這兩個數學工具會在後面操作分治法時有很大的幫助。最後會將所有工具和計算方法合併，得到一個透過 FFT 在 \( \Theta(n \log n) \) 時間完成多項式相乘的演算法。</p>
+<h2 id="多項式表示式"><a class="header" href="#多項式表示式">多項式表示式</a></h2>
+<p>較廣為人用的多項式表示法有以下兩種：</p>
+<h3 id="係數表示式-coefficient-representation"><a class="header" href="#係數表示式-coefficient-representation">係數表示式 (Coefficient representation)</a></h3>
+<p>給定 \( n-1 \) 次多項式 \( A(x) = a_0 + a_1x + a_2x^2 + \cdots + a_{n-1}x^{n-1} \). 我們將係數取出形成一個向量 \( a = (a_0, a_1, \cdots, a_{n-1}) \). 該向量即為 \( A(x) \) 的係數表示式。係數表示式是兩者中最常被使用的，同時也是 \( A(x)\) 和 \( B(x) \) 兩多項式最一開始的表示式。</p>
+<h3 id="點值表示式-point-value-representation"><a class="header" href="#點值表示式-point-value-representation">點值表示式 (Point-value representation)</a></h3>
+<p>給定實數平面上相異且不共 \( n-2 \) 次多項式的 \( n \) 個點。這 \( n \) 個點能唯一決定一個 \( n-1 \) 次多項式。若集合 \( S_A = \{(x_0, y_0), (x_1, y_1), \cdots, (x_{n-1}, y_{n-1})\} \) 中，每個元素皆滿足 \( y = A(x) \), 且任何 \( n-2 \) 次多項式都無法包含所有點，則我們稱 \( S_A \) 為 \( n-1 \) 次多項式 \( A(x) \) 的點值表示式。注意上述條件讓 \( S_A \) 可以不只有 \( n \) 個點但至少需要有 \( n \) 個點.</p>
+<p>點值表示式的好處在於可以花 \( \Theta(n) \) 的時間計算多項式相乘。若以點值表示式給定 \( A(x), B(x) \) 兩個 \( n-1 \) 次多項式，只需要 \( \Theta(n) \) 的時間即可得到 \( C(x) \) 的點值表示式。</p>
+<p>例如給定 \( S_A, S_B \) 兩基數為 \( 2n-1 \) 關於 \( n-1 \) 次多項式 \( A(x) \) 和 \( B(x) \)的點值表示式
+$$
+S_A = \{(x_0, A(x_0)), (x_1, A(x_1)), \cdots, (x_{2n-2}, A(x_{2n-2}))\}
+$$
+$$
+S_B = \{(x_0, B(x_0)), (x_1, B(x_1)), \cdots, (x_{2n-2}, B(x_{2n-2}))\}
+$$
+將兩集合擁有相同 \( x \) 座標的 \( y \) 值相乘，得到基數為 \( 2n-1 \) 的集合 \( S_C \)
+$$
+S_C = \{(x_0, A(x_0) \cdot B(x_0)), (x_1, A(x_1) \cdot B(x_1)), \cdots, (x_{2n-2}, A(x_{2n-2}) \cdot B(x_{2n-2}))\}
+$$
+該集合就是 \( C(x) \) 的點值表示式。</p>
+<p>回到起點，我們探究的是利用 FFT 將兩個以係數表示式呈現的多項式相乘，得到以係數表示式呈現的新多項式。目前我們所擁有的工具是在 \( \Theta(n) \) 的時間將兩個點值表示式相乘。如下圖，若可以掌握兩種多項式表示式間的轉換，多項式的乘法就完成了。</p>
+<img src="image/fast_fourier_transform/point-value.png" width="500" style="display:block; margin: 0 auto;"/>
+<p>因此我們要知道兩表示式間如何轉換。</p>
+<h2 id="兩表示式間的轉換"><a class="header" href="#兩表示式間的轉換">兩表示式間的轉換</a></h2>
+<h3 id="已知--n-1--次多項式--ax-rightarrow--求--s_a---s_a--n-"><a class="header" href="#已知--n-1--次多項式--ax-rightarrow--求--s_a---s_a--n-">已知 \( n-1 \) 次多項式 \( A(x) \Rightarrow \) 求 \( S_A \) (\( |S_A| = n \))</a></h3>
+<p>任選 \( n \) 個點 \( x_0, x_1, \cdots, x_{n-1} \) 並代入 \( A(x) \) 即得 \( S_A = \{(x_0, A(x_0)), (x_1, A(x_1)), \cdots, (x_{n-1}, A(x_{n-1}))\} \)</p>
+<p>觀察得每個值 \( A(x_i) \) 都是向量 \( (a_0, a_1, \cdots, a_{n-1}) \) 和 \( (1, x_i, x^2_i, \cdots, x^{n-1}_i) \) 的內積。</p>
+<p>因此我們可以把求值的過程表示成下列矩陣計算：</p>
+<p>$$
+\left(
+\begin{matrix}
+1 &amp; x_0 &amp; x_0^2 &amp; \cdots &amp; x_0^{n-1} \\
+1 &amp; x_1 &amp; x_1^2 &amp; \cdots &amp; x_1^{n-1} \\
+1 &amp; x_2 &amp; x_2^2 &amp; \cdots &amp; x_2^{n-1} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; x_{n-1} &amp; x_{n-1}^2 &amp; \cdots &amp; x_{n-1}^{n-1}
+\end{matrix}
+\right)
+\left(
+\begin{matrix}
+a_0 \\
+a_1 \\
+a_2 \\
+\vdots \\
+a_{n-1}
+\end{matrix}
+\right)
+=
+\left(
+\begin{matrix}
+A(x_0) \\
+A(x_1) \\
+A(x_2) \\
+\vdots \\
+A(x_{n-1})
+\end{matrix}
+\right)
+$$</p>
+<p>為了後面方便描述，我們稱左式中的方陣為 \( V_n \), 其中下標 \( n \) 為方陣大小。</p>
+<h3 id="已知--s_a--s_a--n--rightarrow--求--n-1--次多項式--ax-"><a class="header" href="#已知--s_a--s_a--n--rightarrow--求--n-1--次多項式--ax-">已知 \( S_A ( |S_A| = n ) \Rightarrow \) 求 \( n-1 \) 次多項式 \( A(x) \)</a></h3>
+<p>使用類似的手法，現在要求的是向量 \( (a_0, a_1, \cdots, a_{n-1}) \). 故只需求得 \( V_n \) 的反矩陣後即可運算</p>
+<p>$$
+\left(
+\begin{matrix}
+1 &amp; x_0 &amp; x_0^2 &amp; \cdots &amp; x_0^{n-1} \\
+1 &amp; x_1 &amp; x_1^2 &amp; \cdots &amp; x_1^{n-1} \\
+1 &amp; x_2 &amp; x_2^2 &amp; \cdots &amp; x_2^{n-1} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; x_{n-1} &amp; x_{n-1}^2 &amp; \cdots &amp; x_{n-1}^{n-1}
+\end{matrix}
+\right)^{-1}
+\left(
+\begin{matrix}
+A(x_0) \\
+A(x_1) \\
+A(x_2) \\
+\vdots \\
+A(x_{n-1})
+\end{matrix}
+\right)
+=
+\left(
+\begin{matrix}
+a_0 \\
+a_1 \\
+a_2 \\
+\vdots \\
+a_{n-1}
+\end{matrix}
+\right)
+$$</p>
+<p>到這裡，一個很大的瓶頸是：方陣大小如此大的反矩陣要如何計算？一般而言，任意給定相異 \( n \) 數 \( x_0, x_1, \cdots, x_{n-1} \) 所構成上述的方陣 \( V_n \), 其反矩陣的計算相當困難。幸運的是，有了 \( n \) 次單位根 (The principal nth root of unity) 和范德蒙矩陣 (Vandermonde matrix), 讓我們可以挑選適當的 \( x \) 座標以快速求得反矩陣的值。底下正式為他們做介紹。</p>
+<h2 id="-n--次單位根-the-principal-nth-root-of-unity"><a class="header" href="#-n--次單位根-the-principal-nth-root-of-unity">\( n \) 次單位根 (The principal nth root of unity)</a></h2>
+<p>給定方程式 \( z^n = 1 \), 其中 \( n \) 為正整數，\( z \) 為複數。根據代數基本定理，該方程式有 \( n \) 個複數根，分別為 \( e^{\frac{2 \pi i \cdot 1}{n}}, e^{\frac{2 \pi i \cdot 2}{n}}, \cdots, e^{\frac{2 \pi i \cdot (n-1)}{n}}, e^{\frac{2 \pi i \cdot n}{n}}\), 其中最後一個數</p>
+<p>$$
+e^{\frac{2 \pi i \cdot n}{n}} = e^{2 \pi i} = \cos{2 \pi} + i \sin{2 \pi} = 1
+$$</p>
+<p>我們定義 \( \omega_n = e^{\frac{2 \pi i}{n}} \), 並稱 \( \omega_n \) 為 \( n \) 次單位根。例如：</p>
+<p>\( \omega_2 \) 是 \( 2 \) 次單位根，且 \( \omega_2 = e^{\frac{2 \pi i}{2}} = e^{\pi i} = \cos{\pi} + i \sin{\pi} = -1 \)</p>
+<p>\( \omega_4 \) 是 \( 4 \) 次單位根，且 \( \omega_4 = e^{\frac{2 \pi i}{4}} = e^{\frac{\pi}{2} i} = \cos{\frac{\pi}{2}} + i \sin{\frac{\pi}{2}} = i \).</p>
+<p>回顧上方的方陣</p>
+<p>$$
+V_n = \left(
+\begin{matrix}
+1 &amp; x_0 &amp; x_0^2 &amp; \cdots &amp; x_0^{n-1} \\
+1 &amp; x_1 &amp; x_1^2 &amp; \cdots &amp; x_1^{n-1} \\
+1 &amp; x_2 &amp; x_2^2 &amp; \cdots &amp; x_2^{n-1} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; x_{n-1} &amp; x_{n-1}^2 &amp; \cdots &amp; x_{n-1}^{n-1}
+\end{matrix}
+\right)
+$$</p>
+<p>當我們為 \( n-1 \) 次多項式挑選 \( x_0, x_1, \cdots, x_{n-1} \) 時，只要令 \( x_i = \omega^i_n \), 即可得到方陣</p>
+<p>$$
+V_n = \left(
+\begin{matrix}
+1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+1 &amp; \omega_n &amp; \omega_n^2 &amp; \cdots &amp; \omega_n^{n-1} \\
+1 &amp; \omega_n^2 &amp; \omega_n^4 &amp; \cdots &amp; \omega_n^{2(n-1)} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; \omega_n^{n-1} &amp; \omega_n^{2(n-1)} &amp; \cdots &amp; \omega_n^{(n-1)(n-1)}
+\end{matrix}
+\right)
+$$</p>
+<p>該方陣是一種接下來要介紹的范德蒙矩陣。</p>
+<h2 id="范德蒙矩陣-vandermonde-matrix-及其性質"><a class="header" href="#范德蒙矩陣-vandermonde-matrix-及其性質">范德蒙矩陣 (Vandermonde matrix) 及其性質</a></h2>
+<p>范德蒙矩陣是一個每一列皆為等比數列的矩陣。下面是一個 \( m \times n \) 范德蒙矩陣的例子。注意到范德蒙矩陣不一定是方陣，每一列的公比也可以不全相同。</p>
+<p>$$ \left( \begin{matrix} 1 &amp; \alpha_1 &amp; \cdots &amp; \alpha_1^{n-1} \\ 1 &amp; \alpha_2 &amp; \cdots &amp; \alpha_2^{n-1} \\ \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\ 1 &amp; \alpha_m &amp; \cdots &amp; \alpha_m^{n-1} \end{matrix} \right)_{m \times n} $$</p>
+<p>在 FFT 中，我們聚焦在以下這個特例 \( V_n \)：第 \( i \) 行和第 \( i \) 列的公比均為 \( \omega_n^{i-1} \) 且最左上角的元素為 \( 1 \) 的范德蒙方陣 \( V_n \) 上。注意這裡的行列均為 \( 1 \)-based.</p>
+<p>$$
+V_n = \left(
+\begin{matrix}
+1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+1 &amp; \omega_n &amp; \omega_n^2 &amp; \cdots &amp; \omega_n^{n-1} \\
+1 &amp; \omega_n^2 &amp; \omega_n^4 &amp; \cdots &amp; \omega_n^{2(n-1)} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; \omega_n^{n-1} &amp; \omega_n^{2(n-1)} &amp; \cdots &amp; \omega_n^{(n-1)(n-1)}
+\end{matrix}
+\right)
+$$</p>
+<p>由於反矩陣若存在必為一。經過驗證可以得到 \( V_n \) 的反矩陣如下</p>
+<p>$$
+V_n^{-1} = \frac{1}{n}\left(
+\begin{matrix}
+1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+1 &amp; \omega_n^{-1} &amp; \omega_n^{-2} &amp; \cdots &amp; \omega_n^{-(n-1)} \\
+1 &amp; \omega_n^{-2} &amp; \omega_n^{-4} &amp; \cdots &amp; \omega_n^{-2(n-1)} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; \omega_n^{-(n-1)} &amp; \omega_n^{-2(n-1)} &amp; \cdots &amp; \omega_n^{-(n-1)(n-1)}
+\end{matrix}
+\right)
+$$</p>
+<p>因 \( \omega_n^n = 1\), 故 \( V_n^{-1} \) 可以改寫為</p>
+<p>$$
+V_n^{-1} = \frac{1}{n}\left(
+\begin{matrix}
+1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+1 &amp; \omega_n^{n-1} &amp; \omega_n^{2(n-1)} &amp; \cdots &amp; \omega_n^{(n-1)(n-1)} \\
+1 &amp; \omega_n^{n-2} &amp; \omega_n^{2(n-2)} &amp; \cdots &amp; \omega_n^{(n-1)(n-2)} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; \omega_n^{1} &amp; \omega_n^{2} &amp; \cdots &amp; \omega_n^{(n-1)\cdot 1}
+\end{matrix}
+\right)
+$$</p>
+<blockquote>
+<p>[ 補充說明 ] 驗證反矩陣的過程中會用到 \( n \) 次單位根的四個性質，若讀者有興趣可以自行鑽研：</p>
+<ul>
+<li>對於所有 \( n, k \geq 0 \), \( d &gt; 0 \), \( \omega_{dn}^{dk} = \omega_{n}^k \).</li>
+<li>對於所有正偶數 \( n \), \( \omega_{n}^{n/2} = \omega_{2} = -1 \).</li>
+<li>對於所有正偶數 \( n \) 和非負整數 \( k \), 我們有 \( (\omega_{n}^{k+n/2})^2 = (\omega_n^k)^2 \).</li>
+<li>\( \omega_n^0 + \omega_n^1 + \cdots + \omega_n^{n-1} = 0 \).</li>
+</ul>
+</blockquote>
+<p>有了 \( n \) 次單位根和范德蒙矩陣的協助，我們很輕鬆地解決了「求反矩陣」的困擾。不過即便得到一個快速算反矩陣的方法，仍需要 \( \Theta(n^2) \) 的時間將方陣中每個元素取倒數。</p>
+<p>假設真的有方法能在 \( \Theta(1) \) 的時間內取得 \( V_n^{-1} \), 瓶頸則會出現在直接進行矩陣乘法上。無論是求向量 \( (A(\omega_n^0), A(\omega_n^1), A(\omega_n^2), \cdots, A(\omega_n^{n-1})) \) 或是 \( (a_0, a_1, \cdots, a_{n-1}) \) 都需要 \( \Theta(n^2) \) 的時間，並沒有做到任何優化。</p>
+<img src="image/fast_fourier_transform/n-square.png" width="500" style="display:block; margin: 0 auto;"/>
+<p>因此我們仍需要最後一個工具，也就是 FFT 的核心——分治法，幫助我們在 \( \Theta(n \log{n}) \) 的時間完成計算。</p>
+<h2 id="分治法計算"><a class="header" href="#分治法計算">分治法計算</a></h2>
+<p>再次回到最初以係數表示法表示的 \( n-1 \) 次多項式 \( A(x) = a_0 + a_1 x + a_2 x^2 + \cdots + a_{n-1} x^{n-1} \). 我們將次方為奇數及次方為偶數的係數分別取出並形成兩個 \(\frac{n}{2}-1 \) 次多項式 \( A^{[0]}(x) \) 和 \( A^{[1]}(x) \), 其中</p>
+<p>$$
+A^{[0]}(x) = a_0 + a_2 \cdot x + a_4 \cdot x^2 + \cdots + a_{n-2} x^{\frac{n}{2}-1}
+$$
+$$
+A^{[1]}(x) = a_1 + a_3 \cdot x + a_5 \cdot x^2 + \cdots + a_{n-1} x^{\frac{n}{2}-1}
+$$</p>
+<p>如此一來，原多項式 \( A(x) \) 可以表示為</p>
+<p>$$
+A(x) = A^{[0]}(x^2) + xA^{[1]}(x^2)
+$$</p>
+<p>觀察發現計算 \( n \) 個 \( A(x) \) 值（也就是 \( A(\omega_n^0), A(\omega_n^1), A(\omega_n^2), \cdots, A(\omega_n^{n-1}) \)）所需的方陣是個 \( n \) 階方陣。對應到計算 \( A^{[0]}(x) \) 和 \( A^{[1]}(x) \), 只需求得 \( \frac{n}{2} \) 個值即可，所需的方陣是 \( \frac{n}{2} \) 階方陣。</p>
+<p>具體而言，以 \( n = 8 \) 為例，若我們要計算 \( A(x) \) 在</p>
+<p>$$
+\omega_8^0, \omega_8^1, \omega_8^2, \cdots, \omega_8^7
+$$</p>
+<p>的值，則我們只需要計算 \( A^{[0]}(x) \) 和 \( A^{[1]}(x) \) 在</p>
+<p>$$
+\omega_8^0, \omega_8^2, \omega_8^4, \cdots, \omega_8^{14}
+$$</p>
+<p>的值之後再合併即可。注意到</p>
+<p>$$
+\omega_8^0 = \omega_8^{8} = \omega_4^0 = 1 \\
+\omega_8^2 = \omega_8^{10} = \omega_4^1 = i \\
+\omega_8^4 = \omega_8^{12} = \omega_4^2 = -1 \\
+\omega_8^6 = \omega_8^{14} = \omega_4^3 = -i
+$$</p>
+<p>也就是我們只需要計算 \( A^{[0]}(x) \) 和 \( A^{[1]}(x) \) 在</p>
+<p>$$
+1, i, -1, -i
+$$</p>
+<p>一共 \( 4 \) 個值後做合併。所以計算 \( A(x) \) 所需的方陣為</p>
+<p>$$
+V_8 = \left(
+\begin{matrix}
+1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+1 &amp; \omega_8 &amp; \omega_8^2 &amp; \cdots &amp; \omega_8^{7} \\
+1 &amp; \omega_8^2 &amp; \omega_8^4 &amp; \cdots &amp; \omega_8^{14} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; \omega_8^{7} &amp; \omega_8^{14} &amp; \cdots &amp; \omega_8^{49}
+\end{matrix}
+\right)
+$$</p>
+<p>而計算 \( A^{[0]}(x) \) 和 \( A^{[1]}(x) \) 所需的的方陣為</p>
+<p>$$
+V_4 = \left(
+\begin{matrix}
+1 &amp; 1 &amp; 1 &amp; 1 \\
+1 &amp; \omega_4 &amp; \omega_4^2 &amp; \omega_4^{3} \\
+1 &amp; \omega_4^2 &amp; \omega_4^4 &amp; \omega_4^{6} \\
+1 &amp; \omega_4^{3} &amp; \omega_4^{6} &amp; \omega_4^{9}
+\end{matrix}
+\right)
+$$</p>
+<p>因此，欲計算 \( A(x) \), 我們只需要計算 \( A^{[0]}(x^2) \) 和 \( A^{[1]}(x^2) \) 後再合併即可。合併所需時間為 \( \Theta(n) \).</p>
+<p>若以 \( T(n) \) 代表計算 \( A(x) \) 在 \( x = \omega_n^0, \omega_n^1, \cdots, \omega_n^{n-1} \) 所需的時間，我們可以列出關係式</p>
+<p>$$
+T(n) = 2T\left(\frac{n}{2}\right) + \Theta(n)
+$$</p>
+<p>得 \( T(n) = \Theta(n \log n) \). 事實上，這個運算就是 FFT.</p>
+<p>到目前為止，我們只要再將點值表示式轉換成係數表示式就完成多項式的乘法了</p>
+<img src="image/fast_fourier_transform/divide_and_conquer_1.png" width="500" style="display:block; margin: 0 auto;"/>
+<p>回顧剛才在 \( \Theta(n \log n) \) 的時間所做的矩陣運算，理論上是</p>
+<p>$$
+\left(
+\begin{matrix}
+1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+1 &amp; \omega_n &amp; \omega_n^2 &amp; \cdots &amp; \omega_n^{n-1} \\
+1 &amp; \omega_n^2 &amp; \omega_n^4 &amp; \cdots &amp; \omega_n^{2(n-1)} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; \omega_n^{n-1} &amp; \omega_n^{2(n-1)} &amp; \cdots &amp; \omega_n^{(n-1)(n-1)}
+\end{matrix}
+\right)
+\left(
+\begin{matrix}
+a_0 \\
+a_1 \\
+a_2 \\
+\vdots \\
+a_{n-1}
+\end{matrix}
+\right)
+=
+\left(
+\begin{matrix}
+A(\omega_n^0) \\
+A(\omega_n^1) \\
+A(\omega_n^2) \\
+\vdots \\
+A(\omega_n^{n-1})
+\end{matrix}
+\right)
+$$</p>
+<p>實際上，我們在實作時所計算的矩陣是</p>
+<p>$$
+\left(
+\begin{matrix}
+1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+1 &amp; \omega_{2n} &amp; \omega_{2n}^2 &amp; \cdots &amp; \omega_{2n}^{2n-1} \\
+1 &amp; \omega_{2n}^2 &amp; \omega_{2n}^4 &amp; \cdots &amp; \omega_{2n}^{2(2n-1)} \\
+1 &amp; \omega_{2n}^3 &amp; \omega_{2n}^6 &amp; \cdots &amp; \omega_{2n}^{3(2n-1)} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; \omega_{2n}^{2n-1} &amp; \omega_{2n}^{2(2n-1)} &amp; \cdots &amp; \omega_{2n}^{(2n-1)(2n-1)}
+\end{matrix}
+\right)
+\left(
+\begin{matrix}
+a_0 \\
+a_1 \\
+\vdots \\
+a_{n-1} \\
+0 \\
+\vdots \\
+0
+\end{matrix}
+\right)
+=
+\left(
+\begin{matrix}
+A(\omega_{2n}^0) \\
+A(\omega_{2n}^1) \\
+\vdots \\
+A(\omega_{2n}^{n-1}) \\
+A(\omega_{2n}^{n}) \\
+\vdots \\
+A(\omega_{2n}^{2n-1})
+\end{matrix}
+\right)
+$$</p>
+<p>這是為了讓 \( C(x) \) 的點值表示式有足夠的點可以用。計算所需時間仍為 \( \Theta(n \log n) \).</p>
+<p>上面是已知 \( (a_0, a_1, \cdots, a_{n-1}) \), 求 \( (A(\omega_{2n}^0), A(\omega_{2n}^1), \cdots, A(\omega_{2n}^{2n-1})) \)</p>
+<p>而接下來是已知 \( (C(\omega_{2n}^0), C(\omega_{2n}^1), \cdots, C(\omega_{2n}^{2n-1})) \), 求 \( (c_0, c_1, \cdots, c_{2n-1}) \)</p>
+<p>理論上已知 \( 2n-1 \) 個點就足夠，不過不影響答案和時間，甚至算 \( 2n \) 個點實作上會比 \( 2n-1 \) 個點簡單。</p>
+<p>回顧運算式在等號兩邊要乘上的反矩陣為：</p>
+<p>$$
+\frac{1}{2n}\left(
+\begin{matrix}
+1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+1 &amp; \omega_{2n}^{-1} &amp; \omega_{2n}^{-2} &amp; \cdots &amp; \omega_{2n}^{-(2n-1)} \\
+1 &amp; \omega_{2n}^{-2} &amp; \omega_{2n}^{-4} &amp; \cdots &amp; \omega_{2n}^{-2(2n-1)} \\
+1 &amp; \omega_{2n}^{-3} &amp; \omega_{2n}^{-6} &amp; \cdots &amp; \omega_{2n}^{-3(2n-1)} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; \omega_{2n}^{-(2n-1)} &amp; \omega_{2n}^{-2(2n-1)} &amp; \cdots &amp; \omega_{2n}^{-(2n-1)(2n-1)}
+\end{matrix}
+\right)
+=
+\frac{1}{2n}\left(
+\begin{matrix}
+1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+1 &amp; \omega_{2n}^{2n-1} &amp; \omega_{2n}^{2(2n-1)} &amp; \cdots &amp; \omega_{2n}^{(2n-1)(2n-1)} \\
+1 &amp; \omega_{2n}^{2n-2} &amp; \omega_{2n}^{2(2n-2)} &amp; \cdots &amp; \omega_{2n}^{(2n-1)(2n-2)} \\
+1 &amp; \omega_{2n}^{2n-3} &amp; \omega_{2n}^{2(2n-3)} &amp; \cdots &amp; \omega_{2n}^{(2n-1)(2n-3)} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; \omega_{2n}^{1} &amp; \omega_{2n}^{2} &amp; \cdots &amp; \omega_{2n}^{2n-1}
+\end{matrix}
+\right)
+$$</p>
+<p>因此這裡要做的矩陣計算是：</p>
+<p>$$
+\frac{1}{2n}\left(
+\begin{matrix}
+1 &amp; 1 &amp; 1 &amp; \cdots &amp; 1 \\
+1 &amp; \omega_{2n}^{2n-1} &amp; \omega_{2n}^{2(2n-1)} &amp; \cdots &amp; \omega_{2n}^{(2n-1)(2n-1)} \\
+1 &amp; \omega_{2n}^{2n-2} &amp; \omega_{2n}^{2(2n-2)} &amp; \cdots &amp; \omega_{2n}^{(2n-1)(2n-2)} \\
+1 &amp; \omega_{2n}^{2n-3} &amp; \omega_{2n}^{2(2n-3)} &amp; \cdots &amp; \omega_{2n}^{(2n-1)(2n-3)} \\
+\vdots &amp; \vdots &amp; \vdots &amp; \ddots &amp; \vdots \\
+1 &amp; \omega_{2n}^{1} &amp; \omega_{2n}^{2} &amp; \cdots &amp; \omega_{2n}^{2n-1}
+\end{matrix}
+\right)
+\left(
+\begin{matrix}
+C(\omega_{2n}^0) \\
+C(\omega_{2n}^1) \\
+\vdots \\
+C(\omega_{2n}^{n-1}) \\
+C(\omega_{2n}^{n}) \\
+\vdots \\
+C(\omega_{2n}^{2n-1})
+\end{matrix}
+\right)
+=
+\left(
+\begin{matrix}
+c_0 \\
+c_1 \\
+\vdots \\
+c_{n-1} \\
+c_{n} \\
+\vdots \\
+c_{2n-1}
+\end{matrix}
+\right)
+$$</p>
+<p>由於這裡要計算的物理量和 FFT 所計算的不同且正好相反，所以這個計算也被稱作 Inverse FFT.</p>
+<p>但本質上，兩個運算都是利用分治法，是相同的。具體而言可以把他理解為求多項式</p>
+<p>$$
+C(\omega_{2n}^0) + C(\omega_{2n}^1)x + \cdots + C(\omega_{2n}^{n-1})x^{n-1} + C(\omega_{2n}^{n})x^n + \cdots + C(\omega_{2n}^{2n-1})x^{2n-1}
+$$</p>
+<p>在 \( x = \omega_{2n}^{0}, \omega_{2n}^{1}, \omega_{2n}^{2}, \cdots, \omega_{2n}^{2n-1} \) 的值再除以 \( 2n \). 因此所需時間為</p>
+<p>$$
+\Theta(n \log n) + \Theta(n) = \Theta(n \log n)
+$$</p>
+<p>將上述所有步驟合併，即可得到完整的多項式乘法.</p>
+<img src="image/fast_fourier_transform/divide_and_conquer_2.png" width="500" style="display:block; margin: 0 auto;"/>
+<h2 id="總結"><a class="header" href="#總結">總結</a></h2>
+<p>欲計算兩個以係數表示式的多項式相乘，並以係數表示式呈現最後的結果，一共可分為以下三步驟。</p>
+<ul>
+<li>將兩多項式 \( A(x), B(x) \) 的係數表示式利用 FFT 轉換成點值表示式，所需時間 \( \Theta(n \log n) \)</li>
+<li>將對應的點值表示式兩兩相乘，得到 \( C(x) \) 的點值表示式，所需時間 \( \Theta(n) \)</li>
+<li>將多項式 \( C(x) \) 的點值表示式利用 Inverse FFT 轉換成係數表示式，所需時間 \( \Theta(n \log n) \)</li>
+</ul>
+<p>故總時間為
+$$
+\Theta(n \log n) + \Theta(n) + \Theta(n \log n) = \Theta(n \log n)
+$$</p>
+<h2 id="模板與習題"><a class="header" href="#模板與習題">模板與習題</a></h2>
+<h3 id="模板"><a class="header" href="#模板">模板</a></h3>
+<p>\( \omega_n \) 涉及三角函數的計算。為了確保浮點數的精確度，我們使用變數型態 <code>double</code> 宣告浮點數。</p>
+<p>進行乘法時，我們使用 <code>long long</code> 作為陣列中每個元素的變數型態以為避免長整數溢位。</p>
+<pre><code class="language-cpp">// The function gets passed a vector of coefficients.
+// It will compute the FFT or inverse FFT,
+// and store the result again in this vector.
+// invert = 1 -&gt; inverse FFT
+// invert = 0 -&gt; FFT
+using cd = complex&lt;double&gt;;
+const double PI = acos(-1);
+
+void fft(vector&lt;cd&gt; &amp; a, bool invert) {
+    int n = a.size();
+    if (n == 1)
+        return;
+
+    vector&lt;cd&gt; a0(n / 2), a1(n / 2);
+    for (int i = 0; 2 * i &lt; n; i++) {
+        a0[i] = a[2*i];
+        a1[i] = a[2*i+1];
+    }
+    fft(a0, invert);
+    fft(a1, invert);
+
+    double ang = 2 * PI / n * (invert ? -1 : 1);
+    cd w(1), wn(cos(ang), sin(ang));
+    for (int i = 0; 2 * i &lt; n; i++) {
+        a[i] = a0[i] + w * a1[i];
+        a[i + n/2] = a0[i] - w * a1[i];
+        if (invert) {
+            a[i] /= 2;
+            a[i + n/2] /= 2;
+        }
+        w *= wn;
+    }
+}
+
+// multiplying two polynomials
+vector&lt;long long&gt; multiply(vector&lt;long long&gt; const&amp; a, vector&lt;long long&gt; const&amp; b) {
+    vector&lt;cd&gt; fa(a.begin(), a.end()), fb(b.begin(), b.end());
+    long long n = 1;
+    while (n &lt; a.size() + b.size()) 
+        n &lt;&lt;= 1;
+    fa.resize(n);
+    fb.resize(n);
+
+    fft(fa, false);
+    fft(fb, false);
+    for (long long i = 0; i &lt; n; i++)
+        fa[i] *= fb[i];
+    fft(fa, true);
+
+    vector&lt;long long&gt; result(n);
+    for (long long i = 0; i &lt; n; i++)
+        result[i] = round(fa[i].real());
+    return result;
+}
+</code></pre>
+<h3 id="模板題"><a class="header" href="#模板題">模板題</a></h3>
+<blockquote>
+<p><a href="https://www.spoj.com/problems/POLYMUL/">SPOJ - Polynomial Multiplication</a></p>
+<p>給定兩個 \( n \) 次多項式的係數，輸出兩個多項式相乘的多項式係數。</p>
+</blockquote>
+<details><summary>Solution</summary>
+<p>讀取輸入資料後，直接呼叫 <code>multipy()</code> 即可。</p>
+</details>
+<details><summary>Solution Code</summary>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;complex&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+using cd = complex&lt;double&gt;;
+const double PI = acos(-1);
+
+void fft(vector&lt;cd&gt; &amp; a, bool invert) {
+    int n = a.size();
+    if (n == 1)
+        return;
+
+    vector&lt;cd&gt; a0(n / 2), a1(n / 2);
+    for (int i = 0; 2 * i &lt; n; i++) {
+        a0[i] = a[2*i];
+        a1[i] = a[2*i+1];
+    }
+    fft(a0, invert);
+    fft(a1, invert);
+
+    double ang = 2 * PI / n * (invert ? -1 : 1);
+    cd w(1), wn(cos(ang), sin(ang));
+    for (int i = 0; 2 * i &lt; n; i++) {
+        a[i] = a0[i] + w * a1[i];
+        a[i + n/2] = a0[i] - w * a1[i];
+        if (invert) {
+            a[i] /= 2;
+            a[i + n/2] /= 2;
+        }
+        w *= wn;
+    }
+}
+
+vector&lt;long long&gt; multiply(vector&lt;long long&gt; const&amp; a, vector&lt;long long&gt; const&amp; b) {
+    vector&lt;cd&gt; fa(a.begin(), a.end()), fb(b.begin(), b.end());
+    long long n = 1;
+    while (n &lt; a.size() + b.size()) 
+        n &lt;&lt;= 1;
+    fa.resize(n);
+    fb.resize(n);
+
+    fft(fa, false);
+    fft(fb, false);
+    for (long long i = 0; i &lt; n; i++)
+        fa[i] *= fb[i];
+    fft(fa, true);
+
+    vector&lt;long long&gt; result(n);
+    for (long long i = 0; i &lt; n; i++)
+        result[i] = round(fa[i].real());
+    return result;
+}
+
+void solve() {
+    long long n;
+    cin &gt;&gt; n;
+    vector&lt;long long&gt; a(n+1), b(n+1);
+    for (long long i = 0; i &lt;= n; ++i) cin &gt;&gt; a[i];
+    for (long long i = 0; i &lt;= n; ++i) cin &gt;&gt; b[i];
+    vector&lt;long long&gt; result = multiply(a, b);
+    for (long long i = 0; i &lt;= (n &lt;&lt; 1); ++i) cout &lt;&lt; result[i] &lt;&lt; &quot; &quot;;   cout &lt;&lt; &quot;\n&quot;;
+    return;
+}
+
+int main() {
+    long long T;
+    cin &gt;&gt; T;
+    while(T--)
+        solve();
+    return 0;
+}
+</code></pre>
+</details>
+<h3 id="例題"><a class="header" href="#例題">例題</a></h3>
+<blockquote>
+<p><a href="https://www.spoj.com/problems/MAXMATCH/">SPOJ - Maximum Self-Matching</a></p>
+<p>給定一個只包含 <code>'a'</code> , <code>'b'</code> 和 <code>'c'</code> 的字串 <code>s</code> .</p>
+<p>定義 \( m_{s}(i) \) 為字串 <code>s</code> 向右移動 \( i \) 個字元後與自己匹配的字元個數，其中 \( 1 \leq i &lt; \lvert \) <code>s</code> \( \rvert \).</p>
+<p>求最大的 \( m_{s}(i) \) 值。</p>
+<p>設該值為 \( M \), 再求所有符合 \( m_{s}(i) = M \) 的 \( i \) 值。</p>
+</blockquote>
+<details><summary>Solution</summary>
+<p>設字串 <code>t</code> 為將字串中為 <code>'a'</code> 的位置設為 <code>1</code> , 其他設為 <code>0</code> 的字串。</p>
+<p>構造一個與 <code>t</code> 對應的多項式 \( p_t \)。例如：</p>
+<p><code>baaca</code> 經構造會得到 <code>01101</code> , 對應的多項式為 \( 0x^4 + x^3 + x^2 + 0x + 1 \).</p>
+<p><code>acaa</code> 經構造會得到 <code>1011</code> , 對應的多項式為 \( x^3 + 0x^2 + x + 1 \).</p>
+<p>令 <code>r</code> 為 <code>t</code> 的反轉字串，我們同樣地對 <code>r</code> 構造一個對應的多項式 \( p_r \).</p>
+<p>將 \( p_t \) 和 \( p_r \) 相乘得到一個新的多項式，</p>
+<p>其中 \( x^i \) 的係數就是將字串向右平移 \( \lvert \) <code>s</code> \( \rvert - 1 - i \) 單位的成功匹配字元數。</p>
+<p>故只需針對 <code>'a'</code> , <code>'b'</code> 和 <code>'c'</code> 各做一次多項式乘法後再將三個多項式相加，</p>
+<p>並取 \( x^0, x^1, \cdots, x^{\lvert s \rvert -2} \) 項係數的最大值，即為所求的 \( M \) 值。</p>
+</details>
+<details><summary>Solution Code</summary>
+<pre><code class="language-cpp">#include &lt;iostream&gt;
+#include &lt;cmath&gt;
+#include &lt;complex&gt;
+#include &lt;vector&gt;
+
+using namespace std;
+using cd = complex&lt;double&gt;;
+const double PI = acos(-1);
+
+string s;
+int slen;
+
+void fft(vector&lt;cd&gt; &amp; a, bool invert) {
+    int n = a.size();
+    if (n == 1)
+        return;
+
+    vector&lt;cd&gt; a0(n / 2), a1(n / 2);
+    for (int i = 0; 2 * i &lt; n; i++) {
+        a0[i] = a[2*i];
+        a1[i] = a[2*i+1];
+    }
+    fft(a0, invert);
+    fft(a1, invert);
+
+    double ang = 2 * PI / n * (invert ? -1 : 1);
+    cd w(1), wn(cos(ang), sin(ang));
+    for (int i = 0; 2 * i &lt; n; i++) {
+        a[i] = a0[i] + w * a1[i];
+        a[i + n/2] = a0[i] - w * a1[i];
+        if (invert) {
+            a[i] /= 2;
+            a[i + n/2] /= 2;
+        }
+        w *= wn;
+    }
+}
+
+vector&lt;long long&gt; multiply(vector&lt;long long&gt; const&amp; a, vector&lt;long long&gt; const&amp; b) {
+    vector&lt;cd&gt; fa(a.begin(), a.end()), fb(b.begin(), b.end());
+    long long n = 1;
+    while (n &lt; a.size() + b.size()) 
+        n &lt;&lt;= 1;
+    fa.resize(n);
+    fb.resize(n);
+
+    fft(fa, false);
+    fft(fb, false);
+    for (long long i = 0; i &lt; n; i++)
+        fa[i] *= fb[i];
+    fft(fa, true);
+
+    vector&lt;long long&gt; result(n);
+    for (long long i = 0; i &lt; n; i++)
+        result[i] = round(fa[i].real());
+    return result;
+}
+
+int main() {
+    cin &gt;&gt; s;
+    slen = s.length();
+    vector&lt;long long&gt; total(slen, 0), p(slen), r(slen), tmp;
+    
+    for (int i = 0; i &lt; slen; ++i)  p[i] = r[slen - 1 - i] = (s[i] == 'a' ? 1LL : 0LL);
+    tmp = multiply(p, r);
+    for (int i = 0; i &lt; slen; ++i)    total[i] += tmp[i];
+
+    for (int i = 0; i &lt; slen; ++i)  p[i] = r[slen - 1 - i] = (s[i] == 'b' ? 1LL : 0LL);
+    tmp = multiply(p, r);
+    for (int i = 0; i &lt; slen; ++i)    total[i] += tmp[i];
+
+    for (int i = 0; i &lt; slen; ++i)  p[i] = r[slen - 1 - i] = (s[i] == 'c' ? 1LL : 0LL);
+    tmp = multiply(p, r);
+    for (int i = 0; i &lt; slen; ++i)    total[i] += tmp[i];
+
+    int ans = -1;
+    for (int i = 0; i &lt; slen-1; ++i)
+        if (total[i] &gt; ans)
+            ans = total[i];
+    cout &lt;&lt; ans &lt;&lt; &quot;\n&quot;;
+    for (int i = slen - 1; i &gt;= 0; --i)
+        if (total[i] == ans)
+            cout &lt;&lt; slen - 1 - i &lt;&lt; &quot; &quot;;
+    if (ans == 0)   cout &lt;&lt; slen &lt;&lt; &quot; &quot;;
+    cout &lt;&lt; &quot;\n&quot;;
+    return 0;
+}
+</code></pre>
+</details>
+<h3 id="練習題"><a class="header" href="#練習題">練習題</a></h3>
+<blockquote>
+<p><a href="https://www.spoj.com/problems/ADAMATCH/">SPOJ - Ada and Nucleobase</a></p>
+<p>給定兩個 DNA 序列 <code>s</code> 和 <code>r</code> , 其中 <code>r</code> 的長度比 <code>s</code> 短。</p>
+<p>輸出 <code>r</code> 在 <code>s</code> 所有長度為 \( \lvert \) <code>r</code> \( \rvert \) 的連續子字串中，hamming distance 的最小值。</p>
+</blockquote>
+<details><summary>Solution</summary>
+<p>本題與例題中的 <a href="https://www.spoj.com/problems/MAXMATCH/">SPOJ - Maximum Self-Matching</a> 類似。差異處只有兩點：</p>
+<p>第一是 <code>a</code> , <code>b</code> , 和 <code>c</code> 變成 <code>A</code> , <code>T</code> , <code>C</code> , 和 <code>G</code> .</p>
+<p>第二是 hamming distance 即自己字串的長度扣掉成功匹配的字元數。</p>
+</details>
+<blockquote>
+<p><a href="https://codeforces.com/contest/958/problem/F3">Codeforces 958 F3 - Lightsabers (hard)</a></p>
+<p>給定 \( n \) 個介於 \( 1 \) 到 \( m \) 的正整數，求從 \( n \) 個數中任取 \( k \) 個數有幾種不同的取法。</p>
+</blockquote>
+<details><summary>Solution</summary>
+<p>此題為排列組合中，基本的生成函數操作。</p>
+<p>若數字 \( l \) 共有 \( c_l \) 個，我們可以為 \( l \) 構造一個多項式</p>
+<p>$$
+p_l(x) = \displaystyle\sum_{j=0}^{c_l} x^j
+$$</p>
+<p>最後只要求出</p>
+<p>$$
+\displaystyle\prod_{l=1}^{m} p_l(x)
+$$</p>
+<p>的 \( x^k \) 項係數即可。</p>
+</details>
+<blockquote>
+<p><a href="https://codeforces.com/problemset/problem/954/I">Codeforces 954 I - Yet Another String Matching Problem</a></p>
+<p>假設有兩個長度相等的字串 <code>s</code> 和 <code>t</code> . 我們可以不限次數地做以下操作：</p>
+<p>任選兩個不同的字元 \( c_1, c_2 \), 並將 <code>s</code> 和 <code>t</code> 中所有的 \( c_1 \) 換成 \( c_2 \).</p>
+<p>定義兩字串 <code>s</code> 和 <code>t</code> 的距離為：使用最少的操作數將 <code>s</code> 和 <code>t</code> 變成一樣的字串。</p>
+<p>今天給定兩字串 <code>S</code> , <code>T</code> , 兩字串僅包含字元 <code>'a'</code> , <code>'b'</code> , <code>'c'</code> , <code>'d'</code> , <code>'e'</code> , <code>'f'</code> .</p>
+<p>我們要計算每個 <code>S</code> 中長度為 | <code>T</code> | 的字串與 <code>T</code> 的距離。</p>
+</blockquote>
+<details><summary>Solution</summary>
+<p>我們先考慮兩字串長度相等時的狀況：</p>
+<p>當兩字串長度相等時，我們可以針對相同位置的字元建立無向圖。</p>
+<p>無向圖的點為字元，兩字元間有邊表示其中一個字元必須經過操作變成另一個字元。</p>
+<p>如此一來，在相同連通塊內的字元都必須變成同一字元。</p>
+<p>故這個狀況的答案為相異的字元數扣掉連通塊的數量。</p>
+<p>回到原本的問題，我們可以透過 FFT 建邊：</p>
+<p>以字元 <code>'a'</code> , <code>'b'</code> 為例，</p>
+<p>將 <code>S</code> 中字元為 <code>'a'</code> 的位置設為 1, 字元不為 <code>'a'</code> 的位置設為 0.</p>
+<p>將 <code>T</code> 中字元為 <code>'b'</code> 的位置設為 1, 字元不為 <code>'b'</code> 的位置設為 0.</p>
+<p>若 <code>S</code> 中有子字串和 <code>T</code> 至少有一個位置皆為 1, 表示該子字串在進行操作時，</p>
+<p><code>'a'</code> 和 <code>'b'</code> 其中一個字元會變成另一個，我們稱這個為匹配成功。</p>
+<p>針對每對字元計算完匹配成功數後，我們就可以利用 dsu 或 DFS 計算 <code>S</code> 每個子字串與 <code>T</code> 的距離。</p>
+</details>
+<h2 id="reference"><a class="header" href="#reference">Reference</a></h2>
+<ul>
+<li>Introduction to Algorithms Fourth Edition p. 877 ~ p. 893</li>
+<li><a href="https://cp-algorithms.com/algebra/fft.html">CP Algorithm, Fast Fourier transform</a></li>
+<li><a href="https://www.spoj.com/problems/POLYMUL/">SPOJ - Polynomial Multiplication</a></li>
+<li><a href="https://www.spoj.com/problems/MAXMATCH/">SPOJ - Maximum Self-Matching</a></li>
+<li><a href="https://www.spoj.com/problems/ADAMATCH/">SPOJ - Ada and Nucleobase</a></li>
+<li><a href="https://codeforces.com/contest/958/problem/F3">Codeforces 958 F3 - Lightsabers (hard)</a></li>
+<li><a href="https://codeforces.com/problemset/problem/954/I">Codeforces 954 I - Yet Another String Matching Problem</a></li>
+</ul>
+
+                    </main>
+
+                    <nav class="nav-wrapper" aria-label="Page navigation">
+                        <!-- Mobile navigation buttons -->
+                            <a rel="prev" href="../math/revisit_arithmetic_function.html" class="mobile-nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                                <i class="fa fa-angle-left"></i>
+                            </a>
+
+                            <a rel="next" href="../misc/interactive.html" class="mobile-nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                                <i class="fa fa-angle-right"></i>
+                            </a>
+
+                        <div style="clear: both"></div>
+                    </nav>
+                </div>
+            </div>
+
+            <nav class="nav-wide-wrapper" aria-label="Page navigation">
+                    <a rel="prev" href="../math/revisit_arithmetic_function.html" class="nav-chapters previous" title="Previous chapter" aria-label="Previous chapter" aria-keyshortcuts="Left">
+                        <i class="fa fa-angle-left"></i>
+                    </a>
+
+                    <a rel="next" href="../misc/interactive.html" class="nav-chapters next" title="Next chapter" aria-label="Next chapter" aria-keyshortcuts="Right">
+                        <i class="fa fa-angle-right"></i>
+                    </a>
+            </nav>
+
+        </div>
+
+
+
+
+        <script>
+            window.playground_copyable = true;
+        </script>
+
+
+        <script src="../elasticlunr.min.js"></script>
+        <script src="../mark.min.js"></script>
+        <script src="../searcher.js"></script>
+
+        <script src="../clipboard.min.js"></script>
+        <script src="../highlight.js"></script>
+        <script src="../book.js"></script>
+
+        <!-- Custom JS scripts -->
+
+
+    </body>
+</html>

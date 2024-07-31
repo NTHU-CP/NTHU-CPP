@@ -10,6 +10,7 @@ https://nthu-cp.github.io/NTHU-CPP/graph/lca.html
 https://nthu-cp.github.io/NTHU-CPP/greedy/basic.html
 https://nthu-cp.github.io/NTHU-CPP/greedy/intro.html
 https://nthu-cp.github.io/NTHU-CPP/math/du_sieve.html
+https://nthu-cp.github.io/NTHU-CPP/math/fast_fourier_transform.html
 https://nthu-cp.github.io/NTHU-CPP/math/gf_combination.html
 https://nthu-cp.github.io/NTHU-CPP/math/gf_multiple_variables.html
 https://nthu-cp.github.io/NTHU-CPP/math/gf_recurrence.html
