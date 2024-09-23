@@ -13,7 +13,7 @@
 | 年度 | 題本 | 題解 | 記分板 | OJ |
 | :---: | --- | --- | --- | --- |
 | 2023 | [題本連結](https://cdn.discordapp.com/attachments/894225772997386251/1153335360802275418/2023_NCPC_Pre_exam.pdf) | [題解連結](https://hackmd.io/@Sylveon/ncpc-pre-2023) | [記分板連結](https://media.discordapp.net/attachments/894225772997386251/1153211919709261864/image.png?width=822&height=663) | |
-| 2022 | [題本連結](https://drive.google.com/file/d/1UqtLTLxI16I2fuTF4bv4pdcLh0ixmlnd/view) | [題解連結](https://hackmd.io/@redleaf23477/nthu-ncpc-pre-2022) | [記分板連結](https://hackmd.io/@redleaf23477/nthu-ncpc-pre-2022#Final-Scoreboard) | [OJ 連結](http://140.114.77.113/problem?tag=2022-ncpc-pre&page=1&limit=10) |
+| 2022 | [題本連結](https://cdn.discordapp.com/attachments/894225772997386251/1287709218492911747/2022_NCPC_Pre_exam_1.pdf?ex=66f2882a&is=66f136aa&hm=0f10ae2326bab499d653ddd686911bcfd8b62b960e74891cb612ddb7a563cd6c&) | [題解連結](https://hackmd.io/@redleaf23477/nthu-ncpc-pre-2022) | [記分板連結](https://hackmd.io/@redleaf23477/nthu-ncpc-pre-2022#Final-Scoreboard) | [OJ 連結](http://140.114.77.113/problem?tag=2022-ncpc-pre&page=1&limit=10) |
 | 2021 | | [題解連結](https://hackmd.io/@Sylveon/NTHU-NCPCPRE-2021?fbclid=IwAR0W2625MHJvWWtsuaR7CeT57oNMOhZ6azSyw2pvprX5Bm2OcmN3F-UCySs) | | [OJ 連結](http://140.114.77.113/problem?tag=2021-ncpc-pre&page=1&limit=10) |
 | 2020 | | | | |
 
